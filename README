@@ -1,0 +1,12 @@
+Download and install git: git-scm.com/download
+
+set up ssh public key and register account at github.com: http://help.github.com/mac-key-setup/
+
+git config --global user.name "Your Name"
+git config --global user.email your.email@whatever.com
+
+mkdir columbia (or whatever you prefer)
+cd columbia
+git init
+git remote add origin git@github.com:fwood/columbia.git
+git pull origin master
