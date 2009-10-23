@@ -1,6 +1,10 @@
+Download and install netbeans: download.netbeans.org/netbeans/6.0/final/
 Download and install git: git-scm.com/download
+Download and install gitx: gitx.frim.nl
 
-set up ssh public key and register account at github.com: http://help.github.com/mac-key-setup/
+Set up ssh public key and register account at github.com: http://help.github.com/mac-key-setup/
+
+Call the following from the terminal (once you add /usr/local/git/bin to your path):
 
 git config --global user.name "Your Name"
 git config --global user.email your.email@whatever.com
@@ -10,3 +14,10 @@ cd columbia
 git init
 git remote add origin git@github.com:fwood/columbia.git
 git pull origin master
+
+After saving changes to files in the project:
+
+git commit -a (be sure to write a comment! commit will abort otherwise)
+git push
+
+The Git Cheat Sheet: ktown.kde.org/~zrusin/git/git-cheat-sheet-medium.png
