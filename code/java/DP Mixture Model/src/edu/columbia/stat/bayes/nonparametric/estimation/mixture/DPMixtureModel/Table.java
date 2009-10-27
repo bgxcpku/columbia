@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package DPMixtureModel;
+package edu.columbia.stat.bayes.nonparametric.estimation.mixture.DPMixtureModel;
 
 /**
  *
