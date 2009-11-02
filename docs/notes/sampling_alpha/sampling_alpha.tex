@@ -1,0 +1,59 @@
+\documentclass[11pt]{article}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{epstopdf}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\title{Posterior Sampling for $\alpha$}
+\author{David Pfau}
+\date{30 October 2009}                                           % Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+%\section{hello?}
+%\subsection{}
+
+To perform Metropolis sampling from $\alpha$ given the class assignment variables for each data point, we first sample a point from a symmetric distribution and then calculate the ratio of posterior probabilities to find the probability of accepting the new sample.  We should note, this is not an ideal sampler near $0$, since a symmetric proposal will often propose negative $\alpha$ and thus will often be rejected.  Nonetheless, it's just plain quicker (and trivial to extend to asymmetric proposals).  In our case we choose a diffuse Gamma prior for $\alpha$ with parameters $(1,1)$.  For $\alpha > 0$ the posterior is given by
+
+\begin{equation}
+p(\alpha|\textbf{z}) \propto p(\textbf{z}|\alpha) p(\alpha) = p(\textbf{z}|\alpha) e^{-\alpha} = \prod_{i = 1}^{N} p(z_{i}|\textbf{z}_{1:i-1},\alpha) e^{-\alpha}
+\end{equation}
+
+Now, by the exchangeability of samples from a Chinese Restaurant Process, we can order the elements of $\textbf{z}$ any way we like.  In particular, suppose there are $K$ occupied tables (in the argot of the CRP) with $m_k$ customers sitting at table $k$, and that the first $K$ customers all sit one-by-one at new tables.  Since the probability of sitting at a new table is simply $\frac{\alpha}{j+\alpha}$, where $j$ is the total number of customers already seated, the probability of $K$ customers all sitting at new tables is given by
+
+\begin{equation}
+\frac{\alpha^K}{\prod_{j=0}^{K-1} (j + \alpha)}
+\end{equation}
+
+If the next $m_1 - 1$ customers all sit at table 1, the first customer does so with probability $\frac{1}{K+\alpha}$, the next with probability $\frac{2}{K+1+\alpha}$ and so on.  The same holds true for all other tables, with the appropriate number of customers-already-seated in the denominator.  So the total probability of $\textbf{z}$ given $\alpha$ is
+
+\begin{equation}
+\frac{\alpha^K}{\prod_{j=0}^{K-1} (j + \alpha)} \frac{(m_1-1)!}{\prod_{j=K}^{K+m_1-1}(j + \alpha)} \frac{(m_2-1)!}{\prod_{j=K+m_1}^{K+m_1+m_2-1}(j + \alpha)} \cdots \frac{(m_K-1)!}{\prod_{j=N-m_k}^{N-1}(j + \alpha)}
+\end{equation}
+
+Which simplifies to
+
+\begin{equation}
+\frac{\alpha^K \prod_{l=1}^{K} (m_l - 1)!}{\prod_{j=0}^{N-1}(j+\alpha)} = 
+\alpha^K\prod_{l=1}^{K} (m_l-1)! \frac{\Gamma(\alpha)}{\Gamma(N+\alpha)}
+\end{equation}
+
+And the propability of accepting the proposed $\alpha^*$ is simply
+
+\begin{equation}
+a(\alpha^*,\alpha) = min\left(1,\frac{\alpha^{*K}\Gamma(\alpha)\Gamma(N+\alpha^*)}{\alpha^{K}\Gamma(\alpha^*)\Gamma(N+\alpha)}  e^{\alpha-\alpha^*}\right)
+\end{equation}
+
+Which, remarkably, only depends on the assigned labels by the number of active components $K$.
+
+Should we want to use an asymmetric proposal, for example one with variance proportional to the current $\alpha$, we can easily modify the acceptance probability.  Say we draw the proposal from a normal distribution with mean $\alpha$ and variance $\kappa \alpha$, then the acceptance probability becomes
+
+\begin{equation}
+a(\alpha^*,\alpha) = min\left(1,\frac{\alpha^{*K-1}\Gamma(\alpha)\Gamma(N+\alpha^*)}{\alpha^{K-1}\Gamma(\alpha^*)\Gamma(N+\alpha)}  e^{\alpha-\alpha^*} e^{-\frac{1}{2}\frac{(\alpha-\alpha^*)^2}{\kappa^2} \left(\frac{1}{\alpha^{*2}} - \frac{1}{\alpha^2} \right)} \right)
+\end{equation}
+
+\end{document}  
