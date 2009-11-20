@@ -1,0 +1,151 @@
+package edu.gatsby.nlp.lm;
+
+option java_package = "edu.gatsby.nlp.lm";
+option java_outer_classname = "LMIPCProtos";
+
+message TokenList {
+  repeated int32 token = 1;
+}
+
+message TokenListWithCount {
+  required int32 count = 1;
+  repeated int32 token = 2;
+}
+
+message ScoreList {
+  repeated double score = 1;
+}
+
+message AddRequest {
+  optional int32 domain =1 [default = 1];
+  repeated TokenListWithCount tuple = 2;
+}
+
+message AddResponse {
+  required int32 num_added = 1;
+}
+
+message RemoveRequest {
+  optional int32 domain =1 [default = 1];
+  repeated TokenListWithCount tuple = 2;
+}
+
+message RemoveResponse {
+  required int32 num_added = 1;
+}
+
+message ScoreRequest {
+  optional int32 domain =1 [default = 1];
+  required TokenList context  =2;
+  repeated int32 type = 3;
+}
+
+message ScoreResponse {
+  repeated double score=1;
+}
+
+message PredictRequest {
+  optional int32 domain =1 [default = 1];
+  required int32 number_of_predictions = 2 [default = 1];
+  required TokenList context = 3;
+}
+
+message PredictResponse {
+  repeated int32 prediction =1;
+}
+
+message SampleRequest {
+   required int32 number_of_sweeps = 1 [default = 1];
+}
+
+message SampleResponse {
+   required int32 sweeps_complete = 1 [default = 1];
+   optional double score = 2;
+}
+
+
+
+message SaveRequest {
+   required string file_name = 1;
+}
+
+message SaveResponse {
+   optional string message=1;
+}
+
+message LoadRequest {
+   required string file_name = 1;
+}
+
+message LoadResponse {
+   optional string message=1;
+}
+
+message DisconnectRequest {
+}
+
+message DisconnectResponse {
+}
+
+message ShutdownRequest {
+}
+
+message ShutdownResponse {
+}
+
+message ParameterRequest {
+}
+
+message ParameterResponse {
+    required string names=1;
+    required string values=2;
+}
+
+enum MessageType {
+  SCORE = 0;
+  PREDICT = 1;
+  ADD = 2;
+  SAMPLE = 3;
+  SAVE = 4;
+  LOAD = 5;
+  DISCONNECT = 6;
+  SHUTDOWN = 7;
+  PARAMETER = 8;
+  REMOVE = 9;
+  ERROR = 10;
+}
+
+
+message Request {
+  required MessageType type = 1;
+  optional ScoreRequest score = 2;
+  optional PredictRequest predict = 3;
+  optional AddRequest add = 4;
+  optional SampleRequest sample = 5;
+  optional SaveRequest save = 6;
+  optional LoadRequest load = 7;
+  optional DisconnectRequest disconnect = 8;
+  optional ShutdownRequest shutdown = 9;
+  optional ParameterRequest parameter = 10;
+  optional RemoveRequest remove = 11;
+}
+
+message ErrorResponse {
+    optional string reason = 1;
+    optional string stack_trace = 2;
+}
+
+message Response {
+  required MessageType type = 1;
+  optional ScoreResponse score = 2;
+  optional PredictResponse predict = 3;
+  optional AddResponse add = 4;
+  optional SampleResponse sample = 5;
+  optional SaveResponse save = 6;
+  optional LoadResponse load = 7;
+  optional DisconnectResponse disconnect = 8;
+  optional ShutdownResponse shutdown = 9;
+  optional ParameterResponse parameter = 10;
+  optional RemoveResponse remove = 11;
+  optional ErrorResponse error = 12;
+}

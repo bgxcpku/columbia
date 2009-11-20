@@ -1,0 +1,71 @@
+\documentclass[11pt]{article}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{epstopdf}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\title{The Bayesian Evidence for Multiple Gaussian Observations}
+\author{David Pfau}
+\date{2 November 2009}                                           % Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+We present a simple derivation of the evidence $p(y_{1:N})$ of multiple observations from a univariate Gaussian with known variance and unknown mean.  Assume $N$ points are drawn from the distribution $y|\mu \sim \mathcal{N}(\mu,\sigma^2) $, while $\mu$ itself is drawn according to $\mu \sim \mathcal{N}(0,\tau^2)$.  Then the joint probability of $y_{1:N}$ and $\mu$ is
+
+\begin{eqnarray}
+p(y_{1:N},\mu) = p(\mu)\prod_{i=1}^N p(y_i|\mu) & \propto & exp\left(-\frac{\mu}{2\tau^2} - \frac{1}{2\sigma^2} \sum_{i=1}^N (y_i - \mu)^2\right) \\
+& = & exp\left( -\frac{1}{2}\left(\frac{1}{\tau^2} + \frac{N}{\sigma^2}\right)\mu^2 + \frac{1}{\sigma^2} \sum_{i=1}^N \mu y_i - \frac{1}{2\sigma^2}\sum_{i=1}^N y_i^2 \right) \nonumber
+\end{eqnarray}
+
+Which is to say, the joint distribution is a Gaussian with mean 0 and precision
+
+\begin{equation}
+\Lambda = \left( \begin{array}{cc}
+\frac{1}{\sigma^2} I_N & \frac{1}{\sigma^2}\mathbf{1}_N \\
+ \frac{1}{\sigma^2}\mathbf{1}_N^T & \frac{1}{\sigma^2} + \frac{N}{\tau^2} \\
+\end{array} \right)
+\end{equation}
+
+Where $\mathbf{1}_N$ is the length $N$ vector with all components 1.  The marginal variance of a multivariate Gaussian is simply the block of the covariance matrix that corresponds to the desired dimensions, while the mean is simply the mean of the relevant dimensions.  So the evidence, which is simply the joint marginalized over $\mu$, has mean 0 and a variance that corresponds to the top $N$ by $N$ block of the joint covariance.  We can find this by inverting the precision matrix above (and using a handy block matrix inversion formula I googled):
+
+\begin{equation}
+\Sigma_{y_{1:N}} =  \sigma^2 I_N + \tau^2 \mathbf{1}_{N\times N}
+\end{equation}
+
+The determinant and precision for the evidence are given by
+
+\begin{eqnarray*}
+|\Sigma_{y_{1:N}}| & = & \sigma^{2N}\left(1 + N\frac{\tau^2}{\sigma^2}\right) \\
+\Lambda_{y_{1:N}} & = & \frac{1}{\sigma^2}I_N - \frac{\tau^2/\sigma^2}{\sigma^2 + N\tau^2} \mathbf{1}_{N\times N}
+\end{eqnarray*}
+
+\section{Handy Identities I Cribbed From The Internet}
+\begin{equation}
+\left(\begin{array}{cc}
+A & B \\
+C & D \\
+\end{array}\right)^{-1} =
+\left(\begin{array}{cc}
+(A - BD^{-1}C)^{-1} &  -A^{-1}B(D-CA^{-1}B)^{-1} \\
+-D^{-1}C(A - BD^{-1}C)^{-1} & (D-CA^{-1}B)^{-1} \\
+\end{array}\right) 
+\end{equation}
+
+Which means if we write out the joint precision of $a$ and $b$ in block form, we can read off the marginal precisions directly:
+
+\begin{eqnarray}
+\Lambda_{a} & = & \Lambda_{aa} - \Lambda_{ab}\Lambda_{bb}^{-1}\Lambda_{ba} \nonumber \\
+\Lambda_{b} & = & \Lambda_{bb} - \Lambda_{ba}\Lambda_{aa}^{-1}\Lambda_{ab}
+\end{eqnarray}
+
+And the determinant of a full rank plus a rank one matrix is
+
+\begin{equation}
+|A + uv^T| = (1 + v^TA^{-1}u)\,|A|
+\end{equation}
+
+\end{document}  
