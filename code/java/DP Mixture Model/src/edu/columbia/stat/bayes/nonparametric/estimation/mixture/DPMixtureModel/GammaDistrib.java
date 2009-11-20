@@ -4,7 +4,6 @@
  */
 
 package edu.columbia.stat.bayes.nonparametric.estimation.mixture.DPMixtureModel;
-import java.util.ArrayList ;
 import java.util.Random;
 
 /**
@@ -14,8 +13,7 @@ import java.util.Random;
  * we use the parameterization of the density as
  * beta^alpha/gamma(alpha) * x^(alpha-1) exp(-x*beta) ;
  */
-public  class GammaDistrib
-        extends AbstractCondDistrib {
+public  class GammaDistrib {
     private double alpha ;
     private double beta ;
 
@@ -27,7 +25,6 @@ public  class GammaDistrib
             throw new RuntimeException("Parameters of the Gamma distribution " +
                     "must be positive") ;
         }
-        distribDesc = DistribDesc.GAMMA ;
         if(!RAND_INIT){
             RAND.setSeed(0) ;
             RAND_INIT = true ;
@@ -93,37 +90,18 @@ public  class GammaDistrib
     }
 
     //Method to return likelihood evaluated at SS
-    public double getLikelihood(SufficientStat ss){
-        return Math.exp(getLogLikelihood(ss)) ;
+    public double getLikelihood(double x){
+        return Math.exp(getLogLikelihood(x)) ;
     }
 
     //Method to return log-likelihood evaluated at SS
-    public double getLogLikelihood(SufficientStat ss){
+    public double getLogLikelihood(double x){
         double ll = 0 ;
-        ll -= ss.n.doubleValue()*alpha*Math.log(beta) ;
-        ll -= ss.n.doubleValue()*GammaDistrib.lnGammaFunction(alpha) ;
-        ll += (alpha - 1)*(Double)ss.value.get(0) ;
-        ll -= (1.0/beta)*(Double)ss.value.get(1) ;
+        ll += alpha*Math.log(beta) ;
+        ll -= GammaDistrib.lnGammaFunction(alpha) ;
+        ll += (alpha - 1)*Math.log(x) ;
+        ll -= beta*x ;
         return ll ;
-    }
-
-    //Method to return number proportional to likelihood evaluatd at SS
-    public double getPLikelihood(SufficientStat ss){
-        return getLikelihood(ss) ;
-    }
-
-    //Method to return number equal to log-likelihood plus a constant
-    //evaluatd at SS
-    public double getCLogLikelihood(SufficientStat ss){
-        return getLogLikelihood(ss) ;
-    }
-
-    //Method to return parameter of distribution
-    public ArrayList<Double> getParameter(){
-        ArrayList<Double> returnVal = new ArrayList<Double>(2) ;
-        returnVal.add(this.alpha) ;
-        returnVal.add(this.beta) ;
-        return returnVal ;
     }
 
      /*
@@ -152,8 +130,4 @@ public  class GammaDistrib
     public static double gammaFunction(double val){
         return Math.exp(lnGammaFunction(val)) ;
     } ;
-
-    public int getNumParameters(){
-        return 2 ;
-    }
 }

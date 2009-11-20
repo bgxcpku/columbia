@@ -15,66 +15,78 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
+
+        int vocabSize = 20 ;
+        int docLength = 100 ;
+        int n = 100 ;
+
         //there will be some 8 actual clusters, vocabulary here is 1000 ;
         DiscreteDistrib[] clusterParams = new DiscreteDistrib[8] ;
-        DirichletDistrib baseMeasure = new DirichletDistrib(1,10000) ;
+        DirichletDistrib baseMeasure = new DirichletDistrib(100,vocabSize) ;
         for(int j=0; j<8; ++j){
             clusterParams[j] = baseMeasure.sample() ;
         }
 
         //print the cluster parameters ;
-        /*for(int j=0; j<8; ++j){
+        for(int j=0; j<8; ++j){
             StringBuilder paramLine = new StringBuilder() ;
-            for(int k=0;k<100;++k){
+            for(int k=0;k<vocabSize;k++){
                 paramLine.append(clusterParams[j].parameter[k] + ", ") ;
             }
             System.out.println(paramLine) ;
-        }*/
+        }
 
         //create some data
-        int n = 100 ;
         ArrayList<BagOfWordsObservation> data = new ArrayList(n) ;
         for(int j=0; j<n; ++j){
-            data.add(clusterParams[j%8].sample(5000)) ;
-            //System.out.println(j%8) ;
+            data.add(clusterParams[j%8].sample(docLength)) ;
         }
 
         //print the data
-        /*for(int j=0; j<n; ++j){
+        for(int j=0; j<n; ++j){
             StringBuilder line = new StringBuilder() ;
-            for(int k=0; k<100; ++k){
+            for(int k=0; k<vocabSize; ++k){
                 line.append(data.get(j).value[k] + ", ") ;
             }
-            System.out.println(j) ;
             System.out.println(line) ;
-        }*/
-
-        Restaurant rest = new  Restaurant(data,baseMeasure) ;
-        System.out.println(rest.size()) ;
+        }
 
 
+        /*
+        Restaurant rest = new  Restaurant(data,baseMeasure,.1,100) ;
+        
         double meanPWA = 0 ;
-        int iters = 100;
+        int iters = 1000;
         for(int iter=0; iter<iters;++iter) {
             rest.reSeatRestaurant() ;
             rest.reSampleTables() ;
-            rest.reSampleAlpha(.1, 100) ;
+            rest.reSampleAlpha() ;
             
             for(Population p:rest.values()){
                 System.out.print(p.size() + ", ") ;
             }
-
+            
             System.out.println() ;
             System.out.print(rest.size() + ", ") ;
 
             double pwa = pairWiseAccuracey(rest) ;
             meanPWA += pwa ;
             System.out.print(rest.alpha + ", ") ;
-            System.out.print(pwa) ;
+            System.out.print(pwa + ",") ;
+            System.out.print(rest.getLogLikelihood()) ;
             System.out.println() ;
         }
-        System.out.println(meanPWA/iters) ; 
+        System.out.println(meanPWA/iters) ; */
+
+        ParticleFilter pf = new ParticleFilter(1000, data.get(0), baseMeasure, 1) ;
+        pf.printParticles(10);
+
+        
+        for(int j = 1; j<100; j++){
+            System.out.println("adding " + j +"'th observation") ;
+            pf.updateParticleFilter(data.get(j));
+            pf.printParticles(10);
+        }
     }
 
     private static double pairWiseAccuracey(Restaurant r){

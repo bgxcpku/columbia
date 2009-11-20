@@ -61,51 +61,22 @@ public class DirichletDistrib {
         return new DiscreteDistrib(rawSample) ;
     }
 
-    /*
+    
     //Method to return likelihood evaluated at SS
-    public double getLikelihood(SufficientStat ss){
-        return Math.exp(getLikelihood(ss)) ;
+    public double getLikelihood(DiscreteDistrib x){
+        return Math.exp(getLikelihood(x)) ;
     }
 
     //Method to return log-likelihood evaluated at SS
-    public double getLogLikelihood(SufficientStat ss) {
+    public double getLogLikelihood(DiscreteDistrib x) {
         double ll = 0 ;
         double totalWeight = 0 ;
         for(int j = 0; j<parameter.length; ++j){
-            ll += (parameter[j] - 1)*(Double)ss.value.get(j) ;
-            ll -= ss.n.doubleValue()*GammaDistrib.lnGammaFunction(parameter[j]) ;
+            ll += (parameter[j] - 1)*x.parameter[j] ;
+            ll -= GammaDistrib.lnGammaFunction(parameter[j]) ;
             totalWeight += parameter[j] ;
         }
-        ll += ss.n.doubleValue()*GammaDistrib.lnGammaFunction(totalWeight) ;
+        ll += GammaDistrib.lnGammaFunction(totalWeight) ;
         return ll ;
     }
-
-    //Method to return number proportional to likelihood evaluatd at SS
-    public double getPLikelihood(SufficientStat ss){
-        return Math.exp(getCLogLikelihood(ss)) ;
-    }
-
-    //Method to return number equal to log-likelihood plus a constant
-    //evaluatd at SS
-    public double getCLogLikelihood(SufficientStat ss){
-        double ll = 0 ;
-        for(int j = 0; j<parameter.length; ++j){
-            ll += (parameter[j] - 1)*(Double)ss.value.get(j) ;
-        }
-        return ll ;
-    }
-
-    //Method to return parameter of distribution
-    public ArrayList<Double> getParameter(){
-        ArrayList<Double> returnVal = new ArrayList<Double>(parameter.length) ;
-        for(int j = 0; j<parameter.length; ++j){
-            returnVal.add(parameter[j]) ;
-        }
-        return returnVal ;
-    }
-
-    public int getNumParameters(){
-        return parameter.length ;
-    }
-     */
 }
