@@ -16,13 +16,15 @@ public class HDPLDA {
 
     public int vocabSize;
     public double topLevelConcentration;
+    public ArrayList<LowLevelRestaurant> docs ;
+    public TopLevelRestaurant topLevelRestaurant ;
 
     public HDPLDA(int vocabSize, SetableDouble topLevelConcentration) {
-
+        this.vocabSize = vocabSize ;
+        this.topLevelConcentration = topLevelConcentration.getValue() ;
     }
 
     public void addDocument(BagOfWordsObservation document, int documentId, SetableDouble documentConcentration) {
-
     }
 
     public void removeDocument(int documentId) {}
