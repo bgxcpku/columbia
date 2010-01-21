@@ -11,15 +11,15 @@ import java.util.HashMap;
  *
  * @author nicholasbartlett
  */
-
 public class Restaurant extends HashMap<Integer, Restaurant> {
 
     public double logDiscount;
     public int[][] state;
     public Restaurant parent;
     public int[] parentPath;
-    public int mostRecentTimeUsed = 0 ;
+    public int mostRecentTimeUsed = 0;
     public static int numberRest = 0;
+    public int[][] deletionState = null;
 
     public Restaurant(Restaurant parent, int[] parentPath, double logDiscount, int depth) {
         super(2); //FIX this should be more smart, initialization should be based on depth
@@ -30,10 +30,10 @@ public class Restaurant extends HashMap<Integer, Restaurant> {
     }
 
     //method to update the most recent time used
-    public void updateMostRecentTimeUsed(int j){
-        mostRecentTimeUsed = j ;
+    public void updateMostRecentTimeUsed(int j) {
+        mostRecentTimeUsed = j;
     }
-    
+
     //method to return the number of tables in the restaurant
     public int getNumberOfTables() {
         int numberOfTables = 0;
@@ -236,12 +236,12 @@ public class Restaurant extends HashMap<Integer, Restaurant> {
     }
 
     public boolean unseatTypeInRest(int type) {
-        boolean unSeatInParent = true;
         int typeIndex = -1;
 
-        for (int j = 0; j < state.length; j++) {
-            if (state[j][0] == type) {
-                typeIndex = j;
+        //find typeIndex for the type in the state of the restaurant
+        for (int tIndex = 0; tIndex < state.length; tIndex++) {
+            if (state[tIndex][0] == type) {
+                typeIndex = tIndex;
                 continue;
             }
         }
@@ -251,29 +251,48 @@ public class Restaurant extends HashMap<Integer, Restaurant> {
                     "this restaurant");
         }
 
-        double totalWeight = 0.0;
-        for (int j = 1; j < state[typeIndex].length; j++) {
-            totalWeight += state[typeIndex][j];
+        //if only one table then there is no need to do anything stochastic
+        if (state[typeIndex].length == 2) {
+            if (state[typeIndex][1] > 1) {
+                state[typeIndex][1]--;
+                return false;
+            } else {
+                int[][] newState = new int[state.length - 1][];
+                System.arraycopy(state, 0, newState, 0, typeIndex);
+                System.arraycopy(state, typeIndex + 1, newState, typeIndex, state.length - typeIndex - 1);
+                state = newState;
+                return true;
+            }
         }
 
+        //else will need to do something stochastic, so must have total number
+        //of people of this type in the restaurant get total number of
+        //individuals of given type at restaurant
+        double totalWeight = 0.0;
+        for (int table = 1; table < state[typeIndex].length; table++) {
+            totalWeight += state[typeIndex][table];
+        }
+
+        //actually go through and delete a person at random
         double cumSum = 0.0;
         double rawRandomSample = Math.random();
-        for (int j = 1; j < state[typeIndex].length; j++) {
-            cumSum += state[typeIndex][j] / totalWeight;
+        for (int table = 1; table < state[typeIndex].length; table++) {
+            cumSum += state[typeIndex][table] / totalWeight;
             if (cumSum > rawRandomSample) {
-                if (state[typeIndex][j] == 1) {
+                if (state[typeIndex][table] == 1) {
                     int[] newTypeState = new int[state[typeIndex].length - 1];
-                    System.arraycopy(state[typeIndex], 0, newTypeState, 0, j);
-                    System.arraycopy(state[typeIndex], j + 1, newTypeState, j, state[typeIndex].length - j - 1);
-                    continue;
+                    System.arraycopy(state[typeIndex], 0, newTypeState, 0, table);
+                    System.arraycopy(state[typeIndex], table + 1, newTypeState, table, state[typeIndex].length - table - 1);
+                    state[typeIndex] = newTypeState;
+                    return true;
                 } else {
-                    state[typeIndex][j]--;
-                    unSeatInParent = false;
-                    continue;
+                    state[typeIndex][table]--;
+                    return false;
                 }
             }
         }
-        return unSeatInParent;
+        throw new RuntimeException("should not get to this point in the code " +
+                "since the person should already be deleted at this point");
     }
 
     public void unseatType(int type) {
@@ -409,49 +428,123 @@ public class Restaurant extends HashMap<Integer, Restaurant> {
         numberRest--;
     }
 
-    public void deleteTable(int[] seq) {
-        //if only one table then we will delete this table no matter what
-        if (state.length == 1 && state[0].length == 2) {
-            this.delete(seq);
-            return;
-        }
-
-        int peopleAtRest = this.getNumberOfCustomers();
-        if(peopleAtRest ==0){
-            throw new RuntimeException("Cannot delete table from this rest" +
-                    " since there are no people in the restaurant") ;
-        }
-        double rawRandomSample = Math.random();
-        double cumSum = 0.0;
-        int deleteIndex = 0;
-        int deleteTable = 0;
-        topFor:
+    //method to not only remove the restaurant from the tree, but also any
+    //evidence that the restaurant ever existed.  That is, for all the tables
+    //in this leaf restaurant we will delete a person in the parent rest.
+    public void deleteEntirely(int[] seq) {
         for (int typeIndex = 0; typeIndex < state.length; typeIndex++) {
             for (int table = 1; table < state[typeIndex].length; table++) {
-                cumSum += table / peopleAtRest;
-                if (cumSum > rawRandomSample) {
-                    deleteIndex = typeIndex;
-                    deleteTable = table;
-                    break topFor;
+                parent.unseatType(state[typeIndex][0]);
+            }
+        }
+
+        this.delete(seq);
+    }
+
+    //method to remove restaurant and update the deletion state of the parent
+    //restaurant
+    public void deleteWithDeletionStateUpdate(int[] seq) {
+        HashMap<Integer, Integer> deletionUpdate = new HashMap(20);
+
+        //populate HashMap with current state of deletion state
+        Integer key;
+        Integer val;
+        if (deletionState != null) {
+            for (int typeIndex = 0; typeIndex < deletionState.length; typeIndex++) {
+                key = new Integer(deletionState[typeIndex][0]);
+                val = new Integer(deletionState[typeIndex][1]);
+                deletionUpdate.put(key, val);
+            }
+        }
+
+        //add in elements contributed to parent deletion state by this restaurant
+        int valValue;
+        for (int typeIndex = 0; typeIndex < state.length; typeIndex++) {
+            key = new Integer(state[typeIndex][0]);
+            valValue = 0;
+            for (int table = 1; table < state[typeIndex].length; table++) {
+                valValue += (state[typeIndex][table] - 1);
+            }
+            if ((val = deletionUpdate.get(key)) != null) {
+                val = new Integer(valValue + val.intValue());
+                deletionUpdate.put(key, val);
+            } else {
+                val = new Integer(valValue);
+                deletionUpdate.put(key, val);
+            }
+        }
+
+        //now go up and add in current state of parent deletion state if it exists
+        if (parent.deletionState != null) {
+            for (int typeIndex = 0; typeIndex < parent.deletionState.length; typeIndex++) {
+                key = new Integer(parent.deletionState[typeIndex][0]);
+                if ((val = deletionUpdate.get(key)) != null) {
+                    val = new Integer(parent.deletionState[typeIndex][1] + val.intValue());
+                    deletionUpdate.put(key, val);
+                } else {
+                    val = new Integer(parent.deletionState[typeIndex][1]);
+                    deletionUpdate.put(key, val);
                 }
             }
         }
 
-        //if table is only table of type, then may remove the entire row from
-        //the state
-        if (state[deleteIndex].length == 2) {
-            int[][] newState = new int[state.length - 1][];
-            System.arraycopy(state, 0, newState, 0, deleteIndex);
-            System.arraycopy(state, 0, newState, deleteIndex, state.length - deleteIndex - 1);
-            state = newState ;
-            return ;
+        //create parent.deletionState by exporting hashMap to int[][]
+        parent.deletionState = new int[deletionUpdate.size()][2];
+        int index = 0;
+        for (Integer type : deletionUpdate.keySet()) {
+            parent.deletionState[index][0] = type.intValue();
+            parent.deletionState[index++][1] = deletionUpdate.get(type).intValue();
         }
 
-        //otherwise the table is not the only table in the rest of the type and
-        //the rest will not need to be deleted
-        int[] newTypeState = new int[state[deleteIndex].length-1] ;
-        System.arraycopy(state[deleteIndex], 0, newTypeState, 0, deleteTable);
-        System.arraycopy(state[deleteIndex], 0, newTypeState, deleteTable, state[deleteIndex].length - deleteTable-1);
+        //actually delete restaurant
+        this.delete(seq);
+    }
+
+    //method to return logProbOfSeq difference that would result in deleting this
+    //restaurant.  Method assumes this is a leaf node
+    public double getLogProbDiffIfDelete(double[] logProbDistInParent) {
+        if (this.size() != 0) {
+            throw new RuntimeException("Cannot calculate the difference in log" +
+                    " probability of this string if this is deleted because the" +
+                    " node must be a leaf node");
+        }
+
+        double startLogProb = 0.0;
+        double endLogProb = 0.0;
+
+        int tablesInRest = 0;
+        int custInRest = 0;
+        for (int typeIndex = 0; typeIndex < state.length; typeIndex++) {
+            tablesInRest += state[typeIndex].length - 1;
+            for (int table = 1; table < state[typeIndex].length; table++) {
+                custInRest += state[typeIndex][table];
+            }
+        }
+
+        double[] logPredDist = new double[logProbDistInParent.length];
+
+        int custOfType;
+        int tablesOfType;
+        for (int typeIndex = 0; typeIndex < state.length; typeIndex++) {
+            custOfType = 0;
+            tablesOfType = state[typeIndex].length - 1;
+            for (int table = 1; table < state[typeIndex].length; table++) {
+                custOfType += state[typeIndex][table];
+            }
+            logPredDist[state[typeIndex][0]] = Math.log((custOfType - Math.exp(Math.log(tablesOfType) + logDiscount)) / custInRest + Math.exp(Math.log(tablesInRest) + logDiscount + logProbDistInParent[state[typeIndex][0]]) / custInRest);
+
+            startLogProb += custOfType * logPredDist[state[typeIndex][0]];
+            endLogProb += custOfType * logProbDistInParent[state[typeIndex][0]];
+        }
+
+        if (deletionState != null) {
+            for (int typeIndex = 0; typeIndex < deletionState.length; typeIndex++) {
+                startLogProb += deletionState[typeIndex][1] * logPredDist[state[typeIndex][0]];
+                endLogProb += deletionState[typeIndex][1] * logProbDistInParent[state[typeIndex][0]];
+            }
+        }
+
+        return (startLogProb - endLogProb);
     }
 
     public void printState() {

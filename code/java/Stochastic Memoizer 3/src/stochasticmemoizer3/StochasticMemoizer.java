@@ -20,15 +20,18 @@ public class StochasticMemoizer {
     public double discountInfty = 0.95;
     public int[] sequence;
     public double logLoss = 0.0;
+    public double[] discountGradient = new double[12];
 
     public StochasticMemoizer(int alphabetSize) {
         this.alphabetSize = alphabetSize;
         contextFreeRestaurant = new Restaurant(null, null, Math.log(discount[0]), 0);
-        Restaurant.numberRest = 0 ;
+        Restaurant.numberRest = 0;
     }
 
     public void seatSequnce(int[] seq) {
-        if(sequence != null) throw new RuntimeException("sequence must be null") ;
+        if (sequence != null) {
+            throw new RuntimeException("sequence must be null");
+        }
         sequence = seq;
         int counter = 0;
         int index = 0;
@@ -43,7 +46,9 @@ public class StochasticMemoizer {
     }
 
     public void seatSequnceWithRandomDeletionOfRestaurants(int[] seq, int maxNumberRest) {
-        if(sequence != null) throw new RuntimeException("sequence must be null") ;
+        if (sequence != null) {
+            throw new RuntimeException("sequence must be null");
+        }
         sequence = seq;
         int counter = 0;
         int index = 0;
@@ -53,7 +58,7 @@ public class StochasticMemoizer {
                 counter = 1;
             }
 
-            if(Restaurant.numberRest > maxNumberRest + 100){
+            if (Restaurant.numberRest > maxNumberRest + 100) {
                 this.deleteRandomLeafNodes(Restaurant.numberRest - maxNumberRest + 100);
             }
 
@@ -62,8 +67,10 @@ public class StochasticMemoizer {
         }
     }
 
-    public void seatSequenceWithDeletionOfUnusedRestaurants(int[] seq, int maxNumberRest){
-        if(sequence != null) throw new RuntimeException("sequence must be null") ;
+    public void seatSequnceWithRandomEntireDeletionOfRestaurants(int[] seq, int maxNumberRest) {
+        if (sequence != null) {
+            throw new RuntimeException("sequence must be null");
+        }
         sequence = seq;
         int counter = 0;
         int index = 0;
@@ -73,10 +80,54 @@ public class StochasticMemoizer {
                 counter = 1;
             }
 
-            if(Restaurant.numberRest > maxNumberRest + 100){
-                this.fillLeafNodeList(maxNumberRest);
+            if (Restaurant.numberRest > maxNumberRest + 100) {
+                this.deleteRandomLeafNodesEntirely(Restaurant.numberRest - maxNumberRest + 100);
+            }
+
+            index++;
+            seatObs(contextFreeRestaurant, j, j - 1, sequence, 1.0 / alphabetSize);
+        }
+    }
+
+    public void seatSequenceWithDeletionOfUnusedRestaurants(int[] seq, int maxNumberRest) {
+        if (sequence != null) {
+            throw new RuntimeException("sequence must be null");
+        }
+        sequence = seq;
+        int counter = 0;
+        int index = 0;
+        for (int j = 0; j < sequence.length; j++) {
+            if (counter++ >= 100000) {
+                System.out.println("index = " + index);
+                counter = 1;
+            }
+
+            if (Restaurant.numberRest > maxNumberRest + 100) {
+                this.fillLeastUsedLeafNodeList(maxNumberRest);
                 this.deleteLeastUsedLeafRestaurants(Restaurant.numberRest - maxNumberRest + 100);
-                leafNodeList.clear();
+                leastUsedLeafNodeList.clear();
+            }
+
+            index++;
+            seatObs(contextFreeRestaurant, j, j - 1, sequence, 1.0 / alphabetSize);
+        }
+    }
+
+    public void seatSequenceWithDeletionOfUnhelpfulRestaurants(int[] seq, int maxNumberRest) {
+        if (sequence != null) {
+            throw new RuntimeException("sequence must be null");
+        }
+        sequence = seq;
+        int counter = 0;
+        int index = 0;
+        for (int j = 0; j < sequence.length; j++) {
+            if (counter++ >= 100000) {
+                System.out.println("index = " + index);
+                counter = 1;
+            }
+
+            if (Restaurant.numberRest > maxNumberRest + 100) {
+                this.deleteLeastUsefullRestaurantsForLogProbOfData(Restaurant.numberRest - maxNumberRest + 100);
             }
 
             index++;
@@ -85,25 +136,29 @@ public class StochasticMemoizer {
     }
 
     private boolean seatObs(Restaurant rest, int obsIndex, int contextIndex, int[] seq, double upperRestProbOfObs) {
-        boolean leafNode = contextIndex == -1 ;
-        //obsIndex - contextIndex
+        boolean leafNode = (contextIndex == -1);
+        double prob;
+        int[] restCounts = rest.getRestCounts(seq[obsIndex]);
+        if (restCounts[3] > 0) {
+            prob = 1.0 * (restCounts[0] - Math.exp(Math.log(restCounts[1]) + rest.logDiscount)) / restCounts[2] + Math.exp(Math.log(restCounts[3]) + rest.logDiscount + Math.log(upperRestProbOfObs) - Math.log(restCounts[2]));
+        } else {
+            prob = upperRestProbOfObs;
+        }
+
         //handle leaf nodes first
         if (leafNode) {
             //update recently used to reflect when the restaurant was created
             rest.updateMostRecentTimeUsed(obsIndex);
 
-            //get counts for leaf restaurant
-            int[] restCounts = rest.getRestCounts(seq[obsIndex]);
-            double prob;
-
-            //calculate predictive probability of this obs
-            if (restCounts[3] > 0) {
-                prob = 1.0 * (restCounts[0] - Math.exp(Math.log(restCounts[1]) + rest.logDiscount)) / restCounts[2] + Math.exp(Math.log(restCounts[3]) + rest.logDiscount + Math.log(upperRestProbOfObs) - Math.log(restCounts[2]));
+            int[] rootRestCounts = contextFreeRestaurant.getRestCounts(seq[obsIndex]);
+            double probRoot;
+            if (rootRestCounts[3] > 0) {
+                probRoot = 1.0 * (rootRestCounts[0] - Math.exp(Math.log(rootRestCounts[1]) + contextFreeRestaurant.logDiscount)) / rootRestCounts[2] + Math.exp(Math.log(rootRestCounts[3]) + contextFreeRestaurant.logDiscount + Math.log(1.0 / alphabetSize) - Math.log(rootRestCounts[2]));
             } else {
-                prob = upperRestProbOfObs;
+                probRoot = 1.0 / alphabetSize;
             }
 
-            logLoss += Math.log(prob) / Math.log(2);
+            logLoss += Math.log((99.0 * prob + probRoot) / 100) / Math.log(2);
             return rest.sitAtRest(seq[obsIndex], upperRestProbOfObs);
         }
 
@@ -133,7 +188,7 @@ public class StochasticMemoizer {
                 childRest = new Restaurant(rest, newParentPath, newLogDiscount, obsIndex);
                 rest.putChild(childRest, seq);
 
-                rest.updateMostRecentTimeUsed(obsIndex) ;
+                rest.updateMostRecentTimeUsed(obsIndex);
                 break;
             }
 
@@ -143,7 +198,7 @@ public class StochasticMemoizer {
             if (diffIndex == (childRest.parentPath[1] - childRest.parentPath[0])) {
                 contextIndex -= diffIndex;
 
-                rest.updateMostRecentTimeUsed(obsIndex) ;
+                rest.updateMostRecentTimeUsed(obsIndex);
                 break;
             }
 
@@ -171,21 +226,12 @@ public class StochasticMemoizer {
             newParentPath[0] = contextIndex + 1;
             rest.updateMostRecentTimeUsed(obsIndex);
             childRest.updateMostRecentTimeUsed(obsIndex);
-            
+
             childRest = childRest.reconfigureRestaurantReturnIntermediateRestaurant(newParentPath, newLogDiscount, obsIndex - contextIndex - 1, seq);
             break;
         }
 
-
-        int[] restCounts = rest.getRestCounts(seq[obsIndex]);
-        double newUpperRestProbOfOfObs;
-        if (restCounts[3] > 0) {
-            newUpperRestProbOfOfObs = 1.0 * (restCounts[0] - Math.exp(rest.logDiscount + Math.log(restCounts[1]))) / restCounts[2] + Math.exp(Math.log(restCounts[3]) + rest.logDiscount + Math.log(upperRestProbOfObs) - Math.log(restCounts[2]));
-        } else {
-            newUpperRestProbOfOfObs = upperRestProbOfObs;
-        }
-
-        if (seatObs(childRest, obsIndex, contextIndex, seq, newUpperRestProbOfOfObs)) {
+        if (this.seatObs(childRest, obsIndex, contextIndex, seq, prob)) {
             return rest.sitAtRest(seq[obsIndex], upperRestProbOfObs);
         } else {
             return false;
@@ -249,7 +295,7 @@ public class StochasticMemoizer {
     }
 
     public void propogateLogDiscountRestAndChildren(Restaurant rest, double logDiscount, int depth) {
-        rest.logDiscount = logDiscount ;
+        rest.logDiscount = logDiscount;
 
         int distanceDown;
         int childDepth;
@@ -270,7 +316,7 @@ public class StochasticMemoizer {
         }
     }
 
-    public void propogateLogDiscount(){
+    public void propogateLogDiscount() {
         this.propogateLogDiscountRestAndChildren(contextFreeRestaurant, Math.log(discount[0]), 0);
     }
 
@@ -307,7 +353,16 @@ public class StochasticMemoizer {
                 custOfType += rest.state[typeIndex][table];
             }
             logParentDistrib[rest.state[typeIndex][0]] -= logDiscount.doubleValue() + Math.log(tablesInRest) - Math.log(custInRest);
-            logParentDistrib[rest.state[typeIndex][0]] = Math.log((custOfType - Math.exp(Math.log(tablesOfType) + logDiscount)) / custInRest + Math.exp(Math.log(tablesInRest) + logDiscount + logParentDistrib[rest.state[typeIndex][0]]) / custInRest);
+            logParentDistrib[rest.state[typeIndex][0]] = Math.log((custOfType - Math.exp(Math.log(tablesOfType) + logDiscount.doubleValue())) / custInRest + Math.exp(Math.log(tablesInRest) + logDiscount + logParentDistrib[rest.state[typeIndex][0]]) / custInRest);
+        }
+
+        //stupid check
+        double prob = 0.0;
+        for(int type = 0; type<logParentDistrib.length; type++){
+            prob += Math.exp(logParentDistrib[type]);
+        }
+        if(prob != 1.0){
+            System.out.println("sum of prob = " + prob);
         }
 
         int distanceDown;
@@ -341,26 +396,26 @@ public class StochasticMemoizer {
 
     public void moveDiscount(int index, double stepSize) {
         double currentLogLik = this.getLogLikelihoodTree();
-        double upLogLik ;
-        double downLogLik ;
-        
+        double upLogLik;
+        double downLogLik;
+
         if (index <= 10) {
             if (discount[index] <= stepSize) {
                 stepSize = discount[index] / 2;
             } else if ((1.0 - discount[index]) <= stepSize) {
                 stepSize = (1.0 - discount[index]) / 2;
             }
-            discount[index] += stepSize ;
+            discount[index] += stepSize;
             upLogLik = this.getLogLikelihoodTree();
-            discount[index] -= 2*stepSize;
+            discount[index] -= 2 * stepSize;
             downLogLik = this.getLogLikelihoodTree();
-            if(downLogLik <= currentLogLik) {
-                discount[index] += stepSize ;
-                if(upLogLik > currentLogLik){
-                    discount[index] += stepSize ;
+            if (downLogLik <= currentLogLik) {
+                discount[index] += stepSize;
+                if (upLogLik > currentLogLik) {
+                    discount[index] += stepSize;
                 }
-            } else if(upLogLik > downLogLik){
-                discount[index] += 2*stepSize ;
+            } else if (upLogLik > downLogLik) {
+                discount[index] += 2 * stepSize;
             }
         } else {
             if (discountInfty <= stepSize) {
@@ -368,108 +423,200 @@ public class StochasticMemoizer {
             } else if ((1.0 - discountInfty) <= stepSize) {
                 stepSize = (1.0 - discountInfty) / 2;
             }
-            discountInfty += stepSize ;
+            discountInfty += stepSize;
             upLogLik = this.getLogLikelihoodTree();
-            discountInfty -= 2*stepSize;
+            discountInfty -= 2 * stepSize;
             downLogLik = this.getLogLikelihoodTree();
-            if(downLogLik <= currentLogLik) {
-                discountInfty += stepSize ;
-                if(upLogLik > currentLogLik){
-                    discountInfty += stepSize ;
+            if (downLogLik <= currentLogLik) {
+                discountInfty += stepSize;
+                if (upLogLik > currentLogLik) {
+                    discountInfty += stepSize;
                 }
-            } else if(upLogLik > downLogLik){
-                discountInfty += 2*stepSize ;
+            } else if (upLogLik > downLogLik) {
+                discountInfty += 2 * stepSize;
             }
         }
     }
 
-    public void moveDiscounts(double stepSize){
-        for(int d = 0 ; d <12 ; d++){
+    public void moveDiscounts(double stepSize) {
+        for (int d = 0; d < 12; d++) {
             this.moveDiscount(d, stepSize);
-            this.propogateLogDiscount() ;
+            this.propogateLogDiscount();
         }
     }
 
-    public int getNumberLeafNodesRestAndChildren(Restaurant rest){
-        int leafNodes = 0 ;
-        if(rest.size() == 0){
-            leafNodes++ ;
-        }else for(Restaurant child : rest.values()){
-            leafNodes += this.getNumberLeafNodesRestAndChildren(child);
-        }
-        return leafNodes ;
-    }
-
-    public int getNumberLeafNodes(){
-        return this.getNumberLeafNodesRestAndChildren(contextFreeRestaurant) ;
-    }
-
-    public void addIfLeafNode(Restaurant rest){
-        if(rest.size() == 0){
-            leafNodeList.add(new Pair(rest, new Integer(rest.mostRecentTimeUsed))) ;
-        } else for(Restaurant child : rest.values()){
-            this.addIfLeafNode(child);
-        }
-    }
-
-    public ArrayList<Pair<Restaurant,Integer>> leafNodeList = null ;
-    public void fillLeafNodeList(int initialCapacity){
-        leafNodeList = new ArrayList<Pair<Restaurant,Integer>>(initialCapacity) ;
-        this.addIfLeafNode(contextFreeRestaurant);
-    }
-
-    public void deleteLeastUsedLeafRestaurants(int numberToDelete){
-        //this method assumes the leafNodeList is filled
-        if(leafNodeList.size() == 0){
-            throw new RuntimeException("this method assumes the leafNodeList has" +
-                    " already been filled") ;
-        }
-
-        Pair[] arrayLeafNodes = leafNodeList.toArray(new Pair[0]) ;
-        Arrays.sort(arrayLeafNodes,new PairComparator()) ;
-        
-        int index = 0;
-        Restaurant restToDelete ;
-        while(index<numberToDelete){
-            restToDelete = (Restaurant) arrayLeafNodes[index++].first();
-            restToDelete.delete(sequence) ;
-        }
-    }
-
-    public ArrayList<Restaurant> toDeleteList = null ;
-    public double deleteRandomLeafNodes(Restaurant rest, double cumSum, Stack<Double> rawRandomSample, int numberLeafNodes){
-        if(rest.size() == 0){
-            cumSum += 1.0/numberLeafNodes ;
-            if(cumSum > rawRandomSample.peek().doubleValue()){
-                toDeleteList.add(rest) ;
-                rawRandomSample.pop() ;
+    public int getNumberLeafNodesRestAndChildren(Restaurant rest) {
+        int leafNodes = 0;
+        if (rest.size() == 0) {
+            leafNodes++;
+        } else {
+            for (Restaurant child : rest.values()) {
+                leafNodes += this.getNumberLeafNodesRestAndChildren(child);
             }
-        }else for(Restaurant child : rest.values()){
-            cumSum = this.deleteRandomLeafNodes(child, cumSum, rawRandomSample, numberLeafNodes);
         }
-        return cumSum ;
+        return leafNodes;
     }
-    
-    public void deleteRandomLeafNodes(int numberToDelete){
-        toDeleteList = new ArrayList<Restaurant>(numberToDelete) ;
-        int numberLeafNodes = this.getNumberLeafNodes() ;
 
-        double initialRawRandomSample = Math.random()/numberToDelete ;
-        Stack<Double> rawRandomSample = new Stack<Double>() ;
+    public int getNumberLeafNodes() {
+        return this.getNumberLeafNodesRestAndChildren(contextFreeRestaurant);
+    }
+
+    public void fillLeastUsedLeafNodeList(Restaurant rest) {
+        if (rest.size() == 0) {
+            leastUsedLeafNodeList.add(new Pair(rest, new Integer(rest.mostRecentTimeUsed)));
+        } else {
+            for (Restaurant child : rest.values()) {
+                this.fillLeastUsedLeafNodeList(child);
+            }
+        }
+    }
+
+    public ArrayList<Pair<Restaurant, Integer>> leastUsedLeafNodeList = null;
+    public void fillLeastUsedLeafNodeList(int initialCapacity) {
+        leastUsedLeafNodeList = new ArrayList<Pair<Restaurant, Integer>>(initialCapacity);
+        this.fillLeastUsedLeafNodeList(contextFreeRestaurant);
+    }
+
+    public void deleteLeastUsedLeafRestaurants(int numberToDelete) {
+        //this method assumes the leafNodeList is filled
+        if (leastUsedLeafNodeList.size() == 0) {
+            throw new RuntimeException("this method assumes the leafNodeList has" +
+                    " already been filled");
+        }
+
+        Pair[] arrayLeafNodes = leastUsedLeafNodeList.toArray(new Pair[0]);
+        Arrays.sort(arrayLeafNodes, new PairComparator());
+
+        int index = 0;
+        Restaurant restToDelete;
+        while (index < numberToDelete) {
+            restToDelete = (Restaurant) arrayLeafNodes[index++].first();
+            restToDelete.delete(sequence);
+        }
+    }
+
+    public ArrayList<Restaurant> toDeleteList = null;
+    public double deleteRandomLeafNodes(Restaurant rest, double cumSum, Stack<Double> rawRandomSample, int numberLeafNodes) {
+        if (rest.size() == 0) {
+            cumSum += 1.0 / numberLeafNodes;
+            if (cumSum > rawRandomSample.peek().doubleValue()) {
+                toDeleteList.add(rest);
+                rawRandomSample.pop();
+            }
+        } else {
+            for (Restaurant child : rest.values()) {
+                cumSum = this.deleteRandomLeafNodes(child, cumSum, rawRandomSample, numberLeafNodes);
+            }
+        }
+        return cumSum;
+    }
+
+    public void deleteRandomLeafNodes(int numberToDelete) {
+        toDeleteList = new ArrayList<Restaurant>(numberToDelete);
+        int numberLeafNodes = this.getNumberLeafNodes();
+
+        double initialRawRandomSample = Math.random() / numberToDelete;
+        Stack<Double> rawRandomSample = new Stack<Double>();
         //initialize rawRandomSample stack
-        for(int j = numberToDelete; j>=0; j--){
-            rawRandomSample.add(new Double(initialRawRandomSample + j*(1.0/numberToDelete))) ;
+        for (int j = numberToDelete; j >= 0; j--) {
+            rawRandomSample.add(new Double(initialRawRandomSample + j * (1.0 / numberToDelete)));
         }
 
         //start recursive search of leaf nodes at contextFreeRestaurant
         this.deleteRandomLeafNodes(contextFreeRestaurant, 0.0, rawRandomSample, numberLeafNodes);
 
         //delete rest to be deleted
-        for(Restaurant rest : toDeleteList){
+        for (Restaurant rest : toDeleteList) {
             rest.delete(sequence);
         }
         //clear deletion list
-        toDeleteList = null ;
+        toDeleteList = null;
+    }
+
+    public void deleteRandomLeafNodesEntirely(int numberToDelete) {
+        toDeleteList = new ArrayList<Restaurant>(numberToDelete);
+        int numberLeafNodes = this.getNumberLeafNodes();
+
+        double initialRawRandomSample = Math.random() / numberToDelete;
+        Stack<Double> rawRandomSample = new Stack<Double>();
+        //initialize rawRandomSample stack
+        for (int j = numberToDelete; j >= 0; j--) {
+            rawRandomSample.add(new Double(initialRawRandomSample + j * (1.0 / numberToDelete)));
+        }
+
+        //start recursive search of leaf nodes at contextFreeRestaurant
+        this.deleteRandomLeafNodes(contextFreeRestaurant, 0.0, rawRandomSample, numberLeafNodes);
+
+        //delete rest to be deleted
+        for (Restaurant rest : toDeleteList) {
+            rest.deleteEntirely(sequence);
+        }
+        //clear deletion list
+        toDeleteList = null;
+    }
+
+    public ArrayList<Pair<Restaurant,Double>> logProbLeafNodeList = null;
+    public void fillLogProbLeafNodeList(Restaurant rest, double[] logProbDistInParent){
+        //check if leaf node first
+        if(rest.size() == 0){
+            Pair<Restaurant, Double> pairToAdd = new Pair(rest, new Double(rest.getLogProbDiffIfDelete(logProbDistInParent)));
+            logProbLeafNodeList.add(pairToAdd);
+            return;
+        }
+        
+        int tablesInRest = 0;
+        int custInRest = 0;
+        for (int typeIndex = 0; typeIndex < rest.state.length; typeIndex++) {
+            tablesInRest += rest.state[typeIndex].length - 1;
+            for (int table = 1; table < rest.state[typeIndex].length; table++) {
+                custInRest += rest.state[typeIndex][table];
+            }
+        }
+
+        double[] logPredDist = new double[logProbDistInParent.length];
+        for(int type = 0; type < logPredDist.length; type++){
+            logPredDist[type] = logProbDistInParent[type] + rest.logDiscount + Math.log(tablesInRest) - Math.log(custInRest);
+        }
+
+        int custOfType;
+        int tablesOfType;
+        for (int typeIndex = 0; typeIndex < rest.state.length; typeIndex++) {
+            custOfType = 0;
+            tablesOfType = rest.state[typeIndex].length - 1;
+            for (int table = 1; table < rest.state[typeIndex].length; table++) {
+                custOfType += rest.state[typeIndex][table];
+            }
+            logPredDist[rest.state[typeIndex][0]] = Math.log((custOfType - Math.exp(Math.log(tablesOfType) + rest.logDiscount)) / custInRest + Math.exp(Math.log(tablesInRest) + rest.logDiscount + logProbDistInParent[rest.state[typeIndex][0]]) / custInRest);
+        }
+
+        for(Restaurant child : rest.values()){
+            this.fillLogProbLeafNodeList(child, logPredDist);
+        }
+    }
+    
+    public void fillLogProbLeafNodeList(){
+        logProbLeafNodeList = new ArrayList<Pair<Restaurant,Double>>(100000);
+        double[] logProbDistInParent = new double[alphabetSize];
+        for(int type = 0; type<alphabetSize; type++){
+            logProbDistInParent[type] = Math.log(1.0/alphabetSize);
+        }
+        this.fillLogProbLeafNodeList(contextFreeRestaurant, logProbDistInParent);
+    }
+
+    public void deleteLeastUsefullRestaurantsForLogProbOfData(int numberToDelete){
+        this.fillLogProbLeafNodeList();
+
+        Pair[] arrayLeafNodes = logProbLeafNodeList.toArray(new Pair[0]);
+        Arrays.sort(arrayLeafNodes, new PairComparatorDouble());
+
+        int index = 0;
+        Restaurant restToDelete;
+        while (index < numberToDelete) {
+            restToDelete = (Restaurant) arrayLeafNodes[index++].first();
+            restToDelete.deleteWithDeletionStateUpdate(sequence);
+        }
+        
+        logProbLeafNodeList = null;
     }
 
     public void printRestAndChildren(Restaurant rest, int indexDownPath, int stringLengthOfWord) {

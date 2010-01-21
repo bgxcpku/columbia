@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package stochasticmemoizer3;
+package finitedepthhpyp;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -18,24 +18,7 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws FileNotFoundException, IOException {
-        /*FileTranslator ft = new FileTranslator() ;
-        Pair<int[],Integer> translation = ft.translateFile("/Users/nicholasbartlett/Documents/NP Bayes/data/pride_and_prejudice/", "pride_and_prejudice.txt") ;
-
-        for(int i = 0; i<35;i++){
-            System.out.print("," + translation.first()[i]) ;
-        }
-        System.out.println() ;
-        System.out.println(translation.first().length) ;
-        System.out.println(translation.second()) ;
-
-        int seatNumber = 717581 ; //717581 ;
-        int[] toBeSeated = new int[seatNumber] ;
-        for(int j = 0 ; j<seatNumber; j++){
-            toBeSeated[j] = translation.first()[j] ;
-        }
-        */
-
-        int numberOfFilesToSeat = 1 ; //14
+        int numberOfFilesToSeat = 13 ; //14
         FileTranslatorByte ftb = new FileTranslatorByte() ;
         String[] filesToRead = {"bib", "book1", "book2", "geo", "news","obj1",
             "obj2","paper1","paper2",/*"pic",*/"progc","progl", "progp","trans"} ;
@@ -46,23 +29,19 @@ public class Main {
             totalBytesTranslated+=translation[j].length;
         }
         System.out.println("Total Bytes Translated = " + totalBytesTranslated) ;
-        
+
         double avgLogLoss = 0.0 ;
-        StochasticMemoizer sm = null ;
+        HPYTree hpy = null ;
         double iterationLogLoss ;
         for(int j = 0; j<numberOfFilesToSeat; j++){
             System.out.println("File " + filesToRead[j] + " is of size " + translation[j].length) ;
-            sm = new StochasticMemoizer(256) ;
-            //sm.seatSequnce(translation[j]);
-            //sm.seatSequnceWithRandomDeletionOfRestaurants(translation[j],10000) ;
-            //sm.seatSequnceWithRandomEntireDeletionOfRestaurants(translation[j], 120000);
-            //sm.seatSequenceWithDeletionOfUnusedRestaurants(translation[j],100000) ;
-            //sm.seatSequenceWithDeletionOfUnhelpfulRestaurants(translation[j],100000) ;
-            
-            iterationLogLoss = sm.logLoss/translation[j].length;
+            hpy = new HPYTree(256,15) ;
+            hpy.seatSeq(translation[j]);
+            iterationLogLoss = hpy.logLoss/translation[j].length;
             System.out.println("LogLoss for " + filesToRead[j] +" is = " + iterationLogLoss) ;
-            avgLogLoss += sm.logLoss / totalBytesTranslated;
-            sm = null ;
+            avgLogLoss += hpy.logLoss / totalBytesTranslated;
+            System.out.println("Total Number Of Necessary Restaurants calculated is " + hpy.getNumberNecessaryRest());
+            hpy = null ;
             translation[j] = null ;
         }
 
