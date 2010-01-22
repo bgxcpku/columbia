@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package stochasticmemoizer4;
+package edu.columbia.stat.wood.sequencememoizer;
 
 import java.util.Comparator;
 

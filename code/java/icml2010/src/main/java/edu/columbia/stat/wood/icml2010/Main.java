@@ -2,11 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
-package stochasticmemoizer4;
+package edu.columbia.stat.wood.icml2010;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import edu.columbia.stat.wood.sequencememoizer.*;
 
 /**
  *
@@ -18,11 +18,10 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws FileNotFoundException, IOException {
-        
-        int numberOfFilesToSeat = 5 ; //14
+        int numberOfFilesToSeat = 4 ; //14
         FileTranslatorByte ftb = new FileTranslatorByte() ;
         String[] filesToRead = {/*"bib", "book1", "book2", "geo", "news","obj1",
-            "obj2","paper1","paper2",*/"pic","progc","progl", "progp","trans"} ;
+            "obj2","paper1","paper2","pic",*/ "progc","progl", "progp","trans"} ;
         int[][] translation = ftb.translateFile("/Users/nicholasbartlett/Documents/NP Bayes/data/calgary_corpus/", filesToRead, numberOfFilesToSeat) ;
 
         int totalBytesTranslated = 0;
