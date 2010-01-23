@@ -19,9 +19,9 @@ public class Main {
      * @param0 = seatingstyle, must be one of the enums
      * @param1 = depth, if there is a a max depth, -1
      * @param2 = maxNumberRest, if there is a max number
-     * @param2 = seed , random number generator seed
-     * @param3 = path to data (ex : Documents/NP Bayes/data/calgary_corpus/)
-     * @param4 ... files, should be in folder indicated by path
+     * @param3 = seed , random number generator seed
+     * @param4 = path to data (ex : Documents/NP Bayes/data/calgary_corpus/)
+     * @param5 ... files, should be in folder indicated by path
      */
     public static void main(String[] args) throws FileNotFoundException, IOException {
         SeatingStyle seatingStyle = SeatingStyle.SIMPLE;
@@ -69,10 +69,21 @@ public class Main {
         }
 
         ByteSeater seater = new ByteSeater(seed);
+        long startTime;
+        long endTime;
+        double secondsToComplete;
+        double minutesToComplete;
         for (int file = 0; file < translation.length; file++) {
             System.out.println("Working on file =  " + filesToRead[file] + " which is of size " + translation[file].length);
-            System.out.println(file);
+            startTime = System.nanoTime();
             seater.seatByteSequence(translation[file], seatingStyle, depth, maxNumberRestaurants);
+            endTime = System.nanoTime();
+            secondsToComplete = (endTime - startTime)/ Math.pow(10,9);
+            System.out.println("This file took " + secondsToComplete + " seconds to complete");
+            minutesToComplete = secondsToComplete / 60.0;
+            System.out.println("Which is " + minutesToComplete + " minutes");
+            System.out.println();
+            System.out.println();
         }
     }
 }
