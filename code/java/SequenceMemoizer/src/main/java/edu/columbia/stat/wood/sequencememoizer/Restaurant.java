@@ -135,7 +135,7 @@ public class Restaurant extends HashMap<Integer, Restaurant> {
                 }
 
                 double cumSum = 0.0;
-                double rawRandomSample = Math.random();
+                double rawRandomSample = ByteSeater.utils.RNG.nextDouble();
                 double totalWeight = 1.0 * (numCustAtType - Math.exp(Math.log(numTablesAtType) + logDiscount)) + Math.exp(Math.log(this.getNumberOfTables()) + logDiscount + Math.log(probUpper));
 
                 for (int i = 1; i < state[j].length; i++) {
@@ -211,7 +211,7 @@ public class Restaurant extends HashMap<Integer, Restaurant> {
 
                 topFor:
                 for (int person = 0; person < state[typeIndex][table] - 1; person++) {
-                    double rawRandomSample = Math.random();
+                    double rawRandomSample = ByteSeater.utils.RNG.nextDouble();
                     double cumSum = 0.0;
                     for (SetableInteger fragWeight : fragmentedTable) {
                         cumSum += (fragWeight.getVal() - Math.exp(rest3LogDiscount)) / totalWeight;
@@ -280,7 +280,7 @@ public class Restaurant extends HashMap<Integer, Restaurant> {
 
         //actually go through and delete a person at random
         double cumSum = 0.0;
-        double rawRandomSample = Math.random();
+        double rawRandomSample = ByteSeater.utils.RNG.nextDouble();
         for (int table = 1; table < state[typeIndex].length; table++) {
             cumSum += state[typeIndex][table] / totalWeight;
             if (cumSum > rawRandomSample) {

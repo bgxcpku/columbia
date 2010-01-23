@@ -122,15 +122,4 @@ public class Discounts {
         discounts = newDiscounts;
         clearGradient();
     }
-
-    public void printArray(double[] arrayToPrint){
-        for(int i = 0; i<arrayToPrint.length; i++){
-            if(i == 0){
-                System.out.print("[" + arrayToPrint[i]);
-            } else {
-                System.out.print(", " + arrayToPrint[i]);
-            }
-        }
-        System.out.println("]");
-    }
 }

@@ -15,48 +15,64 @@ import edu.columbia.stat.wood.sequencememoizer.*;
 public class Main {
 
     /**
-     * @param args the command line arguments
+     * @param args the command line arguments     
+     * @param0 = seatingstyle, must be one of the enums
+     * @param1 = depth, if there is a a max depth, -1
+     * @param2 = maxNumberRest, if there is a max number
+     * @param2 = seed , random number generator seed
+     * @param3 = path to data (ex : Documents/NP Bayes/data/calgary_corpus/)
+     * @param4 ... files, should be in folder indicated by path
      */
     public static void main(String[] args) throws FileNotFoundException, IOException {
-        int numberOfFilesToSeat = 4 ; //14
-        FileTranslatorByte ftb = new FileTranslatorByte() ;
-        String[] filesToRead = {/*"bib", "book1", "book2", "geo", "news","obj1",
-            "obj2","paper1","paper2","pic",*/ "progc","progl", "progp","trans"} ;
-        int[][] translation = ftb.translateFile("/Users/nicholasbartlett/Documents/NP Bayes/data/calgary_corpus/", filesToRead, numberOfFilesToSeat) ;
+        SeatingStyle seatingStyle = SeatingStyle.SIMPLE;
+        Integer depth = new Integer(-1);
+        Long seed = new Long(123);
+        Integer maxNumberRestaurants = null;
+        if (args != null) {
+            if (args[0].equals("SIMPLE")) {
+                seatingStyle = SeatingStyle.SIMPLE;
+            } else if (args[0].equals("SIMPLE_BOUNDED_MEMORY")) {
+                seatingStyle = SeatingStyle.SIMPLE_BOUNDED_MEMORY;
+            } else if (args[0].equals("RANDOM_DELETION")) {
+                seatingStyle = SeatingStyle.RANDOM_DELETION;
+            } else if (args[0].equals("DISANTLY_USED_DELETION")) {
+                seatingStyle = SeatingStyle.DISANTLY_USED_DELETION;
+            } else if (args[0].equals("BAYES_FACTOR_DELETION")) {
+                seatingStyle = SeatingStyle.BAYES_FACTOR_DELETION;
+            }
 
-        int totalBytesTranslated = 0;
-        for(int j = 0; j<numberOfFilesToSeat; j++){
-            totalBytesTranslated+=translation[j].length;
-        }
-        System.out.println("Total Bytes Translated = " + totalBytesTranslated) ;
-
-        double avgLogLoss = 0.0 ;
-        StochasticMemoizer sm = null ;
-        double iterationLogLoss ;
-        for(int j = 0; j<numberOfFilesToSeat; j++){
-            System.out.println("File " + filesToRead[j] + " is of size " + translation[j].length) ;
-            sm = new StochasticMemoizer(256, 5) ;
-
-            sm.seatSequnce(translation[j]);
-            //sm.seatSequnceWithRandomDeletionOfRestaurants(translation[j],100000) ;
-            //sm.seatSequnceWithRandomEntireDeletionOfRestaurants(translation[j], 120000);
-            //sm.seatSequenceWithDeletionOfUnusedRestaurants(translation[j],100000) ;
-            //sm.seatSequenceWithDeletionOfUnhelpfulRestaurants(translation[j],10000) ;
-
-            System.out.print("Discounts = ");
-            sm.discounts.printArray(sm.discounts.discounts);
-
-            System.out.println(Restaurant.numberRest);
-
-            iterationLogLoss = sm.logLoss/translation[j].length;
-            System.out.println("LogLoss for " + filesToRead[j] +" is = " + iterationLogLoss) ;
-            avgLogLoss += sm.logLoss / totalBytesTranslated;
-            sm = null ;
-            translation[j] = null ;
+            depth = Integer.valueOf(args[1]);
+            maxNumberRestaurants = Integer.valueOf(args[2]);
+            seed = Long.valueOf(args[3]);
         }
 
-        System.out.println(Restaurant.numberRest);
-        System.out.println("Total bits per byte is = " + avgLogLoss) ;
+        String[] filesToRead = {"bib", "book1", "book2", "geo", "news",
+            "obj1", "obj2", "paper1", "paper2", "pic", "progc", "progl", "progp", "trans"};
+        if (args.length > 5) {
+            filesToRead = new String[args.length - 5];
+            for (int fileIndex = 0; fileIndex < filesToRead.length; fileIndex++) {
+                filesToRead[fileIndex] = args[5 + fileIndex];
+            }
+        }
+
+        System.out.println("args used were: ");
+        for(int j = 0; j<args.length; j++){
+            System.out.println(args[j]);
+        }
+
+        FileTranslatorByte ftb = new FileTranslatorByte();
+        int[][] translation = ftb.translateFile(args[4], filesToRead);
+
+        System.out.println("Compressing the documents ");
+        for (int j = 0; j < translation.length; j++) {
+            System.out.println(filesToRead[j]);
+        }
+
+        ByteSeater seater = new ByteSeater(seed);
+        for (int file = 0; file < translation.length; file++) {
+            System.out.println("Working on file =  " + filesToRead[file] + " which is of size " + translation[file].length);
+            System.out.println(file);
+            seater.seatByteSequence(translation[file], seatingStyle, depth, maxNumberRestaurants);
+        }
     }
-
 }

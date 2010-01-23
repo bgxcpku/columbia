@@ -36,125 +36,7 @@ public class StochasticMemoizer {
         this.discounts = new Discounts(discount);
     }
 
-    public void seatSequnce(int[] seq) {
-        if (sequence != null) {
-            throw new RuntimeException("sequence must be null");
-        }
-        sequence = seq;
-        int counter = 0;
-        int index = 0;
-        for (int j = 0; j < sequence.length; j++) {
-            if (counter++ >= 100000) {
-                System.out.println(index);
-                counter = 1;
-            }
-            index++;
-            seatObs(contextFreeRestaurant, j, j - 1, sequence, 1.0 / alphabetSize);
-            logLoss -= obsLogProb / Math.log(2);
-            discounts.stepGradient(0.0001, Math.exp(obsLogProb));
-            //discounts.clearGradient();
-        }
-    }
-
-    public void seatSequnceWithRandomDeletionOfRestaurants(int[] seq, int maxNumberRest) {
-        if (sequence != null) {
-            throw new RuntimeException("sequence must be null");
-        }
-        sequence = seq;
-        int counter = 0;
-        int index = 0;
-        for (int j = 0; j < sequence.length; j++) {
-            if (counter++ >= 100000) {
-                System.out.println("index = " + index);
-                counter = 1;
-            }
-
-            if (Restaurant.numberRest > maxNumberRest + 100) {
-                this.deleteRandomLeafNodes(Restaurant.numberRest - maxNumberRest + 100);
-            }
-
-            index++;
-            seatObs(contextFreeRestaurant, j, j - 1, sequence, 1.0 / alphabetSize);
-            logLoss -= obsLogProb / Math.log(2);
-            discounts.stepGradient(0.0001, Math.exp(obsLogProb));
-        }
-    }
-
-    public void seatSequnceWithRandomEntireDeletionOfRestaurants(int[] seq, int maxNumberRest) {
-        if (sequence != null) {
-            throw new RuntimeException("sequence must be null");
-        }
-        sequence = seq;
-        int counter = 0;
-        int index = 0;
-        for (int j = 0; j < sequence.length; j++) {
-            if (counter++ >= 100000) {
-                System.out.println("index = " + index);
-                counter = 1;
-            }
-
-            if (Restaurant.numberRest > maxNumberRest + 100) {
-                this.deleteRandomLeafNodesEntirely(Restaurant.numberRest - maxNumberRest + 100);
-            }
-
-            index++;
-            seatObs(contextFreeRestaurant, j, j - 1, sequence, 1.0 / alphabetSize);
-            logLoss -= obsLogProb / Math.log(2);
-            discounts.stepGradient(0.0001, Math.exp(obsLogProb));
-        }
-    }
-
-    public void seatSequenceWithDeletionOfUnusedRestaurants(int[] seq, int maxNumberRest) {
-        if (sequence != null) {
-            throw new RuntimeException("sequence must be null");
-        }
-        sequence = seq;
-        int counter = 0;
-        int index = 0;
-        for (int j = 0; j < sequence.length; j++) {
-            if (counter++ >= 100000) {
-                System.out.println("index = " + index);
-                counter = 1;
-            }
-
-            if (Restaurant.numberRest > maxNumberRest + 100) {
-                this.fillLeastUsedLeafNodeList(maxNumberRest);
-                this.deleteLeastUsedLeafRestaurants(Restaurant.numberRest - maxNumberRest + 100);
-                leastUsedLeafNodeList.clear();
-            }
-
-            index++;
-            seatObs(contextFreeRestaurant, j, j - 1, sequence, 1.0 / alphabetSize);
-            logLoss -= obsLogProb / Math.log(2);
-            discounts.stepGradient(0.0001, Math.exp(obsLogProb));
-        }
-    }
-
-    public void seatSequenceWithDeletionOfUnhelpfulRestaurants(int[] seq, int maxNumberRest) {
-        if (sequence != null) {
-            throw new RuntimeException("sequence must be null");
-        }
-        sequence = seq;
-        int counter = 0;
-        int index = 0;
-        for (int j = 0; j < sequence.length; j++) {
-            if (counter++ >= 10000) {
-                System.out.println("index = " + index);
-                counter = 1;
-            }
-
-            if (Restaurant.numberRest > maxNumberRest + 100) {
-                this.deleteLeastUsefullRestaurantsForLogProbOfData(Restaurant.numberRest - maxNumberRest + 100);
-            }
-
-            index++;
-            seatObs(contextFreeRestaurant, j, j - 1, sequence, 1.0 / alphabetSize);
-            logLoss -= obsLogProb / Math.log(2);
-            discounts.stepGradient(0.0001, Math.exp(obsLogProb));
-        }
-    }
-
-    private boolean seatObs(Restaurant rest, int obsIndex, int contextIndex, int[] seq, double upperRestProbOfObs) {
+    public boolean seatObs(Restaurant rest, int obsIndex, int contextIndex, int[] seq, double upperRestProbOfObs) {
         //initiate some variables to be used later for ease and readability
         int depth = obsIndex - contextIndex - 1;
         boolean leafNode = (contextIndex == -1);
@@ -429,7 +311,7 @@ public class StochasticMemoizer {
         toDeleteList = new ArrayList<Restaurant>(numberToDelete);
         int numberLeafNodes = this.getNumberLeafNodes();
 
-        double initialRawRandomSample = Math.random() / numberToDelete;
+        double initialRawRandomSample = ByteSeater.utils.RNG.nextDouble() / numberToDelete;
         Stack<Double> rawRandomSample = new Stack<Double>();
         //initialize rawRandomSample stack
         for (int j = numberToDelete; j >= 0; j--) {
@@ -451,7 +333,7 @@ public class StochasticMemoizer {
         toDeleteList = new ArrayList<Restaurant>(numberToDelete);
         int numberLeafNodes = this.getNumberLeafNodes();
 
-        double initialRawRandomSample = Math.random() / numberToDelete;
+        double initialRawRandomSample = ByteSeater.utils.RNG.nextDouble() / numberToDelete;
         Stack<Double> rawRandomSample = new Stack<Double>();
         //initialize rawRandomSample stack
         for (int j = numberToDelete; j >= 0; j--) {

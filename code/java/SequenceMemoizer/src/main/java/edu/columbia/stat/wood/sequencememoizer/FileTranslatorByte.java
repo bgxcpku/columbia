@@ -18,8 +18,8 @@ public class FileTranslatorByte {
     public FileTranslatorByte() {
     }
 
-    public int[][] translateFile(String path, String[] files, int filesToRead) throws FileNotFoundException, IOException {
-        int[][] returnVal = new int[filesToRead][] ;
+    public int[][] translateFile(String path, String[] files) throws FileNotFoundException, IOException {
+        int[][] returnVal = new int[files.length][] ;
 
         ArrayList<Integer> translatedStream = null;
         FileInputStream fileInputStream = null;
@@ -42,10 +42,7 @@ public class FileTranslatorByte {
             for (int j = 0; j < translatedStream.size(); j++) {
                 returnVal[fileIndex][j] = translatedStream.get(j).intValue();
             }
-
-            if(++fileIndex >= filesToRead){
-                break;
-            }
+            fileIndex++;
         }
 
         return returnVal;
