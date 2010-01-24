@@ -5,8 +5,6 @@
 
 package edu.columbia.stat.wood.sequencememoizer;
 
-import java.util.Random;
-
 /**
  *
  * @author nicholasbartlett
@@ -19,8 +17,14 @@ public class ByteSeater {
         utils = new Utils(seed);
     }
 
-    public void seatByteSequence(int[] seq, SeatingStyle ss, Integer depth, Integer maxNumberRest){
-        Random seadFixer = new Random(0);
+    //returns a double array with the entries:
+    //0: bits/byte
+    //1: total bytes
+    //2: total restaurants in tree
+    public double[] seatByteSequence(int[] seq, SeatingStyle ss, Integer depth, Integer maxNumberRest){
+
+        double[] returnVal = new double[3];
+        returnVal[1] = seq.length;
         logLoss = 0.0;
 
         int counter = 0;
@@ -39,11 +43,6 @@ public class ByteSeater {
                 logLoss -= sm.obsLogProb / Math.log(2);
                 sm.discounts.stepGradient(0.0001, Math.exp(sm.obsLogProb));
             }
-
-            System.out.println("seating style was SIMPLE");
-            System.out.println("bits per byte = " + logLoss/seq.length);
-            System.out.println("total bytes in file = " + seq.length);
-            System.out.println("total restaurants at finish = " + Restaurant.numberRest);
 
         } else if (ss == SeatingStyle.SIMPLE_BOUNDED_MEMORY){
             sm = new StochasticMemoizer(256,depth);
@@ -75,11 +74,6 @@ public class ByteSeater {
                 index++;
             }
 
-            System.out.println("seating style was SIMPLE_BOUNDED_MEMORY");
-            System.out.println("bits per byte = " + logLoss/totalObsToBeSat);
-            System.out.println("total bytes in file = " + totalObsToBeSat);
-            System.out.println("total restaurants at finish = " + Restaurant.numberRest);
-
         } else if(ss == SeatingStyle.RANDOM_DELETION){
             sm = new StochasticMemoizer(256,depth);
             sm.sequence = seq;
@@ -97,11 +91,6 @@ public class ByteSeater {
                 sm.seatObs(sm.contextFreeRestaurant, obs, obs - 1, seq, 1.0 / 256);
                 logLoss -= sm.obsLogProb / Math.log(2);
                 sm.discounts.stepGradient(0.0001, Math.exp(sm.obsLogProb));
-
-                System.out.println("seating style was RANDOM_DELETION");
-                System.out.println("bits per byte = " + logLoss/seq.length);
-                System.out.println("total bytes in file = " + seq.length);
-                System.out.println("total restaurants at finish = " + Restaurant.numberRest);
             }
 
         } else if(ss == SeatingStyle.DISANTLY_USED_DELETION){
@@ -123,11 +112,6 @@ public class ByteSeater {
                 sm.seatObs(sm.contextFreeRestaurant, obs, obs - 1, seq, 1.0 / 256);
                 logLoss -= sm.obsLogProb / Math.log(2);
                 sm.discounts.stepGradient(0.0001, Math.exp(sm.obsLogProb));
-
-                System.out.println("seating style was DISANTLY_USED_DELETION");
-                System.out.println("bits per byte = " + logLoss/seq.length);
-                System.out.println("total bytes in file = " + seq.length);
-                System.out.println("total restaurants at finish = " + Restaurant.numberRest);
             }
 
         } else if(ss == SeatingStyle.BAYES_FACTOR_DELETION){
@@ -147,13 +131,11 @@ public class ByteSeater {
                 sm.seatObs(sm.contextFreeRestaurant, obs, obs - 1, seq, 1.0 / 256);
                 logLoss -= sm.obsLogProb / Math.log(2);
                 sm.discounts.stepGradient(0.0001, Math.exp(sm.obsLogProb));
-
-                System.out.println("seating style was BAYES_FACTOR_DELETION");
-                System.out.println("bits per byte = " + logLoss/seq.length);
-                System.out.println("total bytes in file = " + seq.length);
-                System.out.println("total restaurants at finish = " + Restaurant.numberRest);
             }
         }
-        System.out.println();
+        
+        returnVal[0] = logLoss/seq.length;
+        returnVal[2] = Restaurant.numberRest;
+        return returnVal;
     }
 }
