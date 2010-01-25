@@ -1,0 +1,126 @@
+universe = java
+executable = icml2010-1.0-jar-with-dependencies.jar
+jar_files = icml2010-1.0-jar-with-dependencies.jar
+java_vm_args = -Xmx2g -Xms2g -Xss1g
+
+arguments=edu.columbia.stat.wood.icml2010.Main SIMPLE_BOUNDED_MEMORY -1 41860 $(Process) /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/
+output = simpleboundedmemory3_$(Process).out
+error  = simpleboundedmemory3_$(Process).err
+queue 10
+
+arguments=edu.columbia.stat.wood.icml2010.Main SIMPLE_BOUNDED_MEMORY -1 89479 $(Process) /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/
+output = simpleboundedmemory4_$(Process).out
+error  = simpleboundedmemory4_$(Process).err
+queue 10
+
+arguments=edu.columbia.stat.wood.icml2010.Main SIMPLE_BOUNDED_MEMORY -1 155623 $(Process) /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/
+output = simpleboundedmemory5_$(Process).out
+error  = simpleboundedmemory5_$(Process).err
+queue 10
+
+arguments=edu.columbia.stat.wood.icml2010.Main SIMPLE_BOUNDED_MEMORY -1 300490 $(Process) /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/
+output = simpleboundedmemory6_$(Process).out
+error  = simpleboundedmemory6_$(Process).err
+queue 10
+
+arguments=edu.columbia.stat.wood.icml2010.Main SIMPLE_BOUNDED_MEMORY -1 467502 $(Process) /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/
+output = simpleboundedmemory7_$(Process).out
+error  = simpleboundedmemory7_$(Process).err
+queue 10
+
+arguments=edu.columbia.stat.wood.icml2010.Main SIMPLE_BOUNDED_MEMORY -1 632448 $(Process) /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/
+output = simpleboundedmemory8_$(Process).out
+error  = simpleboundedmemory8_$(Process).err
+queue 10
+
+arguments=edu.columbia.stat.wood.icml2010.Main SIMPLE_BOUNDED_MEMORY -1 776547 $(Process) /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/
+output = simpleboundedmemory9_$(Process).out
+error  = simpleboundedmemory9_$(Process).err
+queue 10
+
+arguments=edu.columbia.stat.wood.icml2010.Main SIMPLE_BOUNDED_MEMORY -1 891193 $(Process) /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/
+output = simpleboundedmemory10_$(Process).out
+error  = simpleboundedmemory10_$(Process).err
+queue 10
+
+arguments=edu.columbia.stat.wood.icml2010.Main RANDOM_DELETION -1 41860 $(Process) /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/
+output = randomdeletion3_$(Process).out
+error  = randomdeletion3_$(Process).err
+queue 10
+
+arguments=edu.columbia.stat.wood.icml2010.Main RANDOM_DELETION -1 89479 $(Process) /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/
+output = randomdeletion4_$(Process).out
+error  = randomdeletion4_$(Process).err
+queue 10
+
+arguments=edu.columbia.stat.wood.icml2010.Main RANDOM_DELETION -1 155623 $(Process) /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/
+output = randomdeletion5_$(Process).out
+error  = randomdeletion5_$(Process).err
+queue 10
+
+arguments=edu.columbia.stat.wood.icml2010.Main RANDOM_DELETION -1 300490 $(Process) /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/
+output = randomdeletion6_$(Process).out
+error  = randomdeletion6_$(Process).err
+queue 10
+
+arguments=edu.columbia.stat.wood.icml2010.Main RANDOM_DELETION -1 467502 $(Process) /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/
+output = randomdeletion7_$(Process).out
+error  = randomdeletion7_$(Process).err
+queue 10
+
+arguments=edu.columbia.stat.wood.icml2010.Main RANDOM_DELETION -1 632448 $(Process) /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/
+output = randomdeletion8_$(Process).out
+error  = randomdeletion8_$(Process).err
+queue 10
+
+arguments=edu.columbia.stat.wood.icml2010.Main RANDOM_DELETION -1 776547 $(Process) /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/
+output = randomdeletion9_$(Process).out
+error  = randomdeletion9_$(Process).err
+queue 10
+
+arguments=edu.columbia.stat.wood.icml2010.Main RANDOM_DELETION -1 891193 $(Process) /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/
+output = randomdeletion10_$(Process).out
+error  = randomdeletion10_$(Process).err
+queue 10
+
+arguments=edu.columbia.stat.wood.icml2010.Main BAYES_FACTOR_DELETION -1 41860 $(Process) /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/
+output = bfdeltion3_$(Process).out
+error  = bfdeltion3_$(Process).err
+queue 10
+
+arguments=edu.columbia.stat.wood.icml2010.Main BAYES_FACTOR_DELETION -1 89479 $(Process) /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/
+output = bfdeltion4_$(Process).out
+error  = bfdeltion4_$(Process).err
+queue 10
+
+arguments=edu.columbia.stat.wood.icml2010.Main BAYES_FACTOR_DELETION -1 155623 $(Process) /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/
+output = bfdeltion5_$(Process).out
+error  = bfdeltion5_$(Process).err
+queue 10
+
+arguments=edu.columbia.stat.wood.icml2010.Main BAYES_FACTOR_DELETION -1 300490 $(Process) /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/
+output = bfdeltion6_$(Process).out
+error  = bfdeltion6_$(Process).err
+queue 10
+
+arguments=edu.columbia.stat.wood.icml2010.Main BAYES_FACTOR_DELETION -1 467502 $(Process) /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/
+output = bfdeltion7_$(Process).out
+error  = bfdeltion7_$(Process).err
+queue 10
+
+arguments=edu.columbia.stat.wood.icml2010.Main BAYES_FACTOR_DELETION -1 632448 $(Process) /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/
+output = bfdeltion8_$(Process).out
+error  = bfdeltion8_$(Process).err
+queue 10
+
+arguments=edu.columbia.stat.wood.icml2010.Main BAYES_FACTOR_DELETION -1 776547 $(Process) /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/
+output = bfdeltion9_$(Process).out
+error  = bfdeltion9_$(Process).err
+queue 10
+
+arguments=edu.columbia.stat.wood.icml2010.Main BAYES_FACTOR_DELETION -1 891193 $(Process) /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/
+output = bfdeltion10_$(Process).out
+error  = bfdeltion10_$(Process).err
+queue 10
+
+

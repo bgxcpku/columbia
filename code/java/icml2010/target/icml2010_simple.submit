@@ -1,0 +1,57 @@
+universe = java
+executable = icml2010-1.0-jar-with-dependencies.jar
+jar_files = icml2010-1.0-jar-with-dependencies.jar
+java_vm_args = -Xmx2g -Xms2g -Xss1g
+
+arguments=edu.columbia.stat.wood.icml2010.Main SIMPLE -1 -1 0 /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/
+output = SIMPLE_0.out
+error = SIMPLE_0.err
+queue
+
+arguments=edu.columbia.stat.wood.icml2010.Main SIMPLE -1 -1 1 /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/
+output = SIMPLE_1.out
+error = SIMPLE_1.err
+queue
+
+arguments=edu.columbia.stat.wood.icml2010.Main SIMPLE -1 -1 2 /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/   
+output = SIMPLE_2.out
+error = SIMPLE_2.err
+queue
+
+arguments=edu.columbia.stat.wood.icml2010.Main SIMPLE -1 -1 3 /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/   
+output = SIMPLE_3.out
+error = SIMPLE_3.err
+queue
+
+arguments=edu.columbia.stat.wood.icml2010.Main SIMPLE -1 -1 4 /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/   
+output = SIMPLE_4.out
+error = SIMPLE_4.err
+queue
+
+arguments=edu.columbia.stat.wood.icml2010.Main SIMPLE -1 -1 5 /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/   
+output = SIMPLE_5.out
+error = SIMPLE_5.err
+queue
+
+arguments=edu.columbia.stat.wood.icml2010.Main SIMPLE -1 -1 6 /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/   
+output = SIMPLE_6.out
+error = SIMPLE_6.err
+queue
+
+arguments=edu.columbia.stat.wood.icml2010.Main SIMPLE -1 -1 7 /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/   
+output = SIMPLE_7.out
+error = SIMPLE_7.err
+queue
+
+arguments=edu.columbia.stat.wood.icml2010.Main SIMPLE -1 -1 8 /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/   
+output = SIMPLE_8.out
+error = SIMPLE_8.err
+queue
+
+arguments=edu.columbia.stat.wood.icml2010.Main SIMPLE -1 -1 9 /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/   
+output = SIMPLE_9.out
+error = SIMPLE_9.err
+queue
+
+
+

@@ -1,0 +1,62 @@
+universe = java
+executable = icml2010-1.0-jar-with-dependencies.jar
+jar_files = icml2010-1.0-jar-with-dependencies.jar
+java_vm_args = -Xmx2g -Xms2g -Xss1g
+
+#arguments=edu.columbia.stat.wood.icml2010.Main SIMPLE 3 -1 $(Process) /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/
+#output = finitedepth3_$(Process).out
+#error  = finitedepth3_$(Process).err
+#queue 10
+
+#arguments=edu.columbia.stat.wood.icml2010.Main SIMPLE 4 -1 $(Process) /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/
+#output = finitedepth4_$(Process).out
+#error  = finitedepth4_$(Process).err
+#queue 10
+
+#arguments=edu.columbia.stat.wood.icml2010.Main SIMPLE 5 -1 $(Process) /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/
+#output = finitedepth5_$(Process).out
+#error  = finitedepth5_$(Process).err
+#queue 10
+
+#arguments=edu.columbia.stat.wood.icml2010.Main SIMPLE 6 -1 $(Process) /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/
+#output = finitedepth6_$(Process).out
+#error  = finitedepth6_$(Process).err
+#queue 10
+
+#arguments=edu.columbia.stat.wood.icml2010.Main SIMPLE 7 -1 $(Process) /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/
+#output = finitedepth7_$(Process).out
+#error  = finitedepth7_$(Process).err
+#queue 10
+
+#arguments=edu.columbia.stat.wood.icml2010.Main SIMPLE 8 -1 $(Process) /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/
+#output = finitedepth8_$(Process).out
+#error  = finitedepth8_$(Process).err
+#queue 10
+
+#arguments=edu.columbia.stat.wood.icml2010.Main SIMPLE 9 -1 $(Process) /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/
+#output = finitedepth9_$(Process).out
+#error  = finitedepth9_$(Process).err
+#queue 10
+
+#arguments=edu.columbia.stat.wood.icml2010.Main SIMPLE 10 -1 $(Process) /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/
+#output = finitedepth10_$(Process).out
+#error  = finitedepth10_$(Process).err
+#queue 10
+
+arguments=edu.columbia.stat.wood.icml2010.Main SIMPLE 11 -1 $(Process) /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/
+output = finitedepth11_$(Process).out
+error  = finitedepth11_$(Process).err
+queue 10
+
+arguments=edu.columbia.stat.wood.icml2010.Main SIMPLE 12 -1 $(Process) /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/
+output = finitedepth12_$(Process).out
+error  = finitedepth12_$(Process).err
+queue 10
+
+arguments=edu.columbia.stat.wood.icml2010.Main SIMPLE 13 -1 $(Process) /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/
+output = finitedepth13_$(Process).out
+error  = finitedepth13_$(Process).err
+queue 10
+
+
+
