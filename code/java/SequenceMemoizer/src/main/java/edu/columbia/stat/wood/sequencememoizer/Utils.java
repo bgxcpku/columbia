@@ -28,4 +28,15 @@ public class Utils {
         }
         System.out.println("]");
     }
+
+    public void printArray(int[] arrayToPrint){
+        for(int i = 0; i<arrayToPrint.length; i++){
+            if(i == 0){
+                System.out.print("[" + arrayToPrint[i]);
+            } else {
+                System.out.print(", " + arrayToPrint[i]);
+            }
+        }
+        System.out.println("]");
+    }
 }

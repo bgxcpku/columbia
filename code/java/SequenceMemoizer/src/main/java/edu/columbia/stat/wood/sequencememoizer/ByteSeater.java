@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package edu.columbia.stat.wood.sequencememoizer;
 
 /**
@@ -10,131 +9,128 @@ package edu.columbia.stat.wood.sequencememoizer;
  * @author nicholasbartlett
  */
 public class ByteSeater {
+
     public double logLoss = 0.0;
     public static Utils utils = new Utils(123);
+    public int maxRunLength;
 
-    public ByteSeater(long seed){
+    public ByteSeater(long seed, int maxRunLength) {
         utils = new Utils(seed);
+        this.maxRunLength = maxRunLength;
     }
 
     //returns a double array with the entries:
     //0: bits/byte
     //1: total bytes
     //2: total restaurants in tree
-    public double[] seatByteSequence(int[] seq, SeatingStyle ss, Integer depth, Integer maxNumberRest){
+    public double[] seatByteSequence(int[] seq, SeatingStyle ss, Integer depth, Integer maxNumberRest) {
 
         double[] returnVal = new double[3];
         returnVal[1] = seq.length;
         logLoss = 0.0;
+        int currentRunLength = 0;
+        //maxRunLength = 20;
+        RunLengthEncoder rle = new RunLengthEncoder();
 
         int counter = 0;
-        int index = 0;
         StochasticMemoizer sm;
-        if(ss == SeatingStyle.SIMPLE){
-            sm = new StochasticMemoizer(256,depth);
+        if (ss != SeatingStyle.SIMPLE_BOUNDED_MEMORY) {
+            sm = new StochasticMemoizer(256, depth);
             sm.sequence = seq;
-            for(int obs = 0; obs<seq.length; obs++){
-                if(counter++>=100000){
-                    System.out.println(index);
-                    counter = 0;
+            int obs = 0;
+            while (obs < seq.length) {
+                if (obs > 0) {
+                    if (seq[obs] == seq[obs - 1]) {
+                        currentRunLength++;
+                    } else {
+                        currentRunLength = 0;
+                    }
                 }
-                index++;
-                sm.seatObs(sm.contextFreeRestaurant, obs, obs - 1, seq, 1.0 / 256);
-                logLoss -= sm.obsLogProb / Math.log(2);
-                sm.discounts.stepGradient(0.0001, Math.exp(sm.obsLogProb));
+
+                if (ss != SeatingStyle.SIMPLE) {
+                    if (Restaurant.numberRest > maxNumberRest - 2) {
+                        if (ss == SeatingStyle.RANDOM_DELETION) {
+                            sm.deleteRandomLeafNodes(100);
+                        } else if (ss == SeatingStyle.DISANTLY_USED_DELETION) {
+                            sm.fillLeastUsedLeafNodeList(maxNumberRest);
+                            sm.deleteLeastUsedLeafRestaurants(100);
+                            sm.leastUsedLeafNodeList.clear();
+                        } else if (ss == SeatingStyle.BAYES_FACTOR_DELETION) {
+                            sm.deleteLeastUsefullRestaurantsForLogProbOfData(100);
+                        }
+                    }
+                }
+
+                //update us on the status every 100,000 obs seated
+                if ((obs - counter) > 100000) {
+                    System.out.println(obs);
+                    counter = obs;
+                }
+
+                if (currentRunLength > maxRunLength) {
+                    int[] rleOut = rle.encode(obs, seq);
+                    for (int i = 0; i < rleOut.length; i++) {
+                        long obsUpdate = (long) rleOut[i] - (long) Integer.MIN_VALUE;
+                        obs += (int) obsUpdate;
+                        logLoss += 32;
+                    }
+                } else {
+                    sm.seatObs(sm.contextFreeRestaurant, obs, obs - 1, seq, 1.0 / 256);
+                    logLoss -= sm.obsLogProb / Math.log(2);
+                    sm.discounts.stepGradient(0.0001, Math.exp(sm.obsLogProb));
+                    obs++;
+                }
             }
 
-        } else if (ss == SeatingStyle.SIMPLE_BOUNDED_MEMORY){
-            sm = new StochasticMemoizer(256,depth);
+        } else if (ss == SeatingStyle.SIMPLE_BOUNDED_MEMORY) {
+            sm = new StochasticMemoizer(256, depth);
             sm.sequence = seq;
-           
-            index = 0;
-            int obs =0;
-            int totalObsToBeSat = seq.length;
 
-            while(index < totalObsToBeSat){
-                if(counter++>=100000){
-                    System.out.println(index);
-                    counter = 0;
+            int index = 0;
+            int obs = 0;
+
+            while (index < seq.length) {
+                if (index > 0) {
+                    if (seq[index] == seq[index - 1]) {
+                        currentRunLength++;
+                    } else {
+                        currentRunLength = 0;
+                    }
                 }
 
-                if(Restaurant.numberRest > maxNumberRest -2){
+                if((index - counter) >= 100000){
+                    System.out.println(index);
+                    counter = index;
+                }
+                
+                if (Restaurant.numberRest > maxNumberRest - 2) {
                     int[] newSeq = new int[sm.sequence.length - obs];
                     System.arraycopy(sm.sequence, obs, newSeq, 0, sm.sequence.length - obs);
-                    
-                    sm = new StochasticMemoizer(256,depth);
+
+                    sm = new StochasticMemoizer(256, depth);
                     sm.sequence = newSeq;
                     obs = 0;
                 }
 
-                sm.seatObs(sm.contextFreeRestaurant, obs, obs - 1, seq, 1.0 / 256);
-                logLoss -= sm.obsLogProb / Math.log(2);
-                sm.discounts.stepGradient(0.0001, Math.exp(sm.obsLogProb));
-                obs++;
-                index++;
-            }
-
-        } else if(ss == SeatingStyle.RANDOM_DELETION){
-            sm = new StochasticMemoizer(256,depth);
-            sm.sequence = seq;
-            for(int obs = 0; obs<seq.length; obs++){
-                if (counter++>=100000){
-                    System.out.println(index);
-                    counter = 0;
+                if (currentRunLength > maxRunLength) {
+                    int[] rleOut = rle.encode(index, seq);
+                    for (int i = 0; i < rleOut.length; i++) {
+                        long obsUpdate = (long) rleOut[i] - (long) Integer.MIN_VALUE;
+                        index += (int) obsUpdate;
+                        obs += (int) obsUpdate;
+                        logLoss += 32;
+                    }
+                } else {
+                    sm.seatObs(sm.contextFreeRestaurant, obs, obs - 1, seq, 1.0 / 256);
+                    logLoss -= sm.obsLogProb / Math.log(2);
+                    sm.discounts.stepGradient(0.0001, Math.exp(sm.obsLogProb));
+                    obs++;
+                    index++;
                 }
-
-                if (Restaurant.numberRest > maxNumberRest -2) {
-                    sm.deleteRandomLeafNodes(100);
-                }
-
-                index++;
-                sm.seatObs(sm.contextFreeRestaurant, obs, obs - 1, seq, 1.0 / 256);
-                logLoss -= sm.obsLogProb / Math.log(2);
-                sm.discounts.stepGradient(0.0001, Math.exp(sm.obsLogProb));
-            }
-
-        } else if(ss == SeatingStyle.DISANTLY_USED_DELETION){
-            sm = new StochasticMemoizer(256,depth);
-            sm.sequence = seq;
-            for(int obs = 0; obs<seq.length; obs++){
-                if (counter++>=100000){
-                    System.out.println(index);
-                    counter = 0;
-                }
-
-                if (Restaurant.numberRest > maxNumberRest -2) {
-                    sm.fillLeastUsedLeafNodeList(maxNumberRest);
-                    sm.deleteLeastUsedLeafRestaurants(100);
-                    sm.leastUsedLeafNodeList.clear();
-                }
-
-                index++;
-                sm.seatObs(sm.contextFreeRestaurant, obs, obs - 1, seq, 1.0 / 256);
-                logLoss -= sm.obsLogProb / Math.log(2);
-                sm.discounts.stepGradient(0.0001, Math.exp(sm.obsLogProb));
-            }
-
-        } else if(ss == SeatingStyle.BAYES_FACTOR_DELETION){
-            sm = new StochasticMemoizer(256,depth);
-            sm.sequence = seq;
-            for(int obs = 0; obs<seq.length; obs++){
-                if (counter++>=100000){
-                    System.out.println(index);
-                    counter = 0;
-                }
-
-                if (Restaurant.numberRest > maxNumberRest -2) {
-                    sm.deleteLeastUsefullRestaurantsForLogProbOfData(100);
-                }
-
-                index++;
-                sm.seatObs(sm.contextFreeRestaurant, obs, obs - 1, seq, 1.0 / 256);
-                logLoss -= sm.obsLogProb / Math.log(2);
-                sm.discounts.stepGradient(0.0001, Math.exp(sm.obsLogProb));
             }
         }
-        
-        returnVal[0] = logLoss/seq.length;
+
+        returnVal[0] = logLoss / seq.length;
         returnVal[2] = Restaurant.numberRest;
         return returnVal;
     }

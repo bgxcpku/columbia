@@ -20,14 +20,15 @@ public class Main {
      * @param1 = depth, if there is a a max depth, -1
      * @param2 = maxNumberRest, if there is a max number
      * @param3 = seed , random number generator seed
-     * @param4 = path to data (ex : Documents/NP Bayes/data/calgary_corpus/)
-     * @param5 ... files, should be in folder indicated by path
+     * @param4 = maxRunLength (for byte seater before switching to run length encoder)
+     * @param5 = path to data (ex : Documents/NP Bayes/data/calgary_corpus/)
+     * @param6 ... files, should be in folder indicated by path
      */
     public static void main(String[] args) throws FileNotFoundException, IOException {
 
         if (args.length == 0) {
-            String[] newArgs = {"SIMPLE", "-1", "-1", "0",
-            "/Users/nicholasbartlett/Documents/NP Bayes/data/calgary_corpus/", "bib", "book1", "book2"};
+            String[] newArgs = {"SIMPLE_BOUNDED_MEMORY", "-1", "-1", "0","10",
+            "/Users/nicholasbartlett/Documents/NP Bayes/data/calgary_corpus/"};//, "pic"}; //, "book1", "book2"};
             args = newArgs;
         }
 
@@ -35,6 +36,7 @@ public class Main {
         Integer depth = new Integer(-1);
         Long seed = new Long(123);
         Integer maxNumberRestaurants = null;
+        Integer maxRunLength;
 
         if (args[0].equals("SIMPLE")) {
             seatingStyle = SeatingStyle.SIMPLE;
@@ -51,14 +53,14 @@ public class Main {
         depth = Integer.valueOf(args[1]);
         maxNumberRestaurants = Integer.valueOf(args[2]);
         seed = Long.valueOf(args[3]);
-
+        maxRunLength = Integer.valueOf(args[4]);
 
         String[] filesToRead = {"bib", "book1", "book2", "geo", "news",
             "obj1", "obj2", "paper1", "paper2", "pic", "progc", "progl", "progp", "trans"};
-        if (args.length > 5) {
-            filesToRead = new String[args.length - 5];
+        if (args.length > 6) {
+            filesToRead = new String[args.length - 6];
             for (int fileIndex = 0; fileIndex < filesToRead.length; fileIndex++) {
-                filesToRead[fileIndex] = args[5 + fileIndex];
+                filesToRead[fileIndex] = args[6 + fileIndex];
             }
         }
 
@@ -68,14 +70,14 @@ public class Main {
         }
 
         FileTranslatorByte ftb = new FileTranslatorByte();
-        int[][] translation = ftb.translateFile(args[4], filesToRead);
+        int[][] translation = ftb.translateFile(args[5], filesToRead);
 
         System.out.println("Compressing the documents ");
         for (int j = 0; j < translation.length; j++) {
             System.out.println(filesToRead[j]);
         }
 
-        ByteSeater seater = new ByteSeater(seed);
+        ByteSeater seater = new ByteSeater(seed,maxRunLength.intValue());
         long startTime;
         long endTime;
 

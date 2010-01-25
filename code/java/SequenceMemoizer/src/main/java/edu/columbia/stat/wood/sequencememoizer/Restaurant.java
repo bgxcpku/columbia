@@ -126,33 +126,78 @@ public class Restaurant extends HashMap<Integer, Restaurant> {
         }
 
         //else loop through state to see if type is already represented
-        for (int j = 0; j < state.length; j++) {
-            if (state[j][0] == type) {
+        int typeIndex = -1;
+        int numCustAtType = 0;
+        int numTablesAtType = 0;
+        int numTablesInRest = 0;
+        for(int tIndex = 0; tIndex < state.length; tIndex++){
+            if(state[tIndex][0] == type){
+                for(int table = 1; table<state[tIndex].length; table++){
+                    numCustAtType += state[tIndex][table];
+                }
+                numTablesAtType += state[tIndex].length - 1;
+                numTablesInRest += state[tIndex].length - 1;
+                typeIndex = tIndex;
+            } else {
+                numTablesInRest += state[tIndex].length - 1;
+            }
+        }
+
+        //if found the type in the state then add
+        if(typeIndex > -1){
+            double cumSum = 0.0;
+            double rawRandomSample = ByteSeater.utils.RNG.nextDouble();
+            double totalWeight = 1.0 * (numCustAtType - Math.exp(Math.log(numTablesAtType) + logDiscount)) + Math.exp(Math.log(numTablesInRest) + logDiscount + Math.log(probUpper));
+
+            for (int table = 1; table < state[typeIndex].length; table++) {
+                    cumSum += (state[typeIndex][table] - Math.exp(logDiscount)) / totalWeight;
+                    if (cumSum > rawRandomSample) {
+                        state[typeIndex][table]++;
+                        return false;
+                    }
+            }
+
+            int[] newTypeTableStructure = new int[state[typeIndex].length + 1];
+            System.arraycopy(state[typeIndex], 0, newTypeTableStructure, 0, state[typeIndex].length);
+            newTypeTableStructure[state[typeIndex].length] = 1;
+            state[typeIndex] = newTypeTableStructure;
+            return true;
+        }
+
+
+
+
+
+
+
+        /*
+        for (int typeIndex = 0; typeIndex < state.length; typeIndex++) {
+            if (state[typeIndex][0] == type) {
                 int numCustAtType = 0;
-                int numTablesAtType = state[j].length - 1;
-                for (int i = 1; i < state[j].length; i++) {
-                    numCustAtType += state[j][i];
+                int numTablesAtType = state[typeIndex].length - 1;
+                for (int table = 1; table < state[typeIndex].length; table++) {
+                    numCustAtType += state[typeIndex][table];
                 }
 
                 double cumSum = 0.0;
                 double rawRandomSample = ByteSeater.utils.RNG.nextDouble();
                 double totalWeight = 1.0 * (numCustAtType - Math.exp(Math.log(numTablesAtType) + logDiscount)) + Math.exp(Math.log(this.getNumberOfTables()) + logDiscount + Math.log(probUpper));
 
-                for (int i = 1; i < state[j].length; i++) {
-                    cumSum += (state[j][i] - Math.exp(logDiscount)) / totalWeight;
+                for (int table = 1; table < state[typeIndex].length; table++) {
+                    cumSum += (state[typeIndex][table] - Math.exp(logDiscount)) / totalWeight;
                     if (cumSum > rawRandomSample) {
-                        state[j][i]++;
+                        state[typeIndex][table]++;
                         return false;
                     }
                 }
 
-                int[] newTypeTableStructure = new int[state[j].length + 1];
-                System.arraycopy(state[j], 0, newTypeTableStructure, 0, state[j].length);
-                newTypeTableStructure[state[j].length] = 1;
-                state[j] = newTypeTableStructure;
+                int[] newTypeTableStructure = new int[state[typeIndex].length + 1];
+                System.arraycopy(state[typeIndex], 0, newTypeTableStructure, 0, state[typeIndex].length);
+                newTypeTableStructure[state[typeIndex].length] = 1;
+                state[typeIndex] = newTypeTableStructure;
                 return true;
             }
-        }
+        } */
 
         //if not found then will need to create a row for this type
         int[][] newState = new int[state.length + 1][];
