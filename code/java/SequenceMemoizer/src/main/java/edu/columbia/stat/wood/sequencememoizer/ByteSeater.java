@@ -121,7 +121,7 @@ public class ByteSeater {
                         logLoss += 32;
                     }
                 } else {
-                    sm.seatObs(sm.contextFreeRestaurant, obs, obs - 1, seq, 1.0 / 256);
+                    sm.seatObs(sm.contextFreeRestaurant, obs, obs - 1, sm.sequence, 1.0 / 256);
                     logLoss -= sm.obsLogProb / Math.log(2);
                     sm.discounts.stepGradient(0.0001, Math.exp(sm.obsLogProb));
                     obs++;

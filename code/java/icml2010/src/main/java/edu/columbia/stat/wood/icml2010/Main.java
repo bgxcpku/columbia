@@ -27,7 +27,7 @@ public class Main {
     public static void main(String[] args) throws FileNotFoundException, IOException {
 
         if (args.length == 0) {
-            String[] newArgs = {"SIMPLE_BOUNDED_MEMORY", "-1", "-1", "0","10",
+            String[] newArgs = {"SIMPLE_BOUNDED_MEMORY", "-1", "10000", "0","10",
             "/Users/nicholasbartlett/Documents/NP Bayes/data/calgary_corpus/"};//, "pic"}; //, "book1", "book2"};
             args = newArgs;
         }
