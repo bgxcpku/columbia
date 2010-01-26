@@ -18,8 +18,9 @@ public class FileTranslatorByte {
     public FileTranslatorByte() {
     }
 
-    public int[][] translateFile(String path, String[] files) throws FileNotFoundException, IOException {
+    public int[][] translateFile(String path, String[] files, int maxFileLength) throws FileNotFoundException, IOException {
         int[][] returnVal = new int[files.length][] ;
+        if (maxFileLength < 0) maxFileLength = 25000000;
 
         ArrayList<Integer> translatedStream = null;
         FileInputStream fileInputStream = null;
@@ -30,14 +31,9 @@ public class FileTranslatorByte {
                 fileInputStream = new FileInputStream(path + file);
                 int b;
                 int obs = 0;
-                int counter = 0;
-                while ((b = fileInputStream.read()) != -1 && obs < 5000000) {
+                while ((b = fileInputStream.read()) != -1 && obs < maxFileLength) {
                     translatedStream.add(new Integer(b));
                     obs++;
-                    if((obs - counter) >= 100000){
-                        System.out.println(obs);
-                        counter = obs;
-                    }
                 }
             } finally {
                 if (fileInputStream != null) {

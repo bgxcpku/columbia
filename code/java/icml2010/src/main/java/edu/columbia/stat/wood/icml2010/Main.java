@@ -21,14 +21,15 @@ public class Main {
      * @param2 = maxNumberRest, if there is a max number
      * @param3 = seed , random number generator seed
      * @param4 = maxRunLength (for byte seater before switching to run length encoder)
-     * @param5 = path to data (ex : Documents/NP Bayes/data/calgary_corpus/)
-     * @param6 ... files, should be in folder indicated by path
+     * @param5 = maxFileLength (for byte reader)
+     * @param6 = path to data (ex : Documents/NP Bayes/data/calgary_corpus/)
+     * @param7 ... files, should be in folder indicated by path
      */
     public static void main(String[] args) throws FileNotFoundException, IOException {
 
         if (args.length == 0) {
-            String[] newArgs = {"SIMPLE", "-1", "-1", "0","1000",
-            "/Users/nicholasbartlett/Documents/NP Bayes/data/wikipedia/","enwik8"}; //, "pic"}; //, "book1", "book2"};
+            String[] newArgs = {"SIMPLE", "-1", "-1", "0","1000", "100000",
+            "/Users/nicholasbartlett/Documents/NP Bayes/data/wikipedia/","enwik8"};
             args = newArgs;
         }
 
@@ -37,6 +38,7 @@ public class Main {
         Long seed = new Long(123);
         Integer maxNumberRestaurants = null;
         Integer maxRunLength;
+        Integer maxFileLength;
 
         if (args[0].equals("SIMPLE")) {
             seatingStyle = SeatingStyle.SIMPLE;
@@ -54,13 +56,14 @@ public class Main {
         maxNumberRestaurants = Integer.valueOf(args[2]);
         seed = Long.valueOf(args[3]);
         maxRunLength = Integer.valueOf(args[4]);
+        maxFileLength = Integer.valueOf(args[5]);
 
         String[] filesToRead = {"bib", "book1", "book2", "geo", "news",
             "obj1", "obj2", "paper1", "paper2", "pic", "progc", "progl", "progp", "trans"};
-        if (args.length > 6) {
-            filesToRead = new String[args.length - 6];
+        if (args.length > 7) {
+            filesToRead = new String[args.length - 7];
             for (int fileIndex = 0; fileIndex < filesToRead.length; fileIndex++) {
-                filesToRead[fileIndex] = args[6 + fileIndex];
+                filesToRead[fileIndex] = args[7 + fileIndex];
             }
         }
 
@@ -70,7 +73,7 @@ public class Main {
         }
 
         FileTranslatorByte ftb = new FileTranslatorByte();
-        int[][] translation = ftb.translateFile(args[5], filesToRead);
+        int[][] translation = ftb.translateFile(args[6], filesToRead, maxFileLength);
 
         System.out.println("Compressing the documents ");
         for (int j = 0; j < translation.length; j++) {
