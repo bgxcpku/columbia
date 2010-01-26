@@ -62,17 +62,22 @@ public class ByteSeater {
                 }
 
                 //update us on the status every 100,000 obs seated
-                if ((obs - counter) > 100000) {
+                if ((obs - counter) >= 100000) {
                     System.out.println(obs);
+                    System.out.println("number of rest = " + Restaurant.numberRest);
                     counter = obs;
                 }
-
-                if (currentRunLength > maxRunLength) {
+                
+                if (currentRunLength > maxRunLength && maxRunLength > 0) {
+                    System.out.println("in run pred prob is = " +Math.exp(sm.obsLogProb));
+                    System.out.println("which gives something better than: " + sm.obsLogProb/Math.log(2));
                     int[] rleOut = rle.encode(obs, seq);
                     for (int i = 0; i < rleOut.length; i++) {
                         long obsUpdate = (long) rleOut[i] - (long) Integer.MIN_VALUE;
                         obs += (int) obsUpdate;
                         logLoss += 32;
+                        System.out.println("bits per byte from rle = " + 32.0/obsUpdate);
+                        System.out.println("total bytes in run = " + obsUpdate);
                     }
                 } else {
                     sm.seatObs(sm.contextFreeRestaurant, obs, obs - 1, seq, 1.0 / 256);
@@ -100,6 +105,7 @@ public class ByteSeater {
 
                 if((index - counter) >= 100000){
                     System.out.println(index);
+                    System.out.println("number of rest = " + Restaurant.numberRest);
                     counter = index;
                 }
                 
@@ -112,7 +118,7 @@ public class ByteSeater {
                     obs = 0;
                 }
 
-                if (currentRunLength > maxRunLength) {
+                if (currentRunLength > maxRunLength && maxRunLength > 0) {
                     int[] rleOut = rle.encode(index, seq);
                     for (int i = 0; i < rleOut.length; i++) {
                         long obsUpdate = (long) rleOut[i] - (long) Integer.MIN_VALUE;

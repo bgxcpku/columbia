@@ -29,8 +29,15 @@ public class FileTranslatorByte {
             try {
                 fileInputStream = new FileInputStream(path + file);
                 int b;
-                while ((b = fileInputStream.read()) != -1) {
+                int obs = 0;
+                int counter = 0;
+                while ((b = fileInputStream.read()) != -1 && obs < 5000000) {
                     translatedStream.add(new Integer(b));
+                    obs++;
+                    if((obs - counter) >= 100000){
+                        System.out.println(obs);
+                        counter = obs;
+                    }
                 }
             } finally {
                 if (fileInputStream != null) {
