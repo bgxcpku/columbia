@@ -1,0 +1,809 @@
+run:
+universe = java
+executable = icml2010-1.0-jar-with-dependencies.jar
+jar_files = icml2010-1.0-jar-with-dependencies.jar
+java_vm_args = -Xmx2g -Xms2g -Xss1g
+
+########################################
+
+DeletionType = RANDOM_DELETION
+NumberRestaurants = 1000
+BytesOfWiki = 10000
+DepthOfModel = -1
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_$(DeletionType)_1k_10k_$(Process).out
+error = wiki_$(DeletionType)_1k_10k_$(Process).err
+queue
+
+DeletionType = RANDOM_DELETION
+NumberRestaurants = 1000
+BytesOfWiki = 100000
+DepthOfModel = -1
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_$(DeletionType)_1k_100k_$(Process).out
+error = wiki_$(DeletionType)_1k_100k_$(Process).err
+queue
+
+DeletionType = RANDOM_DELETION
+NumberRestaurants = 1000
+BytesOfWiki = 1000000
+DepthOfModel = -1
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_$(DeletionType)_1k_1m_$(Process).out
+error = wiki_$(DeletionType)_1k_1m_$(Process).err
+queue
+
+DeletionType = RANDOM_DELETION
+NumberRestaurants = 1000
+BytesOfWiki = 10000000
+DepthOfModel = -1
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_$(DeletionType)_1k__$(Process).out
+error = wiki_$(DeletionType)_1k__$(Process).err
+queue
+
+DeletionType = RANDOM_DELETION
+NumberRestaurants = 1000
+BytesOfWiki = 25000000
+DepthOfModel = -1
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_$(DeletionType)_1k_25m_$(Process).out
+error = wiki_$(DeletionType)_1k_25m_$(Process).err
+queue
+
+DeletionType = RANDOM_DELETION
+NumberRestaurants = 10000
+BytesOfWiki = 10000
+DepthOfModel = -1
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_$(DeletionType)_10k_10k_$(Process).out
+error = wiki_$(DeletionType)_10k_10k_$(Process).err
+queue
+
+DeletionType = RANDOM_DELETION
+NumberRestaurants = 10000
+BytesOfWiki = 100000
+DepthOfModel = -1
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_$(DeletionType)_10k_100k_$(Process).out
+error = wiki_$(DeletionType)_10k_100k_$(Process).err
+queue
+
+DeletionType = RANDOM_DELETION
+NumberRestaurants = 10000
+BytesOfWiki = 1000000
+DepthOfModel = -1
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_$(DeletionType)_10k_1m_$(Process).out
+error = wiki_$(DeletionType)_10k_1m_$(Process).err
+queue
+
+DeletionType = RANDOM_DELETION
+NumberRestaurants = 10000
+BytesOfWiki = 10000000
+DepthOfModel = -1
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_$(DeletionType)_10k__$(Process).out
+error = wiki_$(DeletionType)_10k__$(Process).err
+queue
+
+DeletionType = RANDOM_DELETION
+NumberRestaurants = 10000
+BytesOfWiki = 25000000
+DepthOfModel = -1
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_$(DeletionType)_10k_25m_$(Process).out
+error = wiki_$(DeletionType)_10k_25m_$(Process).err
+queue
+
+DeletionType = RANDOM_DELETION
+NumberRestaurants = 100000
+BytesOfWiki = 10000
+DepthOfModel = -1
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_$(DeletionType)_100k_10k_$(Process).out
+error = wiki_$(DeletionType)_100k_10k_$(Process).err
+queue
+
+DeletionType = RANDOM_DELETION
+NumberRestaurants = 100000
+BytesOfWiki = 100000
+DepthOfModel = -1
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_$(DeletionType)_100k_100k_$(Process).out
+error = wiki_$(DeletionType)_100k_100k_$(Process).err
+queue
+
+DeletionType = RANDOM_DELETION
+NumberRestaurants = 100000
+BytesOfWiki = 1000000
+DepthOfModel = -1
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_$(DeletionType)_100k_1m_$(Process).out
+error = wiki_$(DeletionType)_100k_1m_$(Process).err
+queue
+
+DeletionType = RANDOM_DELETION
+NumberRestaurants = 100000
+BytesOfWiki = 10000000
+DepthOfModel = -1
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_$(DeletionType)_100k__$(Process).out
+error = wiki_$(DeletionType)_100k__$(Process).err
+queue
+
+DeletionType = RANDOM_DELETION
+NumberRestaurants = 100000
+BytesOfWiki = 25000000
+DepthOfModel = -1
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_$(DeletionType)_100k_25m_$(Process).out
+error = wiki_$(DeletionType)_100k_25m_$(Process).err
+queue
+
+DeletionType = RANDOM_DELETION
+NumberRestaurants = 1000000
+BytesOfWiki = 10000
+DepthOfModel = -1
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_$(DeletionType)_1m_10k_$(Process).out
+error = wiki_$(DeletionType)_1m_10k_$(Process).err
+queue
+
+DeletionType = RANDOM_DELETION
+NumberRestaurants = 1000000
+BytesOfWiki = 100000
+DepthOfModel = -1
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_$(DeletionType)_1m_100k_$(Process).out
+error = wiki_$(DeletionType)_1m_100k_$(Process).err
+queue
+
+DeletionType = RANDOM_DELETION
+NumberRestaurants = 1000000
+BytesOfWiki = 1000000
+DepthOfModel = -1
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_$(DeletionType)_1m_1m_$(Process).out
+error = wiki_$(DeletionType)_1m_1m_$(Process).err
+queue
+
+DeletionType = RANDOM_DELETION
+NumberRestaurants = 1000000
+BytesOfWiki = 10000000
+DepthOfModel = -1
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_$(DeletionType)_1m__$(Process).out
+error = wiki_$(DeletionType)_1m__$(Process).err
+queue
+
+DeletionType = RANDOM_DELETION
+NumberRestaurants = 1000000
+BytesOfWiki = 25000000
+DepthOfModel = -1
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_$(DeletionType)_1m_25m_$(Process).out
+error = wiki_$(DeletionType)_1m_25m_$(Process).err
+queue
+
+DeletionType = RANDOM_DELETION
+NumberRestaurants = 1000
+BytesOfWiki = 10000
+DepthOfModel = 5
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_fd_$(DeletionType)_1k_10k_$(Process).out
+error = wiki_fd_$(DeletionType)_1k_10k_$(Process).err
+queue
+
+DeletionType = RANDOM_DELETION
+NumberRestaurants = 1000
+BytesOfWiki = 100000
+DepthOfModel = 5
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_fd_$(DeletionType)_1k_100k_$(Process).out
+error = wiki_fd_$(DeletionType)_1k_100k_$(Process).err
+queue
+
+DeletionType = RANDOM_DELETION
+NumberRestaurants = 1000
+BytesOfWiki = 1000000
+DepthOfModel = 5
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_fd_$(DeletionType)_1k_1m_$(Process).out
+error = wiki_fd_$(DeletionType)_1k_1m_$(Process).err
+queue
+
+DeletionType = RANDOM_DELETION
+NumberRestaurants = 1000
+BytesOfWiki = 10000000
+DepthOfModel = 5
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_fd_$(DeletionType)_1k__$(Process).out
+error = wiki_fd_$(DeletionType)_1k__$(Process).err
+queue
+
+DeletionType = RANDOM_DELETION
+NumberRestaurants = 1000
+BytesOfWiki = 25000000
+DepthOfModel = 5
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_fd_$(DeletionType)_1k_25m_$(Process).out
+error = wiki_fd_$(DeletionType)_1k_25m_$(Process).err
+queue
+
+DeletionType = RANDOM_DELETION
+NumberRestaurants = 10000
+BytesOfWiki = 10000
+DepthOfModel = 5
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_fd_$(DeletionType)_10k_10k_$(Process).out
+error = wiki_fd_$(DeletionType)_10k_10k_$(Process).err
+queue
+
+DeletionType = RANDOM_DELETION
+NumberRestaurants = 10000
+BytesOfWiki = 100000
+DepthOfModel = 5
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_fd_$(DeletionType)_10k_100k_$(Process).out
+error = wiki_fd_$(DeletionType)_10k_100k_$(Process).err
+queue
+
+DeletionType = RANDOM_DELETION
+NumberRestaurants = 10000
+BytesOfWiki = 1000000
+DepthOfModel = 5
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_fd_$(DeletionType)_10k_1m_$(Process).out
+error = wiki_fd_$(DeletionType)_10k_1m_$(Process).err
+queue
+
+DeletionType = RANDOM_DELETION
+NumberRestaurants = 10000
+BytesOfWiki = 10000000
+DepthOfModel = 5
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_fd_$(DeletionType)_10k__$(Process).out
+error = wiki_fd_$(DeletionType)_10k__$(Process).err
+queue
+
+DeletionType = RANDOM_DELETION
+NumberRestaurants = 10000
+BytesOfWiki = 25000000
+DepthOfModel = 5
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_fd_$(DeletionType)_10k_25m_$(Process).out
+error = wiki_fd_$(DeletionType)_10k_25m_$(Process).err
+queue
+
+DeletionType = RANDOM_DELETION
+NumberRestaurants = 100000
+BytesOfWiki = 10000
+DepthOfModel = 5
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_fd_$(DeletionType)_100k_10k_$(Process).out
+error = wiki_fd_$(DeletionType)_100k_10k_$(Process).err
+queue
+
+DeletionType = RANDOM_DELETION
+NumberRestaurants = 100000
+BytesOfWiki = 100000
+DepthOfModel = 5
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_fd_$(DeletionType)_100k_100k_$(Process).out
+error = wiki_fd_$(DeletionType)_100k_100k_$(Process).err
+queue
+
+DeletionType = RANDOM_DELETION
+NumberRestaurants = 100000
+BytesOfWiki = 1000000
+DepthOfModel = 5
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_fd_$(DeletionType)_100k_1m_$(Process).out
+error = wiki_fd_$(DeletionType)_100k_1m_$(Process).err
+queue
+
+DeletionType = RANDOM_DELETION
+NumberRestaurants = 100000
+BytesOfWiki = 10000000
+DepthOfModel = 5
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_fd_$(DeletionType)_100k__$(Process).out
+error = wiki_fd_$(DeletionType)_100k__$(Process).err
+queue
+
+DeletionType = RANDOM_DELETION
+NumberRestaurants = 100000
+BytesOfWiki = 25000000
+DepthOfModel = 5
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_fd_$(DeletionType)_100k_25m_$(Process).out
+error = wiki_fd_$(DeletionType)_100k_25m_$(Process).err
+queue
+
+DeletionType = RANDOM_DELETION
+NumberRestaurants = 1000000
+BytesOfWiki = 10000
+DepthOfModel = 5
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_fd_$(DeletionType)_1m_10k_$(Process).out
+error = wiki_fd_$(DeletionType)_1m_10k_$(Process).err
+queue
+
+DeletionType = RANDOM_DELETION
+NumberRestaurants = 1000000
+BytesOfWiki = 100000
+DepthOfModel = 5
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_fd_$(DeletionType)_1m_100k_$(Process).out
+error = wiki_fd_$(DeletionType)_1m_100k_$(Process).err
+queue
+
+DeletionType = RANDOM_DELETION
+NumberRestaurants = 1000000
+BytesOfWiki = 1000000
+DepthOfModel = 5
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_fd_$(DeletionType)_1m_1m_$(Process).out
+error = wiki_fd_$(DeletionType)_1m_1m_$(Process).err
+queue
+
+DeletionType = RANDOM_DELETION
+NumberRestaurants = 1000000
+BytesOfWiki = 10000000
+DepthOfModel = 5
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_fd_$(DeletionType)_1m__$(Process).out
+error = wiki_fd_$(DeletionType)_1m__$(Process).err
+queue
+
+DeletionType = RANDOM_DELETION
+NumberRestaurants = 1000000
+BytesOfWiki = 25000000
+DepthOfModel = 5
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_fd_$(DeletionType)_1m_25m_$(Process).out
+error = wiki_fd_$(DeletionType)_1m_25m_$(Process).err
+queue
+
+DeletionType = BAYES_FACTOR_DELETION
+NumberRestaurants = 1000
+BytesOfWiki = 10000
+DepthOfModel = -1
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_$(DeletionType)_1k_10k_$(Process).out
+error = wiki_$(DeletionType)_1k_10k_$(Process).err
+queue
+
+DeletionType = BAYES_FACTOR_DELETION
+NumberRestaurants = 1000
+BytesOfWiki = 100000
+DepthOfModel = -1
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_$(DeletionType)_1k_100k_$(Process).out
+error = wiki_$(DeletionType)_1k_100k_$(Process).err
+queue
+
+DeletionType = BAYES_FACTOR_DELETION
+NumberRestaurants = 1000
+BytesOfWiki = 1000000
+DepthOfModel = -1
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_$(DeletionType)_1k_1m_$(Process).out
+error = wiki_$(DeletionType)_1k_1m_$(Process).err
+queue
+
+DeletionType = BAYES_FACTOR_DELETION
+NumberRestaurants = 1000
+BytesOfWiki = 10000000
+DepthOfModel = -1
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_$(DeletionType)_1k__$(Process).out
+error = wiki_$(DeletionType)_1k__$(Process).err
+queue
+
+DeletionType = BAYES_FACTOR_DELETION
+NumberRestaurants = 1000
+BytesOfWiki = 25000000
+DepthOfModel = -1
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_$(DeletionType)_1k_25m_$(Process).out
+error = wiki_$(DeletionType)_1k_25m_$(Process).err
+queue
+
+DeletionType = BAYES_FACTOR_DELETION
+NumberRestaurants = 10000
+BytesOfWiki = 10000
+DepthOfModel = -1
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_$(DeletionType)_10k_10k_$(Process).out
+error = wiki_$(DeletionType)_10k_10k_$(Process).err
+queue
+
+DeletionType = BAYES_FACTOR_DELETION
+NumberRestaurants = 10000
+BytesOfWiki = 100000
+DepthOfModel = -1
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_$(DeletionType)_10k_100k_$(Process).out
+error = wiki_$(DeletionType)_10k_100k_$(Process).err
+queue
+
+DeletionType = BAYES_FACTOR_DELETION
+NumberRestaurants = 10000
+BytesOfWiki = 1000000
+DepthOfModel = -1
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_$(DeletionType)_10k_1m_$(Process).out
+error = wiki_$(DeletionType)_10k_1m_$(Process).err
+queue
+
+DeletionType = BAYES_FACTOR_DELETION
+NumberRestaurants = 10000
+BytesOfWiki = 10000000
+DepthOfModel = -1
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_$(DeletionType)_10k__$(Process).out
+error = wiki_$(DeletionType)_10k__$(Process).err
+queue
+
+DeletionType = BAYES_FACTOR_DELETION
+NumberRestaurants = 10000
+BytesOfWiki = 25000000
+DepthOfModel = -1
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_$(DeletionType)_10k_25m_$(Process).out
+error = wiki_$(DeletionType)_10k_25m_$(Process).err
+queue
+
+DeletionType = BAYES_FACTOR_DELETION
+NumberRestaurants = 100000
+BytesOfWiki = 10000
+DepthOfModel = -1
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_$(DeletionType)_100k_10k_$(Process).out
+error = wiki_$(DeletionType)_100k_10k_$(Process).err
+queue
+
+DeletionType = BAYES_FACTOR_DELETION
+NumberRestaurants = 100000
+BytesOfWiki = 100000
+DepthOfModel = -1
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_$(DeletionType)_100k_100k_$(Process).out
+error = wiki_$(DeletionType)_100k_100k_$(Process).err
+queue
+
+DeletionType = BAYES_FACTOR_DELETION
+NumberRestaurants = 100000
+BytesOfWiki = 1000000
+DepthOfModel = -1
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_$(DeletionType)_100k_1m_$(Process).out
+error = wiki_$(DeletionType)_100k_1m_$(Process).err
+queue
+
+DeletionType = BAYES_FACTOR_DELETION
+NumberRestaurants = 100000
+BytesOfWiki = 10000000
+DepthOfModel = -1
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_$(DeletionType)_100k__$(Process).out
+error = wiki_$(DeletionType)_100k__$(Process).err
+queue
+
+DeletionType = BAYES_FACTOR_DELETION
+NumberRestaurants = 100000
+BytesOfWiki = 25000000
+DepthOfModel = -1
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_$(DeletionType)_100k_25m_$(Process).out
+error = wiki_$(DeletionType)_100k_25m_$(Process).err
+queue
+
+DeletionType = BAYES_FACTOR_DELETION
+NumberRestaurants = 1000000
+BytesOfWiki = 10000
+DepthOfModel = -1
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_$(DeletionType)_1m_10k_$(Process).out
+error = wiki_$(DeletionType)_1m_10k_$(Process).err
+queue
+
+DeletionType = BAYES_FACTOR_DELETION
+NumberRestaurants = 1000000
+BytesOfWiki = 100000
+DepthOfModel = -1
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_$(DeletionType)_1m_100k_$(Process).out
+error = wiki_$(DeletionType)_1m_100k_$(Process).err
+queue
+
+DeletionType = BAYES_FACTOR_DELETION
+NumberRestaurants = 1000000
+BytesOfWiki = 1000000
+DepthOfModel = -1
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_$(DeletionType)_1m_1m_$(Process).out
+error = wiki_$(DeletionType)_1m_1m_$(Process).err
+queue
+
+DeletionType = BAYES_FACTOR_DELETION
+NumberRestaurants = 1000000
+BytesOfWiki = 10000000
+DepthOfModel = -1
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_$(DeletionType)_1m__$(Process).out
+error = wiki_$(DeletionType)_1m__$(Process).err
+queue
+
+DeletionType = BAYES_FACTOR_DELETION
+NumberRestaurants = 1000000
+BytesOfWiki = 25000000
+DepthOfModel = -1
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_$(DeletionType)_1m_25m_$(Process).out
+error = wiki_$(DeletionType)_1m_25m_$(Process).err
+queue
+
+DeletionType = BAYES_FACTOR_DELETION
+NumberRestaurants = 1000
+BytesOfWiki = 10000
+DepthOfModel = 5
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_fd_$(DeletionType)_1k_10k_$(Process).out
+error = wiki_fd_$(DeletionType)_1k_10k_$(Process).err
+queue
+
+DeletionType = BAYES_FACTOR_DELETION
+NumberRestaurants = 1000
+BytesOfWiki = 100000
+DepthOfModel = 5
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_fd_$(DeletionType)_1k_100k_$(Process).out
+error = wiki_fd_$(DeletionType)_1k_100k_$(Process).err
+queue
+
+DeletionType = BAYES_FACTOR_DELETION
+NumberRestaurants = 1000
+BytesOfWiki = 1000000
+DepthOfModel = 5
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_fd_$(DeletionType)_1k_1m_$(Process).out
+error = wiki_fd_$(DeletionType)_1k_1m_$(Process).err
+queue
+
+DeletionType = BAYES_FACTOR_DELETION
+NumberRestaurants = 1000
+BytesOfWiki = 10000000
+DepthOfModel = 5
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_fd_$(DeletionType)_1k__$(Process).out
+error = wiki_fd_$(DeletionType)_1k__$(Process).err
+queue
+
+DeletionType = BAYES_FACTOR_DELETION
+NumberRestaurants = 1000
+BytesOfWiki = 25000000
+DepthOfModel = 5
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_fd_$(DeletionType)_1k_25m_$(Process).out
+error = wiki_fd_$(DeletionType)_1k_25m_$(Process).err
+queue
+
+DeletionType = BAYES_FACTOR_DELETION
+NumberRestaurants = 10000
+BytesOfWiki = 10000
+DepthOfModel = 5
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_fd_$(DeletionType)_10k_10k_$(Process).out
+error = wiki_fd_$(DeletionType)_10k_10k_$(Process).err
+queue
+
+DeletionType = BAYES_FACTOR_DELETION
+NumberRestaurants = 10000
+BytesOfWiki = 100000
+DepthOfModel = 5
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_fd_$(DeletionType)_10k_100k_$(Process).out
+error = wiki_fd_$(DeletionType)_10k_100k_$(Process).err
+queue
+
+DeletionType = BAYES_FACTOR_DELETION
+NumberRestaurants = 10000
+BytesOfWiki = 1000000
+DepthOfModel = 5
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_fd_$(DeletionType)_10k_1m_$(Process).out
+error = wiki_fd_$(DeletionType)_10k_1m_$(Process).err
+queue
+
+DeletionType = BAYES_FACTOR_DELETION
+NumberRestaurants = 10000
+BytesOfWiki = 10000000
+DepthOfModel = 5
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_fd_$(DeletionType)_10k__$(Process).out
+error = wiki_fd_$(DeletionType)_10k__$(Process).err
+queue
+
+DeletionType = BAYES_FACTOR_DELETION
+NumberRestaurants = 10000
+BytesOfWiki = 25000000
+DepthOfModel = 5
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_fd_$(DeletionType)_10k_25m_$(Process).out
+error = wiki_fd_$(DeletionType)_10k_25m_$(Process).err
+queue
+
+DeletionType = BAYES_FACTOR_DELETION
+NumberRestaurants = 100000
+BytesOfWiki = 10000
+DepthOfModel = 5
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_fd_$(DeletionType)_100k_10k_$(Process).out
+error = wiki_fd_$(DeletionType)_100k_10k_$(Process).err
+queue
+
+DeletionType = BAYES_FACTOR_DELETION
+NumberRestaurants = 100000
+BytesOfWiki = 100000
+DepthOfModel = 5
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_fd_$(DeletionType)_100k_100k_$(Process).out
+error = wiki_fd_$(DeletionType)_100k_100k_$(Process).err
+queue
+
+DeletionType = BAYES_FACTOR_DELETION
+NumberRestaurants = 100000
+BytesOfWiki = 1000000
+DepthOfModel = 5
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_fd_$(DeletionType)_100k_1m_$(Process).out
+error = wiki_fd_$(DeletionType)_100k_1m_$(Process).err
+queue
+
+DeletionType = BAYES_FACTOR_DELETION
+NumberRestaurants = 100000
+BytesOfWiki = 10000000
+DepthOfModel = 5
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_fd_$(DeletionType)_100k__$(Process).out
+error = wiki_fd_$(DeletionType)_100k__$(Process).err
+queue
+
+DeletionType = BAYES_FACTOR_DELETION
+NumberRestaurants = 100000
+BytesOfWiki = 25000000
+DepthOfModel = 5
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_fd_$(DeletionType)_100k_25m_$(Process).out
+error = wiki_fd_$(DeletionType)_100k_25m_$(Process).err
+queue
+
+DeletionType = BAYES_FACTOR_DELETION
+NumberRestaurants = 1000000
+BytesOfWiki = 10000
+DepthOfModel = 5
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_fd_$(DeletionType)_1m_10k_$(Process).out
+error = wiki_fd_$(DeletionType)_1m_10k_$(Process).err
+queue
+
+DeletionType = BAYES_FACTOR_DELETION
+NumberRestaurants = 1000000
+BytesOfWiki = 100000
+DepthOfModel = 5
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_fd_$(DeletionType)_1m_100k_$(Process).out
+error = wiki_fd_$(DeletionType)_1m_100k_$(Process).err
+queue
+
+DeletionType = BAYES_FACTOR_DELETION
+NumberRestaurants = 1000000
+BytesOfWiki = 1000000
+DepthOfModel = 5
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_fd_$(DeletionType)_1m_1m_$(Process).out
+error = wiki_fd_$(DeletionType)_1m_1m_$(Process).err
+queue
+
+DeletionType = BAYES_FACTOR_DELETION
+NumberRestaurants = 1000000
+BytesOfWiki = 10000000
+DepthOfModel = 5
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_fd_$(DeletionType)_1m__$(Process).out
+error = wiki_fd_$(DeletionType)_1m__$(Process).err
+queue
+
+DeletionType = BAYES_FACTOR_DELETION
+NumberRestaurants = 1000000
+BytesOfWiki = 25000000
+DepthOfModel = 5
+
+arguments=edu.columbia.stat.wood.icml2010.Main $(DeletionType) $(DepthOfModel) $(NumberRestaurants) $(Process) 1000 $(BytesOfWiki) /hpc/scratch/stats/users/nsb2130/data/wikipedia/ enwik8
+output = wiki_fd_$(DeletionType)_1m_25m_$(Process).out
+error = wiki_fd_$(DeletionType)_1m_25m_$(Process).err
+queue
+
+BUILD SUCCESSFUL (total time: 1 second)
