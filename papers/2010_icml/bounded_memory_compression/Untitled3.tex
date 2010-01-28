@@ -1,0 +1,165 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%% ICML 2010 EXAMPLE LATEX SUBMISSION FILE %%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Use the following line _only_ if you're still using LaTeX 2.09.
+%\documentstyle[icml2010,epsf,natbib]{article}
+% If you rely on Latex2e packages, like most moden people use this:
+\documentclass{article}
+
+% For figures
+\usepackage{graphicx} % more modern
+%\usepackage{epsfig} % less modern
+\usepackage{subfigure} 
+
+% For citations
+\usepackage{natbib}
+
+% For algorithms
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+% As of 2010, we use the hyperref package to produce hyperlinks in the
+% resulting PDF.  If this breaks your system, please commend out the
+% following usepackage line and replace \usepackage{icml2010} with
+% \usepackage[nohyperref]{icml2010} above.
+\usepackage{hyperref}
+
+% Packages hyperref and algorithmic misbehave sometimes.  We can fix
+% this with the following command.
+\newcommand{\theHalgorithm}{\arabic{algorithm}}
+
+% Employ the following version of the ``usepackage'' statement for
+% submitting the draft version of the paper for review.  This will set
+% the note in the first column to ``Under review.  Do not distribute.''
+\usepackage{icml2010} 
+
+% Employ this version of the ``usepackage'' statement after the paper has
+% been accepted, when creating the final version.  This will set the
+% note in the first column to ``Appearing in''
+% \usepackage[accepted]{icml2010}
+
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\PY}{\mathcal{P}\mathcal{Y}}
+\newcommand{\G}{\mathcal{G}}
+\newcommand{\ES}{\mathcal{E}\mathcal{S}}
+\newcommand{\DP}{\mathcal{D}\mathcal{P}}
+
+% The \icmltitle you define below is probably too long as a header.
+% Therefore, a short form for the running title is supplied here:
+\icmltitlerunning{Untitled}
+
+\begin{document} 
+
+\twocolumn[
+\icmltitle{Untitled}
+
+% It is OKAY to include author information, even for blind
+% submissions: the style file will automatically remove it for you
+% unless you've provided the [accepted] option to the icml2010
+% package.
+\icmlauthor{Nicholas Bartlett}{bartlett@stat.columbia.edu}
+\icmladdress{Columbia University,
+Room 1005 SSW, MC 4690,
+1255 Amsterdam Avenue, New York, NY 10027}
+
+\icmlauthor{Frank Wood}{fwood@stat.columbia.edu}
+\icmladdress{Columbia University,
+Room 1005 SSW, MC 4690,
+1255 Amsterdam Avenue, New York, NY 10027}
+
+% You may provide any keywords that you 
+% find helpful for describing your paper; these are used to populate 
+% the "keywords" metadata in the PDF but will not be shown in the document
+\icmlkeywords{compression Pitman-Yor memory}
+
+\vskip 0.3in
+]
+
+\begin{abstract} 
+No current abstract
+\end{abstract} 
+
+\section{Introduction}
+
+The task of general file compression with an algorithm requiring constant space is of obvious practical value.  In any application there will be only a finite amount of memory available and many excellent compression algorithms become unfeasible when compressing large files.  In order to address this task directly an algorithm which allows a specified maximum memory allocation prior to running is needed.  In the case of compression through the use of probabilistic models, the algorithm should control the amount of memory required by adapting the complexity of the model in an appropriate manner to accommodate the stated memory bounds.
+
+Probabilistic models have been shown to perform extremely well when combined with an entropy encoder in compression algorithms.  These models work by predicting the next type in a sequence of types, most often bytes, which make up a file.  The better the model is, the more efficient the encoding scheme and the higher the compression ratio.  The model referred to as a stochastic memoizer for sequence data [wood] has recently been shown to outperform several other such models for general compression tasks [Gasthaus].  Unfortunately many of these byte level prediction algorithms require space on the order of the sequence length and thus become unrealistic for very large files.
+
+Even for models with theoretically constant memory requirements, such as n-gram models, the memory restriction cannot be pre-specified and the theoretical value is such a gross overestimate of the likely memory requirements it does not provide insight regarding the parameterization of the model at the start.  In section 1 of this paper we will review the stochastic memoizer for sequence data [wood].
+
+\section{The basic model}
+
+\subsection{Pitman-Yor Process}
+
+The basic building block for the models we employ is the Pitman-Yor process.  The Pitman-Yor process, which is a generalization of the dirichlet process, can be thought of as a distribution over measures parameterized by three parameters.   We say $\F \sim \PY(\alpha, \theta,\G)$ if $\F$ is a random measure distributed according to a Pitman-Yor process with discount parameter $\alpha$, concentration parameter $\theta$, and base measure $\G$. The Pitman-Yor process reduces to the dirichlet process when $\alpha = 0$ [teh?]. 
+
+Like the dirichlet process, there is a restaurant process which facilitates an easy method to generate samples at the lowest level without instantiating explicitly a random draw of $\F$.  That is, the method generates samples with $\F$ marginalized out.  The restaurant process goes as follows, each sequential draw of the sample is a customer being seated at a restaurant.  The first customer sits at an empty table.  Each subsequent customer joins a table with probability proportional $(c_t - \alpha)$ or creates a new table with probability proportional to $(n_t*\alpha + \theta)$, where $c_t$ is the number of customers already at table $t$ and $n_t$ is the number of customers currently in the restaurant.  After the entire sample is seated, a label $\gamma_t$ is drawn for each table independently from the base distribution [teh].  Thus, in the final sample consists of $c_1$ values equal to $\gamma_1$, $c_2$ values equal to $\gamma_2$, etc. Note that there is a  natural clustering of draws from $\F$.
+
+These random measures can also be arranged in a hierarchy, such as $\F \sim \PY(\alpha, \theta,\G)$ and $\G \sim \PY(\alpha_0, \theta_0, \G_0)$.  In this case the restaurant process extends iteratively.  That is, draws at the bottom proceed as before, though when one wishes to draw from $\G$ one must perform the same seating operation in a mid-level restaurant, drawing from $\G_0$ to ascertain table labels.  In this way both the random measures $\F$ and $\G$ are marginalized out [teh].
+
+\subsection{Sequence Memoizer}
+
+The sequence memoizer (SM) [wood], is a hierarchical Pitman-Yor model for sequence data with unbounded depth.  Each node in the graphical model represents the distribution over the set of types ($\Sigma$), bytes in the compression setting, conditioned by a unique context.  The context consists of the entire sequence of types preceding the observation.  We can write the model as:
+
+\begin{eqnarray*}
+	\G_{[]} &\sim& \PY(d_0, 0, \mathcal{U}_{| \Sigma |}) \\
+	\G_{u} &\sim& \PY(d_{|u|}, 0, \G_{\sigma(u)}) \hspace{1.5cm} \forall u \in \Sigma^+
+\end{eqnarray*}
+
+where $\mathcal{U}_{| \Sigma |})$ is a uniform distribution over the set of types, $u$ is a particular context, $\Sigma^+$ is the set of all such contexts, and $\sigma(u)$ is the context $u$ with it's left most (most distant) type removed.
+
+The major contribution of [wood] was the application of the result that two Pitman-Yor processes, with 0 concentration, can be analytically integrated against one another.  The analytical result is that if $\G_1 \sim \PY(d_1, 0, \G_0)$ and $\G_2 \sim \PY(d_2, 0, \G_1)$ then marginally, $\G_2 \sim \PY(d_2*d_2, 0, \G_0)$.  [wood] show that this result allows the tree to be built in linear time with linear space.  More details regarding implementation of this model for compression are laid out in [Gasthaus], including a simplified incremental construction which can be done simultaneously with estimation.
+
+\section{Methodology}
+
+While the SM (sequence memoizer) model demonstrates excellent empirical results for compression [Gasthaus], it is not hard to see that the model will grow linearly in space with the length of the data.  This can be seen most easily by noting that each time an observation is seated in the tree structure at least one and no more than two restaurants must be instantiated.  Furthermore, the complexity of the algorithm is $n^2$ since seating each observation may require moving all the way down a certain path on the tree, a path which is potentially as deep as the length of the sequence.  Given that our objective is memory bounded compression, we propose a framework for limiting the complexity of the model in a way which maintains the theoretical validity of our inference scheme while allowing the model to adapt dynamically to the observed data.
+
+\subsection{Generalized Polya-Urn Scheme for Time Varying Dependent Pitman-Yor Process} 
+
+The restaurant process described as a method of drawing a sample from a random measure $\F \sim \PY(\alpha, \theta,\G_0)$ can be generalized in order to produce samples from a sequence of dependent random measures $\{\F_t\}_{t =1 \ldots n}$ such that $\F_t \sim \PY(\alpha, \theta,\G_0)$ for $t = 1 \dots n$.  This generalized scheme is an extension of the generalized polya urn for time-varying dirichlet processes introduced in [caron].  Recall that the Dirichlet process ($\DP$) is a special case of the Pitman-Yor process in which the $\alpha$ parameter is set to $0$. 
+
+In [caron], they note that draws from the restaurant process can be thought of in two parts, first by generating  a random clustering of the integers $1 \dots n$ in a certain way, and secondly by assigning labels to each cluster (table in the restaurant scheme) by drawing independent draws from the base distribution.  The clustering is easily generated by a polya-urn scheme in which the urn starts empty and each of the $n$ integers can be thought of as balls which are colored sequentially.  The $j$'th ball is colored either by drawing a random ball from the urn and painting the new ball the same color as the chosen ball or by choosing a new color.  This decision is made stochastically with probability $\frac{j-1}{j - 1 +\theta}$ and $\frac{\theta}{j-1+\theta}$ respectively.  Each ball is placed in the urn after it is colored [mcqueen?]. After all the balls have been painted the colors define a partition. This random clustering follows the well known Ewen's Sampling distribution over $n$ integers ($\ES_n(\theta)$) which has a long history of study in population genetics [caron?].  
+
+By breaking the generation scheme into these two parts we see that any procedure which draws first the clustering according to a $\ES_ n(\theta)$ distribution and then the labels independently from the base distribution will obtain a sample of size $n$ from a random latent measure $\G \sim \DP(\theta,\G_0)$.  Furthermore, this distribution has a number of known properties, including consistency under two different deletion operations [caron or kingman].  The deletion operation and consistency result we are concerned with is that by deleting a random ball from the final state of the urn yields a partition which has a $\ES_{n-1}(\theta)$ distribution.  Consistency under this deletion operation also holds for the two parameter Ewen's sampling distribution ($\ES_n(\alpha,\theta)$), the analogous random clustering induced by the restaurant scheme used to represent the Pitman-Yor process [Pitman]. The other type of deletion operation is known as size biased deletion, but consistency under this type of deletion operation does not hold in the case of the two parameter Ewen's sampling distribution and is thus unimportant in this discussion.
+
+These results lead directly to a generalized polya urn scheme for dependent stationary time-varying Pitman-Yor processes [caron poster??].  Following the construction of [caron] we consider a scheme in which, at each time point, before new samples are sampled from the existing state of the urn, balls are removed randomly, with a uniform distribution, from the urn.  In the restaurant formulation of the process this means that customers randomly get up and leave the restaurant.  After customers have left, new customers are seated according the the current state of the restaurant.  This gives rise to a sample at each time point which comes from a random distribution $F_t \sim \PY(\alpha, \theta,\G_0)$.  The amount of dependence between $\F_{t-1}$ and $\F_t$ is naturally related to the number of customers leaving between each time step [caron].  If all the customers leave, $\F_{t-1}$ and $\F_t$ are conditionally independent (conditioned on the base measure) and if no customers leave $\F_t$ and $\F_{t-1}$ are the same.  Furthermore, the number of customers to remove from the restaurant between time steps is independent of the consistency result and can thus be either stochastic or deterministic.
+
+\subsection{Time Varying Pitman-Yor Process in a hierarchical setting}
+
+This time varying framework can be extended to a hierarchical setting at the lowest level of hierarchy in a natural way.  If we consider a simple hierarchical setting in which $\F \sim \PY(\alpha, \theta, \G)$ and $\G \sim \PY(\alpha_0, \theta_0, \G_0)$, then the generative model can be generalized to be time varying by stipulating that customers leave the lowest restaurant between time steps and that new customers are seated according to the state of the restaurant after the removal of customers.  This set up indicates that we believe the model to be that $\F_t \sim \PY(\alpha, \theta, \G)$ and $\G \sim \PY(\alpha_0, \theta_0, \G_0)$ such that $\F_t$ may vary between time steps.
+
+It is natural to consider how we could also make the distribution $\G$ in this example time varying, that is there are random measures $\G_t$ such that $\G_t$ is varying across time steps and both $\G_t \sim \PY(\alpha_0, \theta_0, \G_0)$ and $\F_t \sim \PY(\alpha,\theta,\G_t)$ for all $t$.  It is clear that if the restaurant at the lowest level is empty, the same kind of customer removal step will suffice to provide a generative scheme with these properties.  However, if there are customers in the lowest level restaurant at a given time step there is no obvious and intutive method to change the state of the lower level restaurant to reflect the changes made above. Furthermore, it is not clear that such a model specification even makes sense, as this would indicate that not only is $\G_t$ dependent and time varying, but $\F_t$ is varying in such as way as to be dependent on $\F_{t-1}$ and yet always distributed according to $\G_t$, despite the fact that $\G_t$ varies across time steps.  One possible reconciliation is a model specification such that at time steps where $\G_t$ is not the same as $\G_{t-1}$, $\F_t$ is independent of $\F_{t-1}$ and thus the corresponding restaurant starts empty.
+
+\subsection{Time Varying Model Applied To SM}
+
+The time-varying models specified above not only allow for a sequence of time-varying measures, but also serve to fundamentally limit the complexity of the model at any given time step.  In fact, if we remove enough customers often enough this framework could provide a basis for algorithmic control of the complexity of the model.  It is because of this aspect that the time-varying model presents a nice framework for deletion in the stochastic memoizer for sequence data.  As noted earlier, the number of instantiated restaurants in the SM is the fundamental limiting factor regarding memory usage, thus we will consider a single instantiated restaurant as the units of memory required by the model.  Thus, in order for the deletion scheme to limit the amount of memory used by the SM model, we must be able to limit the number of instantiated restaurants.
+
+The theory presented above indicates that effectively we can only consider deleting customers in restaurants at the lowest level.  In the tree which represents the state of the SM at any given time, this corresponds to the leaf restaurants.  Furthermore, to achieve memory savings we must no longer need to have the restaurant instantiated, meaning we will need to delete all of the customers at a given restaurant.  This type of deletion operation will give rise to implicit model assumptions as follows. If, at time step $t$, we delete all the customers in a given leaf restaurant, the conditional distribution over bytes given the particular context pertaining to that path down the tree, at all subsequent time steps, is, conditionally on the base distribution, independent of this particular distribution prior to time $t$.  Furthermore, it will often be the case in the SM model that the parent restaurant for a leaf restaurant is not instantiated, thus to actually attain memory savings by deleting a leaf restaurant we must effectively delete all the restaurants in this particular path up until the nearest instantiated restaurant.  This means the implicit model assumption is that all of the distributions after time $t$ corresponding to those many deleted restaurants are conditionally independent of their previous states.
+
+This is the basic framework for all of the bounded memory algorithms we present in the results section and is the main contribution of this paper.  The assumption that, for many contexts, the distribution over bytes changes over time seems appropriate in the field of compression as we are interested in compressing general sets of documents. It is not unreasonable to assume that structure varies across the many types of documents a user may wish to compress, or even internally to each particular document.  The assumption of independence required for us to justify our particular deletion process is primarily of practical motivation.  However, the amount of information being disregarded by the deletion process is likely to be minimal as nearly all leaf restaurants will contain only one observation and thus contribute as minimally as one could hope to any given predictive distribution.
+
+Finally, we point out that the theory behind these deletion operations holds for general hierarchical Pitman-Yor processes and thus also for finite depth n-gram style models.  In the results section we show some results concerning this type of model as well.
+
+\subsection{Details of Our Model and Inference}
+
+Typically in these types of bayesian hierarchical models we would like to perform inference using MCMC sampling methods.  Here, the complexity of the model, and the desired use require online methods.  One natural approach is to use a particle filter given the sequential nature of the generative model.  The base SM model in our implementation is specified and estimated following the outline by [Gasthaus] using their 1PF approach.  That is, we use eleven unique, depth specific discount parameters where the eleventh discount is also the discount for larger depths.  The model is fit using a single particle particle filter and the discount parameters are optimized in a greedy sequential manner.  In the process of seating each observation we calculate the gradient of the predictive probability for the current observation with respect to the discount parameters and then step the discount parameters in the direction of the gradient.
+
+To infer which restaurants to delete we have implemented two different methods.  Both methods are exploratory and are by no means exhaustive.  The first deletes leaf nodes completely at random.  Since we are using a single particle particle filter, this means that as soon as we delete the restaurants, we instantly free up memory.  At first, this deletion scheme seems a bit crude, but note that since we have only one particle, the available information for inferring which restaurants to delete is minimal.  
+
+Our second method takes into account the log probability of the observed data given the current state of the model.  That is, given the current state of the model we can calculate the probability of generating exactly the sequence of data used to build the model.  By deleting different leaf restaurants the probability of the sequence, given the updated state of the model, changes.  We can rank the leaf restaurants in order by which deletions are least helpful regarding predicting the observed sequence and then delete those at the bottom of the ranking.  Since the current state of the model can be seen as a point estimate of the posterior distribution over the model space we consider this deletion scheme to be using, roughly, the useful idea of Bayes factors when deciding which restaurants to delete.
+
+Given that the primary goal of this model is to limit the amount of memory required in the inference algorithm, we parameterized the implementation with an upper limit on the number of instantiated restaurants.  The implementation we used deletes 100 restaurants when the number of instantiated restaurants goes above the max number of restaurants allowed minus two in order to maintain a strict upper bound.  The number 100 was chosen arbitrarily and experimentation might be useful.
+
+\subsection{Complexity}
+
+A little consideration will show that both of the algorithms suggested for inference in this model require constant space, in the sense of the turing machine, and linear time.  The claim that the algorithms are linear in time stems from the fact that each observation must be seated, but now each seating operation is a constant time operation as the length of any path one must traverse in order to seat an observation is bounded by the total number of instantiated restaurants.  Furthermore, each deletion step requires, at worst, visiting every instantiated restaurant, which if done recursively is a constant time algorithm given that the number of instantiated restaurants is limited.  
+
+The claim that the algorithm requires constant space requires a little more thought.  It is clear that we have limited the space required by restaurant objects, but what about the actual construction of the tree?  Currently our implementation labels each edge between nodes with two integers which index into the original sequence in order to describe that particular edge.  That is, if the parent restaurant corresponds to the distribution over bytes following $oc$,  and the child restaurant corresponds to the distribution over bytes following $acdoc$, the connecting path may be described by the integer array $[17,20]$ if in the sequence being seated, the entries 18-20 are $acd$.  This type of algorithm requires only constant space for each edge, though it works best if the entire sequence is held in memory.  That being said, considering the sequence being seated to be a semi-infinite tape as in the turing machine stipulation, reversals of the tape are allowable.  Thus, the entire sequence need not be held in memory, it is only necessary that we can reverse the tape to access previous entries in the sequence if we need them.
+
+As a practical side note, an alternative approach to implementation could store the full connecting context on the edge between nodes.  In the above example this would correspond to labeling the edge with the byte array $[acd]$.  While this does not theoretically require constant space, typically when implementing the algorithm on real data only a short section at the end the array is used.  Caching a fixed length section of the each array on the appropriate edge could drastically reduce the number of times the algorithm requires the tape to reverse.  As an example, if one was fitting the entire model on each document of the calgary corpus separately, as we do in the results section, and were willing to cache arrays of length 6,000, a tape reversal would never be required.  This number could only decrease using either of the deletion schemes suggested.  Finally, if we use a fixed depth model, caching the contexts on the edges requires only constant memory when enforcing an upper bound on the number of restaurants.
+
+\bibliography{example_paper}
+\bibliographystyle{icml2010}
+
+\end{document} 
