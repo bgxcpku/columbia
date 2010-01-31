@@ -1,5 +1,6 @@
 
 \section{The basic model}
+\label{basicModel}
 
 \subsection{Pitman-Yor Process}
 
@@ -18,6 +19,14 @@ where $n_i$ is the number of customers already sitting at table $i$ and $t_{j-1}
 
 %TODO need a figure here to show restaurants arranged.  rest 1 will be the upper restaurant, rest 2 will be the lower restaurant.
 These random distributions can be arranged in a hierarchy, such as the case that $\G_2 \sim \PY(d_2, c_2, \G_1)$ and $\G_1 \sim \PY(d_1, c_1, \G_0)$.  The hierarchical process can also be reformulated by analytically marginalizing out both $\G_2$ and $\G_1$.  Samples are obtained by iterating the algorithm for the single Pitman-Yor process.  To draw a sample $\{ \theta_j \}_{j = 1}^N$ we again need to obtain a partition of the first $N$ integers from $\ES_N(d,c)$.  This can be achieved through the CRP.  We will call this restaurant the child restaurant and denote the number of tables as $K_2$.  Each of the $K_2$ tables must be endowed with a parameter $ \psi_{2k}$ drawn independently from $\G_1$.  Since $\G_1$ has been marginalized out we can obtain $\{ \psi_{2k} \}_ {k = 1}^{K_2}$ by again using the algorithm for the single Pitman-Yor process.  A partition from the $\ES_{K_2}(d,c)$ is generated via the CRP.  We will call this restaurant the parent restaurant and the number of tables $K_1$.   Each of the $K_1$ tables must be endowed with a parameter $\psi_{1k}, k = 1 \ldots K_1$,  independently drawn from $\G_0$.  The sample consists of $\theta_j =\psi_{2k}$ for all customers $j$ sitting at table $k$ in the the child restaurant.
+
+\begin{figure}[h!tbp] 
+	\begin{center}
+		\scalebox{.25}{\includegraphics{figure1.pdf}} % [clip=true, viewport= 1in 1in 9in 9in]
+		\caption{Final state of an example CRF process.}
+	\end{center} 
+	\label{figHPY}
+\end{figure} 
 
 The process is most easily understood by looking at Figure~\ref{figHPY} in which the CRP process for the child restaurant resulted in three tables ($K_2 = 3$).  Therefore, three parameters must be drawn from $\G_1$.  Since $\G_1$ is marginalized we again revert to the process for a single Pitman-Yor process. The CRP for the parent restaurant resulted in two tables ($K_1 = 2$).  $\psi_{11}$ and $\psi_{12}$ are drawn independently from the base distribution $\G_0$.  $\{ \psi_2k \}_{k = 1}^{K_1}$ is then equal to $\{ \theta_1, \theta_1, \theta_2 \}$ which are then the parameters endowed to tables in the child restaurant.  From the figure we find that  $\{ \theta_j \}_{j = 1}^7 = \{ \theta_1, \theta_1, \theta_2, \theta_1, \theta_1, \theta_1, \theta_1 \}$.
 

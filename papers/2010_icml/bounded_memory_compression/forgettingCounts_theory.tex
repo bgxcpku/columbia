@@ -1,10 +1,10 @@
 \section{Theory}
 
-While the SM model demonstrates excellent empirical results \cite{Gasthaus}, the linear space requirement is theoretically unsettling and practically unmanageable for long sequences.  We propose a framework for limiting the memory required to represent the model in a way which maintains the theoretical validity of our inference scheme while allowing the model to adapt dynamically to the observed data.
+While the SM model demonstrates promising empirical results \cite{Gasthaus} we are unsatisfied with the linear space requirement for reasons stated earlier.  We propose a framework for limiting the memory required to represent the model in a way which maintains the theoretical validity of our inference scheme while allowing the model to adapt dynamically to the observed data.
 
-\subsection{Time-varying dependent Pitman-Yor process \cite{caron}} 
+\subsection{Varying dependent Pitman-Yor process \cite{caron}} 
 
-The seating arrangement in the Chinese restaurant after seating all the customers can be thought of as a random partition of $n$ unordered object.  Customers at the same table represent objects in the same partition.  The sequential process is a way in which to induce a certain distribution over the possible partitions.  Thus, any process which induces this distribution will result in draws from the correct Pitman-Yor process.  The distribution over random partitions induced by the Pitman-Yor Chinese restaurant process is known as the two parameter Ewen's sampling distribution ($\ES_n(d, c)$).  This distribution satisfies a consistence condition such that when a random object is removed from the partition, the remaining partition follows the $\ES_{n-1}(d,c)$ distribution \cite{pitman}.  Note that the consistence property of the single parameter Ewen's sampling distribution known as the species-deletion property \cite{kingman} does not hold in two parameter case \cite{pitman}.
+The $\ES_N(d,c)$ distribution discussed in Section~\ref{basicModel} satisfies the consistency property that if an integer is removed uniformly at random from the partition, the resulting partition over $N-1$ integers follows the $\ES_{N-1}(d,c)$ distribution \cite{pitman}.  Translated to the CRP used to generate partitions from the $\ES$ distribution, this means that if a customer is removed uniformly at random, the tables in the restaurant induce a partition following the $\ES_{N-1}(d,c)$ distribution. As an aside, note that the consistency property of the single parameter Ewen's sampling distribution known as the species-deletion property \cite{kingman} does not hold in two parameter case \cite{pitman}.
 
 The consistence property allows the restaurant process to be generalized to produce samples at time points $t = 1 \dots T$ from a time-varying random distribution $\G^t_1$ such that $\G^t_1 \sim \PY(d_1, c_1, \G_0)$ for all $t$.   The fact that $\G^t_1$ has the same distribution over time is known as stationarity in the time-series literature \cite{davis and brockwel?}.  The process works by marginalizing out $\G^t_1$ at all time points and drawing dependent samples.
 
@@ -16,6 +16,14 @@ Dependence between $\G_t^1$ arises from the generalized urn scheme through the u
 \subsection{Time-varying Pitman-Yor Process in a hierarchical setting}
 
 The time-varying framework can be extended to a hierarchical setting at the lowest level of hierarchy in a natural way.  Considering the simple hierarchical setting $\G_2 \sim \PY(d_2, c_1, \G_1)$ and $\G_1 \sim \PY(d_1, c_1, \G_0)$, the model may be generalized to $\G^t_2 \sim  \PY(d_2, c_1, \G_1)$ for all $t  = 1 \dots T$.  One specification of this model is to combine the Chinese restaurant franchise process with the generalized restaurant process.  In this representation customers are removed from the restaurant correspond to $\G_2$ between time steps.  The restaurant corresponding the $\G_1$ is unchanged between time steps. Samples are drawn according the Chinese restaurant franchise already outlined at each time step.
+
+\begin{figure}[h!tbp] 
+	\begin{center}
+		\scalebox{.25}{\includegraphics{figure2.pdf}} % [clip=true, viewport= 1in 1in 9in 9in]
+		\caption{An example of the possible evolution of the restaurant states in hierarchical setting}
+	\end{center} 
+	\label{figVHPY}
+\end{figure} 
 
 Only simple extensions allow for time-varying distributions higher on the hierarchy are clear.  For a model specification such as $\G_2^t \sim \PY(d_2, c_2, \G_1^t)$ and $\G_1^t  \sim \PY(d_1,d_2,\G_0)$ for all $t$, if we assume independence of the $\{ \G_2^t \}$ then we can employ the generalized restaurant scheme to create a time-varying dependent sequence of restaurant representations at the  $\G_1^t$ level and at each time start with an empty restaurant for the representation used to marginalize out $\G_2^t$.  However, it is not clear how to create dependence at the $\G_2^t$ level through the generalized restaurant process.  Such a restaurant scheme would require a process to update the restaurant state in the $\G_2^t$ level restaurant to reflect changes made to the state of the $\G_1^t$ level restaurant while maintaining a level of dependence.  While it is likely that such a process exists, it is neither intuitive nor necessary for this discussion.
 
