@@ -1,2 +1,14 @@
-\section{Results}
+\section{Experiments and results}
 \label{results}
+
+\subsection{Experiments}
+
+The data we used for the first experiment was the Calgary Corpus \cite{calgary corp}.  The Calgary Corpus is made up of 14 separate documents meant to simulate the task of compression in a general setting. Documents were modeled separately as a sequence of bytes.  Results are reported as corpus wide average log-loss in bits per byte.  In the compression setting this corresponds directly to compression ratio.
+
+To baseline our model we ran two other constant space sequence models.  The first was an adaptation of the SM model to finite depths.  By bounding the depth of the SM we create a finite depth HPYP model with concentration parameters zero.  Inference was still performed using the single particle particle filter.  The other constant space modeling technique was to use the SM to model the first part of the sequence.  When the number of instantiated restaurants reached the limit, the remaining part of the sequence was modeled separately using an SM model and repeating the technique.
+
+The first step of the experiment was to model each document in the corpus with finite depth SM models of depths 2 through 9.  For each document and model, the number of instantiated restaurants at the end of the sequence was recorded.  The maximum number of instantiated restaurants required for any one document provides an implicit bound on the space required to model the corpus as a whole.  The implicit bound for each depth was then used with the full SM model paired with the two deletion schemes proposed in Section~\ref{inference}.  This method of comparison was used because the basic finite depth models do not permit an upper bound to be specified.
+
+Each of the four models were fit ten times to understand the variance of the inference procedure.  Results show the standard deviation of the corpus wide average log loss to be less than $0.002$ for all of the methods.  All differences detectable in the graph are significant at the $\alpha = 0.01$ level.
+
+The second experiment was performed on the first 1mb of the Wikipedia Corpus \cite{wikicorp}.  Upper bounds on the number of instantiated restaurants were established prior to the models being fit.  Finite depth models with depths of 5 and 10 as well as the full SM model were fit using both deletion schemes.  All models were fit three separate times to explore variance in the inference procedure.  All standard deviations were below $0.007$.
