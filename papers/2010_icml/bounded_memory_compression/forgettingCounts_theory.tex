@@ -42,10 +42,10 @@ A generative procedure giving rise to data from this model is obtained by combin
 
 
 \begin{figure}[h!tbp] 
-	\label{figVHPY}
 	\begin{center}
 		\scalebox{.25}{\includegraphics{figure2.pdf}} % [clip=true, viewport= 1in 1in 9in 9in]
 		\caption{An example of the possible evolution of the restaurant states in a hierarchical setting}
+		\label{figVHPY}
 	\end{center} 
 \end{figure} 
 
@@ -69,8 +69,8 @@ The time-varying model will not only allow for a sequence of time-varying distri
 	\begin{center}
 		\scalebox{.4}{\includegraphics{results_calgary_corpus.pdf}} % [clip=true, viewport= 1in 1in 9in 9in]
 		\caption{An example of the possible evolution of the restaurant states in a hierarchical setting}
+		\label{figResultsCC}
 	\end{center} 
-	\label{figResultsCC}
 \end{figure*} 
 
 The theory presented above indicates that between time steps we can only delete customers in restaurants at the lowest level.  In the tree which represents the state of the SM, this corresponds to the leaf restaurants.  To achieve memory savings we will need to delete all of the customers at a given restaurant.  Restaurants without people need not be represented in the model state.  This deletion operation gives rise to implicit model assumptions. If, at time step $t$, we delete all the customers in a given leaf restaurant we implicitly assume the distribution over types given the particular context to be independent of the distribution at previous time steps.
