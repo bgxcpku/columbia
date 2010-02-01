@@ -10,31 +10,50 @@ The consistency property allows the restaurant representation to be modified to 
 
 \begin{eqnarray}
  \label{eqnDependentPY1}  \G^t | d, c, \G_0 &\sim& \PY(d,c,\G_0)\\
- \label{eqnDependentPY2}  \theta_j^t | \G_t &\sim& \G_t \hspace{.5cm} j = 1 \dots N_t.
+ \label{eqnDependentPY2}  \theta_j^t | \G^t &\sim& \G^t \hspace{.5cm} j = 1 \dots N_t.
  \end{eqnarray}
  
-We use the index $t$ because of the useful interpretation of the index as time even though the it need not be a temporal sequence. The fact that $\G^t_1$ has the same distribution over time is known as stationarity \cite{davis and brockwel}.  
+We use the index $t$ because of the useful interpretation as time even though it need not be a temporal sequence. The fact that $\G^t_1$ has the same distribution over time is known as stationarity \cite{davis and brockwel}.  
  
-The generative procedure, an extension of the analogous procedure for dependent Dirichlet processes \cite{caron}, starts with an empty restaurant and generates $\{ \theta_j^1\}_{i = 1}^{N_1}$ by using the CRP to generate a partition of the integer $N_1$ and then endowing each table with a value drawn independently from $\G_0$.  Between time points customers are deleted uniformly at random from the state of the restaurant and empty tables removed from the restaurant.  After the deletion step new customers are seated according to the CRP, though the starting state of the restaurant may not be empty.  Previously unoccupied tables are endowed with a value drawn independently from $\G_0$.  We set $\theta^t_j = \psi_k$ if  the $j$'th customer seated during the $t$'th time step is seated at table $k$.
+The generative procedure, an extension of the analogous procedure for dependent Dirichlet processes \cite{caron}, starts with an empty restaurant and generates $\{ \theta_j^1\}_{i = 1}^{N_1}$ by using the CRP to generate a partition of the integer $N_1$ and then endowing each table with a value drawn independently from $\G_0$.  Between time points customers are deleted uniformly at random from the customer configuration of the restaurant and empty tables are removed from the restaurant.  After the deletion step new customers are seated according to the CRP with the initial customer configuration of the process given by the configuration resulting from the deletion step.  Once new customers have been seated, previously unoccupied tables are endowed with a value drawn independently from $\G_0$.  We set $\theta^t_j = \psi_k$ if  the $j^{th}$ customer seated during the $t^{th}$ time step is seated at table $k$.
 
-If $j$ customers are deleted after time step 1 the partition represented by the starting state of the restaurant at time step 2 follows a $\ES_{N_1- j}(d,c)$ distribution.  Following the seating of customers in time step 2 the configuration of customers in the restaurant follows a $\ES_{N_1 - j + N_2}(d,c)$ distribution.  This is the only result needed to ensure Eqn.~\ref{eqnDependentPY1} and Eqn.~\ref{eqnDependentPY2}.  Note that the number of customers removed from the restaurant between time steps is independent of the consistency result and can thus be either stochastic or deterministic.
+If $j$ customers are deleted after time step 1 the partition represented by the starting customer configuration of the restaurant at time step 2 follows a $\ES_{N_1- j}(d,c)$ distribution.  Therefore, after seating new customers in time step 2 the configuration results in partition which follows a $\ES_{N_1 - j + N_2}(d,c)$ distribution.  This is the only result needed to ensure Eqn.~\ref{eqnDependentPY1} and Eqn.~\ref{eqnDependentPY2}.  Note that the number of customers removed from the restaurant between time steps is independent of the consistency result and can thus be either stochastic or deterministic.
 
-Dependence between $\G_t$ arises from the modified restaurant representation through the undeleted customers.  An exact characterization of the dependence induced by the generative procedure is non-trivial.   \cite{caron} show that in the analogous procedure for dependent Dirichlet distributions, fewer customers removed between times steps induces higher dependence.  In the extreme cases, removing all the customers between time steps gives draws from independent $\G^t$, while removing no customers implies a $\G$ that is not varying with time. 
+Dependence between $\G^t$ is induced by the modified restaurant representation through the undeleted customers.  An exact characterization of the dependence is non-trivial.   \cite{caron} show that in the analogous procedure for dependent Dirichlet distributions, removing fewer customers between time steps induces higher dependence.  In the extreme case of removing all the customers between time steps, the procedure generates samples drawn from independent $\G^t$. Removing no customers implies a $\G$ that is not varying with the index $t$. 
 
 %TODO give graphical model
 \subsection{Time-varying Pitman-Yor Process in a hierarchical setting}
 
-The time-varying framework can be extended to a hierarchical setting at the lowest level of hierarchy in a natural way.  Considering the simple hierarchical setting $\G_2 \sim \PY(d_2, c_1, \G_1)$ and $\G_1 \sim \PY(d_1, c_1, \G_0)$, the model may be generalized to $\G^t_2 \sim  \PY(d_2, c_1, \G_1)$ for all $t  = 1 \dots T$.  One specification of this model is to combine the Chinese restaurant franchise process with the generalized restaurant process.  In this representation customers are removed from the restaurant correspond to $\G_2$ between time steps.  The restaurant corresponding the $\G_1$ is unchanged between time steps. Samples are drawn according the Chinese restaurant franchise already outlined at each time step.
+Consider now the hierarchical dependent setting 
+
+\begin{eqnarray*}
+\G_1 | d_1, c_1, \G_0 &\sim& \PY(d_1, c_1, \G_0)\\
+\G_2^t | d_2, c_2, \G_1&\sim& \PY(d_2, c_1, \G_1) \hspace{.5cm} t = 1\dots T\\
+\theta^t_i | \G_2^t &\sim& \G_2^t \hspace{.5cm} i = 1\dots N_t.
+\end{eqnarray*}
+
+A generative procedure giving rise to data from this model is obtained by combining the Chinese restaurant franchise with the modified restaurant process.  The combination executed by removing customers, uniformly at random, from the restaurant corresponding to $\G_2$ between time steps.  The restaurant corresponding the $\G_1$ is unchanged between time steps. At each time, samples are drawn by first producing a partition from the Chinese restaurant franchise using initial restaurant configurations set to the restaurant configurations produced by the deletion step.  After seating the new customers,  previously unoccupied tables are endowed with a parameter $\psi_{2k}$ drawn independently from $\G_1$.  Since we are working in a representation with $\G_1$ analytically marginalized out $\psi_{2k}$ is drawn through the usual method using the CRP and the current customer configuration of the restaurant corresponding the $\G_1$.
+
 
 \begin{figure}[h!tbp] 
+	\label{figVHPY}
 	\begin{center}
 		\scalebox{.25}{\includegraphics{figure2.pdf}} % [clip=true, viewport= 1in 1in 9in 9in]
-		\caption{An example of the possible evolution of the restaurant states in hierarchical setting}
+		\caption{An example of the possible evolution of the restaurant states in a hierarchical setting}
 	\end{center} 
-	\label{figVHPY}
 \end{figure} 
 
-Only simple extensions allow for time-varying distributions higher on the hierarchy are clear.  For a model specification such as $\G_2^t \sim \PY(d_2, c_2, \G_1^t)$ and $\G_1^t  \sim \PY(d_1,d_2,\G_0)$ for all $t$, if we assume independence of the $\{ \G_2^t \}$ then we can employ the generalized restaurant scheme to create a time-varying dependent sequence of restaurant representations at the  $\G_1^t$ level and at each time start with an empty restaurant for the representation used to marginalize out $\G_2^t$.  However, it is not clear how to create dependence at the $\G_2^t$ level through the generalized restaurant process.  Such a restaurant scheme would require a process to update the restaurant state in the $\G_2^t$ level restaurant to reflect changes made to the state of the $\G_1^t$ level restaurant while maintaining a level of dependence.  While it is likely that such a process exists, it is neither intuitive nor necessary for this discussion.
+Figure~\ref{figVHPY} illustrates the potential evolution of the restaurants used during the CRF process modified to draw a sample from dependent distributions following a Pitman-Yor process distribution.  The middle column of restaurants show the restaurant customer configurations after a deletion step.  Note the configuration of the parent restaurant does not change even though one of the tables in the child restaurant has been removed.  The customer configuration in the third column shows a potential seating arrangement which could have generated the observed sample.  Here, a customer was added to the the parent restaurant in order to generate the parameter $\psi_{12}$  given to the third table in the child restaurant.
+
+Simple extensions allowing for dependent distributions higher on the hierarchy are straightforward.  Given the model specification
+
+\begin{eqnarray*}
+\G_1^t | d_1, c_1, \G_0  &\sim& \PY(d_1,d_2,\G_0) \hspace{.5cm} t = 1\dots T\\
+\G_2^t | d_2, c_2, \G_1^t &\sim& \PY(d_2, c_2, \G_1^t)  \hspace{.5cm} t = 1\dots T\\
+\theta^t_i | \G_2^t &\sim& \G_2^t \hspace{.5cm} i = 1\dots N_t, 
+\end{eqnarray*}
+
+if we assume independence of the $\{ \G_2^t \}$ we can use the generalized restaurant procedure to generate samples. The assumption of independence indicates that at each time step the restaurant corresponding to $\G_2$ is emptied of all customers. Without the assumption of independence the extension is not straightforward. Creating a modified restaurant procedure to draw a sample from such a model would require a process to update the customer configuration in the restaurant corresponding to $\G_2$ to reflect changes made to the configuration of the restaurant corresponding to $\G_1$, while maintaining a level of dependence.  It is likely that such a process exists, but it is not necessary for this discussion.
 
 \subsection{Time-varying model applied to SM}
 
@@ -43,7 +62,7 @@ The time-varying model will not only allow for a sequence of time-varying distri
 \begin{figure*}[t] 
 	\begin{center}
 		\scalebox{.4}{\includegraphics{results_calgary_corpus.pdf}} % [clip=true, viewport= 1in 1in 9in 9in]
-		\caption{An example of the possible evolution of the restaurant states in hierarchical setting}
+		\caption{An example of the possible evolution of the restaurant states in a hierarchical setting}
 	\end{center} 
 	\label{figResultsCC}
 \end{figure*} 

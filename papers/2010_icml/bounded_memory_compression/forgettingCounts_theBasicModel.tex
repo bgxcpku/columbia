@@ -37,7 +37,7 @@ Recent research has produced a spate of new hierarchical models using the Pitman
 
 To obtain a sample from the hierarchical Pitman-Yor process it is again useful to work in a representation where $G_2$ and $G_1$ are analytically marginalized out. One way to generate samples in this representation is to recursively apply the algorithm for the single Pitman-Yor process.  To draw a sample $\{ \theta_j \}_{j = 1}^N$ we again need to produce a partition of the integer $N$ following the $\ES_N(d_2,c_2)$ distribution.  This can be achieved using the CRP and in Figure~\ref{figHPY} is represented by the restaurant corresponding to $\G_2$. We will denote the number of tables in the child restaurant as $K_2$.  Each of the $K_2$ tables must be endowed with a parameter $ \psi_{2k}$ drawn independently from $\G_1$.  Since $\G_1$ has been marginalized out we obtain $\{ \psi_{2k} \}_ {k = 1}^{K_2}$ by again using the procedure for the single Pitman-Yor process.  A partition from the $\ES_{K_2}(d_1,c_1)$ distribution is produced via the CRP represented in Figure~\ref{figHPY} by the restaurant corresponding to $\G_1$. We denote the number of tables in the parent restaurant as $K_1$.   Each of the $K_1$ tables must be endowed with a parameter $\{ \psi_{1k} \}_{ k = 1}^{K_1}$,  independently drawn from $\G_0$.  We set $\psi_{2k}  = \psi_{1m}$ if in the parent restaurant customer $k$ is sitting at table $m$ and we set $\theta_j = \psi_{2k}$ if in the child restaurant customer $j$ is sitting at table $k$.
 
-\begin{figure}[h!tbp] 
+\begin{figure}[t] 
 	\begin{center}
 		\label{figHPY}
 		\scalebox{.25}{\includegraphics{figure1.pdf}} % [clip=true, viewport= 1in 1in 9in 9in]
@@ -52,7 +52,7 @@ The recursive application of the CRP in a hierarchical model is known as the Chi
 
 \subsection{Sequence Memoizer}
 
-The sequence memoizer (SM) \cite{Wood2009} is a model for discrete sequence data based on and unbounded depth hierarchical Pitman-Yor process. We can write the model as:
+The sequence memoizer (SM) \cite{Wood2009} is a model for discrete sequence data based on an unbounded depth hierarchical Pitman-Yor process. We can write the model as:
 
 \begin{eqnarray*}
 	\G_{[]} | \mathcal{U}_{\Sigma}, d_0 &\sim& \PY(d_0, 0, \mathcal{U}_{\Sigma }) \\
@@ -62,7 +62,15 @@ The sequence memoizer (SM) \cite{Wood2009} is a model for discrete sequence data
 
 where $\mathcal{U}_{\Sigma }$ is a uniform distribution over the set of symbols, $\bf{u}$ is a particular context, $\Sigma^+$ is the set of all such contexts, and $\sigma(\bf{u})$ is the context $\bf{u}$ modified by removing the most distant symbol.  We assume $| \Sigma | < \infty$. 
 
-%In \cite{pitman} they show that  if $\G_2 \sim \PY(d_2, 0, \G_1)$ and  $\G_1 \sim \PY(d_1, 0, \G_0)$ then marginally, $\G_2 \sim \PY(d_2 d_2, 0, \G_0)$.  \cite{wood} applied this result to show that the graphical model for the SM to be identified in linear time and initiated in linear space.
+\begin{figure}[t] 
+	\label{figprefixtree}
+	\begin{center}
+		\scalebox{.5}{\includegraphics{prefix_tree.pdf}} % [clip=true, viewport= 1in 1in 9in 9in]
+		\caption{An example prefix tree for the sequence $patat$}.
+	\end{center} 
+\end{figure} 
+
+Figure~\ref{figprefixtree} shows the graphical model needed to to model the sequence $patat$.  Note that in the SM graphical model, nodes which are not branching nodes and are not associated with observed data are not instantiated.  This is because of an analytic result from \cite{pitman} showing that two Pitman-Yor processes can be analytically integrated against one another.  Note that this result is different than the result from \cite{mcqueen} allowing for the representation we are using which analytically integrates out each random distribution separately.  The node labeled $\G_{patat}$ is only shown in the graphical model to indicate that the next symbol in the sequence will come from this distribution.
 
 Inference in the SM model is performed in the Chinese restaurant franchise respresentation. Inference takes worst case $\mathcal{O}(n^2)$ time and requires $\mathcal{O}(n)$ space where $n$ is the length of the sequence. Quadratic time stems from the fact that seating a customer in the appropriate restaurant may require seating a customer in all of the restaurants above it.  The length of this path is bounded by the length of the sequence. Each restaurant requires constant space because a restaurant need only maintain a constant number of summary statistics, the total number of customers and the total number of tables present of each type.\footnote{For symbol sets of finite cardinality.} Note this representation requires reinstantiation of the full restaurant state for some steps of inference which can be done by exploiting exchangeability.  The fact that a restaurant can be represented allows the full model to be represented in $\mathcal{O}(n)$ space.
 
