@@ -4,7 +4,7 @@
 
 \subsection{Pitman-Yor Process}
 
-The Pitman-Yor process is a distribution over distributions which generalizes the Dirichlet process through the inclusion of a third parameter.  If $\G \sim \PY(d,c,\G_0)$ we say $\G$ is distributed according to a Pitman-Yor process with discount parameter $d$, concentration parameter $c$, and base measure $\G_0$. In the case that $d = 0$ the Pitman-Yor process reduces to the Dirichlet process \cite{Pitman1997}. 
+The Pitman-Yor process is a generalization of the Dirichlet process with three parameters.   If $\G \sim \PY(d,c,\G_0)$ we say $\G$ is distributed according to a Pitman-Yor process with discount parameter $d$, concentration parameter $c$, and base measure $\G_0$. In the case that $d = 0$ the Pitman-Yor process reduces to the Dirichlet process \cite{Pitman1997}. 
 
 It is often easier to work in a representation where the random distribution $\G$ is analytically marginalized out.  One way to draw a sample $\{ \theta_j \}_{j = 1}^N$ in this representation is to use a two step process.  
 
@@ -15,10 +15,10 @@ It is often easier to work in a representation where the random distribution $\G
 
 The first step produces a partition of the integer $N$ which follows the two parameter Ewen's sampling distribution ($\ES_N(d,c)$) \cite{Ewens1995}.  The second step assigns to each of the $K$ segments of the partition a parameter $\psi_k$ drawn independently from $\G_0$.  We set $\theta_j = \psi_k$ for all integers $j$ in segment $k$ of the partion \cite{Blackwell1973}.
 
-Samples can be drawn from the Ewen's sampling distribution using the Chinese Restaurant Process (CRP).  Since the connection between the CRP and the Ewen's sampling distribution is essential to developments later in the paper we describe here the CRP in detail. We imagine a restaurant with a countably infinite number of tables, capable of seating a countably infinite number of customers.  The first customer in the CRP sits down at an empty table.  Customers $2 \dots N$ are seated sequentially by seating the $j$'th customer at a table drawn from the following distribution:
+Samples can be drawn from the Ewen's sampling distribution using the Chinese Restaurant Process (CRP).  Since the connection between the CRP and the Ewen's sampling distribution is essential to developments later in the paper we describe here the CRP in detail. We imagine a restaurant with a countably infinite number of tables, capable of seating a countably infinite number of customers.  The first customer in the CRP sits down at an empty table.  Customers $2 \dots N$ are seated sequentially by seating the $j^{\mathrm{th}}$ customer at a table drawn from the following distribution:
 
 \begin{eqnarray*}
-p(\textrm{occupied table}_i |\textrm{ previous}) &=& \frac{n_i - d}{j-1+ c}\\
+p(\textrm{occupied table}\; i |\textrm{ previous}) &=& \frac{n_i - d}{j-1+ c}\\
 p(\textrm{unoccupied table} | \textrm{ previous}) &=& \frac{t_{j-1}d +c}{j-1+c}
 \end{eqnarray*}
 
@@ -27,7 +27,8 @@ where $n_i$ is the number of customers already sitting at table $i$, $t_{j-1}$ i
 
 \subsection{Hierarchical Pitman-Yor Processes}
 
-Recent research has produced a spate of new hierarchical models using the Pitman-Yor process \cite{Teh2006b} \cite{Teh2006a}.  An an example hierarchical Pitman-Yor process is 
+%Recent research has produced a spate of new hierarchical models using the Pitman-Yor process \cite{Teh2006b} \cite{Teh2006a}.  
+An an example hierarchical Pitman-Yor process is 
 
 \begin{eqnarray*}
 \G_1|d_1, c_1, \G_0 &\sim& \PY(c_1,c_1,\G_0)\\
