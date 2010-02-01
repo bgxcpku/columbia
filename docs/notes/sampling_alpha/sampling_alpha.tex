@@ -10,12 +10,13 @@
 
 \title{Posterior Sampling for $\alpha$}
 \author{David Pfau}
-\date{30 October 2009}                                           % Activate to display a given date or no date
+%\date{30 October 2009}                                           % Activate to display a given date or no date
 
 \begin{document}
 \maketitle
-%\section{hello?}
-%\subsection{}
+
+\section{Dirichlet Process}
+\subsection{Metropolis Sampling}
 
 To perform Metropolis sampling from $\alpha$ given the class assignment variables for each data point, we first sample a point from a symmetric distribution and then calculate the ratio of posterior probabilities to find the probability of accepting the new sample.  We should note, this is not an ideal sampler near $0$, since a symmetric proposal will often propose negative $\alpha$ and thus will often be rejected.  Nonetheless, it's just plain quicker (and trivial to extend to asymmetric proposals).  In our case we choose a diffuse Gamma prior for $\alpha$ with parameters $(1,1)$.  For $\alpha > 0$ the posterior is given by
 
@@ -26,6 +27,7 @@ p(\alpha|\textbf{z}) \propto p(\textbf{z}|\alpha) p(\alpha) = p(\textbf{z}|\alph
 Now, by the exchangeability of samples from a Chinese Restaurant Process, we can order the elements of $\textbf{z}$ any way we like.  In particular, suppose there are $K$ occupied tables (in the argot of the CRP) with $m_k$ customers sitting at table $k$, and that the first $K$ customers all sit one-by-one at new tables.  Since the probability of sitting at a new table is simply $\frac{\alpha}{j+\alpha}$, where $j$ is the total number of customers already seated, the probability of $K$ customers all sitting at new tables is given by
 
 \begin{equation}
+\label{onecustomer}
 \frac{\alpha^K}{\prod_{j=0}^{K-1} (j + \alpha)}
 \end{equation}
 
@@ -50,10 +52,38 @@ a(\alpha^*,\alpha) = min\left(1,\frac{\alpha^{*K}\Gamma(\alpha)\Gamma(N+\alpha^*
 
 Which, remarkably, only depends on the assigned labels by the number of active components $K$.
 
+\subsection{Metropolis-Hastings Sampling}
+
 Should we want to use an asymmetric proposal, for example one with variance proportional to the current $\alpha$, we can easily modify the acceptance probability.  Say we draw the proposal from a normal distribution with mean $\alpha$ and variance $\kappa \alpha$, then the acceptance probability becomes
 
 \begin{equation}
 a(\alpha^*,\alpha) = min\left(1,\frac{\alpha^{*K-1}\Gamma(\alpha)\Gamma(N+\alpha^*)}{\alpha^{K-1}\Gamma(\alpha^*)\Gamma(N+\alpha)}  e^{\alpha-\alpha^*} e^{-\frac{1}{2}\frac{(\alpha-\alpha^*)^2}{\kappa^2} \left(\frac{1}{\alpha^{*2}} - \frac{1}{\alpha^2} \right)} \right)
+\end{equation}
+
+\section{Pitman-Yor Process}
+
+In the more general case of a Pitman-Yor process with discount parameter $d$, the above argument has to be modified.  The discount parameter introduces a dependence between the number of occupied tables and the numerator in the probability of choosing a new table.  That is, the probability of sitting at a new table is $\frac{\alpha + Kd}{\alpha + N}$ for $N$ total customers sitting at $K$ different tables.  Thus the probability associated with the first $K$ customers sitting unique tables in (2) becomes
+
+\begin{equation}
+\prod_{j=0}^{K-1} \frac{\alpha + jd}{\alpha + j} = d^K \frac{\Gamma(\frac{\alpha}{d} + K)}{\Gamma(\frac{\alpha}{d})} \frac{\alpha}{\alpha + K}
+\end{equation}
+
+While the factor of $(m_k - 1)!$ in the full likelihood becomes
+
+\begin{equation}
+\prod_{j=1}^{m_k - 1} j - d = \frac{\Gamma(m_k - d)}{\Gamma(1-d)}
+\end{equation}
+
+Thus the full likelihood becomes
+
+\begin{equation}
+p(\mathbf{z}|\alpha,d) = d^K \frac{\Gamma(\frac{\alpha}{d} + K)}{\Gamma(\frac{\alpha}{d})} \frac{\Gamma(\alpha)}{\Gamma(\alpha + N)} \prod_{k=1}^{K} \frac{\Gamma(m_k - d)}{\Gamma(1-d)}
+\end{equation}
+
+Since $p(d|\mathbf{z},\alpha) \propto p(d) p(\mathbf{z}|\alpha,d)$, this gives us a Metropolis sampler for $d$ for free!  In particular, in the case where $\alpha = 0$ as in the sequence memoizer, the posterior for $d$ given a uniform prior is proportional to
+
+\begin{equation}
+d^K \frac{(K-1)!}{(N-1)!} \prod_{k=1}^K \frac{\Gamma(m_k - d)}{\Gamma(1-d)}
 \end{equation}
 
 \end{document}  
