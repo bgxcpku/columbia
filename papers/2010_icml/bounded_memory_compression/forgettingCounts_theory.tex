@@ -31,6 +31,14 @@ Only simple extensions allow for time-varying distributions higher on the hierar
 
 The time-varying model will not only allow for a sequence of time-varying distributions, but can also serve to limit the complexity of the model representation. This framework provides a basis for algorithmic control of the complexity of hierarchical Pitman-Yor models like the SM.  As noted earlier, the number of instantiated restaurants in the SM is the fundamental limiting factor regarding memory usage, thus we will consider a single instantiated restaurant as a unit of memory when discussing the model. For the deletion scheme to limit the amount of memory used by the SM model, we must be able to limit the number of instantiated restaurants.
 
+\begin{figure*}[t] 
+	\begin{center}
+		\scalebox{.4}{\includegraphics{results_calgary_corpus.pdf}} % [clip=true, viewport= 1in 1in 9in 9in]
+		\caption{An example of the possible evolution of the restaurant states in hierarchical setting}
+	\end{center} 
+	\label{figResultsCC}
+\end{figure*} 
+
 The theory presented above indicates that between time steps we can only delete customers in restaurants at the lowest level.  In the tree which represents the state of the SM, this corresponds to the leaf restaurants.  To achieve memory savings we will need to delete all of the customers at a given restaurant.  Restaurants without people need not be represented in the model state.  This deletion operation gives rise to implicit model assumptions. If, at time step $t$, we delete all the customers in a given leaf restaurant we implicitly assume the distribution over types given the particular context to be independent of the distribution at previous time steps.
 
 It is often the case in the SM model that the parent restaurant for a leaf restaurant is not instantiated, thus to actually attain memory savings by deleting a leaf restaurant we must effectively delete all the restaurants in this particular path up until the nearest instantiated restaurant.  The implicit model assumption is that all of the distributions after time $t$ corresponding to those many deleted restaurants are conditionally independent of their previous states.
