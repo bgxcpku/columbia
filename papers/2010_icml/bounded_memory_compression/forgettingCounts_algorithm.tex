@@ -8,11 +8,12 @@
 \caption{Particle Filter}
 \begin{algorithmic}[1]
 \STATE Initialize $K$ particles $\{\{\Restaurant = \emptyset, \Weight = \frac{1}{K}\}\}_{k=1}^{K}$
+\STATE Initialize $\Context = []$
 \WHILE{true}
 	\STATE $x \gets $ NextObservation()
 	\STATE $\Context \gets \Context x$
 	\FORALL {$k = 1,\dots,K$}
-		\IF {$|\Restaurant| > $ limit $ -\, 2 $}
+		\IF {$|\Restaurant| > $ maxRestaurants $ -\, 2 $}
 			\STATE $\Restaurant_\D \gets $ ProposeRestaurantToDelete()
 			\STATE $\Restaurant \gets \Restaurant \setminus \Restaurant_\D$
 		\ENDIF
