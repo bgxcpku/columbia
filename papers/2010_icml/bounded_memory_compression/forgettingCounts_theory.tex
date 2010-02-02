@@ -8,7 +8,7 @@ Towards developing a constant space HPYP model and inference procedure we first 
 \subsection{Dependent Pitman-Yor process} 
 \label{sec:dpyp}
 
-The $\ES_N(d,c)$ distribution discussed in Section~\ref{basicModel} has a consistency property that is important to us. In the Chinese restaurant metaphor this consistency property corresponds to the fact that if a customer is removed uniformly at random, the remaining customer configuration represents a partition of the integer $N-1$ following the $\ES_{N-1}(d,c)$ distribution \cite{Pitman1995}.  This removal of a customer is known as a deletion operation.  Another deletion operation, known as size-biased deletion, is one in which a customer is chosen uniformly at random and all customers seated at the same table are removed from the restaurant. Size biased deletion is known to satisfy a consistency property for the one parameter Ewen's distribution \cite{Kingman1978}, but it is not satisfied in the two parameter case \cite{Pitman1995}.
+The $\ES_N(d,c)$ distribution discussed in Section~\ref{basicModel} has an important consistency property. In the Chinese restaurant metaphor this consistency property corresponds to the fact that if a customer is removed uniformly at random, the remaining customer configuration represents a partition of the integer $N-1$ following the $\ES_{N-1}(d,c)$ distribution \cite{Pitman1995}.  This removal of a customer is known as a deletion operation.  Another deletion operation, known as size-biased deletion, is one in which a customer is chosen uniformly at random and all customers seated at the same table are removed from the restaurant. Size biased deletion is known to satisfy a consistency property for the one parameter Ewen's distribution \cite{Kingman1978}, but it is not satisfied in the two parameter case \cite{Pitman1995}.
 
 Because of the  consistency property,the restaurant representation can be modified to draw samples  $\{ \theta_j^t \}_{i = 1}^{N_t}$ from a sequence of dependent random distributions $\{ \G^t \}_{t=1}^T$ such that 
 %
@@ -21,7 +21,7 @@ Because of the  consistency property,the restaurant representation can be modifi
  %
 The variable $t$ indexes the sequence.  It may be useful to think of $t$ as time though the sequence dependence need not be in time. The fact that each $\G^t_1$ in the sequence has the same distribution is known as stationarity \cite{Brockwell1991}.  
  
-A generative procedure that utilizes the first consistency property has been developed for dependent Dirichlet process models \cite{Caron2007}.  The generative procedure works for Pitman-Yor process models as well. It starts with an empty restaurant and generates $\{ \theta_j^1\}_{j= 1}^{N_1}$ using the CRP as usual.  The process for generating $\{ \theta_j^2\}_{j= 1}^{N_2}$ is different than that used to generate $\{ \theta_j^1\}_{j= 1}^{N_1}$ in that the CRP does not start with an empty restaurant.  The restaurant is instead initialized by deleting some number of customers from the restaurant representation for $\G^1$.  Once new customers have been seated, previously unoccupied tables are endowed with a parameter $\psi_k$ drawn independently from $\G_0$.  We set $\theta^2_j = \psi_k$ if  the $j^{th}$ customer seated during the second time step is seated at table $k$. 
+A generative procedure that uses the first consistency property has been developed for dependent Dirichlet process models \cite{Caron2007}.  The generative procedure works for Pitman-Yor process models as well. It starts with an empty restaurant and generates $\{ \theta_j^1\}_{j= 1}^{N_1}$ using the CRP as usual.  The process for generating $\{ \theta_j^2\}_{j= 1}^{N_2}$ is different than that used to generate $\{ \theta_j^1\}_{j= 1}^{N_1}$ in that the CRP does not start with an empty restaurant.  The restaurant is instead initialized by retaining some number of customers from the restaurant representation for $\G^1$.  Once new customers have been seated, previously unoccupied tables are endowed with a parameter $\psi_k$ drawn independently from $\G_0$.  We set $\theta^2_j = \psi_k$ if  the $j^{th}$ customer seated during the second time step is seated at table $k$. 
 
 If $j$ customers are deleted after time step 1 the partition represented by the starting customer configuration of the restaurant at time step 2 follows a $\ES_{N_1- j}(d,c)$ distribution.  Therefore, after seating new customers in time step 2 the configuration results in partition a which follows a $\ES_{N_1 - j + N_2}(d,c)$ distribution. Furthermore, the tables are endowed with parameter values drawn independently from $\G_0$.  This confirms that running the customer deletion process as described does generate samples from the model specified by Eqn.~\ref{eqnDependentPY2}. Note that the number of customers removed from the restaurant between time steps is independent of the consistency result and can thus be either stochastic or deterministic. For example one could choose to remove all customers in a restaurant.
 
@@ -65,14 +65,6 @@ While the theory developed thus far is applicable to all HPYP models we turn now
 
 \subsection{Constant memory}
 The deletion mechanism used to define the dependent HPYP can alternatively be viewed as a way to limit the space complexity required to estimate the SM. As noted earlier, the number of instantiated restaurants is the limiting factor regarding memory usage.  For this discussion we will therefore consider a single instantiated restaurant as a unit of memory. For the deletion scheme to limit the amount of memory used in the SM, we must be able to limit the number of instantiated restaurants.
-
-\begin{figure*}[t] 
-	\begin{center}
-		\scalebox{.4}{\includegraphics{results_calgary_corpus.pdf}} % [clip=true, viewport= 1in 1in 9in 9in]
-		\caption{An example of the possible evolution of the restaurant states in a hierarchical setting}
-		\label{figResultsCC}
-	\end{center} 
-\end{figure*} 
 
 The number of instantiated restaurants can be limited using the deletion scheme developed for dependent HPYP's. Memory savings can be achieved by deleting all the customers at a given restaurant since restaurants without people do not need to be represented.  To limit the amount of information lost we will only apply the deletion scheme to leaf restaurants. We call a restaurant a leaf restaurant if all restaurants descended from it are empty. Leaf restaurants in Fig.~\ref{figprefixtree} are shown as the shaded nodes. 
 
