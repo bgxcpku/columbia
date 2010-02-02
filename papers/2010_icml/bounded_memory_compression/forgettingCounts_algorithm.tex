@@ -1,0 +1,30 @@
+\newcommand{\Restaurant}{R^{k}}
+\newcommand{\Weight}{w^{k}}
+\newcommand{\Context}{\mathbf{u}}
+\newcommand{\Path}{\mathbf{P}^{k}}
+\newcommand{\D}{\mathbf{d}}
+\newcommand{\LongPath}{\{ \Restaurant_\Context, \Restaurant_{\pi(\Context)}, \dots, \Restaurant_{[]} \}}
+\begin{algorithm}
+\caption{Particle Filter}
+\begin{algorithmic}[1]
+\STATE Initialize $K$ particles $\{\{\Restaurant = \emptyset, \Weight = \frac{1}{K}\}\}_{k=1}^{K}$
+\WHILE{true}
+	\STATE $x \gets $ NextObservation()
+	\STATE $\Context \gets \Context x$
+	\FORALL {$k = 1,\dots,K$}
+		\IF {$|\Restaurant| > $ limit $ -\, 2 $}
+			\STATE $\Restaurant_\D \gets $ ProposeRestaurantToDelete()
+			\STATE $\Restaurant \gets \Restaurant \setminus \Restaurant_\D$
+		\ENDIF
+		\STATE $\LongPath \gets $ FindRestaurant($\Context$)
+		\STATE $\Path \gets \LongPath$
+		\STATE $\Restaurant \gets \Restaurant \cup \Path$
+		\STATE $v^{k} \gets $ Seat($x, \Path$)
+		\STATE $\Weight \gets v^{k}\Weight$
+	\ENDFOR
+	\STATE \# resample particles 
+	\STATE \# predict
+\ENDWHILE
+\end{algorithmic}
+\label{alg1}
+\end{algorithm}
