@@ -16,6 +16,15 @@ The operation NextObservation() returns the next symbol in the sequence.  The va
 
 \input{forgettingCounts_algorithm}
 
+
+\begin{figure*}[t] 
+	\begin{center}
+		\scalebox{.4}{\includegraphics{results_calgary_corpus.pdf}} % [clip=true, viewport= 1in 1in 9in 9in]
+		\caption{An example of the possible evolution of the restaurant states in a hierarchical setting}
+		\label{figResultsCC}
+	\end{center} 
+\end{figure*} 
+
 Most steps of the particle filter are based on a sequential estimation approach for the SM proposed in \cite{Gasthaus2010}.  However, this inferential procedure must include the deletion step characteristic of the generative model.  When state of the model represented in each particle reaches the memory constraint we will need to propose values for the the latent parameters indicating which restaurants were deleted. We suggest two different proposal distributions to correspond with the two interpretations of the model specification already discussed.  The first is complementary to the understanding of the model as a sequence of dependent distributions with Pitman-Yor process distributions which vary sequentially across the sequence.  The second is complementary to the understanding of the model as a finite state approximation of a model representation which grows linearly as a function of the length of the data.
 
 The first proposal distribution for the deletion of restaurants is uniform over the leaf nodes of the current state of the model.  Using the generative process as the proposal distribution is standard in particle filtering approaches \cite{Doucet2001}.  We refer to the use of this proposal distribution as using a random deletion scheme.
