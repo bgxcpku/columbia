@@ -11,14 +11,14 @@ Towards developing a constant space HPYP model and inference procedure we first 
 The $\ES_N(d,c)$ distribution discussed in Section~\ref{basicModel} has a consistency property that is important to us. In the Chinese restaurant metaphor this consistency property corresponds to the fact that if a customer is removed uniformly at random, the remaining customer configuration represents a partition of the integer $N-1$ following the $\ES_{N-1}(d,c)$ distribution \cite{Pitman1995}.  This removal of a customer is known as a deletion operation.  Another deletion operation, known as size-biased deletion, is one in which a customer is chosen uniformly at random and all customers seated at the same table are removed from the restaurant. Size biased deletion is known to satisfy a consistency property for the one parameter Ewen's distribution \cite{Kingman1978}, but it is not satisfied in the two parameter case \cite{Pitman1995}.
 
 Because of the  consistency property,the restaurant representation can be modified to draw samples  $\{ \theta_j^t \}_{i = 1}^{N_t}$ from a sequence of dependent random distributions $\{ \G^t \}_{t=1}^T$ such that 
-
+%
 \begin{equation}
 \begin{array}{rclrcr}
 \G^t | d, c, \G_0 &\sim& \PY(d,c,\G_0),  & t =&1, \dots, T\\
  \label{eqnDependentPY2}  \theta_j^t | \G^t &\sim& \G^t, & j =&1, \dots ,N_t.
  \end{array}
  \end{equation}
- 
+ %
 The variable $t$ indexes the sequence.  It may be useful to think of $t$ as time though the sequence dependence need not be in time. The fact that each $\G^t_1$ in the sequence has the same distribution is known as stationarity \cite{Brockwell1991}.  
  
 A generative procedure that utilizes the first consistency property has been developed for dependent Dirichlet process models \cite{Caron2007}.  The generative procedure works for Pitman-Yor process models as well. It starts with an empty restaurant and generates $\{ \theta_j^1\}_{j= 1}^{N_1}$ using the CRP as usual.  The process for generating $\{ \theta_j^2\}_{j= 1}^{N_2}$ is different than that used to generate $\{ \theta_j^1\}_{j= 1}^{N_1}$ in that the CRP does not start with an empty restaurant.  The restaurant is instead initialized by deleting some number of customers from the restaurant representation for $\G^1$.  Once new customers have been seated, previously unoccupied tables are endowed with a parameter $\psi_k$ drawn independently from $\G_0$.  We set $\theta^2_j = \psi_k$ if  the $j^{th}$ customer seated during the second time step is seated at table $k$. 
@@ -32,13 +32,13 @@ If customers remain from one time step to the next then the $G^t$'s are dependen
 \label{sec:dhpyp}
 
 The mechanism for generating dependent PY processes can be used to generate dependent HPYP's as well.  We develop one such strategy for doing so here.  Consider the following two level model: 
-
+%
 \begin{eqnarray}
 \G_1 | d_1, c_1, \G_0 &\sim& \PY(d_1, c_1, \G_0)  \label{fig:dhpyp} \\
 \G_2^t | d_2, c_2, \G_1&\sim& \PY(d_2, c_1, \G_1), \hspace{.5cm} t = 1,\dots, T \nonumber\\
  \theta^t_i | \G_2^t &\sim& \G_2^t ,\hspace{2.27cm} i = 1,\dots, N_t. \nonumber
 \end{eqnarray}
-
+%
 A procedure that can be used to generate data from this model is obtained by combining the Chinese restaurant franchise with the customer deletion scheme from Section~\ref{sec:dpyp}.  Note that the model specification indicates that $\G_1$ does not vary with the index $t$.  This means that deletion of customers only occurs in the child restaurant.
 
 \begin{figure}[t] 
@@ -52,13 +52,13 @@ A procedure that can be used to generate data from this model is obtained by com
 Figure~\ref{figVHPY} shows a sample from Eqn.~\ref{fig:dhpyp} generated using the procedure described in this section. The middle column of restaurants show the restaurant configurations after a deletion step.  Note the configuration of the parent restaurant does not change even though one of the tables in the child restaurant has been removed.  The restaurant configurations in the third column show the seating arrangement  generated after the sample $\{ \theta_j^2 \}_{j = 1}^5$ was generated.  Here, a customer was added to the the parent restaurant in order to generate the parameter $\psi_{12}$  given to the third table in the child restaurant.
 
 Extending the generative procedure to draw samples from dependent HPYP's of the type
-
+%
 \begin{eqnarray}
 \G_1^t | d_1, c_1, \G_0  &\sim& \PY(d_1,d_2,\G_0)  \label{fig:vhpyp2}\\
 \G_2^t | d_2, c_2, \G_1^t &\sim& \PY(d_2, c_2, \G_1^t),  \hspace{.5cm} t = 1,\dots, T \nonumber \\
 \theta^t_i | \G_2^t &\sim& \G_2^t, \hspace{2.28cm} i = 1, \dots, N_t \nonumber
 \end{eqnarray}
-
+%
 can be done. Dependence is induced between the $\G_1^t$'s by using the deletion scheme in the parent restaurants.  In order to produce a sample from the model described by Eqn.~\ref{fig:vhpyp2} the configuration of the child restaurants must also be altered.  If we assume independence of the $\G_2^t$'s then the appropriate action is to delete all customers in the child restaurant between time steps. Without the assumption of independence the extension is not straightforward. It is likely that such a process exists, but we do not develop it in this paper.
 
 While the theory developed thus far is applicable to all HPYP models we turn now to the specific example of the SM model.  This is because we are specifically interested in using the deletion process to control the memory complexity of inference in the SM.
