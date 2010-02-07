@@ -1,0 +1,20 @@
+\section{Results}
+
+We use the Psychology Review Abstract corpus \ref{Griffiths2005}, the same as \ref{Wallach2006}.  We couldn't reproduce her data set exactly because she chooses documents randomly from the corpus, but it should give a rough sense of how well our approaches compare.  Also, due to the time required to run the algorithm and deadline constraints, we chose to use a smaller training and testing corpus, consisting of only 30 training documents and 15 test documents, with 4010 and 1969 tokens respectively, and 508 unique types.  This leads to a significantly smaller number of bits per word, so we evaluate the relative effectiveness of the different algorithms by comparing the ratio of perplexities between LDA and each of our methods.
+
+We approximate the conditional probability of the test corpus given the training corpus by first sampling a set of topic assignments for the training data, then sampling a label for each word in the test data given the assignments in the training data \textit{and} the assignments in the test data \textit{up to} the word being assigned.  By drawing several samples for the topic labels and averaging over the probabilities of the test data, we can perform approximate Monte Carlo integration.  We draw 10 samples for topic assignments from the training data, and for each draw from the training data we draw 10 samples for the test data.  We choose a maximum context length of two, that is, our language model is a trigram model.  The information rate of the test data for both LDA and LDA-DHPYPLM are shown in figure one.  We note that, consistently across the number of topics chosen, LDA-DHPYPLM performs about 2 bits better than straight LDA, equivalent to one quarter the perplexity.  This gap narrows somewhat for larger topics, though this may be due to the small size of the traning set, as there is a limit to how low the perplexity can go no matter how good the model.  This is superior to the performance of the Bigram Topic Model \ref{Wallach2006} for a small number of topics, though the difference between LDA and the BTM exceeds 2 bits above 40 topics.  However, the different size of the corpuses used means we cannot be sure how effective direct comparison is.
+
+\begin{figure}
+\begin{center}
+\begin{tabular}{| l || c | c | c | c | c |}
+\hline
+\# of topics & 1 & 5 & 10 & 20 & 40 \\
+\hline
+LDA & 5.47 & 4.97 & 4.40 & 4.18 & 3.31\\
+\hline
+LDA-DHPYPLM & 3.54 & 2.78 & 2.49 & 2.17 & 1.84\\
+\hline
+\end{tabular}
+\caption{The information rate (bits per word) of test data for Psychological Review Abstracts.}
+\end{center}
+\end{figure}

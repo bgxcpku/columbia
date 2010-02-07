@@ -1,0 +1,36 @@
+\section{Generative Model}
+
+\subsection{Latent Dirichlet Allocation}
+
+Latent Dirichlet Allocation treats a topic as a multinomial distribution over words, and a document is a mixture of topics.  To prevent overfitting, and share statistical strength between both topics and documents, Dirichlet priors are placed over both the distribution of topics in a document and the distribution of words in a topic.  Each word belongs to a single topic, and is drawn i.i.d. from the topic distribution.  The full generative model for a set of documents is
+
+\[
+\begin{array}{cc}
+\psi_j \sim \textrm{Dir}(\alpha) \nonumber &
+\phi_t  \sim \textrm{Dir}(\beta) \nonumber \\
+z_{ij} \sim \textrm{Mult}(\psi_j) \nonumber &
+w_{ij} \sim \textrm{Mult}(\phi_{z_{ij}}) \\
+\end{array}
+\]
+
+Where $z_{ij}$ is the latent topic assigned to word $w_{ij}$ in document $j$.  The posterior distribution over topic assigments, document and topic distributions is too complex to be inferred exactly, and so a variety of approximate inference schemes are used.  Here we use the collapsed Gibbs sampler \ref{Griffiths2004} which samples the conditional distribution of a topic label $p(z_{ij} | w_{ij}, \mathbf{z}_{-ij}, \mathbf{w}_{-ij})$ given the other topic labels and words, with the document and topic distributions integrated out.
+
+\subsection{Doubly-Hierarchical Pitman-Yor Process Language Model}
+
+The Doubly-Hierarchical Pitman-Yor Process Language Model (DHPYPLM) is a nonparametric Bayesian model that integrates individual language models by placing another language model as a prior over the models in individual domains.  A Pitman-Yor process is an extension of the Dirichlet process (which is itself a distribution over distributions), with a discount parameter in addition to the concentration parameter.  Draws from a distribution drawn from a PYP cluster together as in a DP, except that the number of observations in a cluster falls off as a power law instead of exponentially fast.  
+
+In the DHPYPLM, a word is drawn from a PYP specific to the context preceding that word as well as the domain of the word (the length of that context is typically a fixed parameter of the model - the $n$ in $n$-gram).  In the singly-hierarchical PYP language model, the base distribution of each PYP is another PYP with context length one shorter, except for the zero-length context, where a uniform distribution over types is used.  In the doubly-hierarchical case the base distribution is a mixture of two PYPs: one in the same domain with one shorter context length, and one in the language model over all domains with the same context.  The mixing proportion determines the probability of backing off to either a simpler context in the same domain or the same context outside of a particular domain, and is itself sampled during the inference process.  
+
+Formally, if $[]$ is the null context, $\pi(\mathbf{u})$ a string with the first character of $\mathbf{u}$ removed, $\mathcal{U}$ the uniform distribution, and PY$(\alpha,d,\mathcal{H})$ a Pitman-Yor process with concentration $alpha$ and discount $d$, then the generative model for a word $w$ in domain $t$ preceded by the length $n$ string $\mathbf{u}$ is given by
+
+\begin{eqnarray}
+\mathcal{G}^0_{[]} & \sim & \textrm{PY}(\alpha^0_{0},d^0_{0},\mathcal{U}) \nonumber \\
+ \mathcal{G}^t_{[]} & \sim & \textrm{PY}(\alpha^t_{0},d^t_{0},\mathcal{G}^0_{[]}) \nonumber \\
+\mathcal{G}^0_{\mathbf{u}} & \sim & \textrm{PY}(\alpha^0_{|\mathbf{u}|},d^0_{|\mathbf{u}|},\mathcal{G}^0_{\pi(\mathbf{u})}) \nonumber \\
+ \mathcal{G}^t_{\mathbf{u}} & \sim & \textrm{PY}(\alpha^t_{|\mathbf{u}|},d^t_{|\mathbf{u}|},\lambda^t_{|\mathbf{u}|}\mathcal{G}^t_{\pi(\mathbf{u})} + (1-\lambda^t_{|\mathbf{u}|}) \mathcal{G}^0_{\mathbf{u}}) \nonumber \\
+w & \sim & \mathcal{G}^t_{\mathbf{u}}
+\end{eqnarray}
+
+\subsection{Joining the Models}
+
+The combined LDA-DHPYPLM generative model is straightforward (assuming you can follow the last two parts).  The distribution of topics in a document is the same as in LDA, and a single topic is sampled for a particular word in the same way.  However, given a topic $z_{ij} = t$, rather than generating $w_{ij}$ by sampling from Mult$(\phi_t)$, $w_{ij}$ is sampled from $\mathcal{G}^t_{\mathbf{u}}$ where $\mathbf{u}$ is the context preceding $w_{ij}$.  It will turn out when we discuss inference that this allows the different parts of the model to decouple neatly, and inference is possible without having to make significant changes to either LDA or DHPYPLM.

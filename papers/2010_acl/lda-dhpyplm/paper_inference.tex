@@ -1,0 +1,25 @@
+\section{Inference}
+
+To Gibbs sample, we wish to iteratively sample over the conditional probabilities of topic assignments for each word, $p(z_{ij}|\mathbf{z}_{-ij},\mathbf{w})$.  In the case of LDA, this conditional probability factors nicely \ref{Griffiths2004}.
+
+\begin{equation}
+P(z_{ij}=t | \mathbf{z}_{-ij},\mathbf{w}) \propto P(w_{ij}|z_{ij}=t, \mathbf{z}_{-ij}, \mathbf{w}_{-ij})P(z_{ij} = t | \mathbf{z}_{-ij})
+\end{equation}
+
+Each of the terms on the right is a predictive probability for a multinomial-Dirichlet model, and the expression simplifies to
+
+\begin{equation}
+P(z_{ij}=t | \mathbf{z}_{-ij},\mathbf{w}) \propto \frac{n^{(w_{ij})}_{-ij,t} + \beta}{n^{(\cdot)}_{-ij,t} + W\beta} \frac{n^{(d_j)}_{-ij,t} + \alpha}{n^{(d_j)}_{-ij,\cdot} + T\alpha} 
+\end{equation}
+
+Where $n^{(d_j)}_{-ij,t}$ is the number of times the topic $t$ appears in document $d_j$ excluding the token $w_{ij}$, $n^{(w_{ij})}_{-ij,t}$ is the number of times the type $w_{ij}$ appears in topic $t$, excluding the token $w_{ij}$, and the dot represents marginalization (over topics or types).
+
+Posterior inference in the DHPYPLM also takes place via Gibbs sampling.  Rather than representing each draw from a Pitman-Yor process explicitly, we track the clusters to which each observation belongs, as well as the parameter associated with each cluster.  This is a Chinese Restaurant Process representation of a nonparametric model.  Sampling consists of reseating each "customer" within a "restaurant" at a different "table," where an observation is a customer, a restaurant is a draw from a PYP, and a table is a cluster in that draw. In a hierarchical nonparametric model like this, tables in one restaurant are customers in the parent restaurant.  We also place a Gamma(1,1) prior over the concentration parameters and a uniform prior over the discount and switch parameters.  The code for the DHPYPLM was graciously provided by Frank Wood, and the exact details of Gibbs sampling can be found in \ref{Wood2009}.
+
+To integrate the two models, we notice that the second term on the right in equation (2) is independent of our language model and remains unchanged.  The first term can be expressed as
+
+\begin{equation}
+P(w_{ij}|z_{ij}=t, \mathbf{z}_{-ij}, \mathbf{w}_{-ij}) = \int p(w_{ij}|\mathcal{G}^t_{\mathbf{u}_{ij}}) p(\mathcal{G}^t_{\mathbf{u}_{ij}}| \mathbf{w}_{-ij}, \mathbf{z}_{-ij}) d\mathcal{G}^t_{\mathbf{u}_{ij}}
+\end{equation}
+
+This integral is intractable, so instead we approximate the posterior of $\mathcal{G}^t_{\mathbf{u}_{ij}}$ with a point estimate, the state of the language model after Gibbs sampling with the current observation removed, and read out the predictive probability of the current word given a topic and context.  Thus we can construct the entire conditional probability distribution that a word is assigned to a particular topic given the other topic assignments and current state of the language model.  By iteratively sampling the topic assignments and language model, we now have a full Gibbs sampler for integrated LDA-DHPYPLM.
