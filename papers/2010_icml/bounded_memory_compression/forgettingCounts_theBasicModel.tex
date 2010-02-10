@@ -13,7 +13,7 @@ The Pitman-Yor process is a generalization of the Dirichlet process with three p
 %
 It is possible to work in a representation where the random distribution $\G$ is analytically marginalized out.  One can draw samples $\{ \theta_j \}_{j = 1}^N$ in this representation is to use a two step process.  The first step produces a partition of the integer $N$ which follows the two parameter Ewen's sampling distribution ($\ES_N(d,c)$) \cite{Ewens1995}.  The second step assigns to each of the $K$ segments of the partition a parameter $\psi_k$ drawn independently from $\G_0$.  We set $\theta_j = \psi_k$ for all integers $j$ in segment $k$ of the partion \cite{Blackwell1973}.
 
-Samples can be drawn from the Ewen's sampling distribution using the Chinese Restaurant Process (CRP).  Since the connection between the CRP and the Ewen's sampling distribution is essential to developments later in the paper we describe here the CRP in detail. We imagine seating customers in a restaurant with an infinite number of tables. The first customer in the CRP sits down at an empty table.  Customers $2 \dots N$ are seated sequentially by seating the $j^{\mathrm{th}}$ customer at a table drawn from the following distribution:
+Samples can be drawn from the Ewen's sampling distribution using the Chinese Restaurant Process (CRP).  Since the connection between the CRP and the Ewen's sampling distribution is essential to developments later in the paper we describe here the CRP in detail. We imagine seating customers in a restaurant with an infinite number of tables. The first customer in the CRP sits down at an empty table.  Customers $2, \dots ,N$ are seated sequentially by seating the $j^{\mathrm{th}}$ customer at a table drawn from the following distribution:
 %
 \begin{eqnarray*}
 p(\textrm{occupied table}\; i |\textrm{ previous}) &=& \frac{n_i - d}{j-1+ c}\\
@@ -39,7 +39,7 @@ To obtain a sample from this hierarchical Pitman-Yor process it is again possibl
 \begin{figure}[t] 
 	\begin{center}
 		\scalebox{.2}{\includegraphics{figure1.pdf}} % [clip=true, viewport= 1in 1in 9in 9in]
-		\caption{Final state of an example CRF process.}
+		\caption{Chinese restaurant franchise}
 		\label{figHPY}
 	\end{center} 
 \end{figure} 
@@ -64,7 +64,7 @@ where $\mathcal{U}_{\Sigma }$ is a uniform distribution over the set of symbols,
 \begin{figure}[t] 
 	\begin{center}
 		\scalebox{.45}{\includegraphics{prefix_tree.pdf}} % [clip=true, viewport= 1in 1in 9in 9in]
-		\caption{An example prefix tree for the sequence $patat$}.
+		\caption{Sequence Memoizer graphical model}
 		\label{figprefixtree}
 	\end{center} 
 \end{figure} 
@@ -73,6 +73,6 @@ Figure~\ref{figprefixtree} shows the graphical model instantiated by the sequenc
 
 %This is because of a result from \cite{Pitman1999,Ho2006} showing that two Pitman-Yor processes can be analytically integrated against one another.  Note that this result is different than the result from \cite{Blackwell1973} allowing for the representation we are using which analytically integrates out each random distribution separately\comment{whiskey tango foxtrot?}. 
 
-Inference in the SM model is performed in the CRF respresentation. Inference takes worst case $\mathcal{O}(n^2)$ time and requires $\mathcal{O}(n)$ space where $n$ is the length of the sequence. Quadratic time stems from the fact that seating a customer in the appropriate restaurant may require seating a customer in all of the restaurants above it.  The length of this path is bounded by the length of the sequence. Each restaurant requires constant space because a restaurant need only maintain a constant number of summary statistics, the total number of customers and the total number of tables present of each type.\footnote{For symbol sets of finite cardinality.} Note this representation requires reinstantiation of the full restaurant state for some steps of inference which can be done by exploiting exchangeability.  The fact that a restaurant can be represented allows the full model to be represented in $\mathcal{O}(n)$ space.
+Inference in the SM model is performed in the CRF respresentation. Inference takes worst case $\mathcal{O}(n^2)$ time and requires $\mathcal{O}(n)$ space where $n$ is the length of the sequence. Quadratic time stems from the fact that seating a customer in the appropriate restaurant may require seating a customer in all of the restaurants above it.  The length of this path is bounded by the length of the sequence. Each restaurant requires constant space because a restaurant need only maintain a constant number of summary statistics, the total number of customers and the total number of tables present of each type.\footnote{For symbol sets of finite cardinality.} Note this representation requires reinstantiation of the full restaurant state for some steps of inference this can be done by exploiting exchangeability.  The fact that a restaurant can be represented in constant space allows the full model to be represented in $\mathcal{O}(n)$ space.
 
 %In most applications $\mathcal{O}(n)$ space is acceptable, but for sequence modeling of extremely long sequences it is problematic.  Tasks such as compression often encounter sequences which make the SM an impractical option.  
