@@ -1,35 +1,55 @@
 \section{Generative Model}
 
+\newcommand{\G}{\mathcal{G}}
+\newcommand{\LM}{\mathcal{L}\mathcal{M}}
+\newcommand{\bu}{{\bf u}}
+\newcommand{\PY}{\mathcal{P}\mathcal{Y}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\LA}{\mathcal{L}}
+
 \subsection{Latent Dirichlet Allocation}
 
-Latent Dirichlet Allocation treats a topic as a multinomial distribution over words, and a document is a mixture of topics.  To prevent overfitting, and share statistical strength between both topics and documents, Dirichlet priors are placed over both the distribution of topics in a document and the distribution of words in a topic.  Each word belongs to a single topic, and is drawn i.i.d. from the topic distribution.  The full generative model for a set of documents is
+Latent Dirichlet Allocation \cite{Blei and Jordan} is a generative model proposed to model the latent topics present in a set of documents.  If we characterize a topic as a multinomial distribution over words then the generative process can be viewed as treating each document as a mixture of topics. The generative model for $J$ documents containing $T$ possible topics can be succinctly written as 
 
-\[
-\begin{array}{cc}
-\psi_j \sim \textrm{Dir}(\alpha) \nonumber &
-\phi_t  \sim \textrm{Dir}(\beta) \nonumber \\
-z_{ij} \sim \textrm{Mult}(\psi_j) \nonumber &
-w_{ij} \sim \textrm{Mult}(\phi_{z_{ij}}) \\
-\end{array}
-\]
+\begin{eqnarray}
+\phi_t  &\sim& \textrm{Dir}(\beta)  \hspace{1.1cm} t = 1,\ldots,T \nonumber \\
+\psi_j &\sim& \textrm{Dir}(\alpha) \hspace{1.05cm} j = 1,\ldots, J\nonumber \\
+z_{ij} | \psi_j &\sim& \textrm{Mult}(\psi_j) \hspace{.7cm} i = 1,\ldots, N_j \nonumber \\
+w_{ij} | \phi_{z_{ij}} &\sim& \textrm{Mult}(\phi_{z_{ij}}) \hspace{.5cm} i = 1,\ldots, N_j 
+\end{eqnarray}
 
-Where $z_{ij}$ is the latent topic assigned to word $w_{ij}$ in document $j$.  The posterior distribution over topic assigments, document and topic distributions is too complex to be inferred exactly, and so a variety of approximate inference schemes are used.  Here we use the collapsed Gibbs sampler \ref{Griffiths2004} which samples the conditional distribution of a topic label $p(z_{ij} | w_{ij}, \mathbf{z}_{-ij}, \mathbf{w}_{-ij})$ given the other topic labels and words, with the document and topic distributions integrated out.
+where $w_{ij}$ is the $i^{th}$ word in the $j^{th}$ document and $N_j$ is the number of words in document $j$. To generate word $i$ in document $j$ a topic indicator $z_{ij}$ is drawn from the document specific mixture $\psi_j$ and the word is drawn from the appropriate topic $\phi_{z_{ij}}$.  The hierarchical structure of the model facilitates sharing of statistical strength between both the document specific distributions over topics and the topic specific distributions over words.
+
+Efficient estimation of the model can been performed using a collapsed Gibbs sampler \cite{Griffiths2004}.  The parameters $\{ \phi_t \}$ and $\{ \psi_j \}$ are integrated out and each topic label $z_{ij}$ is sampled from the conditional distribution $p(z_{ij} | w_{ij}, \mathbf{z}_{-ij}, \mathbf{w}_{-ij})$.
 
 \subsection{Doubly-Hierarchical Pitman-Yor Process Language Model}
 
-The Doubly-Hierarchical Pitman-Yor Process Language Model (DHPYPLM) is a nonparametric Bayesian model that integrates individual language models by placing another language model as a prior over the models in individual domains.  A Pitman-Yor process is an extension of the Dirichlet process (which is itself a distribution over distributions), with a discount parameter in addition to the concentration parameter.  Draws from a distribution drawn from a PYP cluster together as in a DP, except that the number of observations in a cluster falls off as a power law instead of exponentially fast.  
+The Doubly-Hierarchical Pitman-Yor Process Language Model (DHPYPLM) \cite{wood and teh} is a nonparametric Bayesian model that ties together individual Hierarchical Pitman-Yor Language Models (HPYPLM). Sharing of statistical strength between language models is achieved through a process known as the Graphical Pitman-Yor Process (GPYP) \cite{wood and teh}.  Because the DHPYPLM builds upon the HPYPLM \cite{teh}, we first describe the HPYPLM.
 
-In the DHPYPLM, a word is drawn from a PYP specific to the context preceding that word as well as the domain of the word (the length of that context is typically a fixed parameter of the model - the $n$ in $n$-gram).  In the singly-hierarchical PYP language model, the base distribution of each PYP is another PYP with context length one shorter, except for the zero-length context, where a uniform distribution over types is used.  In the doubly-hierarchical case the base distribution is a mixture of two PYPs: one in the same domain with one shorter context length, and one in the language model over all domains with the same context.  The mixing proportion determines the probability of backing off to either a simpler context in the same domain or the same context outside of a particular domain, and is itself sampled during the inference process.  
-
-Formally, if $[]$ is the null context, $\pi(\mathbf{u})$ a string with the first character of $\mathbf{u}$ removed, $\mathcal{U}$ the uniform distribution, and PY$(\alpha,d,\mathcal{H})$ a Pitman-Yor process with concentration $alpha$ and discount $d$, then the generative model for a word $w$ in domain $t$ preceded by the length $n$ string $\mathbf{u}$ is given by
+The HPYPLM is a non-parametric hierarchical Bayesian model specifying that each word is generated from a distribution specific to the context ${\bf u}$ in which the word appears.  For this discussion we will assume that the context of a given word, $w_i$, is the ordered sequence of only the $n-1$ words preceding it, $[w_{i - (n-1)}, w_{i-(n-2)}, \ldots, w_{i-1}]$.  Context specific distributions $\G_{\bu}$ are tied together through the hierarchical structure
 
 \begin{eqnarray}
-\mathcal{G}^0_{[]} & \sim & \textrm{PY}(\alpha^0_{0},d^0_{0},\mathcal{U}) \nonumber \\
- \mathcal{G}^t_{[]} & \sim & \textrm{PY}(\alpha^t_{0},d^t_{0},\mathcal{G}^0_{[]}) \nonumber \\
-\mathcal{G}^0_{\mathbf{u}} & \sim & \textrm{PY}(\alpha^0_{|\mathbf{u}|},d^0_{|\mathbf{u}|},\mathcal{G}^0_{\pi(\mathbf{u})}) \nonumber \\
- \mathcal{G}^t_{\mathbf{u}} & \sim & \textrm{PY}(\alpha^t_{|\mathbf{u}|},d^t_{|\mathbf{u}|},\lambda^t_{|\mathbf{u}|}\mathcal{G}^t_{\pi(\mathbf{u})} + (1-\lambda^t_{|\mathbf{u}|}) \mathcal{G}^0_{\mathbf{u}}) \nonumber \\
-w & \sim & \mathcal{G}^t_{\mathbf{u}}
+\G_{[]}| c_0, d_0, \mathcal{U} &\sim& \PY(c_0, d_0, \mathcal{U}) \nonumber \\
+\G_\bu | c_{|\bu|}, d_{|\bu|}, \G_{\pi (\bu)} &\sim& \PY( c_{|\bu|}, d_{|\bu|},  \G_{\pi (\bu)}) \label{eqn:hpyplm}
 \end{eqnarray}
+
+where $\bu \in \Sigma^{n-1}$, $\Sigma$ is the set of possible words, and $\pi(\bu)$ is the context obtained by removing the most distant word of context $\bu$.  The notation $\G \sim \PY(c,d,\G_0)$ indicates that $\G$ is a random distribution following a Pitman-Yor process \cite{someone} distribution with concentration parameter $c$, discount parameter $d$, and base distribution $\G_0$.
+
+The specification of a HPYPLM assumes a single language model responsible for generating all text.  However, there are instances in which the assumption of a single universal language model is inappropriate \cite{Rosenfeld2000}.  In \cite{wood and teh}, using the motivating example of domain adaptation, they suggest the GPYP as a possible solution. The GPYP can be understood as a generative model with a latent, general HPYPLM serving as a common prior for each of several domain specific HPYPLM's.  Typical of Bayesian hierarchical models, the language model for each domain reflects properties of the general HPYPLM while still capturing differences in the local language structure of each domain.
+
+In the DHPYPLM, the latent language model is a HPYPLM, as specified by Equation~\ref{eqn:hpyplm}.  If $G^\LA_\bu$ is the distribution over words seen the context $\bu$ in the latent model, then for each domain $\D$,  the domain specific model is
+
+\begin{eqnarray}
+\G^\D_{[]} &\sim& \PY(c^\D_0, d^\D_0,\G^\LA_{[]}) \nonumber \\
+\G^\D_\bu &\sim& \PY(c^D_{|\bu|}, c^\D_{|\bu|}, \lambda^\D_{|\bu|}\G^\D_{\pi(\bu)} + (1-\lambda^\D_{|\bu|})\G^\LA_\bu)) \nonumber \\ 
+&& \hspace{2cm} \forall \bu \in \Sigma^{n-1}, 0 \leq \lambda^\D_{|\bu|} \leq 1. \nonumber
+\end{eqnarray}
+
+Each distribution described is actually a conditional distribution, but the conditioning bars have been left off to de-clutter the notation.  Explicitly, the conditional distribution of $\G^\D_{[]}$ given $c^\D_0, d^\D_0,$ and $\G^\LA_{[]}$, etc.  Note that the base distribution for each $\G^\D_\bu$ is a mixture of distributions: the first is the distribution in the same domain given a context shortened by one word while the second is the distribution given the context $\bu$ in the latent language model. Priors are also placed on all $\lambda^\D_{|\bu|}$ parameters, \cite{wood and teh} use
+
+$$\lambda^D_{|\bu|} \sim \PY(\alpha_{|\bu|}, \delta_{|\bu|}, \textrm{Unif}(0,1))  \hspace{.5cm} \forall \D.$$
+
+Using this prior ties together the $\lambda_{|\bu|}$ parameters across different domains $\D$ under a common prior.
 
 \subsection{Joining the Models}
 
