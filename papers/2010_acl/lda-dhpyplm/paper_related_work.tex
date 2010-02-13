@@ -1,0 +1,10 @@
+% !TEX root = ContextualTopicModel.tex
+\section{Related Work}
+
+%In particular we combine Latent Dirichlet Allocation \cite{Blei2003a} and the Doubly-Hierarchical Pitman-Yor Process Language Model \cite{Wood2009}.   an $n$-gram language model which efficiently shares statistical strength between different domains, where in this case a topic constitutes a single domain.  
+
+When viewing either topic models like classical LDA or $n$-gram models, smoothing or otherwise,  as generative models of language, it is clear that basic assumptions underlying both are flawed.  The bag-of-words assumption typical to LDA models is non-sensical from a generative perspective whereas the inclusion of a latent topic generation process is.  In $n$-gram models, the ``shallowness'' of the model, i.e.~it's lack of any latent generative mechanism, is nonsensical, whereas its representation of the sequential, local inter-word dependencies is.  It is no surprise that many different methods of combining such models have been proposed \cite{Griffiths2005,Wang2005,Wallach2006,Gruber2007}, each of which aims to overcome the obvious deficiencies of both either by explicitly combining the models as we and \cite{Wallach2006} have done, or by borrowing ideas from one model and applying them in the other as was done in the rest.
+
+The approach of \cite{Wallach2006} is similar in spirit to our own, however she uses the hierarchical Dirichlet language model \cite{MacKay1995} which has since been superseded by Bayesian language models with superior performance. 
+
+%The approach taken by \cite{Griffiths2005} in which semantic and syntactic  did not allow individual words to play both a semantic and syntactic role.  The approach The approach of \cite{Wallach2006} is similar in spirit to our own, however she uses the hierarchical Dirichlet language model \cite{Mackay1995} which has since been superseded by Bayesian language models with superior performance. 
