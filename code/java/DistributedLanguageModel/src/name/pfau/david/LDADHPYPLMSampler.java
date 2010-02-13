@@ -5,9 +5,9 @@
 
 package name.pfau.david;
 
-import edu.gatsby.nlp.lm.client.Add;
-import edu.gatsby.nlp.lm.client.Client;
-import edu.gatsby.nlp.lm.client.Sample;
+import edu.columbia.nlp.lm.client.Add;
+import edu.columbia.nlp.lm.client.Client;
+import edu.columbia.nlp.lm.client.Sample;
 import java.util.ArrayList;
 
 /**
@@ -18,16 +18,14 @@ public class LDADHPYPLMSampler extends Client {
     // add 4 observations
     // sample 6 times
     // disconnect
-    public static void main(String[] args ) {
+    public static void main( String[] args ) {
         String hostname = "localhost";
 
-        int port = 4040;
+        int port = 4041;
         int domain = 1;
         int count = 1;
 
         int[][] observations = { {0, 1, 0}, {0, 1, 1}, {0, 2, 0}, {1, 1, 4}};
-
-        connect(hostname,port);
 
         Add addClient = new Add();
         Sample sampleClient = new Sample();
@@ -38,12 +36,10 @@ public class LDADHPYPLMSampler extends Client {
                 obs.add(observations[i][j]);
 
             addClient.add(domain, count, obs);
-            //connect(hostname,port);
+            System.out.println("Anybody out there?");
         }
 
         sampleClient.sample(6);
-
-        disconnect();
 
 
     }

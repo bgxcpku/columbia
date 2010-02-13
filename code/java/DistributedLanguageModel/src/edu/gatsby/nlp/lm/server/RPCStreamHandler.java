@@ -201,7 +201,7 @@ public class RPCStreamHandler extends Thread {
                     removeResponseBuilder.setNumAdded(numRemoved);
                     responseBuilder.clear();
                     responseBuilder.setType(MessageType.REMOVE);
-                    responseBuilder.setAdd(addResponseBuilder.build());
+                    responseBuilder.setRemove(removeResponseBuilder.build());
 
 
 
