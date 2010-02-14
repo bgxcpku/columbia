@@ -1,4 +1,4 @@
 % !TEX root = ContextualTopicModel.tex
 \begin{abstract}
-In this work we describe and test a novel multi-domain, smoothing $n$-gram language model in which the domain from which each word arises is treated as a latent, unknown random variable.  Given the domain for each word, a document is modeled as a sequence of conditional draws (conditioned on the previous words) from a set of domain specific, hierarchically coupled, smoothing $n$-gram language models.  We derive a Bayesian inference procedure for this model and show improved language modeling results in terms of perplexity.
+In this work we describe and experiment with a novel, multi-domain, smoothing $n$-gram language model in which every word is associated with a latent indicator variable that indicates the domain from which it was generated.  Given the domain for each word, a document is modeled as a sequence of draws from smoothed conditional probability tables indexed by both the observed context history and the latent domain.   We develop a generative description and derive a Bayesian inference procedure for this model and show improved language modeling results in terms of perplexity.
 \end{abstract}
