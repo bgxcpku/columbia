@@ -1,23 +1,18 @@
 \section{Inference}
 
-Inference in the \ourmodel can be performed using a Gibb's sampler using the collapsed representation.  The latent parameters in \ourmodel are the vector of topic assignments for every word, ${\bf z}$,  the set of domain specific HPYPLM's, $\{ \LM_t \}_{t = 1}^T$, and the latent HPYPLM, $\LM_\LA$.  
-
-Thus, the conditional distributions necessary for a Gibbs sampler are
-
+We can estimate the posterior distribution of the parameters in the collapsed representation of  the \ourmodel using a Gibb's sampler.  The latent parameters are the vector of topic assignments for every word, ${\bf z}$,  and the set of all conditional distributions $\G_\bu$ in the DHPYPLM, which we denote as $\M$.  In the collapsed representation we use for sampling, all the $\G_{\bu}$ distributions are actually integrated out, but the predictive distributions needed for sampling are recoverable. The conditional distributions needed to implement a Gibbs sampler are
+%
 \begin{eqnarray}
-\lefteqn{P(z_{ij}=t | \mathbf{z}_{-ij},\mathbf{w}) \propto}  \nonumber \\
- & &  P(w_{ij}|z_{ij}=t, \mathbf{z}_{-ij}, \mathbf{w}_{-ij})P(z_{ij} = t | \mathbf{z}_{-ij}) \label{eqn:gibbssample} \nonumber
+& &P(z_{ij} = t | \mathbf{z_{-ij}},\mathbf{w}, \M) \propto  \label{eqn:gibbs1}\\
+& &	\hspace{.5cm} P(w_{ij}|z_{ij}=t, \M_{-w_{ij}})P(z_{ij} = t | \mathbf{z}_{-ij}) \nonumber \\
+& &P(\M |  {\bf z} , {\bf w}) \label{eqn:gibbs2} 
 \end{eqnarray}
+%
+\noindent where $\M_{-w_{ij}}$ is a sample from the posterior distribution of the DHPYPLM conditioned on the corpus with the word $w_{ij}$ removed. 
 
+The first term in Equation~\ref{eqn:gibbs1} is the probability of generating $w_{ij}$ from the language model specific to domain $z_{ij}$ given the current state of the sampler.  This probability is easily calculated given that the DHPYPLM is sampled in the collapsed MFCRF representation. Equation~\ref{eqn:gibbs2} consists of sampling the DHPYPLM given all the topic assignments.  This step is exactly the domain adaptation scenario presented in \cite{Wood2009a} and can be performed in the MFCRF representation.
 
-To Gibbs sample, we wish to iteratively sample over the conditional probabilities of topic assignments for each word, $p(z_{ij}|\mathbf{z}_{-ij},\mathbf{w})$.  In the case of LDA, this conditional probability factors nicely \ref{Griffiths2004}.
-
-
-Each of the terms on the right is a predictive probability for a multinomial-Dirichlet model, and the expression simplifies to
-
-\begin{equation}
-P(z_{ij}=t | \mathbf{z}_{-ij},\mathbf{w}) \propto \frac{n^{(w_{ij})}_{-ij,t} + \beta}{n^{(\cdot)}_{-ij,t} + W\beta} \frac{n^{(d_j)}_{-ij,t} + \alpha}{n^{(d_j)}_{-ij,\cdot} + T\alpha} 
-\end{equation}
+\begin{comment}
 
 The term $P(w_{ij}|z_{ij}=t, \mathbf{z}_{-ij}, \mathbf{w}_{-ij})$ in Equation~\ref{eqn:gibbssample} is the probability of generating $w_{ij}$ from the language model specific to domain $z_{ij}$ given the current state of the sampler.  This probability is easily calculated given that the GPYP is sampled in the collapsed MFCRF representation.
 
@@ -32,3 +27,5 @@ P(w_{ij}|z_{ij}=t, \mathbf{z}_{-ij}, \mathbf{w}_{-ij}) = \int p(w_{ij}|\mathcal{
 \end{equation}
 
 This integral is intractable, so instead we approximate the posterior of $\mathcal{G}^t_{\mathbf{u}_{ij}}$ with a point estimate, the state of the language model after Gibbs sampling with the current observation removed, and read out the predictive probability of the current word given a topic and context.  Thus we can construct the entire conditional probability distribution that a word is assigned to a particular topic given the other topic assignments and current state of the language model.  By iteratively sampling the topic assignments and language model, we now have a full Gibbs sampler for integrated LDA-DHPYPLM.
+
+\end{comment}
