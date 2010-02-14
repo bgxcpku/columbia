@@ -1,16 +1,22 @@
 \section{Inference}
 
-We can estimate the posterior distribution of the parameters in the collapsed representation of  the \ourmodel using a Gibb's sampler.  The latent parameters are the vector of topic assignments for every word, ${\bf z}$,  and the set of all conditional distributions $\G_\bu$ in the DHPYPLM, which we denote as $\M$.  In the collapsed representation we use for sampling, all the $\G_{\bu}$ distributions are actually integrated out, but the predictive distributions needed for sampling are recoverable. The conditional distributions needed to implement a Gibbs sampler are
+In the collapsed representation of  the \ourmodel we can estimate the posterior distribution of the parameters using a Gibb's sampler.  The parameters are the vector of topic assignments for each word, ${\bf z}$,  and the set of distributions in the DHPYPLM, which we denote as $\M$.  In the collapsed representation we use for sampling, all the distributions in $\M$ are integrated out, but the predictive distributions needed for sampling are recoverable. The conditional distributions needed to implement a Gibbs sampler are
 %
 \begin{eqnarray}
 & &P(z_{ij} = t | \mathbf{z_{-ij}},\mathbf{w}, \M) \propto  \label{eqn:gibbs1}\\
-& &	\hspace{.5cm} P(w_{ij}|z_{ij}=t, \M_{-w_{ij}})P(z_{ij} = t | \mathbf{z}_{-ij}) \nonumber \\
+& &	\hspace{.5cm} P(w_{ij}|z_{ij}=t, \M_{-w_{ij}})P(z_{ij} = t | \mathbf{z}_{-ij}, {\bf w}) \nonumber \\
 & &P(\M |  {\bf z} , {\bf w}) \label{eqn:gibbs2} 
 \end{eqnarray}
 %
 \noindent where $\M_{-w_{ij}}$ is a sample from the posterior distribution of the DHPYPLM conditioned on the corpus with the word $w_{ij}$ removed. 
 
-The first term in Equation~\ref{eqn:gibbs1} is the probability of generating $w_{ij}$ from the language model specific to domain $z_{ij}$ given the current state of the sampler.  This probability is easily calculated given that the DHPYPLM is sampled in the collapsed MFCRF representation. Equation~\ref{eqn:gibbs2} consists of sampling the DHPYPLM given all the topic assignments.  This step is exactly the domain adaptation scenario presented in \cite{Wood2009a} and can be performed in the MFCRF representation.
+In Equation~\ref{eqn:gibbs1}, $P(w_{ij}|z_{ij}=t, \M_{-w_{ij}})$ is the probability of generating $w_{ij}$ from the language model specific to domain $z_{ij}$ given the current state of the sampler.  This probability is easily calculated given a static state of the DHPYPLM.  The second term in Equation~\ref{eqn:gibbs1} is
+%
+\begin{eqnarray*}
+P(z_{ij} = t | \mathbf{z}_{-ij}, {\bf w}) \propto \frac{n^{(d_j)}_{-ij,t} + \frac{\alpha}{T}}{n^{(d_j)}_{-ij,.} + \alpha},
+\end{eqnarray*}
+%
+\noindent where $n^{(d_j)}_{-ij,t}$ is the number of times the topic $t$ appears in document $d_j$ excluding $w_{ij}$ and the dot indicates marginalization over topics. Equation~\ref{eqn:gibbs2} is the conditional distribution of the DHPYPLM given all the topic assignments.  Sampling from Equation~\ref{eqn:gibbs2} is exactly like the domain adaptation scenario presented in \cite{Wood2009a} and is performed in the multi-floor Chinese restaurant process representation.
 
 \begin{comment}
 
