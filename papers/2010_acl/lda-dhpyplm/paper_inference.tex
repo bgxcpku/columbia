@@ -1,10 +1,17 @@
 \section{Inference}
 
+Inference in the \ourmodel can be performed using a Gibb's sampler using the collapsed representation.  The latent parameters in \ourmodel are the vector of topic assignments for every word, ${\bf z}$,  the set of domain specific HPYPLM's, $\{ \LM_t \}_{t = 1}^T$, and the latent HPYPLM, $\LM_\LA$.  
+
+Thus, the conditional distributions necessary for a Gibbs sampler are
+
+\begin{eqnarray}
+\lefteqn{P(z_{ij}=t | \mathbf{z}_{-ij},\mathbf{w}) \propto}  \nonumber \\
+ & &  P(w_{ij}|z_{ij}=t, \mathbf{z}_{-ij}, \mathbf{w}_{-ij})P(z_{ij} = t | \mathbf{z}_{-ij}) \label{eqn:gibbssample} \nonumber
+\end{eqnarray}
+
+
 To Gibbs sample, we wish to iteratively sample over the conditional probabilities of topic assignments for each word, $p(z_{ij}|\mathbf{z}_{-ij},\mathbf{w})$.  In the case of LDA, this conditional probability factors nicely \ref{Griffiths2004}.
 
-\begin{equation}
-P(z_{ij}=t | \mathbf{z}_{-ij},\mathbf{w}) \propto P(w_{ij}|z_{ij}=t, \mathbf{z}_{-ij}, \mathbf{w}_{-ij})P(z_{ij} = t | \mathbf{z}_{-ij}) \label{eqn:gibbssample}
-\end{equation}
 
 Each of the terms on the right is a predictive probability for a multinomial-Dirichlet model, and the expression simplifies to
 
