@@ -3,7 +3,7 @@
 To Gibbs sample, we wish to iteratively sample over the conditional probabilities of topic assignments for each word, $p(z_{ij}|\mathbf{z}_{-ij},\mathbf{w})$.  In the case of LDA, this conditional probability factors nicely \ref{Griffiths2004}.
 
 \begin{equation}
-P(z_{ij}=t | \mathbf{z}_{-ij},\mathbf{w}) \propto P(w_{ij}|z_{ij}=t, \mathbf{z}_{-ij}, \mathbf{w}_{-ij})P(z_{ij} = t | \mathbf{z}_{-ij})
+P(z_{ij}=t | \mathbf{z}_{-ij},\mathbf{w}) \propto P(w_{ij}|z_{ij}=t, \mathbf{z}_{-ij}, \mathbf{w}_{-ij})P(z_{ij} = t | \mathbf{z}_{-ij}) \label{eqn:gibbssample}
 \end{equation}
 
 Each of the terms on the right is a predictive probability for a multinomial-Dirichlet model, and the expression simplifies to
@@ -11,6 +11,8 @@ Each of the terms on the right is a predictive probability for a multinomial-Dir
 \begin{equation}
 P(z_{ij}=t | \mathbf{z}_{-ij},\mathbf{w}) \propto \frac{n^{(w_{ij})}_{-ij,t} + \beta}{n^{(\cdot)}_{-ij,t} + W\beta} \frac{n^{(d_j)}_{-ij,t} + \alpha}{n^{(d_j)}_{-ij,\cdot} + T\alpha} 
 \end{equation}
+
+The term $P(w_{ij}|z_{ij}=t, \mathbf{z}_{-ij}, \mathbf{w}_{-ij})$ in Equation~\ref{eqn:gibbssample} is the probability of generating $w_{ij}$ from the language model specific to domain $z_{ij}$ given the current state of the sampler.  This probability is easily calculated given that the GPYP is sampled in the collapsed MFCRF representation.
 
 Where $n^{(d_j)}_{-ij,t}$ is the number of times the topic $t$ appears in document $d_j$ excluding the token $w_{ij}$, $n^{(w_{ij})}_{-ij,t}$ is the number of times the type $w_{ij}$ appears in topic $t$, excluding the token $w_{ij}$, and the dot represents marginalization (over topics or types).
 
