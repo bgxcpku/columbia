@@ -29,7 +29,6 @@ public class ByteSeater {
         returnVal[1] = seq.length;
         logLoss = 0.0;
         int currentRunLength = 0;
-        //maxRunLength = 20;
         RunLengthEncoder rle = new RunLengthEncoder();
 
         int counter = 0;
@@ -51,12 +50,11 @@ public class ByteSeater {
                     if (Restaurant.numberRest > maxNumberRest - 2) {
                         if (ss == SeatingStyle.RANDOM_DELETION) {
                             sm.deleteRandomLeafNodes(100);
-                        } else if (ss == SeatingStyle.DISANTLY_USED_DELETION) {
-                            sm.fillLeastUsedLeafNodeList(maxNumberRest);
-                            sm.deleteLeastUsedLeafRestaurants(100);
-                            sm.leastUsedLeafNodeList.clear();
                         } else if (ss == SeatingStyle.BAYES_FACTOR_DELETION) {
                             sm.deleteLeastUsefullRestaurantsForLogProbOfData(100);
+                        }
+                        else {
+                            throw new RuntimeException("no other deletion schemes implemented");
                         }
                     }
                 }
@@ -64,7 +62,6 @@ public class ByteSeater {
                 //update us on the status every 100,000 obs seated
                 if ((obs - counter) >= 100000) {
                     System.out.println(obs);
-                    System.out.println("number of rest = " + Restaurant.numberRest);
                     counter = obs;
                 }
                 
@@ -82,6 +79,18 @@ public class ByteSeater {
                     obs++;
                 }
             }
+
+            System.out.println(sm.getLogLik());
+            for(int k = 0; k<0; k++){
+                sm.sampleDiscounts();
+                sm.sampleSeating();
+                System.out.println(sm.getLogLik());
+            }
+            sm.discounts.print();
+
+            System.out.print("maxCacheSize = ");
+            System.out.println(sm.maxCacheSize);
+            System.out.println(sm.getLogLik());
 
         } else if (ss == SeatingStyle.SIMPLE_BOUNDED_MEMORY) {
             sm = new StochasticMemoizer(256, depth);

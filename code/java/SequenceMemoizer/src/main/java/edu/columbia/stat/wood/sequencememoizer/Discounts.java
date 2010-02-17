@@ -26,6 +26,10 @@ public class Discounts {
         this.discounts = newDiscounts;
     }
 
+    public void set(double newVal, int index){
+        this.discounts[index] = newVal;
+    }
+
     public double get(int i) {
         if (i < discounts.length) {
             return discounts[i];
@@ -121,5 +125,17 @@ public class Discounts {
         }
         discounts = newDiscounts;
         clearGradient();
+    }
+
+    public void print(){
+        System.out.print("Discounts = [");
+        for(int i = 0; i<discounts.length; i++){
+            if(i ==0){
+                System.out.print(discounts[i]);
+            } else {
+                System.out.print(", " + discounts[i]);
+            }
+        }
+        System.out.println("]");
     }
 }

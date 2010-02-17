@@ -2,27 +2,29 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.columbia.stat.wood.sequencememoizer;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+package edu.columbia.stat.wood.sequencememoizer;
 
 /**
  *
  * @author nicholasbartlett
  */
-public class Restaurant extends HashMap<Integer, Restaurant> {
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public class ArrayRestaurant extends HashMap<Integer, Restaurant> {
 
     public int[][] state;
     public Restaurant parent;
     public int[] parentPath;
     public int[][] deletionState = null;
     public PredictiveCounts predictiveCounts = null;
-    
-    public static int numberRest = 0;
-    
 
-    public Restaurant(Restaurant parent, int[] parentPath, int depth) {
+    public static int numberRest = 0;
+
+
+    public ArrayRestaurant(Restaurant parent, int[] parentPath, int depth) {
         super(2); //FIX this should be more smart, initialization should be based on depth
         this.parent = parent;
         this.parentPath = parentPath;
@@ -397,7 +399,7 @@ public class Restaurant extends HashMap<Integer, Restaurant> {
         } else {
             logDiscount = discounts.getLog(0);
         }
-        
+
         if (this.size() != 0) {
             throw new RuntimeException("Cannot calculate the difference in log" +
                     " probability of this string if this is deleted because the" +

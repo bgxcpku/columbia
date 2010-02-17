@@ -13,9 +13,7 @@ import java.util.ArrayList;
 public class RunLengthEncoder {
 
     public RunLengthEncoder() {
-    }
-
-    ;
+    }    
 
     //a section of a seq and spits back the number in the run in the appropriately
     //encoded way
