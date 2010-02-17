@@ -1,0 +1,28 @@
+---
+title: Schedule
+in_menu: true
+---
+
+The tentative schedule is 
+
+<TABLE CELLSPACING="0" CELLPADDING="10" border="1">
+	<TR>
+		<TH width = "15%">Date</TH>
+		<TH width = "60%">Reading</TH>
+		<TH>Group Leader</TH>
+	</TR>
+
+	<TR>
+		<TD>Feb 17</TD>		
+		<TD><a href = "papers/BayesAsymp.pdf">Ghosal (pages 36 - 48)</a></TD>
+		<TD>Nick</TD>
+	</TR>
+	
+	<TR>
+		<TD>Feb 24</TD>
+		<TD><a href = "papers/BayesAsymp.pdf">Ghosal (pages 48 - ?)</a></TD>
+		<TD>?</TD>
+	</TR>
+</TABLE>
+
+The schedule is tentative and likely to change as the reading group evolves. Each session will have a group leader assigned, but this person is not responsible for creating a polished presentation of the reading material, only to help lead the group and provoke discussion.
