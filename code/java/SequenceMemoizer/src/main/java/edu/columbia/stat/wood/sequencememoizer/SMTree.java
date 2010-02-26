@@ -2,6 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package edu.columbia.stat.wood.sequencememoizer;
 
 import java.util.ArrayList;
@@ -12,34 +13,53 @@ import java.util.Stack;
  *
  * @author nicholasbartlett
  */
-public class StochasticMemoizer {
+public class SMTree {
 
     public int alphabetSize;
     public Restaurant contextFreeRestaurant;
     public Discounts discounts = null;
-    public int[] sequence;
-    public double obsLogProb = 0.0;
-    public double logLoss = 0.0;
+    public MemoizedSequence seq = new MemoizedSequence();
+    public int maxNumberRest = -1;
     public int maxDepth = -1;
-    public int maxCacheSize = 0;
+    public SeatingStyle smType = SeatingStyle.SIMPLE;
 
-    public StochasticMemoizer(int alphabetSize, Integer maxDepth) {
+    private double obsLogProb = 0.0;
+
+    public SMTree(int alphabetSize, int maxDepth, int maxNumberRest, SeatingStyle smType) {
         this.alphabetSize = alphabetSize;
-        contextFreeRestaurant = new Restaurant(null, null, 0);
+        contextFreeRestaurant = new Restaurant(null, null);
 
-        if (maxDepth != null) {
-            this.maxDepth = maxDepth.intValue();
-        }
-
+        this.smType = smType;
+        this.maxDepth = maxDepth;
+        this.maxNumberRest = maxNumberRest;
         Restaurant.numberRest = 0;
 
         double[] discount = {0.05, 0.7, 0.8, 0.82, 0.84, 0.88, 0.91, 0.92, 0.93, 0.94, 0.95};
         this.discounts = new Discounts(discount);
     }
 
-    public Restaurant seatObs(Restaurant rest, int obsIndex, int contextIndex, int[] seq, double upperRestProbOfObs) {
+    public double seatObs(int observation, boolean newSeq, boolean updateDisc){
+        if (smType != SeatingStyle.SIMPLE) {
+            if (Restaurant.numberRest > maxNumberRest - 2) {
+                if (smType == SeatingStyle.RANDOM_DELETION) {
+                    this.deleteRandomLeafNodes(100);
+                } else if (smType == SeatingStyle.BAYES_FACTOR_DELETION) {
+                    this.deleteLeastUsefullRestaurantsForLogProbOfData(100);
+                } 
+            }
+        }
+        
+        seq.add(observation, newSeq);
+        this.seatObs(contextFreeRestaurant,observation,seq.getLastElementIndex()-1,0,1.0/alphabetSize);
+        if(updateDisc){
+            discounts.stepGradient(0.0001, Math.exp(obsLogProb));
+        }
+        return -obsLogProb/Math.log(2);
+    }
+
+    private Restaurant seatObs(Restaurant rest, int observation, int contextIndex, int depth, double upperRestProbOfObs) {
         //initiate some variables to be used later for ease and readability
-        int depth = obsIndex - contextIndex - 1;
+        //int depth = obsIndex - contextIndex - 1;
         boolean leafNode = (contextIndex == -1);
         if (maxDepth > -1) {
             leafNode = (leafNode || (depth == maxDepth));
@@ -55,7 +75,7 @@ public class StochasticMemoizer {
 
         //calculate the predictive prob of this type in restaurant rest
         double prob;
-        int[] restCounts = rest.getRestCounts(seq[obsIndex]);
+        int[] restCounts = rest.getRestCounts(observation);
         if (restCounts[3] > 0) {
             prob = 1.0 * (restCounts[0] - Math.exp(Math.log(restCounts[1]) + logDiscount)) / restCounts[2] + Math.exp(Math.log(restCounts[3]) + logDiscount + Math.log(upperRestProbOfObs) - Math.log(restCounts[2]));
         } else {
@@ -73,7 +93,7 @@ public class StochasticMemoizer {
 
         //handle leaf nodes first
         if (leafNode) {
-            int[] rootRestCounts = contextFreeRestaurant.getRestCounts(seq[obsIndex]);
+            int[] rootRestCounts = contextFreeRestaurant.getRestCounts(observation);
             double probRoot;
             if (rootRestCounts[3] > 0) {
                 probRoot = 1.0 * (rootRestCounts[0] - Math.exp(Math.log(rootRestCounts[1]) + discounts.getLog(0))) / rootRestCounts[2] + Math.exp(Math.log(rootRestCounts[3]) + discounts.getLog(0) + Math.log(1.0 / alphabetSize) - Math.log(rootRestCounts[2]));
@@ -82,37 +102,31 @@ public class StochasticMemoizer {
             }
 
             obsLogProb = Math.log((99.0 * prob + probRoot) / 100);
-            int parentDepth;
-            if (rest.parent != null) {
-                parentDepth = depth - rest.parentPath[1] + rest.parentPath[0];
-            } else {
-                parentDepth = 0;
-            }
-            return rest.sitAtRest(seq[obsIndex], upperRestProbOfObs, discounts.getLog(parentDepth, depth));
+            return rest.sitAtRest(observation, upperRestProbOfObs, logDiscount);
         }
 
-        Restaurant childRest = rest.get(new Integer(seq[contextIndex]));
+        Restaurant childRest = rest.get(new Integer(seq.get(contextIndex)));
 
         while (true) {
             //CASE 1 : there are no children in the direction of this observation
             if (childRest == null) {
-                int[] childParentPath = new int[2];
+                int[] childParentPath = new int[3];
                 childParentPath[1] = contextIndex + 1;
+                childParentPath[2] = seq.getCurrentSeq();
                 if (maxDepth > -1 && (contextIndex + 1 - (maxDepth - depth)) > 0) {
                     childParentPath[0] = contextIndex + 1 - (maxDepth - depth);
                 } else {
                     childParentPath[0] = 0;
                 }
 
-                childRest = new Restaurant(rest, childParentPath, obsIndex);
+                childRest = new Restaurant(rest, childParentPath);
                 rest.putChild(childRest, seq);
 
                 contextIndex = -1;
                 break;
             }
 
-            int diffIndex = this.compareContexts(childRest.parentPath, contextIndex, seq);
-            maxCacheSize = (diffIndex > maxCacheSize) ? diffIndex : maxCacheSize;
+            int diffIndex = seq.compareContexts(childRest.parentPath, contextIndex);
 
             //CASE 2 : there is a child exactly in the direction of this observation
             if (diffIndex == (childRest.parentPath[1] - childRest.parentPath[0])) {
@@ -122,7 +136,7 @@ public class StochasticMemoizer {
 
             //CASE 3 : there is a child in a direction which shares some context
             //with this obs
-            int[] rest2ParentPath = {0, contextIndex + 1};
+            int[] rest2ParentPath = {0, contextIndex + 1, seq.getCurrentSeq()};
             contextIndex -= diffIndex;
 
             rest2ParentPath[0] = contextIndex + 1;
@@ -131,29 +145,90 @@ public class StochasticMemoizer {
             break;
         }
 
-        int parentDepth;
-        if (rest.parent != null) {
-            parentDepth = depth - rest.parentPath[1] + rest.parentPath[0];
-        } else {
-            parentDepth = 0;
-        }
-
-        if (this.seatObs(childRest, obsIndex, contextIndex, seq, prob) != null) {
-            return rest.sitAtRest(seq[obsIndex], upperRestProbOfObs, discounts.getLog(parentDepth, depth));
+        int childDepth = depth + childRest.parentPath[1] - childRest.parentPath[0];
+       
+        if (this.seatObs(childRest, observation, contextIndex,childDepth, prob) != null) {
+            return rest.sitAtRest(observation, upperRestProbOfObs, logDiscount);
         } else {
             return null;
         }
     }
 
-    private int compareContexts(int[] parentPath, int l, int[] seq) {
-        //walk through the parent path backwards, comparing it to the sequence
-        //from l, going backwards.
-        for (int j = 0; j < (parentPath[1] - parentPath[0]); j++) {
-            if (seq[l - j] != seq[parentPath[1] - j - 1]) {
-                return j;
+    public int[] generateData(int length){
+        int[] generatedData = new int[length];
+        seq.incrementSeq();
+
+        double cumSum;
+        double rawRandom;
+        double[] predDist;
+        double[] initialPredDist = new double[alphabetSize];
+        Arrays.fill(initialPredDist, 1.0/alphabetSize);
+
+        topFor:
+        for(int i = 0; i<length; i++){
+            cumSum = 0.0;
+            rawRandom = Math.random();
+            predDist = this.getPredictiveDist(contextFreeRestaurant, 0, seq.getLastElementIndex(), initialPredDist);
+            for(int j = 0; j<alphabetSize; j++){
+                cumSum += predDist[j];
+                if(cumSum > rawRandom){
+                    generatedData[i] = j;
+                    this.seatObs(j, false, false);
+                    continue topFor;
+                }
             }
         }
-        return (parentPath[1] - parentPath[0]);
+        return generatedData;
+    }
+        
+    private double[] getPredictiveDist(Restaurant rest, int d, int contextIndex, double[] predDist){
+        //fill predictive counts on the way down
+        double logDiscount;
+        if(rest.parent == null) {
+            logDiscount = discounts.getLog(0);
+        } else {
+            logDiscount = discounts.getLog(d - rest.parentPath[1] + rest.parentPath[0], d);
+        }
+        rest.fillPredictiveCounts(alphabetSize, Math.exp(logDiscount), 0);
+
+        if(rest.predictiveCounts.cust == 0){
+            return predDist;
+        }
+        
+        for (int i = 0; i < rest.predictiveCounts.typeNum.length; i++) {
+            predDist[i] = predDist[i] * (rest.predictiveCounts.tables * rest.predictiveCounts.discount + rest.predictiveCounts.concentration) / (rest.predictiveCounts.cust + rest.predictiveCounts.concentration);
+            predDist[i] += rest.predictiveCounts.typeNum[i] / (rest.predictiveCounts.cust + rest.predictiveCounts.concentration);
+        }
+
+        rest.predictiveCounts = null;
+
+        if(contextIndex == -1){
+            return predDist;
+        }
+
+        Restaurant childRest;
+        childRest = rest.get(new Integer(seq.get(contextIndex)));
+
+        if (childRest == null) {
+            return predDist;
+        }
+
+        int diffIndex = seq.compareContexts(childRest.parentPath, contextIndex);
+
+        if (diffIndex == (childRest.parentPath[1] - childRest.parentPath[0])) {
+
+            contextIndex -= diffIndex;
+            
+        } else {
+
+            int[] rest2ParentPath = {0, contextIndex + 1, seq.getCurrentSeq()};
+            contextIndex -= diffIndex;
+
+            rest2ParentPath[0] = contextIndex + 1;
+
+            childRest = childRest.reconfigureRestaurantReturnIntermediateRestaurant(rest2ParentPath, d + rest2ParentPath[1] - rest2ParentPath[0], seq, discounts);
+        }
+        return this.getPredictiveDist(childRest, d + childRest.parentPath[1] - childRest.parentPath[0], contextIndex, predDist);
     }
 
     public double getLogLik() {
@@ -190,7 +265,7 @@ public class StochasticMemoizer {
         return logLik;
     }
 
-    public double getLogLik(Restaurant rest, int depth) {
+    private double getLogLik(Restaurant rest, int depth) {
         double logLik = 0.0;
         double logDisc = discounts.getLog(depth - (rest.parentPath[1] - rest.parentPath[0]), depth);
 
@@ -250,7 +325,7 @@ public class StochasticMemoizer {
 
         //delete rest to be deleted
         for (Restaurant rest : toDeleteList) {
-            rest.delete(sequence);
+            rest.delete(seq);
         }
         //clear deletion list
         toDeleteList = null;
@@ -338,7 +413,7 @@ public class StochasticMemoizer {
         Restaurant restToDelete;
         while (index < numberToDelete) {
             restToDelete = (Restaurant) arrayLeafNodes[index++].first();
-            restToDelete.deleteWithDeletionStateUpdate(sequence);
+            restToDelete.deleteWithDeletionStateUpdate(seq);
         }
 
         logProbLeafNodeList = null;
@@ -347,7 +422,7 @@ public class StochasticMemoizer {
     /********************************SAMPLING**********************************/
     public double[] sampleDiscounts() {
         //sample each discount seperately
-        double[] returnVal = {0, 0, 0};
+        double[] returnVal = {0.0, 0.0, 0.0};
         int numToSample = (maxDepth > -1) ? (maxDepth + 1) : discounts.discounts.length;
 
         double currentLogLik = this.getLogLik();
@@ -381,7 +456,13 @@ public class StochasticMemoizer {
 
     public void sampleSeating(Restaurant rest, int d) {
         //fill predictive counts on the way down
-        rest.fillPredictiveCounts(alphabetSize, discounts.get(d), 0);
+        double logDiscount;
+        if(rest.parent == null){
+            logDiscount = discounts.getLog(0);
+        } else {
+            logDiscount = discounts.getLog(d - rest.parentPath[1] + rest.parentPath[0], d);
+        }        
+        rest.fillPredictiveCounts(alphabetSize, Math.exp(logDiscount), 0);
 
         //sample bottom up, so recurse down first
         int childDepth;
@@ -409,7 +490,12 @@ public class StochasticMemoizer {
                     this.unseatR(unseatInParent, type);
 
                     //sit cust
-                    this.sitR(rest, type, this.getPredictiveDist(rest, type));
+                    double predictiveProb = this.getPredictiveDist(rest, type);
+                    double probUpper = predictiveProb - rest.predictiveCounts.typeNum[type] / (rest.predictiveCounts.cust + rest.predictiveCounts.concentration);
+                    probUpper *= (rest.predictiveCounts.cust + rest.predictiveCounts.concentration) / (rest.predictiveCounts.discount * rest.predictiveCounts.tables + rest.predictiveCounts.concentration);
+
+                    Restaurant sitInParent = rest.sitAtRestS(type, probUpper, logDiscount);
+                    this.sitR(sitInParent, type, probUpper);
                 }
             }
             //clean up if any zero rows
@@ -457,9 +543,11 @@ public class StochasticMemoizer {
         }
 
         double probUpper = predictiveProb - rest.predictiveCounts.typeNum[type] / (rest.predictiveCounts.cust + rest.predictiveCounts.concentration);
-        probUpper = probUpper * (rest.predictiveCounts.cust + rest.predictiveCounts.concentration) / (rest.predictiveCounts.discount * rest.predictiveCounts.tables + rest.predictiveCounts.concentration);
+        probUpper *= (rest.predictiveCounts.cust + rest.predictiveCounts.concentration) / (rest.predictiveCounts.discount * rest.predictiveCounts.tables + rest.predictiveCounts.concentration);
 
         Restaurant sitInParent = rest.sitAtRest(type, probUpper, rest.predictiveCounts.discount);
+        rest.predictiveCounts.increment(type, sitInParent != null);
+        
         this.sitR(sitInParent, type, probUpper);
     }
 
@@ -470,7 +558,11 @@ public class StochasticMemoizer {
         int[] parentPath;
         if (rest.parentPath != null) {
             parentPath = new int[rest.parentPath[1] - rest.parentPath[0]];
-            System.arraycopy(sequence, rest.parentPath[0], parentPath, 0, parentPath.length);
+            for(int i = 0; i<rest.parentPath[1] - rest.parentPath[0]; i++){
+                parentPath[i] = seq.get(rest.parentPath[2],rest.parentPath[0] + i);
+            }
+            
+            //System.arraycopy(sequence, rest.parentPath[0], parentPath, 0, parentPath.length);
 
             if (indexDownPath == 0) {
                 stringLength = new Integer(parentPath[parentPath.length - 1]).toString().length();

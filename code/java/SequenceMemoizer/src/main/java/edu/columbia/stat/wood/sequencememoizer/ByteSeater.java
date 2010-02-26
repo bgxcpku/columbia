@@ -10,7 +10,6 @@ package edu.columbia.stat.wood.sequencememoizer;
  */
 public class ByteSeater {
 
-    public double logLoss = 0.0;
     public static Utils utils = new Utils(123);
     public int maxRunLength;
 
@@ -23,124 +22,39 @@ public class ByteSeater {
     //0: bits/byte
     //1: total bytes
     //2: total restaurants in tree
-    public double[] seatByteSequence(int[] seq, SeatingStyle ss, Integer depth, Integer maxNumberRest) {
-
+    public double[] seatSequence(int[] seq, SMTree sm) {
         double[] returnVal = new double[3];
         returnVal[1] = seq.length;
-        logLoss = 0.0;
+        double logLoss = 0.0;
         int currentRunLength = 0;
         RunLengthEncoder rle = new RunLengthEncoder();
 
-        int counter = 0;
-        StochasticMemoizer sm;
-        if (ss != SeatingStyle.SIMPLE_BOUNDED_MEMORY) {
-            sm = new StochasticMemoizer(256, depth);
-            sm.sequence = seq;
-            int obs = 0;
-            while (obs < seq.length) {
-                if (obs > 0) {
-                    if (seq[obs] == seq[obs - 1]) {
-                        currentRunLength++;
-                    } else {
-                        currentRunLength = 0;
-                    }
-                }
+        sm.seatObs(seq[0], false, true);
+        int intermediateSample = 1;
+        int i = 1;
+        while(i < seq.length){
 
-                if (ss != SeatingStyle.SIMPLE) {
-                    if (Restaurant.numberRest > maxNumberRest - 2) {
-                        if (ss == SeatingStyle.RANDOM_DELETION) {
-                            sm.deleteRandomLeafNodes(100);
-                        } else if (ss == SeatingStyle.BAYES_FACTOR_DELETION) {
-                            sm.deleteLeastUsefullRestaurantsForLogProbOfData(100);
-                        }
-                        else {
-                            throw new RuntimeException("no other deletion schemes implemented");
-                        }
-                    }
-                }
-
-                //update us on the status every 100,000 obs seated
-                if ((obs - counter) >= 100000) {
-                    System.out.println(obs);
-                    counter = obs;
-                }
-                
-                if (currentRunLength > maxRunLength && maxRunLength > 0) {
-                    int[] rleOut = rle.encode(obs, seq);
-                    for (int i = 0; i < rleOut.length; i++) {
-                        long obsUpdate = (long) rleOut[i] - (long) Integer.MIN_VALUE;
-                        obs += (int) obsUpdate;
-                        logLoss += 32;
-                    }
-                } else {
-                    sm.seatObs(sm.contextFreeRestaurant, obs, obs - 1, seq, 1.0 / 256);
-                    logLoss -= sm.obsLogProb / Math.log(2);
-                    sm.discounts.stepGradient(0.0001, Math.exp(sm.obsLogProb));
-                    obs++;
-                }
+            if (intermediateSample >= 100000) {
+                System.out.println(i);
+                intermediateSample = 0;
             }
+            intermediateSample++;
 
-            System.out.println(sm.getLogLik());
-            for(int k = 0; k<0; k++){
-                sm.sampleDiscounts();
-                sm.sampleSeating();
-                System.out.println(sm.getLogLik());
-            }
-            sm.discounts.print();
+            currentRunLength = (seq[i] == seq[i - 1])?(currentRunLength+1):0;
 
-            System.out.print("maxCacheSize = ");
-            System.out.println(sm.maxCacheSize);
-            System.out.println(sm.getLogLik());
-
-        } else if (ss == SeatingStyle.SIMPLE_BOUNDED_MEMORY) {
-            sm = new StochasticMemoizer(256, depth);
-            sm.sequence = seq;
-
-            int index = 0;
-            int obs = 0;
-
-            while (index < seq.length) {
-                if (index > 0) {
-                    if (seq[index] == seq[index - 1]) {
-                        currentRunLength++;
-                    } else {
-                        currentRunLength = 0;
-                    }
+            if (currentRunLength > maxRunLength && maxRunLength > 0) {
+                int[] rleOut = rle.encode(i, seq);
+                for (int j = 0; j < rleOut.length; j++) {
+                    long obsUpdate = (long) rleOut[j] - (long) Integer.MIN_VALUE;
+                    i += (int) obsUpdate;
+                    logLoss += 32;
                 }
-
-                if((index - counter) >= 100000){
-                    System.out.println(index);
-                    System.out.println("number of rest = " + Restaurant.numberRest);
-                    counter = index;
-                }
-                
-                if (Restaurant.numberRest > maxNumberRest - 2) {
-                    int[] newSeq = new int[sm.sequence.length - obs];
-                    System.arraycopy(sm.sequence, obs, newSeq, 0, sm.sequence.length - obs);
-
-                    sm = new StochasticMemoizer(256, depth);
-                    sm.sequence = newSeq;
-                    obs = 0;
-                }
-
-                if (currentRunLength > maxRunLength && maxRunLength > 0) {
-                    int[] rleOut = rle.encode(index, seq);
-                    for (int i = 0; i < rleOut.length; i++) {
-                        long obsUpdate = (long) rleOut[i] - (long) Integer.MIN_VALUE;
-                        index += (int) obsUpdate;
-                        obs += (int) obsUpdate;
-                        logLoss += 32;
-                    }
-                } else {
-                    sm.seatObs(sm.contextFreeRestaurant, obs, obs - 1, sm.sequence, 1.0 / 256);
-                    logLoss -= sm.obsLogProb / Math.log(2);
-                    sm.discounts.stepGradient(0.0001, Math.exp(sm.obsLogProb));
-                    obs++;
-                    index++;
-                }
+            } else {
+                logLoss += sm.seatObs(seq[i], false, true);
+                i++;
             }
         }
-
+        
         returnVal[0] = logLoss / seq.length;
         returnVal[2] = Restaurant.numberRest;
         return returnVal;

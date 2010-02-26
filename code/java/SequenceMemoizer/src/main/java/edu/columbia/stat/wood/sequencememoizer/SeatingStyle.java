@@ -10,6 +10,6 @@ package edu.columbia.stat.wood.sequencememoizer;
  * @author nicholasbartlett
  */
 public enum SeatingStyle {
-    SIMPLE, SIMPLE_BOUNDED_MEMORY, RANDOM_DELETION, BAYES_FACTOR_DELETION,
+    SIMPLE, RANDOM_DELETION, BAYES_FACTOR_DELETION,
     DISANTLY_USED_DELETION
 }
