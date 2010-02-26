@@ -17,7 +17,7 @@ public class Main {
     /**
      * @param args the command line arguments     
      * @param0 = seatingstyle, must be one of the enums
-     * @param1 = depth, if there is a a max depth, -1
+     * @param1 = depth, if there is a max depth, else -1
      * @param2 = maxNumberRest, if there is a max number
      * @param3 = seed , random number generator seed
      * @param4 = maxRunLength (for byte seater before switching to run length encoder)
@@ -28,8 +28,8 @@ public class Main {
     public static void main(String[] args) throws FileNotFoundException, IOException {
 
         if (args.length == 0) {
-            String[] newArgs = {"SIMPLE", "-1", "-1", "0","1000", "100000",
-            "/Users/nicholasbartlett/Documents/NP Bayes/data/wikipedia/","enwik8"};
+            String[] newArgs = {"SIMPLE", "-1", "-1", "0", "1000", "1000000",
+                "/Users/nicholasbartlett/Documents/np_bayes/data/alice_in_wonderland/", "AliceInWonderland.txt"}; //, "book1", "book2"};
             args = newArgs;
         }
 
@@ -42,8 +42,6 @@ public class Main {
 
         if (args[0].equals("SIMPLE")) {
             seatingStyle = SeatingStyle.SIMPLE;
-        } else if (args[0].equals("SIMPLE_BOUNDED_MEMORY")) {
-            seatingStyle = SeatingStyle.SIMPLE_BOUNDED_MEMORY;
         } else if (args[0].equals("RANDOM_DELETION")) {
             seatingStyle = SeatingStyle.RANDOM_DELETION;
         } else if (args[0].equals("DISANTLY_USED_DELETION")) {
@@ -80,7 +78,7 @@ public class Main {
             System.out.println(filesToRead[j]);
         }
 
-        ByteSeater seater = new ByteSeater(seed,maxRunLength.intValue());
+        ByteSeater seater = new ByteSeater(seed, maxRunLength.intValue());
         long startTime;
         long endTime;
 
@@ -91,14 +89,35 @@ public class Main {
         double[] numberRestAtFinish = new double[translation.length];
 
         double[] seatStats;
+        SMTree sm = new SMTree(256, depth, maxNumberRestaurants, seatingStyle);
         for (int file = 0; file < translation.length; file++) {
+            if (file > 0) {
+                sm.seq.incrementSeq();
+            }
             System.out.println("Working on file: " + filesToRead[file] + " (size: " + translation[file].length + " bytes)");
+
             startTime = System.nanoTime();
-            seatStats = seater.seatByteSequence(translation[file], seatingStyle, depth, maxNumberRestaurants);
+
+            //sm = new SMTree(256,depth, maxNumberRestaurants,seatingStyle);
+            seatStats = seater.seatSequence(translation[file], sm); //, seatingStyle, depth, maxNumberRestaurants);
+
+            /*
+            for (int k = 0; k < 15; k++) {
+                sm.sampleDiscounts();
+                sm.sampleSeating();
+                System.out.println(sm.getLogLik());
+                sm.discounts.print();
+            }*/
+
+            int[] genData = sm.generateData(1000);
+            for (int k = 0; k < 1000; k++) {
+                System.out.print(new Character((char) genData[k]) + ",");
+            }
+
             endTime = System.nanoTime();
 
             secondsToComplete = (endTime - startTime) / Math.pow(10, 9);
-            minutes[file] = secondsToComplete/60.0;
+            minutes[file] = secondsToComplete / 60.0;
             bitsPerByte[file] = seatStats[0];
             totalBytes[file] = seatStats[1];
             numberRestAtFinish[file] = seatStats[2];
