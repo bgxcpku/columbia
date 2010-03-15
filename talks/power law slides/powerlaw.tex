@@ -2,10 +2,8 @@
 
 \section{Power Law Processes}
 
-\subsection{Power Law Distribution}
-
 \frame[t] {
-\frametitle{Definition}
+\frametitle{Power Law Distribution}
 A power law distribution is a distribution whose tail falls off as
 \[ P(X=x) \propto x^{-\alpha} \]
 For some $\alpha > 1$.  The simplest such distribution is the zeta distribution on natural numbers:
@@ -16,28 +14,46 @@ and the Pareto distribution on the real line (with small-scale cutoff $x_{min} >
 
 \frame[t] {
 \frametitle{Scale Free Property}
-A power law distribution on the real line is {\em scale free} in the sense that, for all scales $k > 0$
+A power law distribution on the real line is {\em scale free} in the sense that, for all scales $k > 0$ and $x > x_{min}$
 \[  f_{\alpha}(kx) \propto f_{\alpha}(x) \]
 Where the proportionality constant depends only on $k$.
 }
 
-\subsection{Examples}
+\frame[t] {
+\frametitle{Power Laws in Nature}
+Words in natural language, arranged by frequency \cite{Zipf1965}.
+\begin{center}
+\includegraphics[scale=0.35]{figs/wikipedia-zipf.png} \\
+Log-log plot of word frequency in Wikipedia (source: Wikipedia)
+\end{center}
+}
 
 \frame[t] {
 \frametitle{Power Laws in Nature}
-Power law relationships appear frequently in complex natural phenomena:
-\begin{itemize}
-\item Words in natural language, arranged by frequency \cite{Zipf1965}.
-\item Cities arranged by population \cite{Blank2000}.
-\item Earthquakes arranged by magnitude \cite{Gutenberg1955}.
-\item Power spectra of natural images \cite{Ruderman1994}.
-\end{itemize}
+Cities arranged by population \cite{Blank2000}.
 }
 
-\subsection{Pitman-Yor Process}
+\frame[t] {
+\frametitle{Power Laws in Nature}
+Earthquakes arranged by magnitude \cite{Gutenberg1955}. \\
+\begin{center}
+\includegraphics[scale=0.35]{figs/earthquakes.png} \\
+(image source: http://quake.usgs.gov/recenteqs/latest.htm)
+\end{center}
+}
 
 \frame[t] {
-\frametitle{Definition}
+\frametitle{Power Laws in Nature}
+Power spectra of natural images \cite{Ruderman1994}.
+\begin{center}
+\includegraphics[scale=0.5]{figs/ruderman_bialek_img.pdf}
+\hspace*{5 mm}
+\includegraphics[scale=0.75]{figs/ruderman_bialek_plot.pdf}
+\end{center}
+}
+
+\frame[t] {
+\frametitle{Pitman Yor Process: Definition}
 A natural class of distributions for modeling data with power-law clustering is the Pitman-Yor process (PYP).  A Pitman-Yor process $PY(c,d,H)$ is a distribution over distributions with three parameters:
 \begin{itemize}
 \item A discount $ 0 \le d < 1 $ that controls the length of the tails of the distribution
@@ -49,7 +65,7 @@ A draw $G \sim PY(c,d,H)$ is atomic: it can be expressed as a countable number o
 }
 
 \frame[t]{
-\frametitle{Stick-Breaking Construction}
+\frametitle{PYP: Stick-Breaking Construction}
 A simple generative procedure for $\pi_k$ and $\phi_k$ is given by the stick-breaking construction:
 \[
 \begin{array}{rcll}
@@ -66,7 +82,7 @@ The expected length of a stick $\mathbb{E}[\pi_k]$ falls off as a power law for 
 }
 
 \frame[t] {
-\frametitle{Chinese Restaurant Representation}
+\frametitle{PYP: Chinese Restaurant Representation}
 Due to the atomic nature of $G \sim PY(c,d,H)$, draws from $G$ cluster together.  If we want to know the probability that new data will have the same value as some observed data, we can integrate out $G$ and represent this probability only in terms of $c$, $d$ and the observed data $\theta_{1 \ldots N}$.  Say the data is distributed across $K$ clusters, each with $n_k$ data points, then we have
 
 \begin{eqnarray*}
