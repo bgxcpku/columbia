@@ -2,18 +2,18 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package edu.columbia.stat.wood.sequencememoizer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 import java.util.Stack;
 
 /**
  *
  * @author nicholasbartlett
  */
-public class SMTree {
+public class SMTree implements SequenceMemoizerImplementation {
 
     public int alphabetSize;
     public Restaurant contextFreeRestaurant;
@@ -22,10 +22,12 @@ public class SMTree {
     public int maxNumberRest = -1;
     public int maxDepth = -1;
     public SeatingStyle smType = SeatingStyle.SIMPLE;
-
     private double obsLogProb = 0.0;
+    public static Random RNG;
 
-    public SMTree(int alphabetSize, int maxDepth, int maxNumberRest, SeatingStyle smType) {
+    public SMTree(int alphabetSize, int maxDepth, int maxNumberRest, SeatingStyle smType, int seed) {
+        RNG = new Random(seed);
+
         this.alphabetSize = alphabetSize;
         contextFreeRestaurant = new Restaurant(null, null);
 
@@ -38,23 +40,159 @@ public class SMTree {
         this.discounts = new Discounts(discount);
     }
 
-    public double seatObs(int observation, boolean newSeq, boolean updateDisc){
+    public void constrainMemory(int restaurants) {
+        this.smType = SeatingStyle.RANDOM_DELETION;
+        this.maxNumberRest = restaurants;
+    }
+
+    public void newSeq() {
+        seq.incrementSeq();
+    }
+
+    public double continueSequence(int observation) {
         if (smType != SeatingStyle.SIMPLE) {
             if (Restaurant.numberRest > maxNumberRest - 2) {
                 if (smType == SeatingStyle.RANDOM_DELETION) {
                     this.deleteRandomLeafNodes(100);
                 } else if (smType == SeatingStyle.BAYES_FACTOR_DELETION) {
                     this.deleteLeastUsefullRestaurantsForLogProbOfData(100);
-                } 
+                }
             }
         }
-        
-        seq.add(observation, newSeq);
-        this.seatObs(contextFreeRestaurant,observation,seq.getLastElementIndex()-1,0,1.0/alphabetSize);
-        if(updateDisc){
-            discounts.stepGradient(0.0001, Math.exp(obsLogProb));
+        seq.add(observation);
+        this.seatObs(contextFreeRestaurant, observation, seq.getLastElementIndex() - 1, 0, 1.0 / alphabetSize);
+        discounts.stepGradient(0.0001, Math.exp(obsLogProb));
+        return obsLogProb;
+    }
+
+    public double continueSequence(int[] observations) {
+        double logLoss = 0.0;
+        for (int i = 0; i < observations.length; i++) {
+            logLoss += this.continueSequence(observations[i]);
         }
-        return -obsLogProb/Math.log(2);
+        return logLoss;
+    }
+
+    public int[] generate(int[] context, int numSamples) {
+        int[] generatedData = new int[numSamples];
+        seq.incrementSeq();
+        seq.add(context);
+
+        double cumSum;
+        double rawRandom;
+        double[] predDist;
+        double[] initialPredDist = new double[alphabetSize];
+        Arrays.fill(initialPredDist, 1.0 / alphabetSize);
+
+        predDist = this.getPredictiveDist(contextFreeRestaurant, 0, seq.getLastElementIndex(), initialPredDist);
+        seq.deleteSeq();
+        topFor:
+        for (int i = 0; i < numSamples; i++) {
+            cumSum = 0.0;
+            rawRandom = Math.random();
+            for (int j = 0; j < alphabetSize; j++) {
+                cumSum += predDist[j];
+                if (cumSum > rawRandom) {
+                    generatedData[i] = j;
+                    continue topFor;
+                }
+            }
+        }
+        return generatedData;
+    }
+
+    public int[] generateSequence(int[] initialContext, int sequenceLength) {
+        int[] generatedData = new int[sequenceLength];
+        seq.incrementSeq();
+        seq.add(initialContext);
+
+        double cumSum;
+        double rawRandom;
+        double[] predDist;
+        double[] initialPredDist = new double[alphabetSize];
+        Arrays.fill(initialPredDist, 1.0 / alphabetSize);
+
+        topFor:
+        for (int i = 0; i < sequenceLength; i++) {
+            cumSum = 0.0;
+            rawRandom = Math.random();
+            predDist = this.getPredictiveDist(contextFreeRestaurant, 0, seq.getLastElementIndex(), initialPredDist);
+            for (int j = 0; j < alphabetSize; j++) {
+                cumSum += predDist[j];
+                if (cumSum > rawRandom) {
+                    generatedData[i] = j;
+                    seq.add(j);
+                    continue topFor;
+                }
+            }
+        }
+        seq.deleteSeq();
+        return generatedData;
+    }
+
+    public double[] predictiveProbability(int[] context, int[] tokens) {
+        double[] predDist = this.predictiveProbability(context);
+        double[] predDistTokens = new double[tokens.length];
+        for (int i = 0; i < tokens.length; i++) {
+            predDistTokens[i] = predDist[tokens[i]];
+        }
+        return predDistTokens;
+    }
+
+    public double[] predictiveProbability(int[] context) {
+        seq.incrementSeq();
+        seq.add(context);
+
+        double[] initialPredDist = new double[alphabetSize];
+        Arrays.fill(initialPredDist, 1.0 / alphabetSize);
+        double[] predDist = this.getPredictiveDist(contextFreeRestaurant, 0, seq.getLastElementIndex(), initialPredDist);
+
+        seq.deleteSeq();
+        return predDist;
+    }
+
+    public double sequenceProbability(int[] context, int[] sequence) {
+        seq.incrementSeq();
+        seq.add(context);
+
+        double[] initialPredDist = new double[alphabetSize];
+        Arrays.fill(initialPredDist, 1.0 / alphabetSize);
+
+        double[] predDist;
+        double logProb = 0.0;
+
+        for (int i = 0; i < sequence.length; i++) {
+            predDist = this.getPredictiveDist(contextFreeRestaurant, 0, seq.getLastElementIndex(), initialPredDist);
+            seq.add(sequence[i]);
+            logProb += Math.log(predDist[sequence[i]]);
+        }
+
+        seq.deleteSeq();
+        return Math.exp(logProb);
+    }
+
+    public double sample(int numSweeps) {
+        double score = 0.0;
+        for (int i = 0; i < numSweeps; i++) {
+            this.sampleSeating();
+            score = this.sampleDiscounts()[2];
+        }
+        if (numSweeps == 0) {
+            score = this.score();
+        }
+        return score;
+    }
+
+    public double score() {
+        return this.getLogLik();
+    }
+
+    public String getParameterNames() {
+        throw new RuntimeException("not supported yet");
+    }
+
+    public String getParameterValues() {
+        throw new RuntimeException("not supported yet");
     }
 
     private Restaurant seatObs(Restaurant rest, int observation, int contextIndex, int depth, double upperRestProbOfObs) {
@@ -141,60 +279,60 @@ public class SMTree {
 
             rest2ParentPath[0] = contextIndex + 1;
 
-            childRest = childRest.reconfigureRestaurantReturnIntermediateRestaurant(rest2ParentPath, depth + rest2ParentPath[1] - rest2ParentPath[0], seq, discounts);
+            childRest = childRest.fragmentAndAdd(rest2ParentPath, depth + rest2ParentPath[1] - rest2ParentPath[0], seq, discounts);
             break;
         }
 
         int childDepth = depth + childRest.parentPath[1] - childRest.parentPath[0];
-       
-        if (this.seatObs(childRest, observation, contextIndex,childDepth, prob) != null) {
+
+        if (this.seatObs(childRest, observation, contextIndex, childDepth, prob) != null) {
             return rest.sitAtRest(observation, upperRestProbOfObs, logDiscount);
         } else {
             return null;
         }
     }
-
+    /*
     public int[] generateData(int length){
-        int[] generatedData = new int[length];
-        seq.incrementSeq();
+    int[] generatedData = new int[length];
+    seq.incrementSeq();
 
-        double cumSum;
-        double rawRandom;
-        double[] predDist;
-        double[] initialPredDist = new double[alphabetSize];
-        Arrays.fill(initialPredDist, 1.0/alphabetSize);
+    double cumSum;
+    double rawRandom;
+    double[] predDist;
+    double[] initialPredDist = new double[alphabetSize];
+    Arrays.fill(initialPredDist, 1.0/alphabetSize);
 
-        topFor:
-        for(int i = 0; i<length; i++){
-            cumSum = 0.0;
-            rawRandom = Math.random();
-            predDist = this.getPredictiveDist(contextFreeRestaurant, 0, seq.getLastElementIndex(), initialPredDist);
-            for(int j = 0; j<alphabetSize; j++){
-                cumSum += predDist[j];
-                if(cumSum > rawRandom){
-                    generatedData[i] = j;
-                    this.seatObs(j, false, false);
-                    continue topFor;
-                }
-            }
-        }
-        return generatedData;
+    topFor:
+    for(int i = 0; i<length; i++){
+    cumSum = 0.0;
+    rawRandom = Math.random();
+    predDist = this.getPredictiveDist(contextFreeRestaurant, 0, seq.getLastElementIndex(), initialPredDist);
+    for(int j = 0; j<alphabetSize; j++){
+    cumSum += predDist[j];
+    if(cumSum > rawRandom){
+    generatedData[i] = j;
+    this.seatObs(j, false, false);
+    continue topFor;
     }
-        
-    private double[] getPredictiveDist(Restaurant rest, int d, int contextIndex, double[] predDist){
+    }
+    }
+    return generatedData;
+    }*/
+
+    public double[] getPredictiveDist(Restaurant rest, int d, int contextIndex, double[] predDist) {
         //fill predictive counts on the way down
         double logDiscount;
-        if(rest.parent == null) {
+        if (rest.parent == null) {
             logDiscount = discounts.getLog(0);
         } else {
             logDiscount = discounts.getLog(d - rest.parentPath[1] + rest.parentPath[0], d);
         }
         rest.fillPredictiveCounts(alphabetSize, Math.exp(logDiscount), 0);
 
-        if(rest.predictiveCounts.cust == 0){
+        if (rest.predictiveCounts.cust == 0) {
             return predDist;
         }
-        
+
         for (int i = 0; i < rest.predictiveCounts.typeNum.length; i++) {
             predDist[i] = predDist[i] * (rest.predictiveCounts.tables * rest.predictiveCounts.discount + rest.predictiveCounts.concentration) / (rest.predictiveCounts.cust + rest.predictiveCounts.concentration);
             predDist[i] += rest.predictiveCounts.typeNum[i] / (rest.predictiveCounts.cust + rest.predictiveCounts.concentration);
@@ -202,7 +340,7 @@ public class SMTree {
 
         rest.predictiveCounts = null;
 
-        if(contextIndex == -1){
+        if (contextIndex == -1) {
             return predDist;
         }
 
@@ -218,7 +356,7 @@ public class SMTree {
         if (diffIndex == (childRest.parentPath[1] - childRest.parentPath[0])) {
 
             contextIndex -= diffIndex;
-            
+
         } else {
 
             int[] rest2ParentPath = {0, contextIndex + 1, seq.getCurrentSeq()};
@@ -226,7 +364,7 @@ public class SMTree {
 
             rest2ParentPath[0] = contextIndex + 1;
 
-            childRest = childRest.reconfigureRestaurantReturnIntermediateRestaurant(rest2ParentPath, d + rest2ParentPath[1] - rest2ParentPath[0], seq, discounts);
+            childRest = childRest.fragment(rest2ParentPath, d + rest2ParentPath[1] - rest2ParentPath[0], seq, discounts);
         }
         return this.getPredictiveDist(childRest, d + childRest.parentPath[1] - childRest.parentPath[0], contextIndex, predDist);
     }
@@ -313,7 +451,7 @@ public class SMTree {
         toDeleteList = new ArrayList<Restaurant>(numberToDelete);
         int numberLeafNodes = this.getNumberLeafNodes();
 
-        double initialRawRandomSample = ByteSeater.utils.RNG.nextDouble() / numberToDelete;
+        double initialRawRandomSample = SMTree.RNG.nextDouble() / numberToDelete;
         Stack<Double> rawRandomSample = new Stack<Double>();
         //initialize rawRandomSample stack
         for (int j = numberToDelete; j >= 0; j--) {
@@ -457,11 +595,11 @@ public class SMTree {
     public void sampleSeating(Restaurant rest, int d) {
         //fill predictive counts on the way down
         double logDiscount;
-        if(rest.parent == null){
+        if (rest.parent == null) {
             logDiscount = discounts.getLog(0);
         } else {
             logDiscount = discounts.getLog(d - rest.parentPath[1] + rest.parentPath[0], d);
-        }        
+        }
         rest.fillPredictiveCounts(alphabetSize, Math.exp(logDiscount), 0);
 
         //sample bottom up, so recurse down first
@@ -547,7 +685,7 @@ public class SMTree {
 
         Restaurant sitInParent = rest.sitAtRest(type, probUpper, rest.predictiveCounts.discount);
         rest.predictiveCounts.increment(type, sitInParent != null);
-        
+
         this.sitR(sitInParent, type, probUpper);
     }
 
@@ -558,10 +696,10 @@ public class SMTree {
         int[] parentPath;
         if (rest.parentPath != null) {
             parentPath = new int[rest.parentPath[1] - rest.parentPath[0]];
-            for(int i = 0; i<rest.parentPath[1] - rest.parentPath[0]; i++){
-                parentPath[i] = seq.get(rest.parentPath[2],rest.parentPath[0] + i);
+            for (int i = 0; i < rest.parentPath[1] - rest.parentPath[0]; i++) {
+                parentPath[i] = seq.get(rest.parentPath[2], rest.parentPath[0] + i);
             }
-            
+
             //System.arraycopy(sequence, rest.parentPath[0], parentPath, 0, parentPath.length);
 
             if (indexDownPath == 0) {
