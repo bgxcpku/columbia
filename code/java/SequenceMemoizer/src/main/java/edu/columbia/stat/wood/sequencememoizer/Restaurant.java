@@ -134,7 +134,7 @@ public class Restaurant extends HashMap<Integer, Restaurant> {
         //if found the type in the state then add
         if (typeIndex > -1) {
             double cumSum = 0.0;
-            double rawRandomSample = ByteSeater.utils.RNG.nextDouble();
+            double rawRandomSample = SMTree.RNG.nextDouble();
             double totalWeight = 1.0 * (numCustAtType - Math.exp(Math.log(numTablesAtType) + logDiscount)) + Math.exp(Math.log(numTablesInRest) + logDiscount + Math.log(probUpper));
 
             for (int table = 1; table < state[typeIndex].length; table++) {
@@ -164,7 +164,7 @@ public class Restaurant extends HashMap<Integer, Restaurant> {
         return parent;
     }
 
-    public Restaurant reconfigureRestaurantReturnIntermediateRestaurant(int[] rest2ParentPath, int rest2Depth, MemoizedSequence seq, Discounts discounts) {
+    public Restaurant fragmentAndAdd(int[] rest2ParentPath, int rest2Depth, MemoizedSequence seq, Discounts discounts) {
         //get log discount parameters
         double rest3LogDiscount = discounts.getLog(rest2Depth, rest2Depth + parentPath[1] - parentPath[0] - rest2ParentPath[1] + rest2ParentPath[0]);
         double rest2LogDiscount = discounts.getLog(rest2Depth - rest2ParentPath[1] + rest2ParentPath[0], rest2Depth);
@@ -209,7 +209,7 @@ public class Restaurant extends HashMap<Integer, Restaurant> {
 
                 topFor:
                 for (int person = 0; person < state[typeIndex][table] - 1; person++) {
-                    double rawRandomSample = ByteSeater.utils.RNG.nextDouble();
+                    double rawRandomSample = SMTree.RNG.nextDouble();
                     double cumSum = 0.0;
                     for (SetableInteger fragWeight : fragmentedTable) {
                         cumSum += (fragWeight.getVal() - Math.exp(rest3LogDiscount)) / totalWeight;
@@ -233,6 +233,55 @@ public class Restaurant extends HashMap<Integer, Restaurant> {
                 newTypeState[index++] = table.getVal();
             }
             state[typeIndex] = newTypeState;
+        }
+        return rest2;
+    }
+
+    public Restaurant fragment(int[] rest2ParentPath, int rest2Depth, MemoizedSequence seq, Discounts discounts) {
+        //get log discount parameters
+        double rest3LogDiscount = discounts.getLog(rest2Depth, rest2Depth + parentPath[1] - parentPath[0] - rest2ParentPath[1] + rest2ParentPath[0]);
+        double rest2LogDiscount = discounts.getLog(rest2Depth - rest2ParentPath[1] + rest2ParentPath[0], rest2Depth);
+
+        //create rest2
+        Restaurant rest2 = new Restaurant(parent, rest2ParentPath);
+
+        //instantiate the state of rest 2
+        rest2.state = new int[state.length][];
+
+        //Set the concentration parameter for the splitting procedure.  The new
+        //discount parameter is used for the breaking procedure as the discount
+        //parameter, the old discount is used as the concentration paramter,
+        //with a negative attached.
+        double concentration = -1.0 * Math.exp(rest3LogDiscount + rest2LogDiscount);
+
+        //now do the fragmenting of this restaurant
+        for (int typeIndex = 0; typeIndex < state.length; typeIndex++) {
+
+            rest2.state[typeIndex] = new int[state[typeIndex].length];
+            rest2.state[typeIndex][0] = state[typeIndex][0];
+
+            for (int table = 1; table < state[typeIndex].length; table++) {
+                ArrayList<SetableInteger> fragmentedTable = new ArrayList<SetableInteger>(2);
+                fragmentedTable.add(new SetableInteger(1));
+                double totalWeight = 1.0 + concentration;
+
+                topFor:
+                for (int person = 0; person < state[typeIndex][table] - 1; person++) {
+                    double rawRandomSample = SMTree.RNG.nextDouble();
+                    double cumSum = 0.0;
+                    for (SetableInteger fragWeight : fragmentedTable) {
+                        cumSum += (fragWeight.getVal() - Math.exp(rest3LogDiscount)) / totalWeight;
+                        if (cumSum > rawRandomSample) {
+                            fragWeight.increment();
+                            totalWeight++;
+                            continue topFor;
+                        }
+                    }
+                    fragmentedTable.add(new SetableInteger(1));
+                    totalWeight++;
+                }
+                rest2.state[typeIndex][table] = fragmentedTable.size();
+            }
         }
 
         return rest2;
@@ -266,7 +315,7 @@ public class Restaurant extends HashMap<Integer, Restaurant> {
         //if found the type in the state then add
         if (typeIndex > -1) {
             double cumSum = 0.0;
-            double rawRandomSample = ByteSeater.utils.RNG.nextDouble();
+            double rawRandomSample = SMTree.RNG.nextDouble();
             double totalWeight = 1.0 * (numCustAtType - Math.exp(Math.log(numTablesAtType) + logDiscount)) + Math.exp(Math.log(numTablesInRest) + logDiscount + Math.log(probUpper));
 
             for (int table = 1; table < state[typeIndex].length; table++) {

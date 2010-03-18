@@ -29,7 +29,7 @@ public class ByteSeater {
         int currentRunLength = 0;
         RunLengthEncoder rle = new RunLengthEncoder();
 
-        sm.seatObs(seq[0], false, true);
+        sm.continueSequence(seq[0]);
         int intermediateSample = 1;
         int i = 1;
         while(i < seq.length){
@@ -50,7 +50,7 @@ public class ByteSeater {
                     logLoss += 32;
                 }
             } else {
-                logLoss += sm.seatObs(seq[i], false, true);
+                logLoss -= sm.continueSequence(seq[i])/Math.log(2);
                 i++;
             }
         }

@@ -1,13 +1,33 @@
 ---
-title: Papers Read
-in_menu: false
+title: Readings
+in_menu: true
 ---
 
-#Dirichlet Process
-[Teh 2010]
-[Teh 2006]
 
+<TABLE CELLSPACING="0" CELLPADDING="10" border="1">
+	<TR>
+		<TH width = "25%">Author</TH>
+		<TH width = "60%">Paper</TH>
+	</TR>
 
-[Teh 2010]: papers/Teh2010a.pdf
-[Teh 2006]: papers/jasa2006.pdf
+	<TR>
+		<TD>Neal, R.</TD>
+		<TD><a href = "papers/neal_sampling.pdf">Markov Chain Sampling Methods for Dirichlet Process Mixture Models</a></TD>
+	</TR>	
 
+	<TR>
+		<TD>Fearnhead, P. </TD>
+		<TD><a href = "papers/fearnhead_particlefilter.pdf">Particle ﬁlters for mixture models with an unknown number of components</a></TD>
+	</TR>
+
+	<TR>
+		<TD>Teh, Y.W.</TD>
+		<TD><a href = "papers/jasa2006.pdf">Hierarchical Dirichlet Processes</a></TD>
+	</TR>
+	
+	<TR>
+		<TD>Teh, Y. W.</TD>
+		<TD><a href = "papers/acl2006.pdf">A Hierarchical Bayesian Language Model based on Pitman-Yor Processes </a></TD>
+	</TR>
+
+</TABLE>

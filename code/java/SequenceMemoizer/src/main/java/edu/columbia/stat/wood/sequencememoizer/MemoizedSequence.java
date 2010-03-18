@@ -45,30 +45,29 @@ public class MemoizedSequence {
         currentSequence++;
     }
 
-    public void add(int newObs, boolean newSeq){
-        if(newSeq){
-            currentLength = 0;
+    public void deleteSeq(){
+        int[][] newSequence = new int[sequence.length - 1][];
+        System.arraycopy(sequence, 0, newSequence, 0, sequence.length-1);
+        sequence = newSequence;
+        currentSequence--;
+    }
 
-            int[][] newSequence = new int[sequence.length + 1][];
-            System.arraycopy(sequence, 0, newSequence, 0, sequence.length);
-            newSequence[sequence.length] = new int[100000];
-            newSequence[sequence.length][0] = newObs;
+    public void add(int[] newSeq){
+        for(int i = 0; i<newSeq.length; i++){
+            this.add(newSeq[i]);
+        }
+    }
 
-            sequence = newSequence;
-            currentSequence++;
-            currentLength++;
-        } else {
-            //if possible, just tack on most recent obs
-            if(currentLength < sequence[currentSequence].length){
-                sequence[currentSequence][currentLength++] = newObs;
-            }
-            //else will need to make array longer for this sequence index
-            else{
-                int[] newThisSeq = new int[sequence[currentSequence].length + 100000];
-                System.arraycopy(sequence[currentSequence], 0, newThisSeq, 0, currentLength);
-                sequence[currentSequence] = newThisSeq;
-                sequence[currentSequence][currentLength++] = newObs;
-            }
+    public void add(int newObs) {
+        //if possible, just tack on most recent obs
+        if (currentLength < sequence[currentSequence].length) {
+            sequence[currentSequence][currentLength++] = newObs;
+        } //else will need to make array longer for this sequence index
+        else {
+            int[] newThisSeq = new int[sequence[currentSequence].length + 100000];
+            System.arraycopy(sequence[currentSequence], 0, newThisSeq, 0, currentLength);
+            sequence[currentSequence] = newThisSeq;
+            sequence[currentSequence][currentLength++] = newObs;
         }
     }
 
