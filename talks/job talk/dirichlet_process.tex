@@ -1,0 +1,110 @@
+% !TEX root = talk.tex
+\begin{frame}[t]{Definition}
+\begin{block}{\citet{Ferguson1973}}
+We say
+ \[G \sim \DP(c,G_0)\]
+ if for any partition $A_1, \ldots, A_k$ of the sample space, the vector of random probabilities
+$[G(A_1), \ldots, G(A_k)]$ follows a Dirichlet distribution, i.e.
+\[[G(A_1), \ldots, G(A_k)] \sim \Dir(cG_0(A_1), \ldots, cG_0(A_k))\]
+\end{block}
+\end{frame}	
+
+\begin{frame}[t]{Properties}
+\begin{block}{Basics}
+\begin{eqnarray*} 
+[G(A),G(A^C)] \sim \Dir(cG_0(A), cG_0(A^C)) 
+\end{eqnarray*}
+is equivalent to
+\[G(A) \sim \Bet(cG_0(A), cG_0(A^C))\]
+which means
+\[ \Ave(G(A)) \comment{= \frac{cG_0(A)}{cG_0(A)+cG_0(A^C)}} = G_0(A)\] 
+and
+ \begin{eqnarray*} 
+\Var(G(A)) &=& \comment{\frac{c^2G_0(A)G_0(A^C)}{(cG_0(A)+cG_0(A^C))^2(cG_0(A)+cG_0(A^C)+1)} \\
+&=&} \frac{G_0(A)(1-G_0(A))}{(c+1)}
+ \end{eqnarray*}
+\end{block}
+ Note, as $c\rightarrow\infty, \Var(G(A))\rightarrow0$
+\end{frame}	
+
+\begin{frame}[t]{Explicit Construction}
+\begin{block}{\citet{Sethuraman1994a}}
+\[G(\cdot) = \sum_{k=1}^\infty w_k \delta_{\phi_k}(\cdot)\]
+where 
+\[{\phi_k} \sim G_0 \mbox{ and } w_k = V_k\prod_{j<k}(1-V_j), V_k \sim \Bet(1,c)\]
+\end{block}
+Note: this is known as the ``stick-breaking'' construction.
+\end{frame}	
+
+\begin{frame}[t]{Efficient Posterior Updating}
+\begin{block}{Polya Urn \citep{Blackwell1973}}
+\begin{eqnarray*}
+x_1 &\sim& G_0 \\
+G | x_1 &\sim& \DP\left(1+c, \frac{1}{1+c}\delta_{x_i} + \frac{c}{1+c}G_0\right)\\
+x_2 | x_1 &\sim& \frac{1}{1+c}\delta_{x_i} + \frac{c}{1+c}G_0 \\
+G | x_1, x_2 &\sim& \DP\left(2+c, \frac{1}{2+c}\sum_{i=1}^n \delta_{x_i} + \frac{c}{2+c}G_0\right)\\
+&\vdots&\\
+\end{eqnarray*}
+\end{block}
+\end{frame}	
+
+
+\begin{frame}[t]{Efficient Posterior Updating}
+\begin{block}{Polya Urn \citep{Blackwell1973} Cont.}
+\begin{eqnarray*}
+x_n | x_1,\ldots x_{n-1} &\sim& \frac{1}{n-1+c}\sum_{i=1}^{n-1}\delta_{x_i} + \frac{c}{n-1+c}G_0 \\
+G | x_1, \ldots, x_n &\sim& \DP\left(n+c, \frac{1}{n+c}\sum_{i=1}^n \delta_{x_i} + \frac{c}{n+c}G_0\right)
+\end{eqnarray*}
+Note: 
+\begin{itemize}
+\item Neither posterior predictive nor posterior distributions depend on the order of the $x_i$'s
+\item Many $x_i$'s will share the same value $\phi_k$
+\item ``Observing'' $\phi_k$ once increases probability of observing it again and this is reinforced
+\end{itemize}
+\end{block}
+\end{frame}	
+
+\begin{frame}[t]{Uses}
+\begin{block}{Density Estimation}
+Dirchlet Process Mixture model \citep{Escobar1995, MacEachern1998, Neal1998}
+\begin{eqnarray*}
+G &\sim& \DP(c,G_0) \\
+\Theta_i &\sim& G \\
+x_i | \Theta_i &\sim& F(\Theta_i),
+\end{eqnarray*} 
+or equivalently%
+\begin{eqnarray*}
+z_i &\sim& \CRP(c) \\
+\Theta_i &\sim& G_0 \\
+x_i | \Theta_i &\sim& F(\Theta_i)
+\end{eqnarray*} 
+Note: constructing MCMC samplers in either of these representations is straightforward.
+
+\end{block}
+\end{frame}	
+
+\begin{frame}[t]{Uses}
+\begin{block}{Hierarchical Modeling}
+Most interesting application of Dirichlet process
+\begin{columns}
+\begin{column}{.5\textwidth}
+\begin{eqnarray*}
+G_j &\sim& \DP(c,G_0) \\
+\Theta_{ij} &\sim& G_j \\
+x_{ij} | \Theta_{ij} &\sim& F(\Theta_{ij}),
+\end{eqnarray*} 
+\vspace{2cm}
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{figure}[t]
+\begin{center}
+\includegraphics[trim = 4cm 8cm 4cm 8cm, clip, width=5cm]{fig/shared_clustering.pdf}
+\caption{Shared clustering}
+\label{default}
+\end{center}
+\end{figure}
+
+\end{column}
+\end{columns}
+\end{block}
+\end{frame}	

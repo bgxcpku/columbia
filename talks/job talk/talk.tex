@@ -3,7 +3,7 @@
 \documentclass{beamer}
 \usepackage{algorithm}
 \usepackage{algorithmic}
-\usepackage{natbib}
+\usepackage[numbers]{natbib}
 
 % Setup appearance:
 
@@ -21,7 +21,8 @@
 %\usepackage{nnfootnote}
 \usepackage{amsfonts}
 \usepackage{amsmath}
-
+%\newcommand{\argmax}{\operatornamewithlimits{argmax}}
+\def\newblock{\hskip .11em plus .33em minus .07em}
 % Setup TikZ
 
 %\usepackage{tikz}
@@ -31,9 +32,9 @@
 
 % Author, Title, etc.
 
-\title[Applied Nonparametric Bayesian Modeling] 
+\title[Applied Bayesian Nonparametrics] 
 {
-  Applied Nonparametric Bayesian Modeling
+  Applied Bayesian Nonparametrics
 }
 
 \author[Wood]
@@ -54,9 +55,9 @@
 
 
 % The main document
+\input{definitions}
 
 \begin{document}
-\input{definitions}
 
 %\nofootnotemark
 \begin{frame}
@@ -67,18 +68,512 @@
   \tableofcontents
 \end{frame}
 
-\section{Motivation}
-\subsection{Example}
-\section{Background}
-\input{dirichlet_process}
-\input{power_law}
-\input{pitmanyor_process}
-\section{Discrete Sequence Data}
-\section{Compression}
-\section{Thanks}
+\section{Theory}
 
-\begin{frame}{Data}
-010101100100001010000000011101010010010101010010000101010101001010100101010
-\end{frame}
+
+\subsection{The Case for Bayesian Nonparametrics}	
 	
+\begin{frame}[t]{Parametric (Grequentist) Modeling}
+\begin{block}{General Setup}
+Data 
+\[\mathcal{X} = \{x_1, x_2, \ldots, x_n\}\]
+Model
+\[\mathsf{P}(\mathcal{X} | \Theta)\]
+Estimator
+\[\hat \Theta = f(\mathcal{X})\]
+Inference
+\[\mathsf{P}(X=x | \hat \Theta), \mathsf{P}(|\hat \Theta - \Theta| <b)\]%\[\mathsf{P}(|\hat \Theta - \Theta| <b)\] % = \mathsf{P}(\hat \Theta - b < \Theta < \hat \Theta + b)\]
+\end{block}
+\end{frame}	
+
+
+\begin{frame}[t]{Parametric (Grequentist) Modeling}
+\begin{exampleblock}{Features}
+\begin{itemize}
+\item More data improves estimate
+\begin{itemize}
+\item $\hat \Theta \rightarrow \Theta$ as $n\rightarrow \infty$ is desirable and common.
+\end{itemize}
+\item Model ``complexity'' ($\approx p$) fixed $\implies$ constant ``memory.''
+\end{itemize}
+\pause
+\end{exampleblock}
+\begin{block}{Considerations}
+\begin{itemize}
+\item Inference through parameter $\Theta$ only, data is ``thrown away.''
+\item $\Theta$ must be ``low-dimensional'' (small $n$ big $p$ problem).
+\end{itemize}
+\end{block}
+\pause
+\begin{alertblock}{Drawbacks}
+\begin{itemize}
+\item Model almost always wrong (low-dim $\Theta$ insufficient).
+\item More data improves estimate only, doesn't increase the representational power of the model.
+\end{itemize}
+\end{alertblock}
+\end{frame}	
+
+\begin{frame}[t]{Parametric (Bayesian) Modeling}
+\begin{block}{General Setup}
+Data 
+\[\mathcal{X} = \{x_1, x_2, \ldots, x_n\}\]
+Model
+\[\mathsf{P}(\mathcal{X}  | \Theta) \mbox{ and } \mathsf{P}(\Theta)\]
+Inference
+\[\mathsf{P}(X = x | \mathcal{X}) = \int \mathsf{P}(X=x|\Theta)\mathsf{P}(\Theta | \mathcal{X})d\Theta\]
+Estimator (frequentist interpretation)
+\[\hat \Theta = \argmax_{\Theta} \mathsf{P}(\Theta | \mathcal{X}) \mbox{  or  }  \hat \Theta = \int \Theta \mathsf{P}(\Theta | \mathcal{X}) d\Theta\]
+\end{block}
+\end{frame}	
+
+\begin{frame}[t]{Parametric (Bayesian) Modeling}
+\only<1->{
+\begin{exampleblock}{Features}
+\begin{itemize}
+\item Posterior consistency common but not guaranteed.
+\only<1>{\[P(\mathcal{A} = \{\Theta : |\Theta - \Theta_0| < \epsilon\}) = 0 \implies P(\mathcal{A} | \mathcal{X}) = 0\]}
+\item Model ``complexity'' \only<1>{($\approx$ num.  $\mathsf{P}(\Theta|\mathcal{X})$ params.)} fixed $\implies$ constant ``memory.''
+\item Prior controllably induces bias (regularization).
+\item $\Theta$ can be high-dimensional (allows complex inference about small data).
+\end{itemize}
+\end{exampleblock}}
+\only<1>{
+\begin{block}{Considerations}
+\begin{itemize}
+\item Data is ``thrown away,'' i.e.~inference through posterior distribution only.
+\end{itemize}
+\end{block}}
+\only<2>{
+\begin{alertblock}{Drawbacks}
+\begin{itemize}
+\item Model family almost always wrong, increasing $n$ only lowers posterior variance.
+\item Prior is almost always wrong, though increasing $n$ often mitigates effect of poor choice.
+\item Never see infinite data, prior always matters.
+\end{itemize}
+\end{alertblock}}
+\end{frame}	
+
+\begin{frame}[t]{Nonparametric Modeling}
+\begin{block}{General Setup}
+Data 
+\[\mathcal{X} = \{x_1, x_2, \ldots, x_n\}\]
+Inference (e.g.~nonparametric density estimation)
+\begin{eqnarray*}
+\mathsf{P}(X = x | \mathcal{X}) &=& \mathsf{f}(\mathcal{X})\\
+&=& \frac{1}{nh} \sum_{i=1}^n \mathsf{K}\left(\frac{x-x_i}{h}\right) 
+\end{eqnarray*}
+\end{block}
+\end{frame}	
+
+\begin{frame}[t]{Nonparametric Modeling}
+\begin{exampleblock}{Features}
+\begin{itemize}
+\item Model ``complexity'' unbounded ($\approx n$), immediately allowing for complex inference when data is sufficient.
+\item Nice convergence properties when $n \rightarrow \infty$.
+\end{itemize}
+\end{exampleblock}
+\begin{block}{Considerations}
+\begin{itemize}
+\item Inference always function of all available data.
+\end{itemize}
+\end{block}
+\begin{alertblock}{Drawbacks}
+\begin{itemize}
+\item Never see infinite data.
+\item Problems when dimensionality of $X$ is high.
+\item Memory complexity grows as a function of $n$.
+\item Inference computational complexity grows as a function of $n$.
+\end{itemize}
+\end{alertblock}
+\end{frame}	
+
+\begin{frame}[t]{Bayesian Nonparametric Modeling}
+\begin{block}{General Setup}
+Data 
+\[\mathcal{X} = \{x_1, x_2, \ldots, x_n\}\]
+Model (e.g.~density estimation)
+\[x_i \sim G  \mbox{ and } \mathsf{P}(G)\]
+Inference
+\[\mathsf{P}(X = x | \mathcal{X}) = \int \mathsf{P}(X=x|F)d\mathsf{P}(G | \mathcal{X})\]
+Estimator (frequentist interpretation)
+\[\hat G = \argmax_{G} \mathsf{P}(G | \mathcal{X}) \mbox{  or  }  \hat G = \int F d\mathsf{P}(G | \mathcal{X}) \]
+
+\end{block}
+\end{frame}	
+
+\begin{frame}[t]{Bayesian Nonparametric Modeling}
+\begin{exampleblock}{Features}
+\begin{itemize}
+\item Infinite model``complexity'' ($\approx p$) enables complex inference.  
+\item As $n$ grows, posterior concentrates on empirical distribution.
+\end{itemize}
+\end{exampleblock}
+\begin{block}{Considerations}
+\begin{itemize}
+\item Inference always function of all data.
+\item In high dimensions, prior on $F$ plays a key role.
+\end{itemize}
+\end{block}
+\begin{alertblock}{Drawbacks}
+\begin{itemize}
+\item Memory and computational complexity grow as a function $n$.
+\item Frequentist analyses of Bayesian nonparametric models are incomplete, there are risks \citep{Diaconis1986}, but there is hope \citep{Ghosal2010}.
+\end{itemize}
+\end{alertblock}
+\end{frame}	
+
+\begin{frame}[t]{Comparison}
+%\begin{columns}
+%\column{1.5in}
+%\begin{block}{Summary}
+\begin{table}[htdp]
+\begin{tabular}{c||c}
+Inference&
+\begin{tabular}{c|c|c}
+& Parametric & Nonparametric \\
+\hline
+Frequentist & Simple & Complex \\
+Bayesian & Simple & Complex
+\end{tabular}\\
+\\
+Uses Prior &
+\begin{tabular}{c|c|c}
+& Parametric & Nonparametric \\
+\hline
+Frequentist & No & No \\
+Bayesian & Yes & Yes
+\end{tabular}\\
+\\
+Comp. Complexity &
+\begin{tabular}{c|c|c}
+& Parametric & Nonparametric \\
+\hline
+Frequentist & Low & High \\
+Bayesian & High & Very High
+\end{tabular}\\
+
+\end{tabular}
+\end{table}
+\end{frame}	
+
+\begin{frame}[t]{Key Points}
+\begin{itemize}
+\item Complex models allow complex hypothesis to be tested.
+\item Complex models require regularization.
+\item Bayesian nonparametric models capture best of Bayesian estimation and nonparametric estimation but...
+\item {\em suffer from very high computational cost}
+\end{itemize}
+\end{frame}	
+
+\begin{frame}[t]{Applied Bayesian Nonparametrics}
+\begin{itemize}
+\item Show that Bayesian nonparametric models are worth using (empirically)
+\item Explain how to make inference computationally tractable
+\end{itemize}
+\end{frame}	
+
+\section{Review}
+\subsection{Dirichlet Process}
+\input{dirichlet_process}
+\subsection{Pitman-Yor Process}
+\input{"../power law slides/powerlaw"}
+\subsection{Hierarchical Modeling}
+\subsection{Power law}
+\input{power_law}
+\section{Example}
+\subsection{Sequence Memoizer}
+
+
+
+
+
+
+\begin{frame}[t]{Example}
+\[
+\begin{array}{l}
+01001001011011100010000001110100\\
+01101000011100100110010101100101\\
+00100000011001000110000101111001\\
+01110011001000000111010001101001\\
+01101101011001010010000001111001\\
+01101111011101010111001000100000\\
+01101000011000010111001001100100\\
+00100000011001000111001001101001\\
+01110110011001010010000001101001\\
+01110011001000000110011101101111\\
+01101001011011100110011100100000\\
+01110100011011110010000001100011\\
+01110010011000010111001101101000...
+\end{array}
+\]
+\end{frame}	
+
+ \frame[t] {%slide 6
+ \frametitle{Sequence Data}
+ \begin{itemize}
+\item  Natural language processing 
+ \begin{itemize}
+\item Words, i.e.~the united \_
+\item Characters, i.e.~un\_
+\item Parts of speech, i.e.~NNV\_
+\end{itemize}
+\item Compression 
+ \begin{itemize}
+\item  Bits i.e.~0101000011110001\_
+\item  Bytes i.e.~6A7B4ED22100D\_
+\end{itemize}
+\item Computational biology 
+ \begin{itemize}
+\item  Nucleotides i.e.~actgtc\_
+\item Genes
+\item ...
+\end{itemize}
+\item ...
+\end{itemize}
+
+ }
+ \frame[t] {%slide 7
+ \frametitle{Example Applications}
+ \begin{itemize}
+ \item Filling in missing segments
+ \[ \argmax_{x_1, x_2, \ldots, x_k} P(010010x_1 x_2 x_3 \ldots x_k 010) \]
+ \item Predict what comes next in the sequence 
+  \[ \argmax_{x_{i+1}} P(010010010x_{i+1}) \]
+ \item Determine typicality (clustering)
+   \[ \argmax_{k} P_k(010010010) \]
+
+ \end{itemize}
+ }
+ \frame[t] {%slide 8
+ \frametitle{The Sequence Memoizer}
+ The sequence memoizer is a regularized (Bayesian\footnote{$P(data,parameters) = P(parameters)P(data|parameters)$}) model of sequences.  \newline
+\begin{align}
+P(\xbf,\GG) = P(\GG)\prod_{i=0}^{|\xbf|-1}G_{\xbf_{1:i}}(\xbf_{i+1}) \nonumber
+\end{align}
+The sequence memoizer represents the joint distribution of a sequence in terms of a product of conditional distributions.  If the probability of each
+symbol $s$ following each context $\ubf$ is given by a latent variable (distribution) $G_\ubf(s)$ then
+
+\begin{align}
+P(\xbf|\GG) = G_{\{\}}(x_{1})G_{x_1}(x_{2})G_{\xbf_{1:2}}(x_{3})\cdots G_{\xbf_{1:(|\xbf|-1)}}(x_{|\xbf|})  \nonumber 
+\end{align}
+
+The resulting likelihood is, by definition, a ``joint''\footnote{$P(x_1,\ldots,x_i|\theta) = P(x_1|\theta) P(x_2 | x_1, \theta) P(x_3 | x_1,x_2, \theta) \cdots P(x_i | \xbf_{1:(i-1)}, \theta)$} likelihood.
+
+ }
+ \frame[t] {%slide 9
+ \frametitle{The Crux of the Matter}
+ Can we learn a joint distribution of over sequences of unbounded length given a single training sequence? (!!!) \newline
+ 
+ \quad Obviously not without strong regularization.  \newline
+ 
+ With Bayesian regularization we can do posterior inference of the following flavor
+ 
+ \[P(x_{i+1} | \xbf_{1:i}) = \int G_{\xbf_{1:i}}(x_{i+1}) dP(G_{x_{i+1} }|\xbf_{1:i}) \]
+ 
+ or more recognizably (but less accurately)
+ 
+ \[P(x_{i+1} | \xbf_{1:i}) = \int P(x_{i+1} | \xbf_{1:i}, \GG) P(\GG | \xbf_{1:i}) d\GG \]
+
+ 
+ 
+ }
+  \frame[t] {%slide 9.5
+ \frametitle{Big Picture}
+ The sequence memoizer draws on a diverse set of prior art
+ \begin{itemize}
+ \item A structured prior on the collection of all conditional probability distributions $\GG$, $P(\GG)$
+   \begin{itemize}
+   \item Hierarchical Pitman Yor process \cite{Teh2006b, Goldwater2006, Teh2006a}
+   \end{itemize}
+ \item A method for drawing samples from $P(\GG|\xbf)$
+    \begin{itemize}
+   \item Chinese restaurant franchise sampler \cite{Teh2006b}
+   \end{itemize}
+ \item A collection of methods for collapsing the the posterior down to a size that grows linearly in the length of the observation sequence. 
+    \begin{itemize}
+   \item Coagulation and fragmentation operators \cite{Pitman1999, Ho2006}
+   \end{itemize}
+ \item A set of algorithms to identify the remaining graphical model.
+   \begin{itemize}
+   \item Suffix tree construction \cite{Weiner1973,Ukkonen1992}
+   \end{itemize}
+ \end{itemize}
+  }
+  
+ \frame[t] {%slide 10
+ \frametitle{History - statistically modeling sequences}
+ Take a long sequence
+ \begin{quote}
+ aaaaagagaaaagaaaagactgggaaaagcgcgcgcgc...
+ \end{quote}
+ Pick a order for a Markov model (here 2).  Train the Markov model by counting.
+ \[G_{aa}(x) = \frac{\#\{aax\}}{\#\{aa\}}, G_{aa}(g) = \frac{4}{13}\]
+Problems
+ \begin{itemize}
+\item Short order Markov models can't capture long range dependencies
+\item High order Markov models have many parameters, $O(|\Sigma|^n)$.
+ \begin{itemize}
+ \item Don't know if $G_{aa}(c) = 0$ or just not enough data seen yet.
+ \item $G_{\ubf}(x) = 0$ causes all sorts of inference problems.
+ \item Regularization of some form is imperative.
+ \end{itemize}
+\end{itemize}
+ }
+
+\frame[t] {%slide 11
+ \frametitle{Reasonable regularizations}
+ In many real life sequential generative processes it is reasonable to believe that 
+ \[G_{\ubf}(s) \approx G_{\sigma(\ubf)}(s)\]
+ Where $\sigma(x_1x_2x_3\ldots x_n) = x_2x_3\ldots x_n$ is the suffix operator.  For example
+ \[G_{adl}(y) \approx G_{dl}(y)\]
+ or really just 
+  \[G_{\ubf} \approx G_{\sigma(\ubf)}\]
+
+ }
+\frame[t] {%slide 12
+ \frametitle{Language Modeling}
+ Smoothing and interpolating n-gram models have utilized this intuition for many years \cite{Kneser1995,MacKay1995,Chen1999, Goldwater2006, Teh2006a} \newline
+ 
+ All of these models can be expressed in forms similar to
+ 
+   \[G_{\ubf}(s) \propto \frac{\#\{\ubf s\}}{\#\{\ubf\}} + \lambda G_{\sigma(\ubf)}(s)\]
+
+ Predictive models for compression also utilize predictive distributions of similar form \cite{Willems2009, Cleary1984}
+ }
+  \frame[t] {%slide 20
+ \frametitle{$O(n^2)$ graphical model}
+ \begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=.75\textwidth]{fig/prefix_trie_coloured.pdf}
+\caption{Prefix {\em trie} graphical model}
+\label{fig: prefix_trie}
+\end{center}
+\end{figure}
+ }
+ \frame[t] {%slide 21
+\frametitle{$O(n)$ graphical model}
+ \begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=.5\textwidth]{fig/prefix_tree_coloured.pdf}
+\caption{Prefix {\em tree} graphical model}
+\label{fig: prefix_tree}
+\end{center}
+\end{figure}
+ }
+\frame[t] {%slide 22
+ \frametitle{}
+ }
+ \frame[t] {%slide 23
+ \frametitle{}
+ }
+ \frame[t] {%slide 24
+ \frametitle{Finite Depth vs.~Infinite Depth - Computational Complexity}
+ \begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=.75\textwidth]{fig/node_counts.pdf}
+\caption{Number of nodes vs.~order of Markov model}
+\label{fig: node_counts}
+\end{center}
+\end{figure}
+ }
+ \frame[t] {%slide 25
+ \frametitle{Finite Depth vs.~Infinite Depth - Computational Complexity}
+ \begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=.75\textwidth]{fig/nodes_total_vs_need_sampling.pdf}
+\caption{Number of nodes vs.~number of observations}
+\label{fig: nodes_total_vs_need_sampling}
+\end{center}
+\end{figure}
+ }
+ \frame[t] {%slide 26
+ \frametitle{Finite Depth vs.~Infinite Depth - Predictive Power}
+ \begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=.5\textwidth]{fig/fix_size_vary_n_cleaned_coloured.pdf}
+\caption{Test perplexity vs.~order of Markov model.}
+\label{fig: fix_size_vary_n_cleaned_coloured}
+\end{center}
+\end{figure}
+ }
+ \frame[t] {%slide 27
+ \frametitle{Finite Depth vs.~Infinite Depth - Predictive Power}
+ \begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=.5\textwidth]{fig/fix_n_vary_size_ap_cleaned_coloured.pdf}
+\caption{Test perplexity vs.~number of training observations.}
+\label{fig: fix_n_vary_size_ap_cleaned_coloured}
+\end{center}
+\end{figure}
+
+ }
+
+\section{Discussion}
+
+\frame[t] {%slide 2
+ \frametitle{Inspiration}
+ ``Prediction and entropy of printed English,'' \citep{Shannon1951}
+\begin{quote}
+If $[\ldots]$ language is translated into binary digits $[\ldots]$, the entropy H $[\mbox{of the language}]$ is the average number of binary digits required per letter
+\end{quote} 
+{\begin{center} drppng lttrs dsnt hrt \end{center} }
+\begin{quote} $[\ldots]$it appears that, in ordinary literary English, $[\ldots]$ long range statistical effects (up to 100 letters) reduce the entropy to something of the order of one bit per letter
+\end{quote}
+{\begin{center} d \_ \end{center} }
+{\begin{center} the united \_ \end{center} }
+{\begin{center} baseball is the national pastime of the united \_ \end{center} }
+
+ }
+ \frame[t] {%slide 3
+ \frametitle{Inspiration and Reminder}
+ Conclusion: lower and upper bound on character-based entropy of English of
+$[0.6 < H(English) < 1.3]$ bits per character\footnote{based on a 27 character alphabet, where $log_2(27) \approx 4.75$}\citep{Shannon1951}
+ \newline
+ 
+ If $\Sigma$ is a set (an alphabet) and $G$ is a discrete probability distribution over $\Sigma$, (i.e. $\sum_{x\in\Sigma} G(X=x) = 1, 0 < G(x) < 1)$ then you can write the entropy of $G$ as
+ 
+ \[H(G) = -\sum_{x\in\Sigma} G(x) \log_2(G(x))\]
+ 
+ Reminder: entropy is the number of bits per symbol an optimal encoder of a sequence of iid symbols drawn from $G$ would require to losslessly represent the sequence on average. 
+ 
+ }
+ \frame[t] {%slide 4
+ \frametitle{Crazy Idea}
+ \begin{center}Compression $\approx$ intelligence\end{center}
+ ``Text Compression as a Test for Artificial Intelligence,''\cite{Mahoney2009} \newline
+ 
+\begin{quote}The Turing test for artificial intelligence is widely accepted, but is subjective, qualitative, non-repeatable, and difficult to implement. An alternative test without these drawbacks is to insert a machine's language model into a predictive encoder and compress a corpus of natural language text. A ratio of 1.3 bits per character or less indicates that the machine has AI.\end{quote}
+ }
+ \frame[t] {%slide 5
+ \frametitle{Of Mouths and Money}
+ The (Marcus) Hutter prize \cite{Hutter2006} \newline
+ 
+\begin{quote}Wikipedia is an extensive snapshot of Human Knowledge. If you can compress the first 100MB of Wikipedia better than your predecessors, your (de)compressor likely has to be smart(er). The intention of this prize is to encourage development of intelligent compressors/programs.
+ \end{quote}
+ \begin{itemize}
+\item 50,000 euro in prize money available
+\item http://prize.hutter1.net/ 
+ \end{itemize}
+ }
+
+
+\section{Thanks}
+ \frame[t] {%slide 5
+ \frametitle{Collaborators}
+ \begin{itemize}
+\item Tom Griffiths
+\item Yee Whye Teh
+\item Jan Gasthaus
+\item Nicholas Bartlett
+\item David Pfau
+\item Sharon Goldwater
+ \end{itemize}
+ }	
+	%\section{References}	
+
+	\bibliographystyle{plainnat}
+	\begin{frame}[t,allowframebreaks]{Bibliograpy}
+
+\bibliography{../../papers/uber}
+\end{frame}
 \end{document}
