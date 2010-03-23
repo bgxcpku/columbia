@@ -16,7 +16,7 @@ public class PlumpStream extends InputStream {
     public Decoder dec;
 
     public PlumpStream(InputStream in) throws IOException {
-        dec = new Decoder(new FiniteDepthHPYPPredictiveModel(), in);
+        dec = new Decoder(new SMPredictiveModel(), in);
     }
 
     @Override

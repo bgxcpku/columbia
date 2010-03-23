@@ -22,11 +22,11 @@ public class Main {
 
         //String path = "/Users/nicholasbartlett/Documents/np_bayes/data/pride_and_prejudice/";
         //String file = "pride_and_prejudice.txt";
-        String path = "/Users/nicholasbartlett/Desktop/";
+        String path = "/Users/fwood/Downloads/";
         String file = "letterToFrank.txt";
 
 
-        Deplump.Deplump(path, file);
-        //Plump.Plump(path, file + ".dplmp2");
+        //Deplump.Deplump(path, file);
+        Plump.Plump(file + ".deplump");
     }
 }

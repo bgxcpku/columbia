@@ -14,7 +14,7 @@ import java.util.Arrays;
 public class SMPredictiveModel extends SMTree implements PredictiveModel {
 
     public SMPredictiveModel(){
-        super(257, 10, -1, SeatingStyle.SIMPLE,0);
+        super(257, 5, -1, SeatingStyle.SIMPLE,0);
     }
 
     public double[] cumulativeDistributionInterval(int token) {
