@@ -22,9 +22,15 @@ public class SMPredictiveModel extends SMTree implements PredictiveModel {
         Arrays.fill(initialPredDist, 1.0 / alphabetSize);
         double[] predDist = getPredictiveDist(contextFreeRestaurant, 0, seq.getLastElementIndex(), initialPredDist);
 
+        int i = 0;
+        while(i < alphabetSize){
+            predDist[i] *= 99.0/100;
+            predDist[i++] += (1.0/100)*(1.0/alphabetSize);
+        }
+
         double[] intVals = new double[2];
-        for (int i = 0; i < token; i++) {
-            intVals[0] += predDist[i];
+        for (int j = 0; j < token; j++) {
+            intVals[0] += predDist[j];
         }
         intVals[1] = intVals[1] + predDist[token];
         return intVals;
@@ -35,21 +41,27 @@ public class SMPredictiveModel extends SMTree implements PredictiveModel {
         Arrays.fill(initialPredDist, 1.0 / alphabetSize);
         double[] predDist = this.getPredictiveDist(contextFreeRestaurant, 0, seq.getLastElementIndex(), initialPredDist);
 
+        int i = 0;
+        while(i < alphabetSize){
+            predDist[i] *= 99.0/100;
+            predDist[i++] += (1.0/100)*(1.0/alphabetSize);
+        }
+
         int[] returnVal = new int[2];
         double cumSum = 0.0;
         topFor:
-        for(int i = 0; i<predDist.length;i++){
-            cumSum+=predDist[i];
+        for(int k = 0; k<predDist.length;k++){
+            cumSum+=predDist[k];
             if(cumSum > lowPointOnCDF){
-                returnVal[0] = i;
+                returnVal[0] = k;
                 if(cumSum > highPointOnCDF){
-                    returnVal[1] = i;
+                    returnVal[1] = k;
                     break;
                 } else {
-                    for(int j = 1; j<predDist.length - i; j++){
-                        cumSum += predDist[i + j];
+                    for(int j = 1; j<predDist.length - k; j++){
+                        cumSum += predDist[k + j];
                         if(cumSum > highPointOnCDF){
-                            returnVal[1] = i+j;
+                            returnVal[1] = k+j;
                             break topFor;
                         }
                     }
