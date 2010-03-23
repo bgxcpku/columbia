@@ -1,0 +1,3 @@
+#!/bin/csh
+
+java -cp ./rangeencoder-1.0-jar-with-dependencies.jar edu.columbia.stat.wood.rangeencoder.Deplump $1

@@ -1,0 +1,186 @@
+
+\subsection{The Case for Bayesian Nonparametrics}	
+	
+\begin{frame}[t]{Parametric (Frequentist) Modeling}
+\begin{block}{General Setup}
+Data 
+\[\mathcal{X} = \{x_1, x_2, \ldots, x_n\}\]
+Model
+\[\mathsf{P}(\mathcal{X} | \Theta)\]
+Estimator
+\[\hat \Theta = f(\mathcal{X})\]
+Inference
+\[\mathsf{P}(X=x | \hat \Theta), \mathsf{P}(|\hat \Theta - \Theta| <b)\]%\[\mathsf{P}(|\hat \Theta - \Theta| <b)\] % = \mathsf{P}(\hat \Theta - b < \Theta < \hat \Theta + b)\]
+\end{block}
+\end{frame}	
+
+
+\begin{frame}[t]{Parametric (Grequentist) Modeling}
+\begin{exampleblock}{Features}
+\begin{itemize}
+\item More data improves estimate
+\begin{itemize}
+\item $\hat \Theta \rightarrow \Theta$ as $n\rightarrow \infty$ is desirable and common.
+\end{itemize}
+\item Model ``complexity'' ($\approx p$) fixed $\implies$ constant ``memory.''
+\end{itemize}
+\pause
+\end{exampleblock}
+\begin{block}{Considerations}
+\begin{itemize}
+\item Inference through parameter $\Theta$ only, data is ``thrown away.''
+\item $\Theta$ must be ``low-dimensional'' (small $n$ big $p$ problem).
+\end{itemize}
+\end{block}
+\pause
+\begin{alertblock}{Drawbacks}
+\begin{itemize}
+\item Model almost always wrong (low-dim $\Theta$ insufficient).
+\item More data improves estimate only, doesn't increase the representational power of the model.
+\end{itemize}
+\end{alertblock}
+\end{frame}	
+
+\begin{frame}[t]{Parametric (Bayesian) Modeling}
+\begin{block}{General Setup}
+Data 
+\[\mathcal{X} = \{x_1, x_2, \ldots, x_n\}\]
+Model
+\[\mathsf{P}(\mathcal{X}  | \Theta) \mbox{ and } \mathsf{P}(\Theta)\]
+Inference
+\[\mathsf{P}(X = x | \mathcal{X}) = \int \mathsf{P}(X=x|\Theta)\mathsf{P}(\Theta | \mathcal{X})d\Theta\]
+Estimator (frequentist interpretation)
+\[\hat \Theta = \argmax_{\Theta} \mathsf{P}(\Theta | \mathcal{X}) \mbox{  or  }  \hat \Theta = \int \Theta \mathsf{P}(\Theta | \mathcal{X}) d\Theta\]
+\end{block}
+\end{frame}	
+
+\begin{frame}[t]{Parametric (Bayesian) Modeling}
+\only<1->{
+\begin{exampleblock}{Features}
+\begin{itemize}
+\item Posterior consistency common but not guaranteed.
+\only<1>{\[P(\mathcal{A} = \{\Theta : |\Theta - \Theta_0| < \epsilon\}) = 0 \implies P(\mathcal{A} | \mathcal{X}) = 0\]}
+\item Model ``complexity'' \only<1>{($\approx$ num.  $\mathsf{P}(\Theta|\mathcal{X})$ params.)} fixed $\implies$ constant ``memory.''
+\item Prior controllably induces bias (regularization).
+\item $\Theta$ can be high-dimensional (allows complex inference about small data).
+\end{itemize}
+\end{exampleblock}}
+\only<1>{
+\begin{block}{Considerations}
+\begin{itemize}
+\item Data is ``thrown away,'' i.e.~inference through posterior distribution only.
+\end{itemize}
+\end{block}}
+\only<2>{
+\begin{alertblock}{Drawbacks}
+\begin{itemize}
+\item Model family almost always wrong, increasing $n$ only lowers posterior variance.
+\item Prior is almost always wrong, though increasing $n$ often mitigates effect of poor choice.
+\item Never see infinite data, prior always matters.
+\end{itemize}
+\end{alertblock}}
+\end{frame}	
+
+\begin{frame}[t]{Nonparametric Modeling}
+\begin{block}{General Setup}
+Data 
+\[\mathcal{X} = \{x_1, x_2, \ldots, x_n\}\]
+Inference (e.g.~nonparametric density estimation)
+\begin{eqnarray*}
+\mathsf{P}(X = x | \mathcal{X}) &=& \mathsf{f}(\mathcal{X})\\
+&=& \frac{1}{nh} \sum_{i=1}^n \mathsf{K}\left(\frac{x-x_i}{h}\right) 
+\end{eqnarray*}
+\end{block}
+\end{frame}	
+
+\begin{frame}[t]{Nonparametric Modeling}
+\begin{exampleblock}{Features}
+\begin{itemize}
+\item Model ``complexity'' unbounded ($\approx n$), immediately allowing for complex inference when data is sufficient.
+\item Nice convergence properties when $n \rightarrow \infty$.
+\end{itemize}
+\end{exampleblock}
+\begin{block}{Considerations}
+\begin{itemize}
+\item Inference always function of all available data.
+\end{itemize}
+\end{block}
+\begin{alertblock}{Drawbacks}
+\begin{itemize}
+\item Never see infinite data.
+\item Problems when dimensionality of $X$ is high.
+\item Memory complexity grows as a function of $n$.
+\item Inference computational complexity grows as a function of $n$.
+\end{itemize}
+\end{alertblock}
+\end{frame}	
+
+\begin{frame}[t]{Bayesian Nonparametric Modeling}
+\begin{block}{General Setup}
+Data 
+\[\mathcal{X} = \{x_1, x_2, \ldots, x_n\}\]
+Model (e.g.~density estimation)
+\[x_i \sim G  \mbox{ and } \mathsf{P}(G)\]
+Inference
+\[\mathsf{P}(X = x | \mathcal{X}) = \int \mathsf{P}(X=x|F)d\mathsf{P}(G | \mathcal{X})\]
+Estimator (frequentist interpretation)
+\[\hat G = \argmax_{G} \mathsf{P}(G | \mathcal{X}) \mbox{  or  }  \hat G = \int F d\mathsf{P}(G | \mathcal{X}) \]
+
+\end{block}
+\end{frame}	
+
+\begin{frame}[t]{Bayesian Nonparametric Modeling}
+\begin{exampleblock}{Features}
+\begin{itemize}
+\item Infinite model``complexity'' ($\approx p$) enables complex inference.  
+\item As $n$ grows, posterior concentrates on empirical distribution.
+\end{itemize}
+\end{exampleblock}
+\begin{block}{Considerations}
+\begin{itemize}
+\item Inference always function of all data.
+\item In high dimensions, prior on $F$ plays a key role.
+\end{itemize}
+\end{block}
+\begin{alertblock}{Drawbacks}
+\begin{itemize}
+\item Memory and computational complexity grow as a function $n$.
+\item Frequentist analyses of Bayesian nonparametric models are incomplete, there are risks \citep{Diaconis1986}, but there is hope \citep{Ghosal2010}.
+\end{itemize}
+\end{alertblock}
+\end{frame}	
+
+\begin{frame}[t]{Comparison}
+%\begin{columns}
+%\column{1.5in}
+%\begin{block}{Summary}
+\begin{table}[htdp]
+\begin{tabular}{c||c}
+Inference&
+\begin{tabular}{c|c|c}
+& Parametric & Nonparametric \\
+\hline
+Frequentist & Simple & Complex \\
+Bayesian & Simple & Complex
+\end{tabular}\\
+\\
+Uses Prior &
+\begin{tabular}{c|c|c}
+& Parametric & Nonparametric \\
+\hline
+Frequentist & No & No \\
+Bayesian & Yes & Yes
+\end{tabular}\\
+\\
+Comp. Complexity &
+\begin{tabular}{c|c|c}
+& Parametric & Nonparametric \\
+\hline
+Frequentist & Low & High \\
+Bayesian & High & Very High
+\end{tabular}\\
+
+\end{tabular}
+\end{table}
+\end{frame}	
+

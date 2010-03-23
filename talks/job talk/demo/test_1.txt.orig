@@ -1,0 +1,7 @@
+export M2_HOME="/usr/local/apache-maven/apache-maven-2.2.1/"
+export M2=$M2_HOME/bin
+export PATH="$M2:/usr/local/sbin:/usr/local/mysql/bin:$PATH"
+export JAVA_HOME=/Library/Java/Home
+alias hpc="ssh fw2196@hpcsubmit.cc.columbia.edu"
+export EDITOR="vi"
+alias ll="ls -al"
