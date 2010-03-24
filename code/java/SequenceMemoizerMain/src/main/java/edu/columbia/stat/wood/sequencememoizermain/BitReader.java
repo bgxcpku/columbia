@@ -35,6 +35,10 @@ public class BitReader {
         return bitRep[index++];
     }
 
+    public int available() throws IOException{
+        return fileInputStream.available();
+    }
+
     private void fillBitRep() {
         String binRep = Integer.toBinaryString(currentByte);
         int i = 0;
