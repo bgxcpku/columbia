@@ -7,6 +7,7 @@ package edu.columbia.stat.wood.sequencememoizermain;
 import edu.columbia.stat.wood.sequencememoizer.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  *
@@ -18,6 +19,11 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws FileNotFoundException, IOException {
+        Dictionary dict = new Dictionary();
+        WordCorpus nytimes = new WordCorpus(dict);
+
+        ArrayList<Integer> words = nytimes.readInFile("/Users/fwood/Data/natural_language/lmdata-nyt.1-10000");
+
         SeatingStyle seatingStyle = SeatingStyle.RANDOM_DELETION;
         int depth = 1000;
         int seed = 0;
