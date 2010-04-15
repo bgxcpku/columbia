@@ -49,8 +49,8 @@
   Columbia University
 }
 
-\date[Job Talk 2010]
-{Job Talk 2010}
+\date[Research Highlights 2010]
+{Research Highlights 2010}
 
 %\def\blfootnote{\xdef\@thefnmark{}\@footnotetext}
 
@@ -99,9 +99,9 @@
 Characteristics
 \begin{itemize}
 \item Unsupervised (no labels, etc.)
-\item Worst case linear time estimation
-\item Worst case constant time inference
-\item Worst case constant space memory complexity
+\item Linear time estimation
+\item Constant time inference
+\item Constant space memory complexity
 \end{itemize}
 Problems
 \begin{itemize}
@@ -118,9 +118,9 @@ Problems
 Requirements
 \begin{itemize}
 \item Unsupervised $\checkmark$
-\item Worst case linear time estimation  $\checkmark$
-\item Worst case constant time inference  $\checkmark$
-\item Worst case constant space memory complexity  $\checkmark$
+\item Linear time estimation  $\checkmark$
+\item Constant time inference  $\checkmark$
+\item Constant space memory complexity  $\checkmark$
 \end{itemize}
 Problems
 \begin{itemize}
@@ -208,7 +208,7 @@ and if we could do prediction we could do the rest.
 \subsection{Challenge}
 \begin{frame}[t]{Steps}
 \begin{itemize}
-\item Incrementally estimate $\mathsf{P},$ a {\em joint} distribution over sequences of unbounded length in worst case linear time from a single observed sequence.
+\item Incrementally estimate $\mathsf{P},$ a {\em joint} distribution over sequences of unbounded length in worst case linear time from a single sequence of observations.
 %\begin{itemize}
 %\item Joint because we want all marginal and conditional distributions
 %\item Single observation because we only see a single data ``stream.''
@@ -356,9 +356,9 @@ G_j &\sim& \DP(c,G) \\
 \item A concentration $c > -d$ like that of the DP
 \item A base distribution $H$ also like that of the DP
 \end{itemize}
-A draw $G \sim PY(c,d,H)$ is also atomic
+%A draw $G \sim PY(c,d,H)$ is also atomic
 
-\[G = \sum_{k=1}^{\infty} \pi_k \delta_{\phi_k}\].  
+%\[G = \sum_{k=1}^{\infty} \pi_k \delta_{\phi_k}\].  
 }
 
 \frame[t] {
@@ -483,11 +483,37 @@ $[0.6 < H(English) < 1.3]$ bits per character\footnote{based on a 27 character a
  }
 
  \frame {%slide 4
- \frametitle{Sampling From Trained Model}
- 
+ \frametitle{Sampling From a Byte Model Trained On NY Times Corpus (3m)}
+ bottler , the u.s. college , enjoy a joined his what most again street from all theme oddly produce helped magnet , " " specials , including a pollectioner ) , 7-2ndtake-hns )
+the three decades it just happens days to receive branchery , a shadow , " we 've even delight lead to share incoln candidate for the first thing , adaptychicago , " mean tip . phin places like lives in diligenerations , send in the 10 days the airport maytages were on have just happened in 1988 that new york 's spray immediately camps , which print care deal terms , cezanne-manime with largely student can do it is an ec
  }
+ 
+ \frame {%slide 4
+ \frametitle{Continuing From a Byte Model Trained On NY Times Corpus (50m)}
+{\em the fastest way to make money is$\ldots$}
+ being player . bucketti wish i made it end in the reducers and assemblance smart practices to allow city is something to walk in most of the work of agriculture . i 'd be able to compete with an earlier goals : words the danger of conduct in southern california , has set of juice of the fights lack of audience that the eclasm beverly hills . "
+she companies or running back down that the book , " grass .
+and the coynes , exaggerate between 1972 .
+the pad , a debate on emissions on air political capital crashing that the new obviously program " -- irock price , " coach began refugees , much and\footnote{Log-loss 1.49 bits/byte.  2 million rest.'s, forgetting}
+ }
+  \frame {%slide 4
+ \frametitle{Full Circle}
+``A Step Towards Fully Unsupervised, Life-Long, Incremental Learning''?
+\bigskip
 
-
+Demonstrated practically useful approach that exhibits
+\begin{itemize}
+\item Constant space representation $\checkmark$
+\item Linear time estimation $\checkmark$
+\item Constant time inference $\checkmark$
+\end{itemize}
+Ways forward?
+\begin{itemize}
+\item Dependent streams
+\item Multi-scale models 
+\item Back-off structure learning 
+\end{itemize}
+ }
 \section{Thanks}
  \frame[t] {%slide 5
  \frametitle{Collaborators}
@@ -506,5 +532,9 @@ $[0.6 < H(English) < 1.3]$ bits per character\footnote{based on a 27 character a
 	\begin{frame}[t,allowframebreaks]{Bibliograpy}
 
 \bibliography{../../papers/uber}
+\end{frame}
+
+\begin{frame}
+Special thanks to Ana Calabrese
 \end{frame}
 \end{document}

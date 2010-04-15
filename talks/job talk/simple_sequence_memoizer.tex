@@ -24,7 +24,7 @@
 P(\xbf,\GG) &=& P(\GG)P(\xbf|\GG) \nonumber \\
 P(\xbf,\GG) &=& P(\GG)\prod_{i=0}^{|\xbf|-1}G_{\xbf_{1:i}}(\xbf_{i+1})
 \end{eqnarray*}
-Where, expanding $P(\xbf|\GG)$ to make it clearer
+Where, expanding $P(\xbf|\GG)$ to make it clearer,
 \begin{align}
 P(\xbf|\GG) = G_{[]}(x_{1})G_{x_1}(x_{2})G_{\xbf_{1:2}}(x_{3})\cdots G_{\xbf_{1:(|\xbf|-1)}}(x_{|\xbf|})  \nonumber 
 \end{align}
@@ -33,37 +33,27 @@ Note that this is the ``joint''\footnote{$P(x_1,\ldots,x_i|\theta) = P(x_1|\thet
  }
 
 
-  \frame[t] {%slide 27
- \frametitle{The Corresponding Graphical Model}
- \begin{figure}[htbp]
-\begin{center}
-%\includegraphics[trim = 4cm 8cm 4cm 8cm, clip, width=5cm]{jtfig/base.pdf}
-\vspace{2cm}
-\includegraphics[trim = 2cm 2cm 2cm 10cm, width=8cm]{jtfig/base.pdf}
-%\caption{Test perplexity vs.~number of training observations.}
-\label{fig: gm_binary_complete}
-\end{center}
-\end{figure}
-}
 
 
   \frame[t] {%slide 9
  \frametitle{Regularization}
- With Bayesian regularization we can do posterior inference of the following flavor
+ Bayesian regularization yields posterior inference of the following flavor
  
- \[P(x_{i+1} | \xbf_{1:i}) = \int G_{\xbf_{1:i}}(x_{i+1}) dP(G_{x_{i+1} }|\xbf_{1:i}) \]
- 
- or more recognizably (but less accurately)
- 
- \[P(x_{i+1} | \xbf_{1:i}) = \int P(x_{i+1} | \xbf_{1:i}, \GG) P(\GG | \xbf_{1:i}) d\GG \]
+ \[P(x_{i+1} | \xbf_{1:i}) = \int P(x_{i+1} | \xbf_{1:i}, \GG) dP(\GG | \xbf_{1:i}) \]
 
 where, for DP's and PYP's we can represent and sample directly from $P(x_{i+1} | \xbf_{1:i})$ both individually and in hierarchies, leading to
- \[P(x_{i+1} | \xbf_{1:i}) \approx \sum_{\ell = 1}^L P(x_{i+1} | \xbf_{1:i}, \GG_\ell), \; \GG_\ell \sim P(\GG | \xbf_{1:i})\]
+ \[P(x_{i+1} | \xbf_{1:i}) \approx \frac{1}{L}\sum_{\ell = 1}^L P(x_{i+1} | \xbf_{1:i}, \GG_\ell), \; \GG_\ell \sim P(\GG | \xbf_{1:i})\]
 
  }
 
+
+
+
+\subsection{Sequence Memoizer}
+
+
   \frame[t] {%slide 27
- \frametitle{Binary Sequence Memoizer, \citet{Wood2009}}
+ \frametitle{Sequence Memoizer, \citet{Wood2009}}
 \begin{eqnarray*}
 \Sigma &=& \{0,1\}\\
 \U_{\Sigma } &=& [.5, .5] \\
@@ -78,6 +68,20 @@ Here $\sigma(x_1x_2x_3\ldots x_n) = x_2x_3\ldots x_n$ is the suffix operator.
 We're done, right?
 \end{center}
 }
+
+  \frame[t] {%slide 27
+ \frametitle{A Way to Tie Together ``Related'' Conditional Distributions}
+ \begin{figure}[htbp]
+\begin{center}
+%\includegraphics[trim = 4cm 8cm 4cm 8cm, clip, width=5cm]{jtfig/base.pdf}
+\vspace{2cm}
+\includegraphics[trim = 2cm 2cm 2cm 10cm, width=8cm]{jtfig/base.pdf}
+%\caption{Test perplexity vs.~number of training observations.}
+\label{fig: gm_binary_complete}
+\end{center}
+\end{figure}
+}
+
 \comment{
 \begin{frame}[t]{Computational Problems}
 \begin{itemize}
@@ -103,7 +107,6 @@ We're done, right?
 }
 
 
-\subsection{Sequence Memoizer}
 
 
 
