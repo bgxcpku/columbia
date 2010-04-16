@@ -42,41 +42,27 @@ public class ZeroOrderMarkovPredictiveModel implements PredictiveModel{
         }
     }
 
-    public int[] predDist(double lowPointOnCDF, double highPointOnCDF){
-        int[] returnVal = new int[2];
-
-        double cumSum = 0.0;
-        topFor:
-        for(int i = 0; i<p.length;i++){
-            cumSum+=p[i];
-            if(cumSum > lowPointOnCDF){
-                returnVal[0] = i;
-                if(cumSum > highPointOnCDF){
-                    returnVal[1] = i;
-                    break;
-                } else {
-                    for(int j = 1; j<p.length - i; j++){
-                        cumSum += p[i + j];
-                        if(cumSum > highPointOnCDF){
-                            returnVal[1] = i+j;
-                            break topFor;
-                        }
-                    }
-                }
-
+    public int inverseCDF(double pointOnCDF){
+        long longOnCDF = (long) (pointOnCDF * totalCount);
+        
+        long cumSum = 0;
+        for(int i = 0; i< p.length; i++){
+            cumSum += predictiveCounts[i];
+            if(cumSum > longOnCDF){
+                return i;
             }
         }
-        return returnVal;
+
+        return 256;
     }
 
-    //assumes token 0-(alphabetSize-1)
     public double[] cumulativeDistributionInterval(int token){
-        double[] lu = new double[2];
+        double low = 0.0;
         for(int i = 0; i< token; i++){
-            lu[0]+= p[i];
+            low += p[i];
         }
-        lu[1] = lu[0] + p[token];
-        return lu;
+
+        return new double[]{low, low + p[token]};
     }
 
 }

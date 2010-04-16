@@ -20,13 +20,10 @@ public class Main {
     
     public static void main(String[] args) throws FileNotFoundException, IOException {
 
-        //String path = "/Users/nicholasbartlett/Documents/np_bayes/data/pride_and_prejudice/";
-        //String file = "pride_and_prejudice.txt";
-        String path = "/Users/fwood/Downloads/";
-        String file = "letterToFrank.txt";
+        String path = "/Users/nicholasbartlett/Documents/np_bayes/data/alice_in_wonderland/";
+        String file = "AliceInWonderland.txt";
 
-
-        //Deplump.Deplump(path, file);
-        Plump.Plump(file + ".deplump");
+        //Deplump.Deplump(path + file);
+        Plump.Plump(path + file + ".deplump");
     }
 }

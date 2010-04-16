@@ -8,6 +8,7 @@ package edu.columbia.stat.wood.rangeencoder;
  *
  * @author nicholasbartlett
  */
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -15,14 +16,13 @@ public class PlumpStream extends InputStream {
 
     public Decoder dec;
 
-    public PlumpStream(InputStream in) throws IOException {
-        dec = new Decoder(new SMPredictiveModel(), in);
+    public PlumpStream(File inFile) throws IOException {
+        dec = new Decoder(new FiniteDepthHPYPPredictiveModel(), inFile);
     }
 
     @Override
     public int available() {
-        //unsupported;
-        return 0;
+        throw new RuntimeException("unsupported");
     }
 
     @Override
@@ -37,19 +37,12 @@ public class PlumpStream extends InputStream {
 
     @Override
     public int read(byte[] bs) throws IOException {
-        return read(bs, 0, bs.length);
+        throw new RuntimeException("unsupported");
     }
 
     @Override
     public int read(byte[] bs, int off, int len) throws IOException {
-        for (int i = off; i < len; ++i) {
-            int nextByte = read();
-            if (nextByte == -1) {
-                return (i - off);
-            }
-            bs[i] = (byte) (nextByte & 0xFF);
-        }
-        return len > 0 ? len : 0;
+        throw new RuntimeException("unsupported");
     }
 
     public int read() throws IOException {
@@ -58,11 +51,6 @@ public class PlumpStream extends InputStream {
 
     @Override
     public long skip(long n) throws IOException {
-        for (long i = 0; i < n; ++i) {
-            if (read() == -1) {
-                return i;
-            }
-        }
-        return n;
+        throw new RuntimeException("unsupported");
     }
 }

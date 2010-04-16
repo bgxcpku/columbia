@@ -4,6 +4,9 @@
  */
 package edu.columbia.stat.wood.rangeencoder;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -16,46 +19,30 @@ import java.io.IOException;
 public class Plump {
 
     public static void main(String[] args) throws FileNotFoundException, IOException {
-
-        //String path = "/Users/nicholasbartlett/Documents/np_bayes/data/pride_and_prejudice/";
-        //String file = "pride_and_prejudice.txt";
-        //String path = "/Users/fwood/Downloads/";
-        //String file = "letterToFrank.txt";
-
-        //File file = new File(args[0]);
-
-        //file.
-
         Plump.Plump(args[0]);
-        //Plump.Plump(args[0]);
     }
 
 
     public static void Plump(String file) throws FileNotFoundException, IOException {
 
-        PlumpStream pStream = null;
-        FileOutputStream fileOutputStream = null;
+        PlumpStream ps = null;
+        BufferedOutputStream bos = null;
         
         try {
-            pStream = new PlumpStream(new FileInputStream(file));
-
+            ps = new PlumpStream(new File(file));
             file = file.substring(0, file.lastIndexOf('.'));
+            bos = new BufferedOutputStream(new FileOutputStream(file));
 
-            fileOutputStream = new FileOutputStream(file);
-
-            int total = 0;
-            int b = pStream.read();
-            while(b != -1){
-                fileOutputStream.write(b+128);
-                b = pStream.read();
-                total++;
+            int b;
+            while((b = ps.read()) > -1){
+                bos.write(b);
             }
         } finally {
-            if (pStream != null) {
-                pStream.close();
+            if (ps != null) {
+                ps.close();
             }
-            if (fileOutputStream != null) {
-                fileOutputStream.close();
+            if (bos != null) {
+                bos.close();
             }
         }
     }
