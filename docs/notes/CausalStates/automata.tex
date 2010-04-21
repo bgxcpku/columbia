@@ -1,0 +1,65 @@
+\documentclass[11pt]{article}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{epstopdf}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\title{A Nonparametric Bayesian Approach to Regular Grammar Induction}
+\author{David Pfau}
+%\date{}                                           % Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+\section{Introduction}
+N-gram models have had great empirical success in sequence prediction.  However, there is no clear way to trade off model complexity with prediction accuracy.  In extensions to n-gram models which can learn from arbitrarily long contexts, the model complexity will grow without bound, even for trivially simple sequences such as repetitions of a few characters.  Bounded memory models perform well in practice, but we would much prefer to learn a model that is as small as possible for very simple data, while growing large for more complex data.  A natural class of models to explore is probabalistic deterministic finite automata (PDFA), which contains n-grams as a special case, as well as simpler models.  We define a prior over PDFAs with a finite number of states and describe a Metropolis-Hastings algorithm to generate samples from the posterior.  We then generalize to the case of PDFAs with a (potentially) infinite number of states and show that the generative model is a type of Hierarchical Dirichlet Process (HDP).  We then (I hope!) describe a state splitting/merging algorithm for posterior inference that mixes more efficiently than the original Metropolis-Hastings algorithm, and show that it defines a natural hierarchy of states for smoothing (fingers crossed...)  The set of strings produced by a PDFA constitutes a probabilistic regular language, thus our inference procedure can also be viewed as a non-greedy algorithm for regular grammar induction.
+
+\section{Probabilistic Deterministic Finite Automata}
+A PDFA is formally defined as a 5-tuple $M = (Q,\Sigma,\delta,\gamma,\pi)$.  $Q$ is a finite set of states. $\Sigma$ is a finite alphabet. $\delta\,:\,Q\times\Sigma\rightarrow Q$ is the transition function from a state/symbol pair to the next state.  $\gamma\,:\,Q\times\Sigma\rightarrow[0,1]$ is the next symbol probability.  $\pi\,:\,Q\rightarrow[0,1]$ is the initial probability distribution.  For our purposes we will restrict $\pi(q)$ to be zero for all states except a special initial state, $q_0$.  By analogy to n-gram models, we can consider this the null context.  
+
+The paradoxical-sounding phrase "probabilistic deterministic" comes from the fact that generating a string of symbols is a two-stage process.  Given a state $q$, the probability that the next symbol is $s$ is given by $\gamma(q,s)$, hence "probabilistic."  We denote the multinomial distribution over symbols given a state $q$ as $\gamma_q$, so we could equivalently say $s \sim Mult(\gamma_q)$.  Given a state $q$ and a symbol $s$, however, there is a {\it unique} state $\delta(q,s)$ that follows it, hence "deterministic."  
+
+The likelihood of a string $S$ given a PDFA $M$ is
+
+\[ p(x_{0:T}|M) = \gamma(q^0,x_0)\prod_{t=1}^T \gamma(q^t,x_t) \]
+
+where $q^0 = q_0$ and $q^t = \delta(q^{t-1},x_{t-1})$.
+
+We can see that n-grams or nth-order Markov models are a particular class of PDFAs.  If we consider a state to be the prefix $x_1 x_2 \ldots x_{n-1}$, then given a state and a symbol $x_n$, the unique next state is $x_2 \ldots x_n$.  Thus nth-order Markov models are a subclass of PDFAs with $|\Sigma|^n$ states.
+
+\section{A Generative Model for PDFAs}
+
+We assume that $Q$, $\Sigma$ and $q_0$ are known, and define a prior over $\delta$ and $\gamma$.  We place a Dirichlet prior over every next symbol probability, and assume that each next state given a state/symbol pair is drawn from a multinomial probability for that symbol, which also has a Dirichlet prior over it.  Formally:
+
+\begin{eqnarray*}
+\phi_{s_i}  & \sim & \mathrm{Dir}\left(\frac{\alpha}{|Q|}\right), \, i = 1\ldots |\Sigma| \\
+\delta(q_j,s_i) & \sim & \mathrm{Mult}\left(\phi_{s_i}\right), \, j = 1\ldots |Q| \\
+\gamma_{q_j} & \sim & \mathrm{Dir}\left(\frac{\beta}{|\Sigma|}\right), \, j = 1\ldots |Q| \\
+\end{eqnarray*}
+
+Thanks to Multinomial-Dirichlet conjugacy we can integrate out both $\gamma$ and $\phi$ and express the probability of a sequence given a transition function as follows:
+
+\begin{eqnarray*}
+ p(x_{0:T}|\delta,\beta) & = & \int p(x_{0:T}|\gamma,\delta) p(\gamma|\beta) d\gamma \\
+ & = &  \int \prod_{j=1}^{|Q|} \frac{\Gamma(\beta)}{\Gamma(\frac{\beta}{|\Sigma|})^{|\Sigma|}} \gamma(q_j,s_1)^{\frac{\beta}{|\Sigma|}+c_{j1}-1} \gamma(q_j,s_2)^{\frac{\beta}{|\Sigma|}+c_{j2}-1} \ldots \gamma(q_j,s_{|\Sigma|})^{\frac{\beta}{|\Sigma|}+c_{j|\Sigma|}-1} \\
+ & = & \prod_{j=1}^{|Q|} \frac{\Gamma(\beta)}{\Gamma(\frac{\beta}{|\Sigma|})^{|\Sigma|}} \frac{\prod_{i=1}^{|\Sigma|}\Gamma(\frac{\beta}{|\Sigma|} + c_{ji})}{\Gamma(\beta + \sum_{i=1}^{|\Sigma|} c_{ji})}
+ \end{eqnarray*}
+ 
+ Where $c_{ji}$ is the number of times the symbol $s_i$ is emitted when in the state $q_j$.  Similarly, for a given transition matrix the probability is
+ 
+ \[ p(\delta|\alpha) = \prod_{i=1}^{|\Sigma|} \frac{\Gamma(\alpha)}{\Gamma(\frac{\alpha}{|\Sigma|})^{|\Sigma|}} \frac{\prod_{j=1}^{|Q|}\Gamma(\frac{\alpha}{|Q|} + n_{ij})}{\Gamma(\alpha + |Q|)} \]
+ 
+ Where $n_{ji}$ is the number of times the state $q_j$ follows the symbol $s_i$ and any state.  To stave off confusion, note that we count the number of times a state appears in a column of the transition matrix, not the number of times it is visited when generating the data.  From this we can construct a Gibbs sampler for the next state transition matrix.  The conditional probability of one entry in the transition matrix is given below.  We write $\delta(q_j,s_i)$ as $\delta_{ji}$ for compactness, and write the rest of the matrix as $\delta_{-ji}$ .
+ 
+ \[ p(\delta_{ji} = q_k | \delta_{-ji},x_{0:T},\alpha,\beta) \propto p(x_{0:T}|\delta_{ji}=q_k,\delta_{-ji},\beta) p(\delta_{ji}=q_k,\delta_{-ji}|\alpha) \]
+
+%The case of smoothed n-gram models is more complicated.  Smoothing works by considering more general contexts for which we have more observations.  In the case of an n-gram model, this would correspond to prefixes with fewer than $n-1$ characters.  For example, the predictive distribution given $xy$ is smoothed by the distribution given $y$, which is smoothed by the distribution given no context.  From the DFA point of view, these contexts can be seen as transient states: once we observe more than $n-1$ characters of a sequence, every prefix will be long enough to uniquely assign it to some recurrent state (In the example above, we only observe the null context at the very beginning of a string, and the context $y$ one character into a string).  Thus the way to strengthen the predictive power of learned DFAs is to smooth recurrent states by corresponding transient states.  I haven't yet figured out how to identify which transient states go with which recurrent states, but there is no reason to think it would be infeasible.  I should note, tying together states in this way would go above and beyond Causal State Splitting Reconstruction.  CSSR does not tie predictive distributions together, and simply discards transient states.
+
+%\subsection{}
+
+
+
+\end{document}  
