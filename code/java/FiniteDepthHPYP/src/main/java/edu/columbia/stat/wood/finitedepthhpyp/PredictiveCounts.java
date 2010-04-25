@@ -16,6 +16,10 @@ public class PredictiveCounts {
     public int cust;
     public int tables;
 
+    public PredictiveCounts(int as){
+        typeNum = new double[as];
+    }
+
     public void increment(int type, boolean tableAdd){
         if(tableAdd){
             typeNum[type] += 1-discount;

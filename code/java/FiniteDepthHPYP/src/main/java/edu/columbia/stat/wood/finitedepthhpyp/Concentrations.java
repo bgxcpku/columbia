@@ -46,9 +46,9 @@ public class Concentrations {
         }
     }
 
-    public boolean isConcentrationInRange() {
-        for (int i = 0; i < concentrations.length; i++) {
-            if (concentrations[i] < 0.0) {
+    public boolean concentrationInRange() {
+        for(double c:concentrations){
+            if(c < 0.0){
                 return false;
             }
         }

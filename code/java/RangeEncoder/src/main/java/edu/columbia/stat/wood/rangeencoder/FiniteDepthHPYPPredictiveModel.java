@@ -17,8 +17,9 @@ public class FiniteDepthHPYPPredictiveModel extends HPYTree implements Predictiv
         super(257,10,0);
     }
 
+    private double[] predDist = new double[257];
     public double[] cumulativeDistributionInterval(int token){
-        double[] predDist = super.getPredDist();
+        this.getPredDist(predDist);
         double low = 0.0;
         for(int i = 0; i<token; i++){
             low += predDist[i];
@@ -27,7 +28,7 @@ public class FiniteDepthHPYPPredictiveModel extends HPYTree implements Predictiv
     }
 
     public int inverseCDF(double pointOnCDF) {
-        double[] predDist = this.getPredDist();
+        this.getPredDist(predDist);
 
         double cumSum = 0.0;
         for(int i = 0; i<257; i++){

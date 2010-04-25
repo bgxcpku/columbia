@@ -31,11 +31,15 @@ public class Discounts {
     }
 
     public double get(int i) {
+        double disc = 0.0;
+        double t = .8;
         if (i < discounts.length) {
-            return discounts[i];
+            disc = discounts[i];
         } else {
-            return discounts[discounts.length - 1];
+            disc = discounts[discounts.length - 1];
+            //disc = Math.pow(discounts[discounts.length - 1],Math.pow(t,i-discounts.length));
         }
+        return disc;
     }
 
     public double getLog(int i) {
@@ -46,9 +50,9 @@ public class Discounts {
         }
     }
 
-    public boolean isDiscountInRange(){
-        for (int i = 0; i < discounts.length; i++) {
-            if (discounts[i] <= 0.0 || discounts[i] >= 1.0) {
+    public boolean discountInRange() {
+        for (double d : discounts) {
+            if (d <= 0.0 || d >= 1.0) {
                 return false;
             }
         }
