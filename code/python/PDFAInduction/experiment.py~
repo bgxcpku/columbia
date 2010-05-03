@@ -1,0 +1,13 @@
+import pdfa
+
+f.open('/Users/davidpfau/Documents/Wood Group/aiw','r')
+aiw = f.read()
+f.close()
+alphabet = {'P':0}
+seq = []
+for i in aiw:
+    if i not in alphabet.values():
+        alphabet[i] = max(alphabet.values())+1
+    seq.append(alphabet[i])
+trigram = pdfa.ngram(seq,3,1,1,1)
+results = pdfa.mh_sample(seq,100,init=trigram)
