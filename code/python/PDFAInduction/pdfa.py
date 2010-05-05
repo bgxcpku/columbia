@@ -6,7 +6,10 @@ from collections import deque
 
 def mh_sample(seq,num_samples,a,a_0,b,init=None):
 	if init == None:
-		num_symbols = max(seq) + 1
+		if type(seq[0]) == list:
+			num_symbols = max(max(subseq) for subseq in seq) + 1
+		else:
+			num_symboles = max(seq) + 1
 		old_machine = PDFA(num_symbols,a,a_0,b)
 		pdfas = []
 	else:
@@ -142,21 +145,65 @@ class PDFA:
 			state = self.next(state,symbol)
 			yield symbol
 
-	def count(self,seq,start_state=0):
-		counts = {}
-		for i in self.run(seq,start_state):
-			if i in counts:
-				counts[i] += 1
+	def count(self,seq,prior_counts=None,start_state=0):
+		if type(seq[0]) != list: # if we want to count only one sequence
+			return self.count([seq],prior_counts,start_state)
+		else:
+			if prior_counts == None:
+				counts = {}
 			else:
-				counts[i] = 1
-		return counts
+				print prior_counts
+				counts = prior_counts.copy()
+			for subseq in seq:
+				for i in self.run(subseq,start_state):
+					if i in counts:
+						counts[i] += 1
+					else:
+						counts[i] = 1
+			return counts
 
 	def score(self,counts): # Returns the log likelihood of the sequence given the PDFA.  I should double-check for the particle filter case that it's ok to average these.
 		state_counts = dict([(i,sum(counts[j] for j in counts if j[0] == i)) for i in self.m]) # the total number of times a state is visited
+		state_counts[0] = sum(counts[j] for j in counts if j[0] == 0) # since state 0 is always transient, it won't appear in self.m, so add by hand
 		return sum(lgamma(counts[x] + self.beta/self.S) - lgamma(self.beta/self.S) for x in counts) - sum(lgamma(state_counts[y] + self.beta) - lgamma(self.beta) for y in state_counts)
         
-	def scoreseq(self,seq,start_state=0):
-		return self.score(self.count(seq,start_state))
+	def particlescore(self,seq,n=1,prior_counts=None): # For n=1 gives the same answer as scoreseq.  Otherwise averages the probability of each symbol in a sequence over many particle samples
+		if type(seq[0]) != list:
+			return self.particlescore([seq],n,prior_counts)
+		else:
+			scores = []
+			for subseq in seq:
+				scores.append([0 for i in subseq])
+			for i in range(n):
+				if prior_counts == None:
+					counts = {}
+					state_counts = {}
+				else:
+					counts = prior_counts.copy()
+					state_counts = dict([(i,sum(counts[j] for j in counts if j[0] == i)) for i in self.m])
+					state_counts[0] = sum(counts[j] for j in counts if j[0] == 0)
+				old_t = self.t.copy() # since scoring the sequence will create new state/symbol pairs, keep track of the new ones and remove them
+				for j,subseq in enumerate(seq):
+					for k,pair in enumerate(self.run(subseq)):
+						state,symbol = pair
+						if pair in counts:
+       							scores[j][k] += (counts[pair] + self.beta/self.S)/(state_counts[state] + self.beta)/n
+							counts[pair] += 1
+							state_counts[state] += 1 # if this state/symbol pair has been observed, then this state has definitely been observed, no need to worry about initializing it
+						else:
+							counts[pair] = 1
+							if state in state_counts:
+								scores[j][k] += (self.beta/self.S)/(state_counts[state] + self.beta)/n
+								state_counts[state] += 1
+							else:
+								scores[j][k] += 1/float(self.S)/n
+								state_counts[state] = 1
+				map(self.removepair,[x for x in self.t if x not in old_t]) # removes added state/symbol pairs from the pdfa
+			return sum(sum(log(x) for x in y) for y in scores) # good lord this is crufty compared to the single-particle score
+
+
+	def scoreseq(self,seq,prior_counts=None,start_state=0):
+		return self.score(self.count(seq,prior_counts,start_state))
 
 def crp(rest,alpha):
        	prob = rest.copy()
@@ -181,7 +228,7 @@ def ngram(seq,n,a,a_0,b): # returns a pdfa initialized to the n-gram model for a
 	pdfa = PDFA(max(seq) + 1,a,a_0,b)
 	context = deque([])
 	state = 0
-	context_to_state = {'deque([])':0} # initialize by mapping empty context to initial state
+	context_to_state = {repr(context):0} # initialize by mapping empty context to initial state
 	for symbol in seq:
 		context.append(symbol)
 		if len(context) >= n:

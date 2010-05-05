@@ -20,7 +20,7 @@ N-gram models have had great empirical success in sequence prediction.  However,
 \section{Probabilistic Deterministic Finite Automata}
 A PDFA is formally defined as a 5-tuple $M = (Q,\Sigma,\delta,\gamma,\pi)$.  $Q$ is a finite set of states. $\Sigma$ is a finite alphabet. $\delta\,:\,Q\times\Sigma\rightarrow Q$ is the transition function from a state/symbol pair to the next state.  $\gamma\,:\,Q\times\Sigma\rightarrow[0,1]$ is the next symbol probability.  $\pi\,:\,Q\rightarrow[0,1]$ is the initial probability distribution.  For our purposes we will restrict $\pi(q)$ to be zero for all states except a special initial state, $q_0$.  By analogy to n-gram models, we can consider this the null context.  
 
-The paradoxical-sounding phrase "probabilistic deterministic" comes from the fact that generating a string of symbols is a two-stage process.  Given a state $q$, the probability that the next symbol is $s$ is given by $\gamma(q,s)$, hence "probabilistic."  We denote the multinomial distribution over symbols given a state $q$ as $\gamma_q$, so we could equivalently say $s \sim Mult(\gamma_q)$.  Given a state $q$ and a symbol $s$, however, there is a {\it unique} state $\delta(q,s)$ that follows it, hence "deterministic."  
+The paradoxical-sounding phrase "probabilistic deterministic" is due to the fact that generating a string of symbols is a two-stage process.  Given a state $q$, the probability that the next symbol is $s$ is given by $\gamma(q,s)$, hence ``probabilistic."  We denote the multinomial distribution over symbols given a state $q$ as $\gamma_q$, so we could equivalently say $s \sim \gamma_q$.  Given a state $q$ and a symbol $s$, however, there is a {\it unique} state $\delta(q,s)$ that follows it, hence ``deterministic."  
 
 The likelihood of a string $S$ given a PDFA $M$ is
 
@@ -36,8 +36,8 @@ We assume that $Q$, $\Sigma$ and $q_0$ are known, and define a prior over $\delt
 
 \begin{eqnarray*}
 \phi_{s_i}  & \sim & \mathrm{Dir}\left(\frac{\alpha}{|Q|}\right), \, i = 1\ldots |\Sigma| \\
-\delta(q_j,s_i) & \sim & \mathrm{Mult}\left(\phi_{s_i}\right), \, j = 1\ldots |Q| \\
 \gamma_{q_j} & \sim & \mathrm{Dir}\left(\frac{\beta}{|\Sigma|}\right), \, j = 1\ldots |Q| \\
+\delta(q_j,s_i) & \sim & \phi_{s_i}, \, j = 1\ldots |Q| \\
 \end{eqnarray*}
 
 Thanks to Multinomial-Dirichlet conjugacy we can integrate out both $\gamma$ and $\phi$ and express the probability of a sequence given a transition function as follows:
@@ -50,9 +50,9 @@ Thanks to Multinomial-Dirichlet conjugacy we can integrate out both $\gamma$ and
  
  Where $c_{ji}$ is the number of times the symbol $s_i$ is emitted when in the state $q_j$.  Similarly, for a given transition matrix the probability is
  
- \[ p(\delta|\alpha) = \prod_{i=1}^{|\Sigma|} \frac{\Gamma(\alpha)}{\Gamma(\frac{\alpha}{|\Sigma|})^{|\Sigma|}} \frac{\prod_{j=1}^{|Q|}\Gamma(\frac{\alpha}{|Q|} + n_{ij})}{\Gamma(\alpha + |Q|)} \]
+ \[ p(\delta|\alpha) = \prod_{i=1}^{|\Sigma|} \frac{\Gamma(\alpha)}{\Gamma(\frac{\alpha}{|Q|})^{|Q|}} \frac{\prod_{j=1}^{|Q|}\Gamma(\frac{\alpha}{|Q|} + n_{ji})}{\Gamma(\alpha + |Q|)} \]
  
- Where $n_{ji}$ is the number of times the state $q_j$ follows the symbol $s_i$ and any state.  To stave off confusion, note that we count the number of times a state appears in a column of the transition matrix, not the number of times it is visited when generating the data.  From this we can construct a Gibbs sampler for the next state transition matrix.  The conditional probability of one entry in the transition matrix is given below.  We write $\delta(q_j,s_i)$ as $\delta_{ji}$ for compactness, and write the rest of the matrix as $\delta_{-ji}$ .
+ Where $n_{ji}$ is the number of times the state $q_j$ appears in the $i$th column of the transition matrix.  Note that the counts $n_{ji}$ depend only on the transition matrix $\delta$ while the counts $c_{ji}$ depend on both $\delta$ and the data.  From this we can construct a Gibbs sampler for the next state transition matrix.  The conditional probability of one entry in the transition matrix is given below.  We write $\delta(q_j,s_i)$ as $\delta_{ji}$ for compactness, and write the rest of the matrix as $\delta_{-ji}$ .
  
  \[ p(\delta_{ji} = q_k | \delta_{-ji},x_{0:T},\alpha,\beta) \propto p(x_{0:T}|\delta_{ji}=q_k,\delta_{-ji},\beta) p(\delta_{ji}=q_k,\delta_{-ji}|\alpha) \]
 
