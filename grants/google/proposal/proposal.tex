@@ -1,0 +1,213 @@
+\documentclass[10pt]{article}
+%\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+                 % ... or a4paper or a5paper or ... 
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm]{geometry}
+\geometry{letterpaper}  
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{epstopdf}
+\usepackage{subfigure}
+\usepackage[numbers]{natbib}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+%\title{Forgetting}
+%\author{Frank Wood\\Columbia University\\Department of Statistics}
+%\date{\today}                                           % Activate to display a given date or no date
+
+\input{definitions}
+
+\begin{document}
+%\maketitle
+\begin{center} \bf \Large Scalable sequence memoization for natural language modeling and lossless compression.\end{center}
+%
+%A Step Towards Fully-Unsupervised, Life-Long, Incremental Learning
+
+%Exploring the marriage of massive data to unsupervised, deep hierarchical nonparametric Bayesian learners.
+%\section{Principle Investigators}
+%
+\begin{center}
+\begin{tabular}{llll}
+{\bf PI }& Frank Wood, Ph.D. &{\bf Position }& Assistant Professor\\
+{\bf Co-PI}& David Madigan, Ph.D. &{\bf Position  }& Professor\\
+{\bf Address} & Room 1005 SSW, MC 4690 & {\bf University} & Columbia University \\
+&1255 Amsterdam Avenue & {\bf Department }& Statistics \\
+&New York, NY 10027 \\
+ {\bf Phone} & 212.851.2132& {\bf Fax} & 212.851.2164 \\
+ {\bf Websites} &{http://www.stat.columbia.edu/$\sim$fwood}\\
+ & \multicolumn{2}{l}{http://www.stat.columbia.edu/$\sim$madigan}
+\end{tabular}
+\end{center}
+
+%\subsection{Abstract}
+\begin{quote}
+\begin{center}
+\bf Abstract
+\end{center}
+ We propose to develop and demonstrate scalable inference software for a Bayesian nonparametric (BNP) natural language model called the sequence memoizer (SM) \citep{Wood2009}.  We propose to use this software to train a SM using the trillion word Google text corpus and to empirically study the effect of taking into account long-range textual dependencies on language model performance as the amount of training data grows.   We also propose to develop a latent variable extension of the SM and demonstrate scalable inference in the same.  We propose to demonstrate
+both models and algorithms in two ways, general purpose lossless
+compression and $n$-gram natural language model performance.
+
+%\vspace{-.05cm}
+{\bf Keywords :} Bayesian nonparametric inference,  $n$-gram natural language modeling, sequence memoizer
+
+\vspace{-.1cm}
+{\bf Research Areas :} language modeling, machine translation, automated speech recognition, compression
+\end{quote}
+%\subsection{Goals}
+
+\noindent {\bf Goals } 
+\begin{itemize}
+\item Develop a freely available, downloadable software development kit (SDK) that contains a scalable implementation of a constant space, linear time SM language model that demonstrably scales to sequences that are billions to trillions of tokens long.
+\item Empirically explore the impact of being able to probabilistically model and exploit long contextual dependencies given Google-scale corpora on language model perplexity and compressor log-loss.
+%\item Define an extension to the sequence memoizer by combining it with a latent variable process.%for instance, the infinite hierarchical Markov model \citep{Heller2009} or latent Dirichlet allocation \citep{Blei2003}.
+%\item Develop scalable incremental estimation procedures for the combined model.
+\end{itemize}
+
+\noindent {\bf Expected Outcomes } 
+\begin{itemize}
+\item The primary result of this project will be the establishment of compelling evidence that supports the practicality and usefulness of Bayesian nonparametric language models for large scale commercial applications including machine translation, automated speech detection, and general purpose lossless compression.
+\item We will develop a SM SDK that will be downloaded and used by researchers in a wide-variety of industrial and academic fields.
+\item We will contribute to the state of the art in Bayesian nonparametric modeling by developing an latent variable extension to the SM.
+%\item We anticipate improving on the language model and compression performance of the sequence memoizer by extending the model to include a latent variable process.
+%\item Define an extension to the sequence memoizer by combining it with a latent variable process.%for instance, the infinite hierarchical Markov model \citep{Heller2009} or latent Dirichlet allocation \citep{Blei2003}.
+%\item Develop scalable incremental estimation procedures for the combined model.
+\end{itemize}
+
+\noindent{\bf \large Big Picture}
+\vspace{.2cm}
+
+Traditional parametric statistical tools and methods are designed to allow
+inference about a population from a small sample.
+While this parametric style of inference will always have a place, it is now the
+case that one often has access to so much data that parametric models
+themselves are sometimes not even necessary.  In other words, for some problems one can do strict nonparametric inference; i.e.~one can query
+the data directly.  While such a nonparametric approach has attractive characteristics and  for some problems is feasible to consider, particularly given Google-scale data, we suggest that there are stochastic processes of sufficient complexity (e.g.~natural language generators) that strictly nonparametric approaches to estimation and inference (e.g.~non-smoothed $n$-gram language models) are bound to fail.  To attack these kinds of problems, we advocate and actively pursue computationally practical ways to estimate and perform inference in Bayesian nonparametric (BNP) models.   BNP models are nonparametric in nature, which gives them inferential capacity that can be understood to grow as a function of the amount of training data. Contrast this to parametric models in which inference is limited to inference through and about a finite set of parameters.   In parametric models as the amount of data grows, posterior uncertainty about the value of the parameters will vanish given sufficient data, rendering the inclusion of additional data irrelevant.  This is not true for BNP models, making them ideal for inference in the modern regime of continually growing data.  BNP models are are also Bayesian in nature which allows for hierarchical Bayesian-style regularization and incremental Bayesian-style inference and estimation.  For small scale data on the order of millions of observations, BNP natural language models and lossless compressors we have recently been shown to exhibit excellent empirical characteristics \citep{Teh2006a,Wood2009,Gasthaus2010}.  Unfortunately BNP models in general have been saddled with an unfortunate stigma, namely that they are as a class uniformly computationally complex. We suspect that this stigma is at least partially responsible for holding back wide adoption of BNP methods.   The work outlined in this proposal aims to chip away at this stigma by providing concrete evidence that at least one member of this class of BNP models scales well.
+
+\vspace{.2cm}
+\noindent{\bf \large Scaling the Sequence Memoizer}
+\vspace{.2cm}
+
+In recent work we established a rather surprising result: for non-antagonistically generated discrete sequence data (natural language token sequences, bytes, bits, etc.), we found that it was possible to estimate  the SM in the same asymptotic space and time as is required to estimate a smoothing $5$-gram model \citep{Wood2009} (\figref{fig1a}).  One way to understand the SM is as a Bayesian smoothing $n$-gram model in the limit of $n$ taken to infinity.  This means that the SM is capable of modeling long-range dependencies in discrete sequence data as opposed to finite-order Markov models which cannot.  What is more, in related work, we uncovered empirical evidence that supports Shannon's assertion \citep{Shannon1951} that long range dependencies in written language do exist and are significant up to and potentially extend beyond hundreds of characters \cite{Gasthaus2010} (related evidence for this can also be seen in \figref{fig1b}).  
+\begin{figure}[htbp]
+\begin{center}
+\subfigure[]{
+\includegraphics[trim = 0mm 60mm 00mm 60mm, clip, width=.4\textwidth]{fig1b.pdf}
+\label{fig1a}
+}
+\hspace{1.5cm}
+\subfigure[]{
+\includegraphics[width=.4\textwidth]{fig1.pdf}
+\label{fig1b}
+}
+\caption{(a)  Memory complexity and estimation computational cost (in units of graphical model ``nodes'') versus $n$ of $n$-gram for the SM and a smoothing $n$-gram model.  There is one pair of lines for each of 5 different observation sequence lengths.  The horizontal dotted lines are the SM computational requirements.  The quadratic solid lines are the computational requirements the  smoothing $n$-gram models.  The SM always uses all contextual information when performing predictive inference.  The $n$-gram model discards contextual observations more distant than $n-1$.  None-the-less (a) shows that the computational complexity of each standard $n$-gram model exceeds that of a sequence memoizer trained on the same data for all $n>5$ and for all training observation sequence lengths.  This suggests that the sequence memoizer should be considered as an alternative to $n$-gram language modeling if long-range contextual dependencies matter.  The data used in this experiment was an excerpt of the New York times corpus.  (b)  Held-out test perplexity for two language models trained on growing excerpts of the Associated Press news corpus.  5-gram is a hierarchical Pitman-Yor process language model (a generalization of a Kneser Ney smoothed 5-gram model).  SM is the sequence memoizer.  Training sequence length ranges from 2-12 million tokens which we believe to be too small to characterize the benefit of being able to model and use long range dependencies.  Regardless, (b) suggests that held-out perplexity under the SM seems to improve relative to the smoothed $n$-gram model as more data is introduced into the model.  We conjecture that this is due to increasing prevalence of meaningful long contexts.  Experiments such as those proposed herein on larger corpora would establish the veracity of this conjecture.  Both of these figures were taken from \cite{Wood2009}.}
+\label{default}
+\end{center}
+\end{figure}
+
+We have already begun to demonstrate the practical utility of the SM, and in particular the benefits it extends beyond fixed, finite-depth $n$-gram models.  Various studies have found evidence of improvements to natural language models for automated speech recognition and machine translation, better encoding models for lossless compressors, and so forth.  These benefits seem to accrue from by being able to model and use the extra information that longer contexts provide, but much more experimentation is required to verify this observation.  We feel that an important scientific question remains unanswered: what happens to the importance of long-range contextual information as the amount of training data is increased?  Our intuition suggests that long-range dependencies will become more valuable, and the advantage of the SM relative to $n$-gram language models will grow, but currently the answer to this question remains unknown.   Further, the software and hardware infrastructure needed to answer this question do not currently exist.  One of the main purposes of this proposal is to start to address this question.
+
+We have taken several theoretical and practical steps beyond the initial version of the SM; incremental estimation of the SM and the coupling of it to an entropy coder resulted in a highly competitive general purpose lossless compressor (significantly better than, for instance, gzip and bzip2) that scaled sufficiently to encode and compress a 100MB wikipedia corpus (1.6 bits / byte) \citep{Gasthaus2010}.  Following on that work, we have taken steps towards the development of a constant space, linear time approach to estimation of a class of models that includes the SM  \citep{Bartlett2010}.  This work  opens up for the first the possibility of performing experiments on large scale sequence data including the tera-word Google corpus.   No one knows what will happen when a powerful NPB language model such as the SM is trained on orders of magnitude more data than ever before.  Most of the engineering work necessary to achieve the asymptotic complexity results established in \citep{Bartlett2010} (constant space storage, linear time estimation, constant time inference) remains to be done, but we know it can be.  This means that many of the most interesting questions about the value of long-range contextual dependencies and the inferential power of BNP language models finally have a chance to be answered.
+
+%In the course of pursuing this line of research, several pressing questions have emerged, the answers to which both have significant practical and theoretical importance.  We propose to answer these questions over the course of this project.
+
+\comment{
+\vspace{.2cm}
+\noindent{\bf \large Sequence Memoizer}
+\vspace{.2cm}
+
+The SM \citep{Wood2009} consists of a hierarchical Bayesian nonparametric \citep{Teh2006a} prior
+composed of Pitman-Yor processes married to efficient methods for representing and doing Bayesian inference in the resulting model. 
+\def\GG{\mathcal{G}} The sequence memoizer describes the conditional probability of each
+symbol $s$ following each context $\ubf$ using a latent variable $G_\ubf(s).$  Each symbol $s$ is a member of a set of symbols $\Sigma$.  
+Collecting the natural set of such variables into a vector, $G_\ubf=[G_\ubf(s)]_{s\in\Sigma}$ results in $G_\ubf$ being a
+probability vector (non-negative entries summing to one).   There is one such distribution for every context $\ubf$.    The full
+(infinite) set of latent variables in the model (all the nodes in an infinitely deep tree) is denoted by
+$\GG=\{G_\ubf\}_{\ubf\in\Sigma^*}$.  
+
+
+
+
+The joint\footnote{Recall that a joint distribution can always be factored into the product of conditional distributions of increasing context, i.e.~$P(x_1,\ldots,x_i|\theta) = P(x_1|\theta) P(x_2 | x_1, \theta) P(x_3 | x_1,x_2, \theta) \cdots P(x_i | \xbf_{1:(i-1)}, \theta)$} probability of $\xbf$ and $\GG$
+is simply:
+\begin{align}
+P(\xbf,\GG) = P(\GG)\prod_{i=0}^{|\xbf|-1}G_{\xbf_{1:i}}(\xbf_{i+1})
+\end{align}
+where the rightmost term is the probability of each symbol conditioned on the sequence thus far, and $P(\GG)$ is the prior over the variables.  Bayesian inference is possible in this model and means that one can integrate out $\GG$ (by sequential importance sampling and Monte Carlo integration for instance), to get a marginal joint distribution $P(\xbf)$ over the sequence from which the various predictive distributions of interest can straightforwardly be derived.  
+%Section \ref{sec:inference} describes how the algorithm in Section \ref{algorithm} is an approximation of this ideal Bayesian approach.
+
+The prior used in the SM over the infinite set $\GG=\{G_\ubf\}_{\ubf\in\Sigma^*}$ of probability vectors is based on a hierarchical Bayesian model consisting of Pitman Yor processes.
+\comment{\footnote{
+In this paper we exclusively refer to a simplified Pitman-Yor process.  The Pitman-Yor process (PYP) \citep{Pitman1997}, denoted $\py(d,H)$, is a
+distribution over probability vectors.   
+It is parameterized by a \emph{discount parameter} $d \in (0,1)$ and a
+probability vector $H$ called the \emph{base vector}.  If $G\sim\py(d,H)$ is a
+Pitman-Yor distributed random probability vector, then the base vector is
+simply its mean $\text{E}[G(s)]=H(s)$ while the discount parameter is related
+to its variance $\text{Var}[G(s)]=(1-d)H(s)(1-H(s))$, for each $s\in\Sigma$.}}
+%
+%The sequence memoizer \citep{wood2009sms} is an extension of the general HPYP
+%model described above to context of unbounded length, i.e. $\ubf$ is not
+%restricted to maximum length, leading to a context tree of unbounded depth. 
+%In order to make inference in such a model feasible through marginalization
+%(described in the next paragraph), the parameter space of
+%the PYP has to be restricted to $\alpha=0$. 
+Succinctly, we can notate the SM prior as follows:
+\begin{subequations}
+        \label{eqn:sm_prior}
+        \begin{align}
+            G_{\varepsilon} \mid d_0,H\quad &\sim \quad\py(d_0,H) \label{eq:m1} &\\
+            G_{\ubf} \mid d_{|\ubf|},G_{\suffix(\ubf)} \quad
+            &\sim \quad \py(d_{|\ubf|},G_{\suffix(\ubf)})  & \forall \ubf \in
+            \Sigma^+ \label{eq:m2}\\
+            x_i \mid \xbf_{1:i-1}=\ubf \quad &\sim\quad  G_{[\ubf]} 
+            &  
+            i=1,\ldots,T \label{eq:m3}
+        \end{align}
+\end{subequations}
+\noindent where $H$ is a base probability distribution vector (in the following assumed to be
+uniform over a finite vocabulary) and $d_{|\ubf|}$ are PYP parameters.
+%The SM model is a hierarchical prior placed on the set of distributions
+%$\{G_{[\ubf]}\}_{\ubf \in \Sigma^{*}}$, where $G_{[\ubf]}(v)$  corresponds
+%to the probability of symbol $v \in \Sigma$ following the context $\ubf$.
+%The structure of the model is an unbounded-depth tree, with each node indexed by a context $\ubf\in\Sigma^*$, labelled by the probability vector $G_\ubf$, and with parent given by $\sigma(\ubf)$.   %A binary sequence memoizer model is shown in Fig.~\ref{fig: gm_binary_complete}.
+}
+\comment{
+\section{Expected Outcomes and Results}
+
+\begin{itemize}
+\item A scalable implementation of the sequence memoizer that researchers in the community can download and use in their own work.  (a webpage and link to sequence memoizer source code and/or library)
+\item A publication relating implementation details and baseline perplexity (language modeling) and log loss (compression) results for sequence memoizers trained using Google-scale data 
+\item latent variable extension (combining the sequence memoizer with, for instance, the infinite hierarchical Markov model \citep{Heller2009} or latent Dirichlet allocation \citep{Blei2003}, and develop scalable incremental estimation procedures for the combination.
+\end{itemize}
+}
+\vspace{.2cm}
+\noindent{\bf \large Budget}
+\vspace{.2cm}\input{budget}
+
+\vspace{.2cm}
+\noindent{\bf \large Google Contacts}
+\vspace{.2cm}
+
+The following Google researchers are personally familiar with one or more of the PI's on this proposal.  No specific technical sponsor for this work has yet been selected.
+
+\begin{center}
+\begin{tabular}{ccccc}
+Thomas Hoffman & Tom Dean & Daryl Pregibon &
+Diane Lambert &
+Steven Scott\\
+\end{tabular}
+\end{center}
+
+
+
+%\subsection{}
+
+%\section{References}
+\small
+\bibliography{../../../papers/uber.bib}
+\bibliographystyle{apalike}
+
+\end{document}  
