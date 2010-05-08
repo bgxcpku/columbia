@@ -4,6 +4,8 @@
  */
 package edu.columbia.stat.wood.finitedepthhpyp;
 
+import java.util.Arrays;
+
 /**
  *
  * @author nicholasbartlett
@@ -185,7 +187,7 @@ public class SamplingRestaurant extends Restaurant {
     }
 */
     public void fillPredictiveCounts(double d, double c, PredictiveCounts pc){
-        
+        Arrays.fill(pc.typeNum, 0.0);
         pc.discount = d;
         pc.concentration = c;
         
