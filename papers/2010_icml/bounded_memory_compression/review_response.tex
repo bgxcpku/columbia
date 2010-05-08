@@ -1,0 +1,25 @@
+\documentclass[11pt]{amsart}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{epstopdf}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\begin{document}
+
+Thank you for your thoughtful and insightful reviews.
+
+Our approach to constant space inference in hierarchical Pitman-Yor process models can be, as noted by the first reviewer, seen as approximate inference in a dependent model.  We have chosen to not focus on the generative model in this work, choosing instead to focus on the pragmatic consequences of bounding the amount of memory the inference procedure can use.  This constraint does induce dependence (as noted).  The question of treating the memory capacity itself as a latent variable is interesting but orthogonal to the objective of this work.  We will modify the paper to be clearer about the ``direction'' of our motivation, namely, of bounded memory inference implying dependence rather than the other way around.  This said, we believe that it is an important novelty of this work to look at bounded memory inference in this way.  We will also be clearer in describing the fact that, as noted by the first reviewer, in order for inference to be exact, we would have to be extremely lucky to find ourselves modeling a process that does, indeed, shift its generative mechanism exactly at the times at which we forget and exactly in the manner in which we forget.  This is admittedly unlikely to ever be the case, but the empirical results suggest that the penalty we pay is not too great for our approach to be practically useful.
+
+
+%To fully characterize our approach to constant space inference in hierarchical Pitman-Yor process models as approximate inference in a dependent model one would need to know a priori that the generative mechanism is evolving every time the memory capacity is exceeded.  We prefer to see the exposition as a way of examining the implications of the proposed approximate inference scheme.  We can add a few clarifying sentences in this regard.  The idea of a latent memory capacity is not one we considered as it is tangential to the task of creating a memory bounded inference engine.  Examining models of this type may be interesting, but is likely not useful in a memory constrained setting.
+
+In the paper there are two methods proposed to delete leaf restaurants, ``random deletion" and ``greedy deletion", results of which are shown in Figure 4.  The greedy deletion method is outlined in the paper but we will, as suggested, expand our description of it.   For the purposes of responding to your questions directly, the greedy deletion method works by estimating the probability of observing the training sequence given the state of the model with and without each leaf restaurants (this can and is done incrementally).  The restaurant whose deletion leads to the smallest loss in the probability of the observed sequence is chosen for deletion. 
+
+We are working to extend this framework to estimation in other Bayesian nonparametric models.
+
+
+\end{document}
