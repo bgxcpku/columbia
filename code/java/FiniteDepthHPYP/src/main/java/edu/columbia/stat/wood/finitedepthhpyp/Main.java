@@ -23,9 +23,8 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws FileNotFoundException, IOException {
-        File f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/mouse/trans_mouse_dna.txt");
-        System.out.println(f.length());
-        System.out.println(Main.scoreData(Main.trainAndScore(f),f));
+        File f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/alice_in_wonderland/AliceInWonderland.txt");
+        Main.trainAndScore(f);
     }
 
     private static void updateContext(int obs, int depth){
