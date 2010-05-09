@@ -24,6 +24,12 @@ The odd-sounding ``probabilistic deterministic" refers to the fact that a string
 
 We can see that n-grams or nth-order Markov models are a particular class of PDFAs.  If we consider a state to be the prefix $x_1 x_2 \ldots x_{n-1}$, then given a state and a symbol $x_n$, the unique next state is $x_2 \ldots x_n$.  Thus nth-order Markov models are a subclass of PDFAs with $|\Sigma|^n$ states.
 
+PDFAs themselves are a subclass of hidden Markov models (HMMs).  Specifically, they are the class of HMMs for which, given a sequence of observed data, there is only one possible path through the hidden states.  Our approach to inference, taking posterior samples over the space of models, while forcing the path through these models to be deterministic, can be seen as an extreme case of the tradeoff inherent in most model learning.  Normally, one has to estimate both the model and the parameters of the model, but in this case all of the uncertainty is shifted onto the model itself.
+
+\section{Previous Work}
+
+The algorithm presented here is, to our knowledge, the first algorithm to properly sample from a posterior distribution over PDFAs.  Prior work has focused on greedy algorithms, which work by either merging or splitting elements of $Q$ according to some deterministic criterion.
+
 \section{A Generative Model for PDFAs}
 
 We assume that $Q$, $\Sigma$ and $q_0$ are known, and define a prior over $\delta$ and $\pi$.  We place a Dirichlet prior over every next symbol probability, and assume that each next state given a state/symbol pair is drawn from a multinomial probability for that symbol, which also has a Dirichlet prior over it.  Formally:
@@ -80,7 +86,7 @@ Samples from the CRF are exchangeable, so we can remove $\delta_{ij}$ and propos
 
 \[ \alpha(\delta_{ij},\delta_{ij}^*) =  \mathrm{min}\left(1,\frac{p(x_{0:T}|\delta_{ij}^*,\delta_{-ij}^T)}{p(x_{0:T}|\delta_{ij},\delta_{-ij}^T)}\right)\]
 
-In general the numerator cannot be evaluated because changing $\delta_{ij}$ means changing the entire sequence of states visited by the data after $\delta_{ij}$ is first visited.  In practice we estimate the numerator by Monte Carlo approximation, sampling elements of $\delta$ as they are first visited by the data.
+In general the numerator cannot be evaluated because changing $\delta_{ij}$ means changing the entire sequence of states visited by the data after $\delta_{ij}$ is first visited.  In practice we estimate the numerator by Monte Carlo approximation, sampling elements of $\delta$ according to the CRF as they are first visited by the data.  Changing one element of $\delta$ means many already-sampled state/symbol pairs may never be visited by the data, and have no effect on the likelihood.  The posterior probability of any value for these elements of $\delta$ is the same as the prior, and therefore we may remove them from $\delta^T$ after accepting a new $\delta_{ij}$.
  
  %Similarly, for a given transition matrix the probability is
  
