@@ -57,7 +57,6 @@ public class OnlineRestaurant extends Restaurant {
             int typeCust = 0;
             int typeTables = 0;
 
-            int cust = 0;
             int tables = 0;
 
             for (int tIndex = 0; tIndex < state.length; tIndex++) {
@@ -66,7 +65,6 @@ public class OnlineRestaurant extends Restaurant {
                     typeTables = state[tIndex][2];
                     typeIndex = tIndex;
                 }
-                cust += state[tIndex][1];
                 tables += state[tIndex][2];
             }
 
@@ -111,10 +109,12 @@ public class OnlineRestaurant extends Restaurant {
 
     @Override
     public void fillPredictiveCounts(double discount, double concentration, PredictiveCounts pc) {
+        Arrays.fill(pc.typeNum, 0.0);
+        
         int cust = 0;
         int tables = 0;
         for (int tIndex = 0; tIndex < state.length; tIndex++) {
-            pc.typeNum[state[tIndex][0]] = state[tIndex][1] - discount * state[tIndex][2];
+            pc.typeNum[state[tIndex][0]] = (double) state[tIndex][1] - discount * state[tIndex][2];
             cust += state[tIndex][1];
             tables += state[tIndex][2];
         }
@@ -147,7 +147,5 @@ public class OnlineRestaurant extends Restaurant {
         r.printState();
         r.insertStateRow(3);
         r.printState();
-
-
     }
 }

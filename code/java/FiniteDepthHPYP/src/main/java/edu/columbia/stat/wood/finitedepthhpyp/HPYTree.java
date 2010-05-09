@@ -15,11 +15,12 @@ public class HPYTree {
 
     private int alphabetSize;
     private Restaurant contextFreeRestaurant;
-    public Discounts discounts;
+    private Discounts discounts;
     private Concentrations concentrations;
     private int[] context = new int[0];
     private double logLoss = 0.0;
     private int depth;
+    
     public static Random RNG;
 
     public HPYTree(int alphabetSize, int depth, int seed) {
@@ -28,42 +29,31 @@ public class HPYTree {
         Restaurant.numberRest = 0;
         discounts = new Discounts(new double[]{0.05, 0.7, 0.8, 0.82, 0.84, 0.88, 0.91, 0.92, 0.93, 0.94, 0.95});
         concentrations = new Concentrations();
-        //contextFreeRestaurant = new SamplingRestaurant(null);
-        contextFreeRestaurant = new OnlineRestaurant(null);
+        contextFreeRestaurant = new SamplingRestaurant(null);
         RNG = new Random(seed);
     }
 
-    public double continueSequence(int observation) {
-        return this.continueSequence(observation, observation);
+    public int getDepth(){
+        return depth;
     }
 
-    public double continueSequence(int observation, int contextUpdate) {
-        this.seatToken(contextFreeRestaurant, observation, context.length - 1, 1.0 / alphabetSize, 0);
+    public double continueSequence(int observation) {
+        this.seatToken(contextFreeRestaurant, observation, context, context.length - 1, 1.0 / alphabetSize, 0);
 
-        //update context
-        if (context.length < depth) {
-            int[] newContext;
-            newContext = new int[context.length + 1];
-            System.arraycopy(context, 0, newContext, 0, context.length);
-            newContext[context.length] = observation;
-            context = newContext;
-        } else {
-            for (int i = 0; i < (context.length - 1); i++) {
-                context[i] = context[i + 1];
-            }
-            context[context.length - 1] = contextUpdate;
-        }
+        this.updateContext(observation);
 
-        //step gradient
         discounts.stepGradient(0.0001, Math.exp(logLoss));
         //discounts.clearGradient();
 
-        //return the logLoss for the seated observation;
         return logLoss;
     }
 
+    public void addToken(int observation, int[] cntxt){
+        this.seatToken(contextFreeRestaurant, observation, cntxt, cntxt.length-1, 1.0 / alphabetSize, 0);
+    }
+
     private int[] restCounts = new int[4];
-    private Restaurant seatToken(Restaurant rest, int token, int contextIndex, double probUpper, int depth) {
+    private Restaurant seatToken(Restaurant rest, int token, int[] cntxt, int contextIndex, double probUpper, int depth) {
         //get predictive counts in restaurant as well as restaurant discount and concentration
         rest.getRestCounts(token, restCounts);
         double restDiscount = discounts.get(depth);
@@ -73,7 +63,7 @@ public class HPYTree {
         double prob;
         double totalWeight = restCounts[2] + restConcentration;
         if (restCounts[3] > 0) {
-            prob = 1.0 * (restCounts[0] - restCounts[1] * restDiscount) / totalWeight +
+            prob = 1.0* (restCounts[0] - restCounts[1] * restDiscount) / totalWeight +
                     (restDiscount * restCounts[3] + restConcentration) * probUpper / totalWeight;
         } else {
             prob = probUpper;
@@ -95,24 +85,24 @@ public class HPYTree {
         }
 
         //if not leaf node then find childRest
-        Integer childKey = new Integer(context[contextIndex]);
+        Integer childKey = new Integer(cntxt[contextIndex]);
         Restaurant childRest = rest.get(childKey);
 
         //if no children in the direction of this obs will need to create one
         if (childRest == null) {
-            //childRest = new SamplingRestaurant(rest);
-            childRest = new OnlineRestaurant(rest);
+            childRest = new SamplingRestaurant(rest);
+            //childRest = new OnlineRestaurant(rest);
             rest.put(childKey, childRest);
         }
 
-        if (this.seatToken(childRest, token, --contextIndex, prob, ++depth) != null) {
+        if (this.seatToken(childRest, token,cntxt, --contextIndex, prob, ++depth) != null) {
             return rest.sitAtRest(token, probUpper, restDiscount, restConcentration);
         } else {
             return null;
         }
     }
 
-    public void getPredDist(double[] predDist) {
+    public void getPredDist(double[] predDist, int[] cntxt) {
         assert(predDist.length == alphabetSize);
 
         Arrays.fill(predDist, 1.0 / alphabetSize);
@@ -128,10 +118,14 @@ public class HPYTree {
             predDist[j] += 1.0 * pc.typeNum[j] / (pc.concentration + pc.cust);
         }
 
+        if(cntxt == null){
+            return;
+        }
+
         Restaurant currentRest = contextFreeRestaurant;
         int d = 1;
-        for (int i = 0; i < context.length; i++) {
-            currentRest = currentRest.get(new Integer(context[context.length - 1 - i]));
+        for (int i = 0; i < cntxt.length; i++) {
+            currentRest = currentRest.get(new Integer(cntxt[cntxt.length - 1 - i]));
 
             if (currentRest == null) {
                 break;
@@ -141,17 +135,29 @@ public class HPYTree {
 
             for (int j = 0; j < alphabetSize; j++) {
                 predDist[j] *= 1.0 * (pc.tables * pc.discount + pc.concentration) / (pc.concentration + pc.cust);
-                predDist[j] += 1.0 * pc.typeNum[j] / (pc.concentration + pc.cust);
+                predDist[j] += pc.typeNum[j] / (pc.concentration + pc.cust);
             }
             d++;
         }
     }
+
+    private void updateContext(int obs){
+        if(context == null){
+            context = new int[]{obs};
+        } else if(context.length<depth){
+            int[] newContext = new int[context.length + 1];
+            System.arraycopy(context, 0, newContext, 0, context.length);
+            newContext[context.length] = obs;
+            context = newContext;
+        } else {
+            for(int i = 0; i< depth -1; i++){
+                context[i] = context[i + 1];
+            }
+            context[depth-1] = obs;
+        }
+    }
     
 /*
-    public double[] getPredDist(int[] cont) {
-        this.context = cont;
-        return this.getPredDist();
-    }
 
     public double getLogLik() {
         double logLik = 0.0;
@@ -256,7 +262,7 @@ public class HPYTree {
 
         return logLik;
     }
-*/
+
     
     /*
     public double[] sampleDiscounts() {
