@@ -8,10 +8,10 @@ The Pitman-Yor process is a generalization of the Dirichlet process with three p
 %
 \begin{eqnarray*}
 \G | d,c,\G_0 &\sim& \PY(d,c,\G_0)\\
-\theta_i | \G &\sim& \G  \hspace{.5cm} i = 1, \dots, N
+\theta_i | \G &\sim& \G,  \hspace{.5cm} i = 1, \dots, N
 \end{eqnarray*}
 %
-It is possible to work in a representation where the random distribution $\G$ is analytically marginalized out.  One can draw samples $\{ \theta_j \}_{j = 1}^N$ in this representation using a two step process.  The first step produces a partition of the first $N$ integers which follows the two parameter Ewen's sampling distribution ($\ES_N(d,c)$) \cite{Ewens1995}.  The second step assigns to each of the $K$ segments of the partition a parameter $\psi_k$ drawn independently from $\G_0$.  We set $\theta_j = \psi_k$ for all integers $j$ in segment $k$ of the partition \cite{Blackwell1973}.
+It is possible to work in a representation where the random distribution $\G$ is analytically marginalized out.  One can draw samples $\{ \theta_j \}_{j = 1}^N$ in this representation using a two step process.  The first step produces a partition of the first $N$ integers which follows the two parameter Ewen's sampling distribution $\ES_N(d,c)$ \cite{Ewens1995}.  The second step assigns to each of the $K$ segments of the partition a parameter $\psi_k$ drawn independently from $\G_0$.  We set $\theta_j = \psi_k$ for all integers $j$ in segment $k$ of the partition \cite{Blackwell1973}.
 
 Samples can be drawn from the Ewen's sampling distribution using the Chinese Restaurant Process (CRP).  Since the connection between the CRP and the Ewen's sampling distribution is essential to developments later in the paper we describe here the CRP in detail. We imagine seating customers in a restaurant with an infinite number of tables. The first customer sits down at an empty table.  Customers $2, \dots ,N$ are seated sequentially by seating the $j^{\mathrm{th}}$ customer at a table drawn from the following distribution:
 %
@@ -24,14 +24,13 @@ p(\textrm{unoccupied table} | \textrm{ previous}) &=& \frac{t_{j-1}d +c}{j-1+c}
 %
 where $n_i$ is the number of customers already sitting at table $i$, $t_{j-1}$ is the number of tables occupied by the first $j-1$ customers, and previous refers to the seating arrangement of the first $j-1$ customers.  The final seating arrangement in the restaurant defines a partition of the first $N$ integers which follows the $\ES_N(d,c)$ distribution \cite{Pitman1995}.  To complete the process of generating a sample $\{ \theta_j \}_{j = 1}^N$ we must endow each occupied table in the restaurant with a parameter $\psi_k$ drawn independently from $\G_0$.  We set $\theta_j = \psi_k$ if customer $j$ is sitting at table $k$.
 
-
 \subsection{Hierarchical Pitman-Yor Process}
 
 %Recent research has produced a spate of new hierarchical models using the Pitman-Yor process \cite{Teh2006b} \cite{Teh2006a}.  
 An example hierarchical Pitman-Yor process is 
 %
 \begin{eqnarray*}
-\G_1|d_1, c_1, \G_0 &\sim& \PY(c_1,c_1,\G_0)\\
+\G_1|d_1, c_1, \G_0 &\sim& \PY(d_1,c_1,\G_0)\\
 \G_2 | d_2, c_2, \G_1 &\sim& \PY(d_2,c_2, \G_1)\\
 \theta_i | \G_2 &\sim& \G_2 \hspace{.5cm} i = 1,\dots, N.
 \end{eqnarray*}
