@@ -112,9 +112,13 @@ class PDFA:
 	def removepair(self,pair):
 		self.remove(pair[0],pair[1])
 
-	def next(self,state,symbol):
+	def next(self,state,symbol,new_state=False): # if we wish to always create a new state for a new state/symbol pair (rather than having some chance of transitioning to an existing state) set the flag new_state=True
+		if new_state == True:
+			next_state = gensym(self.m)
+		else:
+			next_state = None
 		if (state,symbol) not in self.t:
-			self.add(state,symbol)
+			self.add(state,symbol,next_state)
 		return self.k[symbol][self.t[(state,symbol)]]
 
 	def run(self,seq,start_state=0): # returns a generator that iterates over the states the machine traverses given a sequence (creating new states as need be)
@@ -145,6 +149,11 @@ class PDFA:
 			state = self.next(state,symbol)
 			yield symbol
 
+	def state(self,seq,start_state=0): # returns the state at which the machine ends given the input seq
+		for state,symbol in self.run(seq,start_state):
+			pass
+		return state
+
 	def count(self,seq,prior_counts=None,start_state=0):
 		if type(seq[0]) != list: # if we want to count only one sequence
 			return self.count([seq],prior_counts,start_state)
@@ -167,9 +176,9 @@ class PDFA:
 		state_counts[0] = sum(counts[j] for j in counts if j[0] == 0) # since state 0 is always transient, it won't appear in self.m, so add by hand
 		return sum(lgamma(counts[x] + self.beta/self.S) - lgamma(self.beta/self.S) for x in counts) - sum(lgamma(state_counts[y] + self.beta) - lgamma(self.beta) for y in state_counts)
         
-	def particlescore(self,seq,n=1,prior_counts=None): # For n=1 gives the same answer as scoreseq.  Otherwise averages the probability of each symbol in a sequence over many particle samples
+	def particlescore(self,seq,n=1,prior_counts=None,start_state=0): # For n=1 gives the same answer as scoreseq.  Otherwise averages the probability of each symbol in a sequence over many particle samples
 		if type(seq[0]) != list:
-			return self.particlescore([seq],n,prior_counts)
+			return self.particlescore([seq],n,prior_counts,start_state)
 		else:
 			scores = []
 			for subseq in seq:
@@ -184,7 +193,7 @@ class PDFA:
 					state_counts[0] = sum(counts[j] for j in counts if j[0] == 0)
 				old_t = self.t.copy() # since scoring the sequence will create new state/symbol pairs, keep track of the new ones and remove them
 				for j,subseq in enumerate(seq):
-					for k,pair in enumerate(self.run(subseq)):
+					for k,pair in enumerate(self.run(subseq,start_state)):
 						state,symbol = pair
 						if pair in counts:
        							scores[j][k] += (counts[pair] + self.beta/self.S)/(state_counts[state] + self.beta)/n
@@ -205,6 +214,35 @@ class PDFA:
 	def scoreseq(self,seq,prior_counts=None,start_state=0):
 		return self.score(self.count(seq,prior_counts,start_state))
 
+	def merge(self,seq,state1,state2): # use this one with care! only guaranteed to properly merge if seq visits all state/symbol pairs
+		if state2 == 0 and state1 != 0:
+			self.merge(seq,state2,state1)
+		elif type(seq[0]) != list:
+			self.merge([seq],state1,state2)
+		else:
+			history = [[x for x,y in self.run(subseq)] for subseq in seq]
+			self.determinize(seq,history,[state1],[state2])
+	
+	def determinize(self,seq,history,merge1,merge2): # iteratively merges elements of merge1 with the resepective elements of merge2 until all transitions are determinisitic
+		while len(to_merge) > 0
+			for i in range(len(seq)):
+				for j in range(len(seq[i])):
+					if history[i][j] in merge2:
+						idx = merge2.index(history[i][j])
+						history[i][j] = merge1[idx]
+						if j != 0 and self.next(history[i][j-1],seq[i][j-1]) == merge2[idx]:
+							self.remove(history[i][j-1],seq[i][j-1])
+							self.add(history[i][j-1],seq[i][j-1],merge1[idx])
+						self.remove(merge2[idx],seq[i][j])
+						if j+1 < len(seq[i]):
+							if (merge1[idx],seq[i][j]) not in self.t:
+								self.add(merge1[idx],seq[i][j],history[i][j+1])
+							else:
+								next = self.next(merge1[idx],seq[i][j])
+								if next != history[i][j+1]:
+									merge1.append(next)
+									merge2.append(history[i][j+1])
+
 def crp(rest,alpha):
        	prob = rest.copy()
        	prob[gensym(prob)] = alpha
@@ -224,23 +262,37 @@ def discrete_sample(p,normal=False):
 	       		return x[0]
 	return None
     
-def ngram(seq,n,a,a_0,b): # returns a pdfa initialized to the n-gram model for a given sequence
-	pdfa = PDFA(max(seq) + 1,a,a_0,b)
-	context = deque([])
-	state = 0
-	context_to_state = {repr(context):0} # initialize by mapping empty context to initial state
-	for symbol in seq:
-		context.append(symbol)
-		if len(context) >= n:
-			context.popleft()
-		if repr(context) not in context_to_state:
-			new_state = gensym(pdfa.m.keys())
-			pdfa.add(state,symbol,new_state)
-			state = new_state
-			context_to_state[repr(context)] = state
-		else:
-			state = context_to_state[repr(context)]
-	return pdfa
+def ngram(seq,n,a=1,a_0=1,b=1): # returns a pdfa initialized to the n-gram model for a given sequence
+	if type(seq[0]) != list:
+		return ngram([seq],n,a,a_0,b)
+	else:
+		pdfa = PDFA(max(max(subseq) for subseq in seq) + 1,a,a_0,b)
+		context_to_state = {'deque([])':0} # initialize by mapping empty context to initial state
+		for subseq in seq:
+			context = deque([])
+			state = 0
+			for symbol in subseq:
+				context.append(symbol)
+				if len(context) >= n:
+					context.popleft()
+				if repr(context) not in context_to_state:
+					new_state = gensym(pdfa.m.keys())
+					pdfa.add(state,symbol,new_state)
+					state = new_state
+					context_to_state[repr(context)] = state
+				else:
+					state = context_to_state[repr(context)]
+		return pdfa
+
+def pta(seq,a=1,a_0=1,b=1): # returns the prefix tree acceptor for a set of strings
+	if type(seq[0]) != list:
+		return pta([seq],a,a_0,b)
+	else:
+		pdfa = PDFA(max(max(subseq) for subseq in seq) + 1,a,a_0,b)
+		for subseq in seq:
+			state = 0
+			for symbol in seq:
+				state = pdfa.next(state,symbol,True)
 
 def even(n):
 	pdfa = PDFA(2)
