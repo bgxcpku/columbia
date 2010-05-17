@@ -53,6 +53,11 @@ class PDFA:
 		if b != None:
 			self.beta = float(b)
 
+	def printtransition(self):
+		for x,y in self.t:
+			print x,y,'->',self.next(x,y)
+		print ''
+
 	def deepcopy(self):
 		copy = PDFA(self.S,self.alpha,self.alpha_0,self.beta)
 		copy.t = self.t.copy()
@@ -161,7 +166,6 @@ class PDFA:
 			if prior_counts == None:
 				counts = {}
 			else:
-				print prior_counts
 				counts = prior_counts.copy()
 			for subseq in seq:
 				for i in self.run(subseq,start_state):
@@ -214,34 +218,109 @@ class PDFA:
 	def scoreseq(self,seq,prior_counts=None,start_state=0):
 		return self.score(self.count(seq,prior_counts,start_state))
 
-	def merge(self,seq,state1,state2): # use this one with care! only guaranteed to properly merge if seq visits all state/symbol pairs
+	def merge(self,state1,state2):
 		if state2 == 0 and state1 != 0:
-			self.merge(seq,state2,state1)
-		elif type(seq[0]) != list:
-			self.merge([seq],state1,state2)
+			self.determinize({},{state1:[0]})
 		else:
-			history = [[x for x,y in self.run(subseq)] for subseq in seq]
-			self.determinize(seq,history,[state1],[state2])
-	
-	def determinize(self,seq,history,merge1,merge2): # iteratively merges elements of merge1 with the resepective elements of merge2 until all transitions are determinisitic
-		while len(to_merge) > 0
-			for i in range(len(seq)):
-				for j in range(len(seq[i])):
-					if history[i][j] in merge2:
-						idx = merge2.index(history[i][j])
-						history[i][j] = merge1[idx]
-						if j != 0 and self.next(history[i][j-1],seq[i][j-1]) == merge2[idx]:
-							self.remove(history[i][j-1],seq[i][j-1])
-							self.add(history[i][j-1],seq[i][j-1],merge1[idx])
-						self.remove(merge2[idx],seq[i][j])
-						if j+1 < len(seq[i]):
-							if (merge1[idx],seq[i][j]) not in self.t:
-								self.add(merge1[idx],seq[i][j],history[i][j+1])
-							else:
-								next = self.next(merge1[idx],seq[i][j])
-								if next != history[i][j+1]:
-									merge1.append(next)
-									merge2.append(history[i][j+1])
+			self.determinize({},{state2:[state1]})
+
+	# to_merge maps a state to a list containing the state it is to be merged into.  all states merging into one state are mapped to the same list object, so we can change its value for all states at once.
+	# nondeterm is a dictionary from state/symbol pairs to a list of states.  it contains all the transitions other than the primary one.  when it is empty for all pairs we are done merging. 
+	def determinize(self,nondeterm,to_merge):
+		start = True
+		while start or len(nondeterm) > 0:
+			start = False # after the first loop, if there's nothing in nondeterm it's finished
+			unseen = set(to_merge.keys())
+			tcopy = self.t.copy() # since python doesn't allow lists to change size while looping over them, have to loop over this instead
+		       	for pair in tcopy:
+				if pair in self.t:
+					state = self.next(pair[0],pair[1])
+					if state in to_merge:
+						if state in unseen:
+							unseen.remove(state)
+						self.removepair(pair)
+						self.addpair(pair,to_merge[state][0])
+						if pair in nondeterm and to_merge[state][0] in nondeterm[pair]: 
+							# if the state we are merging into is already in the list of nondeterministic transitions for this state/symbol pair, remove it now that it is the primary transition
+							nondeterm[pair].remove(to_merge[state][0])
+							if len(nondeterm[pair]) == 0:
+								del nondeterm[pair]
+					if pair in nondeterm:
+						for state in nondeterm[pair].copy():
+							if state in to_merge:
+								if state in unseen:
+									unseen.remove(state)
+								nondeterm[pair].remove(state)
+								if self.next(pair[0],pair[1]) != to_merge[state][0]:
+									nondeterm[pair].add(to_merge[state][0])
+								elif len(nondeterm[pair]) == 0:
+									del nondeterm[pair]
+					if pair[0] in to_merge:
+						if pair[0] in unseen:
+							unseen.remove(pair[0])
+						newstate = to_merge[pair[0]][0]
+						state = self.next(pair[0],pair[1])
+						self.removepair(pair)
+						if (newstate,pair[1]) in self.t:
+							if self.next(newstate,pair[1]) != state:
+								if (newstate,pair[1]) in nondeterm:
+									if state not in nondeterm[(newstate,pair[1])]:
+										nondeterm[(newstate,pair[1])].add(state)
+										add_to_merge(self.next(newstate,pair[1]),state,to_merge)
+								else:
+									nondeterm[(newstate,pair[1])] = set([state])
+									add_to_merge(self.next(newstate,pair[1]),state,to_merge)
+						else:
+							self.add(newstate,pair[1],state)
+			for state in unseen:
+				del to_merge[state]
+
+# to_merge is a dictionary that maps a state to the state it is to be merged into.  
+# specifically, it maps to a list containing the state, so that all keys pointing to the same value can have their value changed at once (lists are mutable, integers are not)
+def add_to_merge(state1,state2,to_merge):
+	if state1 == 0:
+		add_to_merge_case(state1,state2,to_merge,0)
+	elif state2 == 0:
+		add_to_merge_case(state2,state1,to_merge,0)
+	elif [state1] in to_merge.values():
+		if [state2] in to_merge.values():
+			add_to_merge_case(state1,state2,to_merge,3)
+		elif state2 in to_merge.keys():
+			add_to_merge_case(state1,state2,to_merge,2)
+		else:
+			add_to_merge_case(state1,state2,to_merge,0)
+	elif [state2] in to_merge.values():
+		if state1 in to_merge.keys():
+			add_to_merge_case(state2,state1,to_merge,2)
+		else:
+			add_to_merge_case(state2,state1,to_merge,0)
+	elif state1 in to_merge.keys():
+		if state2 in to_merge.keys():
+			add_to_merge_case(state2,state1,to_merge,4)
+		else:
+			add_to_merge_case(state1,state2,to_merge,1)
+	elif state2 in to_merge.keys():
+		add_to_merge_case(state2,state1,to_merge,1)
+	else:
+		add_to_merge_case(state1,state2,to_merge,0)
+
+def add_to_merge_case(state1,state2,to_merge,case):
+	if case == 0: # trivial case, state1 is a value or not in the dict, state2 is not in the dict
+		to_merge[state2] = [state1]
+	elif case == 1: # state1 is a key, state2 is not in the dict
+       		to_merge[state2] = to_merge[state1]
+	elif case == 2: # state1 is a value, state2 is a key
+       		old_state = to_merge[state2][0]
+       		to_merge[state2][0] = state1
+       		to_merge[old_state] = to_merge[state2]
+	elif case == 3: # state1 and state2 are values
+		to_merge[state2] = [state1]
+		idx = to_merge.keys()[to_merge.values().index([state2])]
+		to_merge[idx][0] = state1 # crufty! but this finds a key that maps to the value [state2] and changes what's inside the list to state1
+		to_merge[state2] = to_merge[idx]
+	elif case == 4: # state1 and state2 are keys
+		to_merge[to_merge[state2][0]] = to_merge[state1]
+		to_merge[state2] = to_merge[state1]
 
 def crp(rest,alpha):
        	prob = rest.copy()
@@ -291,8 +370,9 @@ def pta(seq,a=1,a_0=1,b=1): # returns the prefix tree acceptor for a set of stri
 		pdfa = PDFA(max(max(subseq) for subseq in seq) + 1,a,a_0,b)
 		for subseq in seq:
 			state = 0
-			for symbol in seq:
+			for symbol in subseq:
 				state = pdfa.next(state,symbol,True)
+		return pdfa
 
 def even(n):
 	pdfa = PDFA(2)
