@@ -53,6 +53,11 @@ class PDFA:
 		if b != None:
 			self.beta = float(b)
 
+	def printtransition(self):
+		for x,y in self.t:
+			print x,y,'->',self.next(x,y)
+		print ''
+
 	def deepcopy(self):
 		copy = PDFA(self.S,self.alpha,self.alpha_0,self.beta)
 		copy.t = self.t.copy()
@@ -112,9 +117,13 @@ class PDFA:
 	def removepair(self,pair):
 		self.remove(pair[0],pair[1])
 
-	def next(self,state,symbol):
+	def next(self,state,symbol,new_state=False): # if we wish to always create a new state for a new state/symbol pair (rather than having some chance of transitioning to an existing state) set the flag new_state=True
+		if new_state == True:
+			next_state = gensym(self.m)
+		else:
+			next_state = None
 		if (state,symbol) not in self.t:
-			self.add(state,symbol)
+			self.add(state,symbol,next_state)
 		return self.k[symbol][self.t[(state,symbol)]]
 
 	def run(self,seq,start_state=0): # returns a generator that iterates over the states the machine traverses given a sequence (creating new states as need be)
@@ -145,6 +154,11 @@ class PDFA:
 			state = self.next(state,symbol)
 			yield symbol
 
+	def state(self,seq,start_state=0): # returns the state at which the machine ends given the input seq
+		for state,symbol in self.run(seq,start_state):
+			pass
+		return state
+
 	def count(self,seq,prior_counts=None,start_state=0):
 		if type(seq[0]) != list: # if we want to count only one sequence
 			return self.count([seq],prior_counts,start_state)
@@ -152,7 +166,6 @@ class PDFA:
 			if prior_counts == None:
 				counts = {}
 			else:
-				print prior_counts
 				counts = prior_counts.copy()
 			for subseq in seq:
 				for i in self.run(subseq,start_state):
@@ -167,9 +180,9 @@ class PDFA:
 		state_counts[0] = sum(counts[j] for j in counts if j[0] == 0) # since state 0 is always transient, it won't appear in self.m, so add by hand
 		return sum(lgamma(counts[x] + self.beta/self.S) - lgamma(self.beta/self.S) for x in counts) - sum(lgamma(state_counts[y] + self.beta) - lgamma(self.beta) for y in state_counts)
         
-	def particlescore(self,seq,n=1,prior_counts=None): # For n=1 gives the same answer as scoreseq.  Otherwise averages the probability of each symbol in a sequence over many particle samples
+	def particlescore(self,seq,n=1,prior_counts=None,start_state=0): # For n=1 gives the same answer as scoreseq.  Otherwise averages the probability of each symbol in a sequence over many particle samples
 		if type(seq[0]) != list:
-			return self.particlescore([seq],n,prior_counts)
+			return self.particlescore([seq],n,prior_counts,start_state)
 		else:
 			scores = []
 			for subseq in seq:
@@ -184,7 +197,7 @@ class PDFA:
 					state_counts[0] = sum(counts[j] for j in counts if j[0] == 0)
 				old_t = self.t.copy() # since scoring the sequence will create new state/symbol pairs, keep track of the new ones and remove them
 				for j,subseq in enumerate(seq):
-					for k,pair in enumerate(self.run(subseq)):
+					for k,pair in enumerate(self.run(subseq,start_state)):
 						state,symbol = pair
 						if pair in counts:
        							scores[j][k] += (counts[pair] + self.beta/self.S)/(state_counts[state] + self.beta)/n
@@ -205,6 +218,110 @@ class PDFA:
 	def scoreseq(self,seq,prior_counts=None,start_state=0):
 		return self.score(self.count(seq,prior_counts,start_state))
 
+	def merge(self,state1,state2):
+		if state2 == 0 and state1 != 0:
+			self.determinize({},{state1:[0]})
+		else:
+			self.determinize({},{state2:[state1]})
+
+	# to_merge maps a state to a list containing the state it is to be merged into.  all states merging into one state are mapped to the same list object, so we can change its value for all states at once.
+	# nondeterm is a dictionary from state/symbol pairs to a list of states.  it contains all the transitions other than the primary one.  when it is empty for all pairs we are done merging. 
+	def determinize(self,nondeterm,to_merge):
+		start = True
+		while start or len(nondeterm) > 0:
+			start = False # after the first loop, if there's nothing in nondeterm it's finished
+			unseen = set(to_merge.keys())
+			tcopy = self.t.copy() # since python doesn't allow lists to change size while looping over them, have to loop over this instead
+		       	for pair in tcopy:
+				if pair in self.t:
+					state = self.next(pair[0],pair[1])
+					if state in to_merge:
+						if state in unseen:
+							unseen.remove(state)
+						self.removepair(pair)
+						self.addpair(pair,to_merge[state][0])
+						if pair in nondeterm and to_merge[state][0] in nondeterm[pair]: 
+							# if the state we are merging into is already in the list of nondeterministic transitions for this state/symbol pair, remove it now that it is the primary transition
+							nondeterm[pair].remove(to_merge[state][0])
+							if len(nondeterm[pair]) == 0:
+								del nondeterm[pair]
+					if pair in nondeterm:
+						for state in nondeterm[pair].copy():
+							if state in to_merge:
+								if state in unseen:
+									unseen.remove(state)
+								nondeterm[pair].remove(state)
+								if self.next(pair[0],pair[1]) != to_merge[state][0]:
+									nondeterm[pair].add(to_merge[state][0])
+								elif len(nondeterm[pair]) == 0:
+									del nondeterm[pair]
+					if pair[0] in to_merge:
+						if pair[0] in unseen:
+							unseen.remove(pair[0])
+						newstate = to_merge[pair[0]][0]
+						state = self.next(pair[0],pair[1])
+						self.removepair(pair)
+						if (newstate,pair[1]) in self.t:
+							if self.next(newstate,pair[1]) != state:
+								if (newstate,pair[1]) in nondeterm:
+									if state not in nondeterm[(newstate,pair[1])]:
+										nondeterm[(newstate,pair[1])].add(state)
+										add_to_merge(self.next(newstate,pair[1]),state,to_merge)
+								else:
+									nondeterm[(newstate,pair[1])] = set([state])
+									add_to_merge(self.next(newstate,pair[1]),state,to_merge)
+						else:
+							self.add(newstate,pair[1],state)
+			for state in unseen:
+				del to_merge[state]
+
+# to_merge is a dictionary that maps a state to the state it is to be merged into.  
+# specifically, it maps to a list containing the state, so that all keys pointing to the same value can have their value changed at once (lists are mutable, integers are not)
+def add_to_merge(state1,state2,to_merge):
+	if state1 == 0:
+		add_to_merge_case(state1,state2,to_merge,0)
+	elif state2 == 0:
+		add_to_merge_case(state2,state1,to_merge,0)
+	elif [state1] in to_merge.values():
+		if [state2] in to_merge.values():
+			add_to_merge_case(state1,state2,to_merge,3)
+		elif state2 in to_merge.keys():
+			add_to_merge_case(state1,state2,to_merge,2)
+		else:
+			add_to_merge_case(state1,state2,to_merge,0)
+	elif [state2] in to_merge.values():
+		if state1 in to_merge.keys():
+			add_to_merge_case(state2,state1,to_merge,2)
+		else:
+			add_to_merge_case(state2,state1,to_merge,0)
+	elif state1 in to_merge.keys():
+		if state2 in to_merge.keys():
+			add_to_merge_case(state2,state1,to_merge,4)
+		else:
+			add_to_merge_case(state1,state2,to_merge,1)
+	elif state2 in to_merge.keys():
+		add_to_merge_case(state2,state1,to_merge,1)
+	else:
+		add_to_merge_case(state1,state2,to_merge,0)
+
+def add_to_merge_case(state1,state2,to_merge,case):
+	if case == 0: # trivial case, state1 is a value or not in the dict, state2 is not in the dict
+		to_merge[state2] = [state1]
+	elif case == 1: # state1 is a key, state2 is not in the dict
+       		to_merge[state2] = to_merge[state1]
+	elif case == 2: # state1 is a value, state2 is a key
+       		old_state = to_merge[state2][0]
+       		to_merge[state2][0] = state1
+       		to_merge[old_state] = to_merge[state2]
+	elif case == 3: # state1 and state2 are values
+		to_merge[state2] = [state1]
+		idx = to_merge.keys()[to_merge.values().index([state2])]
+		to_merge[idx][0] = state1 # crufty! but this finds a key that maps to the value [state2] and changes what's inside the list to state1
+		to_merge[state2] = to_merge[idx]
+	elif case == 4: # state1 and state2 are keys
+		to_merge[to_merge[state2][0]] = to_merge[state1]
+		to_merge[state2] = to_merge[state1]
+
 def crp(rest,alpha):
        	prob = rest.copy()
        	prob[gensym(prob)] = alpha
@@ -224,23 +341,38 @@ def discrete_sample(p,normal=False):
 	       		return x[0]
 	return None
     
-def ngram(seq,n,a,a_0,b): # returns a pdfa initialized to the n-gram model for a given sequence
-	pdfa = PDFA(max(seq) + 1,a,a_0,b)
-	context = deque([])
-	state = 0
-	context_to_state = {repr(context):0} # initialize by mapping empty context to initial state
-	for symbol in seq:
-		context.append(symbol)
-		if len(context) >= n:
-			context.popleft()
-		if repr(context) not in context_to_state:
-			new_state = gensym(pdfa.m.keys())
-			pdfa.add(state,symbol,new_state)
-			state = new_state
-			context_to_state[repr(context)] = state
-		else:
-			state = context_to_state[repr(context)]
-	return pdfa
+def ngram(seq,n,a=1,a_0=1,b=1): # returns a pdfa initialized to the n-gram model for a given sequence
+	if type(seq[0]) != list:
+		return ngram([seq],n,a,a_0,b)
+	else:
+		pdfa = PDFA(max(max(subseq) for subseq in seq) + 1,a,a_0,b)
+		context_to_state = {'deque([])':0} # initialize by mapping empty context to initial state
+		for subseq in seq:
+			context = deque([])
+			state = 0
+			for symbol in subseq:
+				context.append(symbol)
+				if len(context) >= n:
+					context.popleft()
+				if repr(context) not in context_to_state:
+					new_state = gensym(pdfa.m.keys())
+					pdfa.add(state,symbol,new_state)
+					state = new_state
+					context_to_state[repr(context)] = state
+				else:
+					state = context_to_state[repr(context)]
+		return pdfa
+
+def pta(seq,a=1,a_0=1,b=1): # returns the prefix tree acceptor for a set of strings
+	if type(seq[0]) != list:
+		return pta([seq],a,a_0,b)
+	else:
+		pdfa = PDFA(max(max(subseq) for subseq in seq) + 1,a,a_0,b)
+		for subseq in seq:
+			state = 0
+			for symbol in subseq:
+				state = pdfa.next(state,symbol,True)
+		return pdfa
 
 def even(n):
 	pdfa = PDFA(2)
