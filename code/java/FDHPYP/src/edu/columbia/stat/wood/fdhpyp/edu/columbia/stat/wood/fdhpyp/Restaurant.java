@@ -32,11 +32,6 @@ public class Restaurant extends TreeMap<Integer, Restaurant> {
         restCount++;
     }
 
-    @Override
-    public boolean isEmpty() {
-        return tableMap.isEmpty();
-    }
-
     public void fillSummaryStats() {
         int[] counts;
 
@@ -96,12 +91,8 @@ public class Restaurant extends TreeMap<Integer, Restaurant> {
     }
 
     public double predictiveProbability(int type) {
-        double d;
-        double c;
-        double pp;
-        double denom;
-        int[] tCounts;
-        int[] counts;
+        double d,c,pp,denom;
+        int[] tCounts, counts;
 
         d = discount.doubleVal();
         c = concentration.doubleVal();
