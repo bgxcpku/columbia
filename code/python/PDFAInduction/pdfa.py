@@ -80,7 +80,7 @@ class PDFA:
 			if next_table != None:
 				table = next_table
 			elif next_state in self.k[symbol].values():
-				prob = dict([(i,self.n[symbol][i]) for i in self.n[symbol] if self.k[symbol][i] != next_state]) # counts the number of times a customer sits at a table serving the dish next_state
+				prob = dict([(i,self.n[symbol][i]) for i in self.n[symbol] if self.k[symbol][i] == next_state]) # counts the number of times a customer sits at a table serving the dish next_state
 				prob[gensym(prob)] = self.alpha * self.m[next_state] / ( sum(self.m.values()) + self.alpha_0 ) # probability of seating a customer at a new table *and* that table serving dish next_state
 				table = discrete_sample(prob)
 			else:
@@ -132,12 +132,18 @@ class PDFA:
 			yield (state,symbol)
 			state = self.next(state,symbol)
 
-	def generate(self,n,emission,start_state=0): # generates a length n sequence given emission probabilities for each state
+	def generate(self,n,emission,start_state=0,end_state=None): # generates a length n sequence given emission probabilities for each state
 		state = start_state
-		for i in range(n):
-			symbol = discrete_sample(emission[state])
-			state = self.next(state,symbol)
-			yield symbol
+		if end_state == None:
+			for i in range(n):
+				symbol = discrete_sample(emission[state])
+				state = self.next(state,symbol)
+				yield symbol
+		else:
+			while state != end_state:
+				symbol = discrete_sample(emission[state])
+				state = self.next(state,symbol)
+				yield symbol
 
 	def generatefromcounts(self,n,counts,state_state=0): # integrates out the emission probabilities, so the counts get updated as we go along
 		state = start_state
@@ -175,10 +181,17 @@ class PDFA:
 						counts[i] = 1
 			return counts
 
-	def score(self,counts): # Returns the log likelihood of the sequence given the PDFA.  I should double-check for the particle filter case that it's ok to average these.
+	def state_counts(self,counts):
 		state_counts = dict([(i,sum(counts[j] for j in counts if j[0] == i)) for i in self.m]) # the total number of times a state is visited
 		state_counts[0] = sum(counts[j] for j in counts if j[0] == 0) # since state 0 is always transient, it won't appear in self.m, so add by hand
-		return sum(lgamma(counts[x] + self.beta/self.S) - lgamma(self.beta/self.S) for x in counts) - sum(lgamma(state_counts[y] + self.beta) - lgamma(self.beta) for y in state_counts)
+		for i in state_counts.copy():
+			if state_counts[i] == 0:
+				del state_counts[i]
+		return state_counts
+
+	def score(self,counts): # Returns the log likelihood of the sequence given the PDFA.  I should double-check for the particle filter case that it's ok to average these.
+		s_counts = state_counts(counts)
+		return sum(lgamma(counts[x] + self.beta/self.S) - lgamma(self.beta/self.S) for x in counts) - sum(lgamma(s_counts[y] + self.beta) - lgamma(self.beta) for y in s_counts)
         
 	def particlescore(self,seq,n=1,prior_counts=None,start_state=0): # For n=1 gives the same answer as scoreseq.  Otherwise averages the probability of each symbol in a sequence over many particle samples
 		if type(seq[0]) != list:
@@ -388,12 +401,23 @@ def sevenstate(n):
 	map(pdfa.addpair,transition.keys(),transition.values())
 	return pdfa.generate(n,emission)
 
-def reber(n):
+def reber(n=0):
 	pdfa = PDFA(7)
-	transition = {(0,0):1,(1,1):2,(1,2):3,(2,3):2,(2,4):4,(3,1):3,(3,5):5,(4,4):3,(4,3):6,(5,5):6,(5,2):4,(6,6):0}
+	transition = {(0,0):1,(1,1):2,(1,2):3,(2,3):2,(2,4):4,(3,1):3,(3,5):5,(4,4):3,(4,3):6,(5,5):6,(5,2):4}
 	emission = {0:{0:1},1:{1:1,2:1},2:{3:3,4:2},3:{1:7,5:3},4:{4:1,3:1},5:{5:1,2:1},6:{6:1}}
 	map(pdfa.addpair,transition.keys(),transition.values())
-	return pdfa.generate(n,emission)
+	if n != 0: # if there's no end state, just loop back around to the start
+		pdfa.addpair((6,6),0)
+		return pdfa.generate(n,emission)
+	else: # if there is an end state, make it state #7
+		pdfa.addpair((6,6),7)
+		return pdfa.generate(n,emission,0,7)
+
+def embedded(): # a 14-state grammar with 2 identical 6-state grammars embedded within it
+	pdfa = PDFA(2)
+	transition = {(0,0):1,(1,0):2,(1,1):8,(2,0):3,(2,1):4,(3,0):3,(3,1):5,(4,0):6,(4,1):4,(5,0):4,(5,1):7,(6,0):7,(6,1):5,(7,1):14,(8,0):9,(8,1):10,(9,0):9,(9,1):11,(10,0):12,(10,1):10,(11,0):10,(11,1):13,(12,0):13,(12,1):11,(13,0):14,(14,1):0}
+	map(pdfa.addpair,transition.keys(),transition.values())
+	return pdfa
 
 def gen(generator):
 	return [x for x in generator]
