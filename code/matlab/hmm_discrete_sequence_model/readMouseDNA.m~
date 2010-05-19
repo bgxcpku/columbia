@@ -1,0 +1,9 @@
+function dna = readMouseDNA(filename)
+
+if nargin < 1
+filename = '../../../data/mouse_dna.txt';
+end
+
+ fid = fopen(filename, 'r');
+   dna = fread(fid, inf, 'uint8=>char')';
+   
