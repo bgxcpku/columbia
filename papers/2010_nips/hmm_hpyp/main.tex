@@ -1,0 +1,288 @@
+\documentclass{article}
+\usepackage{nips07submit_e,times}
+%\documentstyle[nips07submit_09,times]{article}
+\usepackage[square,numbers]{natbib}
+\usepackage{amsmath, epsfig}
+\usepackage{subfigure}
+\usepackage{graphicx}
+\usepackage{amsfonts}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{easybmat}
+\renewcommand\algorithmiccomment[1]{// \textit{#1}}
+%
+\newcommand{\ignore}[1]{}
+\newcommand{\comment}[1]{}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\title{A Latent Process Language Model}
+
+
+\author{
+Nicholas Bartlett\thanks{ http://www.stat.columbia.edu/~bartlett} \\
+Department of Statistics\\
+Columbia University\\
+New York, NY 10027, USA \\
+\texttt{bartlett@stat.columbia.edu} \\
+\And
+David Pfau \\
+Neuroscience or Something \\
+Columbia University\\
+New York, NY 10027, USA \\
+\texttt{hotmail.com@gmail.com} \\
+\AND
+Frank Wood \\
+Department of Statistics\\
+Columbia University\\
+New York, NY 10027, USA \\
+\texttt{fwood@stat.columbia.edu} \\
+}
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to \LaTeX{} to determine where to break
+% the lines. Using \AND forces a linebreak at that point. So, if \LaTeX{}
+% puts 3 of 4 authors names on the first line, and the last on the second
+% line, try using \AND instead of \And before the third author name.
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+
+\begin{document}
+
+\makeanontitle
+
+\begin{abstract}
+
+\end{abstract}
+
+\section{Introduction}
+
+Given infinite data, complex discrete sequence generative mechanisms can more-or-less be described exactly by Markov models of unbounded order.  Such models do not postulate any latent generative generative mechanism, instead relying on contextual information to provide all information about the current state of the generative process.  While such models exist \cite{Mochihashi2008, Wood2009}, an empirical question about their efficiency remains.   By efficiency here we mean statistical efficiency: how much bang do you get for your buck?
+
+\section{Methods}
+
+
+%The DHPYLM is one example of a general class of models we call ``graphical Pitman-Yor processes'' (GPYP).  We describe and address the issue of inference in GPYPs.  This will address the salient issues associated with inference in the DHPYLM, which we shall return to at the end of this section.
+
+A graphical Pitman-Yor process (GPYP) is a directed acyclic graphical model, where each vertex $v\in V$ is labeled with a random distribution $\mathcal{G}_{v}$ and each has a PYP prior.  An example GPYP is given in Fig.~\ref{figure:model}.  Every edge $w\rightarrow v\in E$ in the GPYP  has a non-negative weight $\lambda_{w \rightarrow v}$ and the weights are constrained such the sum of the weights on all of the incoming edges to a vertex equals one, i.e.~$\sum_{w \in \mathrm{Pa}(v)}\lambda_{{w \rightarrow v}} = 1$ for all $v \in V.$  $\mathrm{Pa}(v)$ is the set of parents of $v$ in the DAG.  The base distribution of each $\mathcal{G}_{v}$ is a mixture,  with the edge weights being the mixing proportions and the $\mathcal{G}_w$'s on the parents $w\in\mathrm{Pa}(v)$ being the components.  The generative model for such a GPYP is 
+%
+\begin{eqnarray*}
+\mathcal{G}_v \comment{| \{ {G}_w : w \in \mathrm{Pa}(v) \}} &\sim& \text{PY}\left(d_v,\alpha_v,\sum_{w \in \mathrm{Pa}(v)}\lambda_{{w \rightarrow v}} \mathcal{G}_w\right) \quad \forall v\in V
+\end{eqnarray*}
+%
+The parameters of a GPYP are $\Theta = \{ d_v, \alpha_v, \lambda_{w\rightarrow v}   : v \in V,w\in\mathrm{Pa}(v)\}$ each with its corresponding prior.
+
+In most modeling situations we cannot directly observe the random distributions but observe draws from them instead.  For instance, we may observe draws $\{x_v^n\}_{n=1}^{N_v} \sim \mathcal{F}(\phi_v^n)$ from a likelihood $\mathcal{F}$ whose parameter $\phi_v^n\sim\mathcal{G}_v$ is a draw from $\mathcal{G}_v$.  In some modeling situations (like our language modeling application) the $\phi$'s are themselves directly observable.  \comment{In our language modeling case we have a simple observation distribution $\mathcal{F}(\phi)=\delta_\phi$ placing all its mass on $\phi$.}
+\comment{
+\begin{eqnarray*}
+f_v^n &\sim& \Lambda_v\\
+\psi_v^n | f_v^n  &\sim&\mathcal{G}_{\mathrm{Pa}(v,f_v^n)}\\
+x_v^n | \psi_v^n &\sim& \mathcal{F}(\cdot|\psi_v^n)
+\end{eqnarray*}
+%
+where $\mathrm{Pa}(v,p)$ indexes the $p^{\mathrm{th}}$ parent of $v$ and  $f_v^n$ is an indicator variable that indicates from which component of the base mixture $\psi_v^n$ was drawn.
+
+Let $\bx_v = \{x_v^n\}_{n=1}^{N_v}$ be the collection of observations from a single vertex $v$ and let $X = \{\bx_v : v \in V\}$ be the collection of all observations from all vertices in the DAG.  Let $\mathbf{\phi}_v = \{\phi_v^n\}_{n=1}^{N_v}$ $\Phi = \{\mathbf{\phi}_v : v \in V\}$ be the be the corresponding collections of parameters.   Then we have 
+\[ P(X| \Phi) = \prod_{v \in V} P(\bx_v |\mathbf{\phi}_v ),  \hspace{.5cm} P(\Phi |  G ) = \prod_{v \in V} P(\mathbf{\phi}_v |G_v)\]
+and
+\[P(G | \Theta) = \prod_{v \in V}
+P(G_v|d_v, \alpha_v,\{\lambda_{e_{v \rightarrow \mathrm{Pa}(v)}}\}, \{G_w : w \in \mathrm{Pa}(v)\}).\]
+}
+
+As is usual in Bayesian modeling we are interested in generating posterior samples of the random distributions and GPYP parameters given observations.  To do this we develop a representation of the GPYP in which the random distributions are integrated out.  We call this representation for the GPYP the multi-floor Chinese restaurant franchise (MFCRF).  It builds on the multi-floor Chinese restaurant process which we introduce next. 
+
+
+%$P(\Theta | X, G) \propto P(X|  G )P(G | \Theta)P(\Theta).$  In the next section we describe a ``multi-floor'' Chinese restaurant process (CRP) for drawing samples from the GPYP posterior. 
+
+%Briefly eturning to our DHPYLM, note that $\mathcal{F}(x,\phi_v^n) = \delta(x-\phi_v^n).$  This means that the $\phi$'s can trivially be marginalized out and we can model the $N_v$ draws $\{x_v^n\}_{n=1}^{N_v} \sim {G}_v$ as coming directly from each $\mathcal{G}_v \in G$.   Let   in the DAG, and 
+
+\subsection{MULTI-FLOOR CHINESE RESTAURANT PROCESS}
+
+\comment{The multi-floor Chinese restaurant process (MFCRP) is identical to the Chinese restaurant process (CRP) except that the tables are spread out over multiple floors.  It is used to represent one $\mathcal{G}_v$ in the GPYP, where the floors correspond to the different components of the mixture base distribution.  
+}
+
+\comment{
+The MFCRP is easy to understand through an extension of the CRP analogy.  In the MFCRP customers sequentially enter a multi-floor Chinese restaurant and choose a table at which  to sit.  However in the MFCRP, the restaurant has a finite number of floors each of which has a ``popularity'' associated with it a weight which indicates its popularity (the weights on all the floors sum to one).  Each and each floor in the restaurant has an infinite number of tables.  The first customer picks a floor by popularity and sits at the first table on that floor.  The next customer enters the restaurant, visits all of the floors, and records how many customers are sitting at all of the occupied tables on all of the floors.  They then  decide either to  sit at one of the previously occupied tables with probability proportional to the number of people already sitting at them (discounted as usual by some amount in the PYP generalization) ignoring the floor on which they sit or they decide to sit at a new table (with enhanced probability as usual in the PYP generalization).  If they decide to sit at a new table, they must first pick a floor on which to sit.  They make this choice according to floor popularity then sit at the first unoccupied table on the chosen floor.  Remaining customers repeat this procedure.
+}
+
+Consider a single random distribution $\mathcal{G}_v$ in the GPYP with a mixture base distribution $\sum_{w\in\text{Pa}(v)}\lambda_{w\rightarrow v}\mathcal{G}_w$, and consider a sequence of i.i.d.~draws $\phi_v^n\sim\mathcal{G}_v$ for $n=1,\ldots,N_v$.
+The multi-floor Chinese restaurant process (MFCRP) is an extension of the Chinese restaurant process for normal PYPs which captures both the clustering structure of the draws as well as their association with components of the mixture base distribution.  
+
+
+
+\comment{an abstraction which captures the distinct clustering property of draws $x_i \sim \mathcal{G}$ where $\mathcal{G} \sim \text{PY}(\alpha, d, \mathcal{G}_0)$ and $\mathcal{G}_0$ is a mixture (perhaps with a single component).  \comment{Additionally, the posterior predictive distribution of $x_{n+1} | x_{1:n}, \alpha, d$ from such a model with $\mathcal{G}$ marginalized out can be expressed in terms of this process.  }This name derives from the Chinese restaurant process which serves the same purpose but does not accommodate  mixture base distributions.  We assume reader familiarity with how the assignment of customers to tables in the Chinese restaurant process exhibits the same clustering properties as draws from a posterior Pitman-Yor process and refer readers who are not to \citep{YW?}.}
+
+The way that customers are assigned to tables in the MFCRP is the same as in the CRP.  Each draw $\phi_v^n$ is identified with a customer entering the restaurant and sitting at a table $z_v^n$ (denoting the cluster that $\phi_v^n$ belongs to).  
+%
+\comment{
+Let $\bz_v = \{z_v^n\}_{n=1}^{N_v}\in\mathbb{Z}^+$ be a set of indicator variables that indicate at which table in the multi-floor restaurant each observation \comment{observation $\{x_v^n\}_{n=1}^{N_v}$ }sits and let $\bs_v = \{s_v^k\}_{k=1}^{K}$ be a set of ``floor'' indicator variables which indicate on which floor each table in the restaurant sits.
+}
+%
+Let $c_v^k$ be the number of customers sitting at the $k^\mathrm{th}$ table.  If $n$ customers have already seated themselves according to the MFCRP resulting in $K_v$ tables being occupied then the probabilities of the next customer sitting at a currently occupied table or choosing a new table are given by
+%
+\begin{eqnarray}
+P(z_v^{n+1} = k  | \{z_v^1\cdots z_v^n\}) &\propto& c_v^k-d_v \nonumber \\
+P(z_v^{n+1} = K_v+1 | \{z_v^1\cdots z_v^n\})  &\propto& \alpha_v+d_vK_v  
+\label{eqn:mfcrp}
+\end{eqnarray}
+%
+If a new table is created (second line of Eqn.~\ref{eqn:mfcrp}) then $K_v$ is incremented.  This means that customers entering the restaurant care about both how many other customers are sitting at a table and how many tables are in the restaurant.  \comment{With higher probability, they will sit at larger tables, and they will sit at new tables if there are already many occupied tables.}
+
+As in the CRP, each table $k$ in the MFCRP is given a label $\psi_v^k$ which is an i.i.d.~draw from the base distribution.  Since this is a mixture we can achieve this by picking component $w$ with probability $\lambda_{w\rightarrow v}$, and drawing from the chosen parent distribution $\mathcal{G}_w$.  Let $s_v^k$ be the chosen component.  Each table is also labelled with this quantity.  Metaphorically, this corresponds to table $k$ being located on floor $s_v^k$ of a multi-floor restaurant.
+%Note that as the form of Eqn.~\ref{eqn:mfcrp} is exactly the same as the PYP CRP we can be assured that the distribution over partitions induced by the $z$'s exhibits the same clustering properties as draws from a PYP. %FW: not strong enough -- I want to say more but am tongue tied.
+
+\subsection{MULTI-FLOOR CHINESE RESTAURANT FRANCHISE}
+
+
+Returning to the GPYP, we now consider marginalizing out all of the random distributions $\mathcal{G}_v$'s in the graph and replacing them with corresponding MFCRP representations.  The MFCRP representation only requires being able to draw from the PYP base distribution.  This means that we can directly use this representation for all $\mathcal{G}_v$'s that are leaf vertices in the graph because we can draw from the base distribution even if it is a mixture.  Accordingly all of the table labels in the resulting MFCRP representations of leaf vertices arise from draws from their corresponding base distributions.   The specific parent in the graph from which they were drawn is indicated by the corresponding floor indicator variables.  This means that one can think of the table labels in a leaf node as being i.i.d.~``observations'' from the associated parents in the GPYP.  With this insight it becomes apparent that we can repeat this procedure of switching from $\mathcal{G}_v$ to the MFCRP representation recursively up the graph because a table in any given restaurant must always correspond to a customer in one of its parent restaurants, the identity of which is determined by the state of the table-specific floor indicator variable.
+
+%This procedure of integrating out each $\mathcal{G}_v$ and replacing it with a MFCRP can be applied recursively up the graph.  
+The resulting representation, having replaced each $\mathcal{G}_v$ with a MFCRP, stipulates that customers in any given restaurant (indexed by vertex $v$) either must be associated with direct observations of draws from the underlying $\mathcal{G}_v$, or must have come from a table in a child restaurant. We call the resulting representation of the whole GPYP the multi-floor Chinese restaurant franchise (MFCRF).  The MFCRF is a generalization of the Chinese restaurant franchise representation of the Pitman-Yor process \citep{Teh2006b} to the situation here where each restaurant can have multiple parent restaurants.  The distinctive characteristic of the MFCRF representation is that each table corresponds to a customer in one of a {\em set} of parent restaurants rather than a single parent restaurant and that each table maintains a label of the identity of the parent restaurant.
+
+\subsection{GPYP GIBBS SAMPLER} 
+
+\comment{
+In samplers based on the MFCRF we need to keep track of a) draws from the base distribution (table labels) and b) which observations are attributed to which draws from the base distribution (assignments of observations to tables) for all vertexes in the DAG.   In the MFCRP, because the base distribution is a mixture, we also need to keep track of which component from the base distribution mixture each draw came.  We call the index of the mixture base distribution component the ``floor.''  
+}
+
+It is straightforward to derive a Gibbs sampler for the posterior of a GPYP in the MFCRF representation.  Let $X_v^n$ be the \emph{set} of observations from all restaurants that can be traced to customer $n$ in restaurant $v$.  Let $\mathcal{F}(X_v^n|\psi)$ be the probability of observing $X_v^n$ given parameter $\psi$.  As before, let $z_v^n$ indicate the table at which customer $n$ sits.  The update equations for the indicator variables associated with a single vertex are 
+%
+\begin{eqnarray}
+\lefteqn{P( z_v^{n} = k  | \{z_v^1\cdots z_v^{N_v}\}\backslash z_v^{n}, X_v^n, \psi_v^k, \Theta  )} \nonumber \\
+ &\propto& \mbox{max}((c_v^{k_-}-d_v),0)\mathcal{F}(X_v^n|\psi_v^k) \nonumber \\
+\nonumber \\
+\lefteqn{P(z_v^{n} = K_v^-+1, s_v^{K_v^-+1} = w| \{z_v^1\cdots z_v^{N_v}\}\backslash z_v^{n}, X_v^n, \Theta  )}\nonumber\\ &\propto& (\alpha_v+d_vK^-_v) \lambda_{{w \rightarrow v}} \int \mathcal{F}(X_v^n|\phi) \mathcal{G}_w(\phi)d\phi.
+\label{eqn:mfcrp_posterior}
+\end{eqnarray}
+%
+Here the number of customers sitting at each table ($c_v^{k_-}$) and the total number of occupied tables ($K_v^-$) are tallied with the current customer $n$ ``unseated''.  Note that the second equation above is a joint distribution over the parameter and floor indicator variables and includes the term $\lambda_{{w \rightarrow v}}$.   The value of $\lambda_{{w \rightarrow v}}$ strongly influences the ``floor'' on which the table ends up. The floor variable is implicit in the first equation since $s_v^k$ is fixed.
+
+These update equations describe how to unseat and reseat customers in a single restaurant.  As in the Chinese restaurant franchise sampler for the HDP \citep{TehJorBea2006} and as described in the preceeding section, the internal state of all of the restaurants must be consistent.  For instance, if in sampling one of the restaurants in the GPYP a new table is created, then we know that its label had to have been a draw from one of its base distributions.  This must be reflected in the MFCRF representation by recursively adding a customer (and table if necessary) to the corresponding parent restaurant.  Conversely, if a table becomes empty its associated customer (and table if necessary) must be removed from the chosen parent restaurant.  These updates propagate changes to the restaurant to the rest of the franchise.  The complete MFCRF sampler then consists of visiting every restaurant in the GPYP and unseating and reseating every customer in all of the restaurants, maintaining consistency throughout the hierarchy by adding or removing customers from parent restaurants when tables become occupied or empty in child restaurants.  The main difference between the MFCRF and the Chinese restaurant franchise samplers is that floor variables must be maintained in order to keep track of the parent restaurants from which each table came.
+
+
+\comment{When a new table is chosen, the corresponding draws $s_v^k \sim \Lambda_v$ and $\phi_v^k \sim \mathcal{G}_{s_v^k}$ from the mixture base distribution are used to form the new table label.}  
+
+A complete posterior sampler for the GPYP requires sampling the parameters $\alpha_v$'s, $d_v$'s, $\lambda_{w\rightarrow v}$'s, and the $\psi_v^k$'s at the top of the GPYP as well. \comment{; different approaches for sampling each of these variables will be required for different GPYP architectures.}  Next we describe how these variables are sampled in the specific case of the DHPYLM. 
+
+\comment{
+To sample from a GPYP we use the multi-floor Chinese restaurant franchise (MFCRF).  The MFCRF is related to the multi-floor Chinese restaurant process (MFCRP) in the same way that the Chinese restaurant franchise (CRF) is related to the Chinese restaurant process \citep{TehJorBea2006}.  That is to say we can integrate out all of the $\mathcal{G}$'s in the GPYP and sample in the auxiliary variable space consisting of the table labels and seating assignments of all of the restaurants representing the GPYP.  To see how this works notice how $G_w(\phi)$ can be computed recursively in the multi-floor restaurant representation  
+
+\begin{equation}
+ G_w(\phi) = \sum_{k=1}^{K_w} \frac{c_w^{k}-d_w}{\alpha_w + N_w } \delta(\phi - \phi_w^k) + \frac{\alpha_w+d_wK_w}{\alpha_w + N_w} \left( \sum_{w' \in \mathrm{Pa}(w)}\lambda_{{w' \rightarrow w}} \mathcal{G}_w'(\phi)\right) 
+\label{eqn:recursion}
+\end{equation}
+
+This sets up an upstream recursion which will ascend the DAG to the base distributions of the source PYP's in the DAG.  We do not specify details for the recursion base case as it will vary between GPYP architectures but note that if the base distribution(s) of the PYP's at the source nodes of the DAG are all conjugate to the likelihood then, as usual, we can perform the integration(s) in Eqn.~\ref{eqn:mfcrp_posterior} analytically.
+}
+
+
+
+\comment{
+In the case of the $\phi$ label, this means that the base distribution component corresponding to the floor $s$ must have a customer sitting at a table with that label as well
+
+
+Since Eqn.~\ref{eqn:recursion} can be evaluated 
+
+To see how this works, consider the concrete example of adding a single customer $x_v^1$ to an otherwise empty sink node $v$ in a completely empty GPYP.   For simplicity assume that the likelihood is a Dirac delta function $\mathcal{F}(x_v^n|\phi) = \delta(x_v^n-\phi)$ and note that this is equivalent to a model in which $x_v^n \sim \mathcal{G}_v$.  This first customer $x_v^1$ must choose a new table at which to sit and this table must have two labels, its floor $s_v^1$, and a value $\phi_v^1$ drawn from the base distribution $\mathcal{G}_{\mathrm{Pa}(v,{s_v^1})}.$  By our simplifying choice of likelihood this must be equal to $x_v^1$.  The only way $\phi_v^1$ could have been drawn from $\mathcal{G}_w = \mathcal{G}_{\mathrm{Pa}(v,{s_v^1})}$ is if $\phi_v^1$ was a customer in the restaurant representing the label on one of its tables or a new table was created in restaurant $w$ with that label on it.  This means that $\phi_v^1$ should be added as a customer in the restaurant at node $w$, and one of it's parent, and one of it's parent, so on until a source in the GPYP is reached. 
+
+Furthermore,
+The MFCRP posterior sampler as described is insufficient to sample from the posterior of a GPYP as we have not yet established how to compute $\mathcal{G}_w(\phi_v)$.  The key insight is that we can compute $\mathcal{G}_w(\phi_v)$ recursively by using the MFCRP representation for all of the PYP's in the GPYP.    It will pick a floor for the table at which it will sit ($s_v^1$) and then draw the table label (the parameter $\phi_v^1$) from the corresponding base distribution $\phi_v^1 | s_v^1  \sim\mathcal{G}_{\mathrm{Pa}(v,s_v^1)}$
+
+the base distributions of the PYP at vertex $v$ all vertices in the GPYP DAG that have no incoming edges (``leaves''), however it still remains to sample from the rest.  The key insight into how this can be done is to realize that the tables $\{\phi_v^k\}_{k=1}^{K_v}$ in restaurant $v$ are customers in MFCRP representations of the base distribution of $v$.   
+
+Once all of the leaves in the GPYP DAG have been converted into a multi-floor Chinese restaurant representation, it becomes apparent that all of the base distributions of those PYP's can also be represented in the multi-floor Chinese restaurant representation, and so on recursively until all of the PYP's in the GPYP DAG have been converted into such a representation.  This reasoning follows exactly that used in developling the Chinese restaurant franchise sampler \citep{TehJorBea2006}.  In the multi-floor sampler above, when a new floor is chosen and a table at which to sit is selected from it, a label for that table must be drawn from the corresponding component of the mixture base distribution.  This corresponds exactly to having a new customer enter the corresponding multi-floor restaurant corresponding to the component PYP base distribution chosen.  Conversely, when a table gets deleted, this corresponds to a customer leaving the parent restaurant.  
+}
+\comment{
+Starting at a sink vertex (a vertex with only incoming edges) in the GPYP DAG
+In the MFCRF none of the $\mathcal{G}_v$'s are represented and instead all of them are integrated out.  The MFCRP allows us to evaluate $P(x_v^{n+1} | \bz_v, \Phi_v, \bx_v, S_v)$ by marginalizing over $z_v^{n+1}$ if we can evaluate  $\mathcal{G}_w(\phi_v).$
+}
+\comment{from the distributions
+\[P(s_v^k | S_v \backslash s_v^k, \Lambda_v)\] and  
+\[P(\phi_v^k | \Phi_v \backslash \phi_v^k, \bx_v)\] }
+\comment{
+base distribution component $\phi_v^k$ was drawn, (i.e.~$c_v^k = \sum_{n=1}^{N_v} z_v^n$) $s_v^k \sim \{\lambda_{{\mathrm{Pa}(v) \rightarrow v}}\}$
+
+To lay out the MFCRP we need a two sets of auxiliary indicator variables to indicate and a set of variables  
+
+We start our description of the MFCRF by first describing the MFCRP.  Let first on a single (leaf) vertex $v$, note that we can, as usual, marginalize out $\mathcal{G}_v$ and sample directly from $P(x | \bx_v\backslash x, \Theta)$ by making use of the Chinese restaurant representation.  Being able to sample from $P(x | \bx_v\backslash x, \Theta)$ makes sampling the entire posterior distribution feasible.  In the Chinese restaurant representation the sampler state consists of a set of tables and and the seating arrangement of 
+s at those tables.  Because the base distribution here is a mixture, each table will be identified by two labels, $s_v^k$ and $\phi_v^k$; $s_v^k \sim \{\lambda_{e_{v \rightarrow \mathrm{Pa}(v)}}\}$ is a ``switch'' or ``floor'' variable which indicates from which base distribution component $\phi_v^k$ was drawn, and $\phi_v^k \sim \mathcal{G}_{s_v^k}$ is a draw from the component of the mixture indicated by $s_v^k$.  Let $\{[s_v^k,\phi_v^k]\}_{k=1}^K$ be the current set of tables in the restaurant representation of the PYP at vertex $v$ and let $\{c_v^k\}_{k=1}^K$ be the number of customers currently sitting at each.  Let $z_v^n$ be an indicator variable that indicates at which table in the restaurant $x_v^n$ sits (i.e.~$c_v^k = \sum_{n=1}^{N_v} z_v^n$) then according to the Chinese restaurant process 
+%
+\begin{eqnarray}
+P(z_v^n = k | \mbox{ everything else}) &\propto& \left(c_v^k-d_v\right)\mathcal{F}(x_n^n|\phi_v^k) \nonumber \\
+P(z_v^n = K_v+1| \mbox{ everything else})  &\propto& (\alpha_v+d_vK_v )\sum_{w \in \mathrm{Pa}(v)}\lambda_{e_{v \rightarrow w}} \int \mathcal{F}(x_n^n|\phi_v)\mathcal{G}_w(\phi_v)d\phi_v  \nonumber.
+\end{eqnarray}
+%
+Again, in the HPYLM and the DHPYLM $\mathcal{G}_w$ is a measure over a discrete space and $\mathcal{F}(x,\phi_v^n) = \delta(x-\phi_v^n)$ making both of the formula above much simpler.  %Note that in the first line above we have implicitly marginalized out $s_v^k.$
+
+
+
+Having introduced auxiliary ``floor'' indicator variables $\{s_v^k\}_{k=1}^K$ we must also sample them as well.  If $\mathcal{S}$ is chosen to be conjugate to $\{\lambda_{e_{v \rightarrow \mathrm{Pa}(v)}}\}$ then the $\lambda$'s too can be marginalized out making sampling $s_v^k | \{s_v^j : j \neq k\}$ straightforward.
+
+\subsection{GPYP POSTERIOR ESTIMATION}
+
+
+
+Sampling of the remaining latent-parameters can be accomplished using standard Metropolis Hastings updates or by means analogous to the auxiliary variable scheme employed in \citep{Teh2006a}.
+}%
+%
+\comment{For generating from such a model this description is sufficient, but in practical circumstances where one wants to generate posterior samples from such a model given a set of observations one must introduce an auxiliary variable scheme to keep track of from which base distribution the atoms of the GPYP were drawn.}
+
+\comment{If we view $\sum_{w \in \mathrm{Pa}(v)}\lambda_{e_{v \rightarrow w}} \mathcal{G}_w$ as defining a joint distribution over $\{w, s\}$ with $s \sim \{\lambda_{e_{v \rightarrow \mathrm{Pa}(v)}}\}$ and $w \sim \mathcal{G}_s$ then we can write the GPYP in the infinite sum of weighted atoms form \citep{sethuraman94}
+\[\mathcal{G}_{v}(x,s) = \sum_{k=1}^\infty \pi_k \delta(\phi_k - x) \delta(s_k - s).\]
+In this form it is straightforward to arrive at the marginals $\mathcal{G}_{v}(w)$ and $\mathcal{G}_{v}(s)$.  Given a set of observations $W = \{w\}$
+\comment{
+\begin{eqnarray*}
+\mathcal{G}_{\{\bf{w}\}}^{\mathcal{D}}(w) &=& \int \mathcal{G}_{\{\bf{w}\}}^{\mathcal{D}}(w,s)ds \\
+&=& \int \sum_{k=1}^\infty \pi_k \delta(\phi_k - w) \delta(s_k - s)ds \\
+&=& \sum_{k=1}^\infty \pi_k \delta(\phi_k - w)
+\end{eqnarray*}
+}}
+\comment{
+An intuitive understanding of this model architecture can be gleaned by focusing on generating a new token from a single domain-specific leaf distribution (i.e. given a single particular context) in a DHPYLM with suffix tree depth corresponding to a bi-gram model (deeper hierarchies  follow straightforwardly).  We will show how to sample from $\mathcal{G}_{\{w_{t-1}\}}^{\mathcal{D}}$, the second line above, assuming a very shallow HPYLM model structure making it one of the leaves in the tree.  Note that we can use the Chinese restaurant (CRP) representation of this PYP to draw from the posterior PYP with ${G}_{\{w_{t+1}\}}^{\mathcal{D}}$ integrated out.  The Chinese restaurant process in this case (or Chinese restaurant franchise for the case of the entire hierarchy) consists of a restaurant full of tables that are each labeled by a word type (and ultimately a ``switch'' variable, more on that later), each of which has some number of customers sitting at it.  Assuming that $N$ tokens (customers) have already been generated (seated) in this context, and that these $N$ tokens consist of $K$ unique types $\{t_k\}_{k=1}^K$ (tables in the CRP) with the number of times each type was drawn (number of customers sitting at each table) being equal to $c_k$ (i.e.~$\sum_{k=1}^Kc_k = N$) , then 
+%
+\begin{eqnarray}
+P(w \mbox{ sits at table } k) &\propto& \left(c_k-d_1^{\mathcal{D}}\right)\delta(w-t_k) \nonumber \\
+P(w \mbox{ generates a new table})  &\propto& \left(\alpha_1+d_1^{\mathcal{D}}K\right)\left(\psi_{1}^{\mathcal{D}}\mathcal{G}_{\{\}}^{\mathcal{D}}(w) + (1-\psi_{1}^{\mathcal{D}})\mathcal{G}_{\{w_{t-1}\}}^{\mathcal{L}}(w)\right) \label{eqn:gpyp_new_table}.
+\end{eqnarray}
+%
+If $\{\psi_j^\mathcal{D}\}_{j=1}^n$ are fixed parameters then these distributions are sufficient to define a CRP sampler for the DHPYLM, in fact these are the usual CRP sampler equations for the HPYLM.  Unfortunately we have no way of knowing the distribution $\{\psi_{j}^{\mathcal{D}}, (1-\psi_{j}^{\mathcal{D}})\}$ in advance (here in this example $j=1$)  and thus choose to place a vague prior on it and integrate it out as well.  In fact, we place a PYP prior on this distribution as well 
+%
+\[ \{\psi_{j}^{\mathcal{D}}, (1-\psi_{j}^{\mathcal{D}})\} \sim \text{PY}(d_j^s,\alpha_j^s,\mathcal{S})\]
+% 
+where $\mathcal{S}$ is the uniform distribution over $[0,1]$.  This is a justifiable prior to use as using a PYP can be seen a generalization of putting a Beta prior on $\psi_{j}^{\mathcal{D}}.$  Also, by using a PYP prior here we can easily generalize the model to more than two domain-specific corpora.  If we introduce an hidden variable per table in every context/restaurant, $s_k \sim  \{\psi_{j}^{\mathcal{D}}, (1-\psi_{j}^{\mathcal{D}})\}$ (assuming that the context is implicit and dropping any notational reference to it) we can use a CRP sampler to sample the values of the $s_k$'s as well. 
+
+One might reasonable ask at this point, "what the hell is going on here?"  What is going on is that we have introduced a novel but straightforward statistical object, one we call a graphical Pitman Yor process.  Simplifying and abstracting this object away from the hierarchical language modeling notation we are left with
+
+}
+\subsection{DHPYLM ESTIMATION}
+
+Note that the DHPYLM language model as previously described is a GPYP with a likelihood of the form  $\mathcal{F}(x;\psi) = \delta(x-\psi)$ where $x$ is a token (word instance) and $\psi$ is a type (unique word identity).   To be concrete we restrict ourselves to describing the specific model used in our experiments.  This is a DHPYLM model with context length equal to two (corresponding to a trigram model) and with the $\Lambda_j^\mathcal{D}$'s shared across restaurants on the same level of the tree (see the dotted lines in the schematic on the left in Fig.~\ref{figure:model}).  This clearly is not a restriction imposed by the underlying model; greater depths and different tying of the back-off mixtures are certainly possible.  The prior we use is $\mathcal{S}_j =  \text{PYP}(d_j^\mathcal{S},\alpha_j^\mathcal{S},\mathcal{U}_2)$ where $\mathcal{U}_2$ is the uniform distribution over $\{0,1\}.$   By choosing this prior we are able to marginalize out the $\Lambda$'s and utilize the general GPYP process estimation machinery to sample the switch variables as well.  This is a difference worth highlighting between our approach to language model domain adaption and the prior art.  We do not learn a single set of back-off parameters but instead marginalize them out through sampling.  By placing a prior on the $\lambda$'s, explicitly representing the ``floor'' in the MFCRP, and sampling floor indicator variables implicitly averages over various degrees of in- and out-of-domain back-off.
+
+Tying the $\lambda$'s together results in sharing of back-off behavior between different contexts (i.e.~choosing whether to ``back-off to an in-domain distribution over words given a context with one fewer tokens of history'' or to ``switch to the latent domain with the full context.'').  The characteristics of this sharing structure can easily vary from the independent style of \cite{knesers93} to the single back-off style of \cite{bacchianis06}.
+
+Metropolis updates were used to sample all of the $\alpha$'s and $d$'s in the model.  A $\mbox{Gamma}(1,1)$ prior was placed on the $\alpha$'s.  A uniform prior was placed on the $d$'s.  
+
+\comment{It is in this representation that intuitions about the behaviour of the switch variables' effect on the domain adaptation performance of the DHPYLM are most readily developed.  For example, mentioning , we found that in the top level restaurants corresponding to the distributions over words given no context the model learns to set the switch variables to switch out of the context and into the latent context approximately thirty percent of the time and less for greater depths.  This could be because of}
+
+
+
+
+\section{}
+
+\section{Related Work}
+
+http://people.csail.mit.edu/jrg/2006/hsu\_emnlp06.pdf
+http://www.panl10n.net/english/final%20reports/pdf%20files/Bangladesh/BAN08.pdf
+http://www.coli.uni-saarland.de/~thorsten/tnt/
+
+\subsubsection*{Acknowledgments}
+
+\subsubsection*{References}
+\begin{small}
+\bibliographystyle{plainnat}
+\bibliography{../uber} 
+%\input{modrefs}
+\end{small}
+\end{document}
