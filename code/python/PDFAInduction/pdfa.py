@@ -1,7 +1,7 @@
 import random
 from sys import maxint
 from math import log
-from special import lgamma
+from special import lgamma, stirling
 from collections import deque
 
 def mh_sample(seq,num_samples,a,a_0,b,init=None):
@@ -17,27 +17,59 @@ def mh_sample(seq,num_samples,a,a_0,b,init=None):
 		pdfas = [init]
 	scores = [old_machine.scoreseq(seq)]
 	numstates = [old_machine.numstates()]
+	alpha_0s = [old_machine.alpha_0]
+	alphas = [old_machine.alpha]
+	betas = [old_machine.beta]
 	for t in range(num_samples):
-		print 'Sweep:', t, 'out of', num_samples, '\n\t', numstates[-1], 'states'
+		print 'Sweep:', t, 'out of', num_samples, '\n\t', numstates[-1], 'states\n\talpha_0 =', old_machine.alpha_0, '\n\talpha = ', old_machine.alpha, '\n\tbeta = ', old_machine.beta, '\n\tTraining log likelihood = ', scores[-1], '\n'
 		machine = old_machine.deepcopy()
 		for pair in old_machine.t:
 			if pair in machine.t:
-				for i in range(10): # sample multiple possible assignments for this state/symbol transition given the rest of the transitions
+				for i in range(5): # sample multiple possible assignments for this state/symbol transition given the rest of the transitions
 					new_machine = machine.deepcopy()
-					new_machine.removepair(pair)
-					counts = new_machine.count(seq) # since only pair has been changed, the sequence must visit this pair at least once and pick a new following state
-					score = new_machine.score(counts)
-					if log(random.random()) < score - scores[-1]: # accept the sample
-						machine = new_machine
-						map(machine.removepair,[x for x in counts if counts[x] == 0])
-						scores.append(score)
-					else:
-						scores.append(scores[-1])
-					numstates.append(machine.numstates())
+					new_machine.removepair(pair) # the state following this pair will be resampled when we call new_machine.count
+					machine,new_score,new_numstates = sample_machine(machine,new_machine,seq,scores[-1])
+					scores.append(new_score)
+					numstates.append(new_numstates)
+		old_machine = machine
+		for symbol in range(old_machine.S):
+			for table in old_machine.k[symbol]:
+				if table in machine.k:
+					for i in range(5): # do this a few times too
+						dish = machine.k[symbol][table]
+						new_machine = machine.deepcopy()
+						del new_machine.k[symbol][table]
+						new_machine.m[dish] -= 1
+						if new_machine.m[dish] == 0:
+							del new_machine.m[dish]
+						new_dish = crp(new_machine.m,new_machine.alpha_0)
+						new_machine.k[symbol][table] = new_dish
+						if new_dish in new_machine.m:
+							new_machine.m[new_dish] += 1
+						else:
+							new_machine.m[new_dish] = 1
+						machine,new_score,new_numstates = sample_machine(machine,new_machine,seq,scores[-1])
+						scores.append(new_score)
+						numstates.append(new_numstates)
+		old_machine = machine
+		old_machine.sample_alpha_0()
+		old_machine.sample_alpha()
+		old_machine.sample_beta(seq,scores[-1])
+		alpha_0s.append(old_machine.alpha_0)
+		alphas.append(old_machine.alpha)
+		betas.append(old_machine.beta)
 		if t % 10 == 9:
 			pdfas.append(machine)
-		old_machine = machine
-	return [pdfas, scores, numstates]
+	return [pdfas, scores, numstates, alpha_0s, alphas, betas]
+
+def sample_machine(old_machine,machine,seq,old_score):
+        counts = machine.count(seq)
+	score = machine.score(counts)
+        if log(random.random()) < score - old_score: # accept the sample
+                map(machine.removepair,[x for x in counts if counts[x] == 0])
+                return (machine,score,machine.numstates())
+        else:
+                return (old_machine,old_score,old_machine.numstates())
 
 class PDFA:
 	def __init__(self, num_symbols=2, a=1.0, a_0=1.0, b=1.0): # if any of the hyperparameters are set to None, place a vague Gamma prior on them and sample
@@ -160,6 +192,34 @@ class PDFA:
 			state = self.next(state,symbol)
 			yield symbol
 
+	# Metropolis updates for all the hyperparameters with Gamma(1,1) priors
+	def sample_alpha_0(self):
+		alpha_0_new = random.gauss(self.alpha_0,0.1) # the proposal
+		if alpha_0_new > 0:
+			old_lik = len(self.m)*log(self.alpha_0) + log(self.alpha_0) - log(self.alpha_0 + sum(self.m.values())) - self.alpha_0
+			new_lik = len(self.m)*log(alpha_0_new) + log(alpha_0_new) - log(alpha_0_new + sum(self.m.values())) - alpha_0_new
+			if log(random.random()) < new_lik - old_lik:
+				self.alpha_0 = alpha_0_new
+
+	def sample_alpha(self):
+		alpha_new = random.gauss(self.alpha,0.1) # the proposal
+		if alpha_new > 0:
+			old_lik = sum(len(self.k[symbol])*log(self.alpha) + lgamma(self.alpha) - lgamma(self.alpha + len([x for x in self.t if x[1] == symbol])) for symbol in range(self.S)) - self.alpha
+			new_lik = sum(len(self.k[symbol])*log(alpha_new) + lgamma(alpha_new) - lgamma(alpha_new + len([x for x in self.t if x[1] == symbol])) for symbol in range(self.S)) - alpha_new
+			if log(random.random()) < new_lik - old_lik: # accept the sample
+				self.alpha = alpha_new
+
+	def sample_beta(self,seq,old_score):
+		beta_old = self.beta
+		old_lik = old_score - beta_old
+		self.beta = random.gauss(self.beta,0.1)
+		if self.beta > 0:
+			new_lik = self.scoreseq(seq) - self.beta
+			if log(random.random()) > new_lik - old_lik: # reject the sample
+				self.beta = beta_old
+		else:
+			self.beta = beta_old
+
 	def state(self,seq,start_state=0): # returns the state at which the machine ends given the input seq
 		for state,symbol in self.run(seq,start_state):
 			pass
@@ -190,7 +250,7 @@ class PDFA:
 		return state_counts
 
 	def score(self,counts): # Returns the log likelihood of the sequence given the PDFA.  I should double-check for the particle filter case that it's ok to average these.
-		s_counts = state_counts(counts)
+		s_counts = self.state_counts(counts)
 		return sum(lgamma(counts[x] + self.beta/self.S) - lgamma(self.beta/self.S) for x in counts) - sum(lgamma(s_counts[y] + self.beta) - lgamma(self.beta) for y in s_counts)
         
 	def particlescore(self,seq,n=1,prior_counts=None,start_state=0): # For n=1 gives the same answer as scoreseq.  Otherwise averages the probability of each symbol in a sequence over many particle samples
@@ -437,3 +497,45 @@ def gensym(x): # generates a random number not already in x
 		rand = random.randint(1,maxint)
 		if rand not in x:
 			return rand
+
+# averages over many pdfas.  prior_counts is now a *list* of arrays mapping state/symbol pairs to counts
+def avgscore(pdfas,seq,n=1,prior_counts=None,start_state=0): # For n=1 gives the same answer as scoreseq.  Otherwise averages the probability of each symbol in a sequence over many particle samples
+	if type(seq[0]) != list:
+		return avgscore(pdfas,[seq],n,prior_counts,start_state)
+	else:
+		if start_state == 0:
+			ss = [0 for x in range(len(pdfas))]
+		else:
+			ss = start_state
+		scores = []
+		for subseq in seq:
+			scores.append([0 for i in subseq])
+		for i in range(n):
+			if prior_counts == None:
+				counts = [{} for x in range(len(pdfas))]
+				state_counts = [{} for x in range(len(pdfas))]
+			else:
+				counts = prior_counts
+				state_counts = [dict([(i,sum(count[j] for j in count if j[0] == i)) for i in pdfas[k].m]) for k,count in enumerate(counts)]
+				for i,count in enumerate(counts):
+					state_counts[i][0] = sum(count[j] for j in count if j[0] == 0)
+			for s,pdfa in enumerate(pdfas):
+				old_t = pdfa.t.copy() # since scoring the sequence will create new state/symbol pairs, keep track of the new ones and remove them
+				for j,subseq in enumerate(seq):
+					for k,pair in enumerate(pdfa.run(subseq,ss[s])):
+						state,symbol = pair
+						if pair in counts[s]:
+   							scores[j][k] += (counts[s][pair] + pdfa.beta/pdfa.S)/(state_counts[s][state] + pdfa.beta)/n/len(pdfas)
+							counts[s][pair] += 1
+							state_counts[s][state] += 1 # if this state/symbol pair has been observed, then this state has definitely been observed, no need to worry about initializing it
+						else:
+							counts[s][pair] = 1
+							if state in state_counts[s]:
+								scores[j][k] += (pdfa.beta/pdfa.S)/(state_counts[s][state] + pdfa.beta)/n/len(pdfas)
+								state_counts[s][state] += 1
+							else:
+								scores[j][k] += 1/float(pdfa.S)/n/len(pdfas)
+								state_counts[s][state] = 1
+				map(pdfa.removepair,[x for x in pdfa.t if x not in old_t]) # removes added state/symbol pairs from the pdfa
+		return sum(sum(log(x) for x in y) for y in scores) # good lord this is crufty compared to the single-particle score
+
