@@ -1,6 +1,8 @@
-\section{A Generative Model for PDFAs}
+\section{Bayesian PDFA Inference}
 
-We assume that $Q$, $\Sigma$ and $q_0$ are known, and define a prior over $\delta$ and $\pi$.  We place a Dirichlet prior over every next symbol probability, and assume that each next state given a state/symbol pair is drawn from a multinomial probability for that symbol, which also has a Dirichlet prior over it.  Formally:
+The outline of this section is as follows.  We define a prior distribution over PDFAs with a fixed number of states and show that many of the parameters can be integrated out.  We derive a Metropolis-Hastings sampler for posterior inference in the finite model, and show that many of the elements of the transition matrix can be ignored without affecting the correctness of sampling.  We then let the number of states go to infinity and show that the limit is well defined.  This is the probabilistic deterministic infinite automaton (PDIA).  Inference in the PDIA carries over from the finite case in a natural way.
+
+We assume that the states $Q$, alphabet $\Sigma$ and initial state $q_0$ are known, and define a prior over the transition function $\delta$ and emission probabilities $\pi$.  In the finite case $\delta$ and $\pi$ can be thought of as matrices, with columns indexing elements of $\Sigma$ and rows indexing elements of $Q$.  We place a Dirichlet prior over every next symbol probability, and assume that each next state given a state/symbol pair is drawn from a discrete probability for that symbol, which also has a Dirichlet prior over it.  Formally:
 
 \begin{eqnarray}
 \mu|\gamma & \sim & \mathrm{Dir}\left(\gamma/|Q|,\ldots,\gamma/|Q|\right) \\
@@ -42,6 +44,6 @@ We can sample incrementally from the joint distribution over $x_{0:T}$ and $\del
  
 If the state/symbol pair $(q_i,s_j)$ has not been visited before, we have to sample $\delta_{ij}$.  The two-stage generative procedure for elements of $\delta$ means that we have to keep track of counts at two levels.  Each $\delta_{ij}$ belongs to a cluster $v_{kj}$ that contains other $\delta_{i'j}$, while each $v_{kj}$ belongs to a top-level cluster $w_{l}$ that has elements across all $j$.  Each top level cluster has one $q \in Q$ assigned to it, and $\delta_{ij}$ is equal to that $q$ in the top cluster that the cluster with $\delta_{ij}$ belongs to (*might want to make this part clearer...add a figure*).  Let $\delta^t$ denote the elements of $\delta$ that have been visited at time $t$.  as follows:
  
-%\[P(\delta_{ij} = k|\delta^t) \propto \begin{cases} & if $k \le |\delta^t|$ \cr  & if $k > |\delta^t|$ \end{cases}\]
+\[P(\delta_{ij} = k|\delta^t) \propto \begin{cases} & if $k \le |\delta^t|$ \cr  & if $k > |\delta^t|$ \end{cases}\]
  
  This process for sampling from an HDP when $\mu$ and $\phi_j$ are integrated out is known as the {\em Chinese Restaurant Franchise Process}.
