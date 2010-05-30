@@ -1,4 +1,26 @@
+% !TEX root = main.tex
 \section{Experiments and Results}
+
+
+\begin{table}[t]
+    \begin{center}
+    \setlength{\tabcolsep}{1.3mm}
+\begin{tabular}{r|cccccc}
+\hline
+& {\bf PDIA } & PDIA-MAP & PDIA-$\beta=0$ & HMM & SM & n-gram \\
+\hline
+AIW & &&&&&\\
+DNA & &&&&& \\
+\hline
+\hline
+AIW & &&&&&\\
+DNA & &&&&& \\
+\hline
+\end{tabular}
+\end{center}
+\caption[Short]{Benchmark performance of PDIA inference algorithms versus standard sequence models.}
+\label{table:results}
+\end{table}
 
 We ran the PDIA on two datasets: Alice in Wonderland and mouse DNA.  Alice in Wonderland was preprocessed to remove all non-alphabetic characters, shift upper case to lower case, and split along sentence dividers to yield a 27-character alphabet (a-z and space) and 1639 sentences with a total of 132794 characters.  We used the first 1200 sentences (100210 characters) to train the model and the rest to test.  For some experiments we also used a smaller subset of Alice in Wonderland consisting of 100 randomly chosen training sentences (9986 characters) and 50 random test sentences (3891 characters).  The mouse DNA dataset consists of a fragment of chromosome 2 with 194173 base pairs, which we treated as a single unbroken string.  We used the first 150000 base pairs for training and the rest for testing.  For Alice in Wonderland, the state of the model was always set to $q_0$ at the start of a string.  For DNA, the state of the model at the start of the test data was set to the last state of the model on the training data.
 
