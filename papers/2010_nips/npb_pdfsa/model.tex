@@ -1,10 +1,14 @@
+% !TEX root = main.tex
 \section{Bayesian PDFA Inference}
 
-The outline of this section is as follows.  We define a prior distribution over PDFAs with a fixed number of states and show that many of the parameters can be integrated out.  We derive a Metropolis-Hastings sampler for posterior inference in the finite model, and show that many of the elements of the transition matrix can be ignored without affecting the correctness of sampling.  We then let the number of states go to infinity and show that the limit is well defined.  This is the probabilistic deterministic infinite automaton (PDIA).  Inference in the PDIA carries over from the finite case in a natural way.
+To do Bayesian PDFA inference we start by defining a prior distribution over finite PDFAs and show how to marginalize out many nuisance parameters.  Using this collapsed representation we derive a Metropolis-Hastings sampler for posterior inference.  We then discuss the infinite states limit and define the probabilistic deterministic infinite automaton (PDIA).  We develop a PDIA sampler that carries over from the finite case in a natural way.
+
+%, and show that many of the elements of the transition matrix can be ignored without affecting the correctness of sampling
 
 \subsection{A Prior over PDFAs}
 
-We assume that the states $Q$, alphabet $\Sigma$ and initial state $q_0$ are known, and define a prior over the transition function $\delta$ and emission probabilities $\pi$.  In the finite case $\delta$ and $\pi$ can be thought of as matrices, with columns indexing elements of $\Sigma$ and rows indexing elements of $Q$.  For each column $j$ of the transition matrix $\delta$, we sample the rows i.i.d. from a discrete distribution $\bphi_j$ over $Q$, that is, $\delta \sim [\bphi_1\ldots\bphi_{|\Sigma|}]$.  The $\bphi_j$ themselves are sampled i.i.d. from a Dirichlet prior with parameters $\alpha\bmu$, where $\alpha$ is a concentration and $\bmu$ is itself drawn from a uniform Dirichlet distribution, with $\gamma$ total pseudocounts.  This hierarchical Dirichlet construction allows elements of $\delta$ to be coupled together in a way that remains well-behaved in the limit of infinite states.  We also place a uniform Dirichlet prior over the per-state emission probabilities $\bpi_i$ with $\beta$ total pseudocounts.  Formally:
+We assume that the set of states $Q$, set of symbols $\Sigma$, and initial state $q_0$ of a PDFA are known.  The PDFA prior then consists of a prior over both the transition function $\delta$ and the emission probability function $\pi$.  In the finite case $\delta$ and $\pi$ are representable as finite matrices, with one column per element of $\Sigma$ and one row per element of $Q$.  For each column $j$ ($j$ co-indexes columns and set elements) of the transition matrix $\delta$, our prior stipulates that the row elements of that column are  i.i.d. draws from a discrete distribution $\bphi_j$ over $Q$, that is, $\delta_{ij} \sim [\bphi_1,\ldots,\bphi_{|\Sigma|}], \; 0 \leq i\leq|Q|-1$.  The $\bphi_j$ represent state specific transition tendencies, if the $i$th element of $\phi_{j}$ is large then state $q_i$ is likely to be transitioned to anytime the last symbol was $j.$   The $\phi_{j}$'s are   themselves given a shared Dirichlet prior with parameters $\alpha\bmu$, where $\alpha$ is a concentration and $\bmu$ is a template transition probability vector.   If the $i$th element of $\bmu$ is large then the $i$th state is likely to be transitioned to regardless of the emitted symbol.  We place a uniform Dirichlet prior on $\bmu$ itself, with $\gamma$ total mass and average over $\bmu$ during inference.  This hierarchical Dirichlet construction encourages both general and context specific state reuse.
+ We also place a uniform Dirichlet prior over the per-state emission probabilities $\bpi_i$ with $\beta$ total mass which smooths emission distribution estimates.  Formally:
 
 \begin{eqnarray}
 \bmu|\gamma,|Q| & \sim & \mathrm{Dir}\left(\gamma/|Q|,\ldots,\gamma/|Q|\right) \label{gen:mu} \\
@@ -13,8 +17,9 @@ We assume that the states $Q$, alphabet $\Sigma$ and initial state $q_0$ are kno
 \delta_{ij} & \sim & \bphi_{j} \label{gen:delta}
 \end{eqnarray}
 
-where $i$ goes from 0 to $|Q|-1$ and $j$ goes from 1 to $|\Sigma|$.  From this we generate a sequence of $T$ symbols:
+where $0 \leq i \leq |Q|-1$ and $1 \leq j \leq |\Sigma|$.  Given a sample from this model we can run the PDFA to generate a sequence of $T$ symbols:
 
+ \fix{font issues}
 \begin{eqnarray}
 \q_0 & = & q_0 \label{gen:q0} \\
 x_0 & \sim & \bpi_0 \label{gen:x0} \\
@@ -22,23 +27,28 @@ x_0 & \sim & \bpi_0 \label{gen:x0} \\
 x_t & \sim & \bpi_t \label{gen:x}
 \end{eqnarray}
 
-We choose this particular inductive bias, with transitions tied together within a column of $\delta$, because the most recent symbol ought to be informative about what the next state is.  If we instead had a single Dirichlet prior over all elements of $\delta$, transitions to a few states would be highly likely no matter the context and those states would dominate the behavior of the automata.  If we tied together rows of $\delta$ instead of columns, being in a particular state would tell us more about the sequence of states we came from than the symbols that got us there.  As we would like states to be good statistics of the past for predicting the future, a bias that depends on the most recent symbol is preferable.
+We choose this particular inductive bias, with transitions tied together within a column of $\delta$, because we wanted the most recent symbol to be informative about what the next state is.  If we instead had a single Dirichlet prior over all elements of $\delta$, transitions to a few states would be highly likely no matter the context and those states would dominate the behavior of the automata.  If we tied together rows of $\delta$ instead of columns, being in a particular state would tell us more about the sequence of states we came from than the symbols that got us there.  
+%As we would like states to be good statistics of the past for predicting the future, a bias that depends on the most recent symbol is preferable.
 
-Given data, the likelihood is
+\subsection{PDFA likelihood}
 
-\[ p(x_{0:T}|\delta,\pi) = \pi(\q_0,x_0)\prod_{t=1}^T \pi(\q_t,x_t) \label{x:def} \]
+Given observational data, we are interested in learning a posterior distribution over PDFAs.  To start inference we need the likelihood function for a fixed PDFA. It is given by 
 
-We can marginalize out $\pi$ and express the likelihood in a form that depends only on the counts of symbols emitted from each state.  Define the count matrix $c$ for the sequence $x_{0:T}$ and transition matrix $\delta$ as $c_{ij} = \displaystyle\sum_{t=0}^T I_{ij}(\q_t,x_t)$, where $I_{ij}(\q_t,x_t)$ is an indicator function that is 1 if $\q_t = q_i$ and $x_t = \sigma_j$, 0 otherwise. This matrix gives the number of times each symbol is emitted from each state.  Thanks to multinomial-Dirichlet conjugacy we can integrate out $\pi$ and express the probability of a sequence given the transition function $\delta$ solely in terms of $c$ and $\beta$:
+\[ p(x_{0:T}|\delta,\pi) = \pi(\q_0,x_0)\prod_{t=1}^T \pi(\q_t,x_t) \label{x:def} \].
+
+Remember that $\q_t | \q_{t-1}, x_{t-1}$ is deterministic and given by $\delta$.  Note that our prior is a fully connected PDFA in which all states may transition to all others and all symbols may be emitted from each state.  This is slightly different that the cannonical finite state machine literature where sparse connectivity is usually the norm.
+
+We can marginalize out $\pi$ and express the likelihood in a form that depends only on the counts of symbols emitted from each state.  Define the count matrix $c$ for the sequence $x_{0:T}$ and transition matrix $\delta$ as $c_{ij} = \displaystyle\sum_{t=0}^T I_{ij}(\q_t,x_t)$, where $I_{ij}(\q_t,x_t)$ is an indicator function that returns 1 if the automaton was in state $q_i$ when it generated $x_t$ at step $t$ in the sequence, i.e. $\q_t = q_i$ and $x_t = \sigma_j$, and 0 otherwise. This matrix $c = [c_{ij}]$ gives the number of times each symbol is emitted from each state.  Due to multinomial-Dirichlet conjugacy we can analytically marginalize out $\pi$ and express the probability of a sequence given the transition function $\delta$ solely in terms of $c$ and $\beta$:
 
 \begin{eqnarray}
- p(x_{0:T}|\delta,\beta) & = & \int p(x_{0:T}|\pi,\delta) p(\pi|\beta) d\pi \label{x:factor} \\
- & = &  \prod_{i=0}^{|Q|-1} \frac{\Gamma(\beta)}{\Gamma(\frac{\beta}{|\Sigma|})^{|\Sigma|}} \int\pi_{i1}^{\frac{\beta}{|\Sigma|}+c_{i1}-1} \pi_{i2}^{\frac{\beta}{|\Sigma|}+c_{i2}-1} \ldots \pi_{i|\Sigma|}^{\frac{\beta}{|\Sigma|}+c_{i|\Sigma|}-1} d\bpi_i \label{x:int}\\
+ p(x_{0:T}|\delta,c,\beta) & = & \int p(x_{0:T}|\pi,\delta) p(\pi|\beta) d\pi \label{x:factor} \\
+ %& = &  \prod_{i=0}^{|Q|-1} \frac{\Gamma(\beta)}{\Gamma(\frac{\beta}{|\Sigma|})^{|\Sigma|}} \int\pi_{i1}^{\frac{\beta}{|\Sigma|}+c_{i1}-1} \pi_{i2}^{\frac{\beta}{|\Sigma|}+c_{i2}-1} \ldots \pi_{i|\Sigma|}^{\frac{\beta}{|\Sigma|}+c_{i|\Sigma|}-1} d\bpi_i \label{x:int}\\
  & = & \prod_{i=0}^{|Q|-1} \frac{\Gamma(\beta)}{\Gamma(\frac{\beta}{|\Sigma|})^{|\Sigma|}} \frac{\prod_{j=1}^{|\Sigma|}\Gamma(\frac{\beta}{|\Sigma|} + c_{ij})}{\Gamma(\beta + \sum_{j=1}^{|\Sigma|} c_{ij})} \label{x:end}
  \end{eqnarray}
  
- The dependence of $c$ on $\delta$ is only through $\q_{0:T}$, and changing a single element of $\delta$ can have a complex effect on $c$.  By changing a single transition $\delta_{ij}$, all states downstream of the first time $q_i$ emits $\sigma_j$ are affected, and some elements of $c$ that were zero may become nonzero, and vice versa.
  
- The likelihood of a particular transition matrix $\delta$ given $\bmu$ has a similar form.  Let $v_{ij}$ be the number of times that $\delta_{i'j} = q_i$ for all $i'$ in the column $j$, that is, $v_{ij} = \displaystyle\sum_{i' = 0}^{|Q|-1} I_{i}(\delta_{i'j})$, $I_i(q_{i'})$ being the indicator function that is only 1 when $q_i' = q_i$.  Given $\bmu$, we can integrate out $\phi$ and express the likelihood of $\delta$ in terms of $\bmu$:
+ 
+ Given that the state to state transitions are deterministic, we can treat them like observations and express the likelihood of a particular transition matrix $\delta$ given $\bmu$.  Let $v_{ij}$ be the number of times state $q_i$ is transitioned to given that $\sigma_j$ was the last emission, i.e. $\delta_{i'j} = q_i$ for all $i'$ in the column $j$, that is, $v_{ij} = \displaystyle\sum_{i' = 0}^{|Q|-1} I_{i}(\delta_{i'j})$, $I_i(q_{i'})$ being the indicator function that is only 1 when $q_i' = q_i$.  Given $\bmu$, we can integrate out $\phi$ and express the likelihood of $\delta$ in terms of $\bmu$:
  
  \begin{eqnarray}
  p(\delta|\bmu,\alpha) & = & \int p(\delta|\phi)p(\phi|\bmu,\alpha) d\phi \label{delta:factor}\\
@@ -55,6 +65,8 @@ We can marginalize out $\pi$ and express the likelihood in a form that depends o
 These are the ingredients we need for posterior inference.
  
  \subsection{Posterior Inference in the Finite Model}
+ 
+ The dependence of $c$ on $\delta$ is only through $\q_{0:T}$, and changing a single element of $\delta$ can have a complex effect on $c$.  By changing a single transition $\delta_{ij}$, all states downstream of the first time $q_i$ emits $\sigma_j$ are affected, and some elements of $c$ that were zero may become nonzero, and vice versa.
  
 We perform posterior inference in the finite model by Gibbs sampling elements of $\delta$ and the vector $\bmu$.  From the formulas above, it is straightforward to write down the conditional probability for one element of the transition matrix $\delta$.  If $\delta_{ij}$ is the element we are sampling, and $\delta_{-ij}$ is the rest of the matrix, with $\delta_{ij}$ removed, then
 
