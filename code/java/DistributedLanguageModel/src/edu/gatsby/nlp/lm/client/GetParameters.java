@@ -1,7 +1,7 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this template, choose Tools | Templates
+* and open the template in the editor.
+*/
 package edu.gatsby.nlp.lm.client;
 
 import edu.gatsby.nlp.lm.LMIPCProtos.ErrorResponse;
@@ -13,9 +13,9 @@ import edu.gatsby.nlp.lm.LMIPCProtos.Response;
 import java.io.IOException;
 
 /**
- *
- * @author fwood
- */
+*
+* @author fwood
+*/
 public class GetParameters extends Client {
 
     public static void main(String args[]) {
@@ -33,7 +33,7 @@ public class GetParameters extends Client {
         try {
             port = Integer.valueOf(args[1]);
         } catch (Exception e) {
-            System.err.println("Usage Error: port  is not an integer");
+            System.err.println("Usage Error: port is not an integer");
             System.err.println(usage);
             System.exit(-1);
         }
@@ -110,3 +110,4 @@ public class GetParameters extends Client {
 
     }
 }
+

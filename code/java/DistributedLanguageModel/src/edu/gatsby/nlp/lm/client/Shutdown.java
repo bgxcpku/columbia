@@ -1,7 +1,7 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this template, choose Tools | Templates
+* and open the template in the editor.
+*/
 package edu.gatsby.nlp.lm.client;
 
 import edu.gatsby.nlp.lm.LMIPCProtos.ErrorResponse;
@@ -12,9 +12,9 @@ import edu.gatsby.nlp.lm.LMIPCProtos.ShutdownRequest;
 import edu.gatsby.nlp.lm.LMIPCProtos.ShutdownResponse;
 
 /**
- *
- * @author fwood
- */
+*
+* @author fwood
+*/
 public class Shutdown extends Client {
 
     public static void main(String args[]) {
@@ -66,7 +66,7 @@ public class Shutdown extends Client {
 
                 break;
             default:
-                System.err.print("Server Error: response of type " + response.getType() + " returned instead of ADD");
+                System.err.print("Server Error: response of type " + response.getType() + " returned instead of SHUTDOWN");
         }
         try {
             response = Response.parseFrom(client.streamResponse());
@@ -92,3 +92,4 @@ public class Shutdown extends Client {
         client.disconnect();
     }
 }
+

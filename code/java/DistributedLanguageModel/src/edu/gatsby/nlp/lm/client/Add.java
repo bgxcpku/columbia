@@ -1,7 +1,7 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this template, choose Tools | Templates
+* and open the template in the editor.
+*/
 package edu.gatsby.nlp.lm.client;
 
 import edu.gatsby.nlp.lm.LMIPCProtos.Response;
@@ -15,9 +15,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- *
- * @author fwood
- */
+*
+* @author fwood
+*/
 public class Add extends Client {
 
     public static void main(String args[]) {
@@ -126,3 +126,4 @@ public class Add extends Client {
 
     }
 }
+

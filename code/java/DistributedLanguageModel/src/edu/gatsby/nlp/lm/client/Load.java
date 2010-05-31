@@ -1,7 +1,7 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this template, choose Tools | Templates
+* and open the template in the editor.
+*/
 package edu.gatsby.nlp.lm.client;
 
 import edu.gatsby.nlp.lm.LMIPCProtos.ErrorResponse;
@@ -13,9 +13,9 @@ import edu.gatsby.nlp.lm.LMIPCProtos.Response;
 import java.io.IOException;
 
 /**
- *
- * @author fwood
- */
+*
+* @author fwood
+*/
 public class Load extends Client {
 
     public static void main(String args[]) {
@@ -83,7 +83,7 @@ public class Load extends Client {
 
                     break;
                 default:
-                    System.err.print("Server Error: response of type " + response.getType() + " returned instead of SAVE");
+                    System.err.print("Server Error: response of type " + response.getType() + " returned instead of LOAD");
             }
             response = Response.parseFrom(streamResponse());
             switch (response.getType()) {
@@ -113,3 +113,4 @@ public class Load extends Client {
 
     }
 }
+

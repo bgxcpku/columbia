@@ -1,7 +1,7 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this template, choose Tools | Templates
+* and open the template in the editor.
+*/
 package edu.gatsby.nlp.lm.client;
 
 import edu.gatsby.nlp.lm.LMIPCProtos.ErrorResponse;
@@ -20,9 +20,9 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 /**
- *
- * @author fwood
- */
+*
+* @author fwood
+*/
 public class PredictAndLookupSequence extends Client {
 
     static HashMap<Integer, String> dictionary;
@@ -135,7 +135,7 @@ public class PredictAndLookupSequence extends Client {
                     List<Integer> predictions = predictResponse.getPredictionList();
                     return predictions.get(0);
                 default:
-                    System.err.print("Server Error: response of type " + response.getType() + " returned instead of ADD");
+                    System.err.print("Server Error: response of type " + response.getType() + " returned instead of PREDICT");
             }
             response = Response.parseFrom(streamResponse());
             switch (response.getType()) {
@@ -166,3 +166,4 @@ public class PredictAndLookupSequence extends Client {
 
     }
 }
+

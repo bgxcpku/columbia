@@ -1,7 +1,7 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this template, choose Tools | Templates
+* and open the template in the editor.
+*/
 package edu.gatsby.nlp.lm.client;
 
 import edu.gatsby.nlp.lm.LMIPCProtos.AddRequest;
@@ -19,9 +19,9 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 /**
- *
- * @author fwood
- */
+*
+* @author fwood
+*/
 public class AddCorpusFromIntFile extends Client {
 
     static boolean DEBUG = false;
@@ -224,3 +224,4 @@ public class AddCorpusFromIntFile extends Client {
 
     }
 }
+

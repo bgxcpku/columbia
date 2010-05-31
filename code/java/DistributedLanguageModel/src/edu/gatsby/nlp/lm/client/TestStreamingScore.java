@@ -1,7 +1,7 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this template, choose Tools | Templates
+* and open the template in the editor.
+*/
 package edu.gatsby.nlp.lm.client;
 
 import edu.gatsby.nlp.lm.LMIPCProtos.ErrorResponse;
@@ -16,9 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
- * @author fwood
- */
+*
+* @author fwood
+*/
 public class TestStreamingScore extends Client {
 
     public static void main(String args[]) {
@@ -99,8 +99,8 @@ public class TestStreamingScore extends Client {
             requestBuilder.clear();
 
         //} catch (IOException e) {
-        //    e.printStackTrace();
-        //   System.exit(-1);
+        // e.printStackTrace();
+        // System.exit(-1);
         //}
 
         }
@@ -169,3 +169,4 @@ public class TestStreamingScore extends Client {
 
     }
 }
+

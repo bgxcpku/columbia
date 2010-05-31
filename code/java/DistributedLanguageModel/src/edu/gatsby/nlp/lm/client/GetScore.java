@@ -4,25 +4,30 @@
 */
 package edu.gatsby.nlp.lm.client;
 
-import edu.gatsby.nlp.lm.LMIPCProtos.Response;
-import edu.gatsby.nlp.lm.LMIPCProtos.RemoveRequest;
-import edu.gatsby.nlp.lm.LMIPCProtos.RemoveResponse;
 import edu.gatsby.nlp.lm.LMIPCProtos.ErrorResponse;
 import edu.gatsby.nlp.lm.LMIPCProtos.Request;
 import edu.gatsby.nlp.lm.LMIPCProtos.MessageType;
-import edu.gatsby.nlp.lm.LMIPCProtos.TokenListWithCount;
+import edu.gatsby.nlp.lm.LMIPCProtos.Response;
+import edu.gatsby.nlp.lm.LMIPCProtos.ScoreRequest;
+import edu.gatsby.nlp.lm.LMIPCProtos.ScoreResponse;
+import edu.gatsby.nlp.lm.LMIPCProtos.TokenList;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
 *
 * @author fwood
+*
+* The same as Score, except it returns the score rather than printing it.
+* Modified by David Pfau, 2010
+*
 */
-public class Remove extends Client {
+public class GetScore extends Client {
 
     public static void main(String args[]) {
-        String usage = "<server> <port> <domain> <count> <int> <int> <int> ... (context tuple in English reading order)";
-        if (args.length < 5) {
+        String usage = "<server> <port> <domain> <int> <int> <int> ... (context tuple in English reading order)";
+        if (args.length < 4) {
             System.err.println(usage);
             System.exit(-1);
         }
@@ -37,15 +42,14 @@ public class Remove extends Client {
         try {
             port = Integer.valueOf(args[1]);
             domain = Integer.valueOf(args[2]);
-            count = Integer.valueOf(args[3]);
         } catch (Exception e) {
-            System.err.println("Usage Error: port, domain, or count parameters is not an integer");
+            System.err.println("Usage Error: port or domain parameter is not an integer");
             System.err.println(usage);
             System.exit(-1);
         }
 
-        ArrayList<Integer> tokens = new ArrayList<Integer>(args.length - 4);
-        for (int i = 4; i < args.length; i++) {
+        ArrayList<Integer> tokens = new ArrayList<Integer>(args.length - 3);
+        for (int i = 3; i < args.length; i++) {
             try {
                 tokens.add(Integer.valueOf(args[i]));
             } catch (Exception e) {
@@ -55,21 +59,26 @@ public class Remove extends Client {
             }
         }
 
-        Remove client = new Remove();
+        GetScore client = new GetScore();
 
         client.connect(hostname, port);
-        client.remove(domain, count, tokens);
+        client.score(domain, tokens);
         client.disconnect();
     }
 
-    public void remove(int domain, int count, ArrayList<Integer> tokens) {
-        TokenListWithCount.Builder tokenlistBuilder = TokenListWithCount.newBuilder();
-        tokenlistBuilder.setCount(count);
-        tokenlistBuilder.addAllToken(tokens);
+    public double score(int domain, ArrayList<Integer> tokens) {
+        TokenList.Builder tokenlistBuilder = TokenList.newBuilder();
+        List<Integer> context = new ArrayList<Integer>();
+        if (tokens.size() > 1) {
+            context = tokens.subList(0, tokens.size() - 1);
+        }
+
+        Integer type = tokens.get(tokens.size() - 1);
+        tokenlistBuilder.addAllToken(context);
 
         Request.Builder requestBuilder = Request.newBuilder();
-        requestBuilder.setType(MessageType.REMOVE);
-        requestBuilder.setRemove(RemoveRequest.newBuilder().setDomain(domain).addTuple(tokenlistBuilder.build()).build());
+        requestBuilder.setType(MessageType.SCORE);
+        requestBuilder.setScore(ScoreRequest.newBuilder().setDomain(domain).addType(type).setContext(tokenlistBuilder.build()).build());
         Request request = requestBuilder.build();
         try {
             streamRequest(request);
@@ -81,6 +90,7 @@ public class Remove extends Client {
             streamRequest(request);
 
             cs.shutdownOutput();
+
             Response response = Response.parseFrom(streamResponse());
             switch (response.getType()) {
                 case ERROR:
@@ -90,15 +100,11 @@ public class Remove extends Client {
                         System.err.println("Server stack trace: " + error.getStackTrace());
                     }
                     break;
-                case REMOVE:
-                    RemoveResponse removeResponse = response.getRemove();
-
-                    if (removeResponse.getNumAdded() != count) {
-                        System.err.print("Server Error: Only " + removeResponse.getNumAdded() + " out of " + count + " observations added.");
-                    }
-                    break;
+                case SCORE:
+                    ScoreResponse scoreResponse = response.getScore();
+                    return scoreResponse.getScoreList().get(0);
                 default:
-                    System.err.print("Server Error: response of type " + response.getType() + " returned instead of REMOVE");
+                    System.err.print("Server Error: response of type " + response.getType() + " returned instead of SCORE");
             }
             response = Response.parseFrom(streamResponse());
             switch (response.getType()) {
@@ -117,13 +123,16 @@ public class Remove extends Client {
             }
 
 
+
+
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(-1);
         }
 
-
+        return -1.0;
 
 
     }
 }
+

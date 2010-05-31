@@ -1,7 +1,7 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this template, choose Tools | Templates
+* and open the template in the editor.
+*/
 package edu.gatsby.nlp.lm.client;
 
 import com.google.protobuf.CodedInputStream;
@@ -10,14 +10,14 @@ import edu.gatsby.nlp.lm.LMIPCProtos.Request;
 import java.net.Socket;
 
 /**
- *
- * @author fwood
- */
+*
+* @author fwood
+*/
 public class Client {
 
     protected Socket cs;
-//    protected BufferedInputStream inputStream;
-//    protected BufferedOutputStream outputStream;
+// protected BufferedInputStream inputStream;
+// protected BufferedOutputStream outputStream;
     protected CodedInputStream inputStream;
     protected CodedOutputStream outputStream;
 

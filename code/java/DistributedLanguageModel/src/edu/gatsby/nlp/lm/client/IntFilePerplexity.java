@@ -1,7 +1,7 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this template, choose Tools | Templates
+* and open the template in the editor.
+*/
 package edu.gatsby.nlp.lm.client;
 
 import com.google.protobuf.CodedInputStream;
@@ -22,9 +22,9 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 
 /**
- *
- * @author fwood
- */
+*
+* @author fwood
+*/
 public class IntFilePerplexity extends Client {
 
     static boolean DEBUG = false;
@@ -136,7 +136,7 @@ public class IntFilePerplexity extends Client {
                 for (int b = 0; b < client.tupleCounts.size(); b += 1000) {
                     client.connect(hostname, port);
                     int upper_lim = (b + 1000 > client.tupleCounts.size() ? client.tupleCounts.size() : (b + 1000));
-                    
+
                     client.partialPerplexity(partialPerplexity, b,upper_lim);
                     client.disconnect();
 
@@ -154,15 +154,15 @@ public class IntFilePerplexity extends Client {
                     sampleClient.connect(hostname, port);
                     sampleClient.sample(1);
                     sampleClient.disconnect();
-//                    Request.Builder requestBuilder = Request.newBuilder();
-//                    requestBuilder.setType(MessageType.SAMPLE);
-//                    requestBuilder.setSample(SampleRequest.newBuilder().setNumberOfSweeps(1).build());
-//                    Request request = requestBuilder.build();
-//                    client.streamRequest(request);
-//                    Response.Builder responseBuilder = Response.newBuilder();
-//                    responseBuilder.setType(MessageType.SAMPLE);
-//                    Response response = responseBuilder.build();
-//                    Response.parseFrom(streamResponse());
+// Request.Builder requestBuilder = Request.newBuilder();
+// requestBuilder.setType(MessageType.SAMPLE);
+// requestBuilder.setSample(SampleRequest.newBuilder().setNumberOfSweeps(1).build());
+// Request request = requestBuilder.build();
+// client.streamRequest(request);
+// Response.Builder responseBuilder = Response.newBuilder();
+// responseBuilder.setType(MessageType.SAMPLE);
+// Response response = responseBuilder.build();
+// Response.parseFrom(streamResponse());
                 }
             }
         } catch (IOException ioe) {
@@ -234,3 +234,4 @@ public class IntFilePerplexity extends Client {
 
     }
 }
+
