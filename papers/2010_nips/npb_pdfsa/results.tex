@@ -30,6 +30,21 @@ DNA & 46.0 & 49 & 46.2 & 95 & 5 & 21 & 85 & 341 & 1365 & \\
 \end{center}
 \end{figure}
 
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=10cm]{results/dna_sampler}
+\caption{DNA sampler trace }
+\label{fig:dna_sampler}
+\end{center}
+\end{figure}
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=10cm]{results/dna_numstates}
+\caption{DNA number of states}
+\label{fig:dna_numstates}
+\end{center}
+\end{figure}
 
 \begin{figure}[htbp]
 \begin{center}
@@ -41,20 +56,19 @@ DNA & 46.0 & 49 & 46.2 & 95 & 5 & 21 & 85 & 341 & 1365 & \\
 
 \begin{figure}[htbp]
 \begin{center}
-\includegraphics[width=5cm]{results/aiw_small_sampler_trace}
+\includegraphics[width=10cm]{results/aiw_small_sampler}
 \caption{AIW small sampler trace }
-\label{fig:aiw_small_sampler_trace}
+\label{fig:aiw_small_sampler}
 \end{center}
 \end{figure}
 
 \begin{figure}[htbp]
 \begin{center}
-\includegraphics[width=5cm]{results/dna_hmm_baseline}
-\caption{DNA EM }
-\label{fig:dna_hmm_baseline}
+\includegraphics[width=10cm]{results/aiw_small_numstates}
+\caption{AIW number of states}
+\label{fig:aiw_small_numstates}
 \end{center}
 \end{figure}
-
 
 We ran the PDIA on two datasets: Alice in Wonderland and mouse DNA.  Alice in Wonderland was preprocessed to remove all non-alphabetic characters, shift upper case to lower case, and split along sentence dividers to yield a 27-character alphabet (a-z and space) and 1639 sentences with a total of 132794 characters.  We used the first 1200 sentences (100210 characters) to train the model and the rest to test.  For some experiments we also used a smaller subset of Alice in Wonderland consisting of 100 randomly chosen training sentences (9986 characters) and 50 random test sentences (3891 characters).  The mouse DNA dataset consists of a fragment of chromosome 2 with 194173 base pairs, which we treated as a single unbroken string.  We used the first 150000 base pairs for training and the rest for testing.  For Alice in Wonderland, the state of the model was always set to $q_0$ at the start of a string.  For DNA, the state of the model at the start of the test data was set to the last state of the model on the training data.
 
