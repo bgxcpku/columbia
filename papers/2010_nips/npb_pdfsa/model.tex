@@ -1,44 +1,45 @@
 % !TEX root = main.tex
 \section{Bayesian PDFA Inference}
 
-To do Bayesian PDFA inference we start by defining a prior distribution over finite PDFAs and show how to marginalize out many nuisance parameters.  Using this collapsed representation we derive a Metropolis-Hastings sampler for posterior inference.  We then discuss the infinite states limit and define the probabilistic deterministic infinite automaton (PDIA).  We develop a PDIA sampler that carries over from the finite case in a natural way.
+We start our description of Bayesian PDFA inference by defining a prior distribution over the parameters of a finite PDFA.  We then show how to analytically marginalize nuisance parameters out of the model and derive a Metropolis-Hastings sampler for posterior inference using the resulting collapsed representation.  We discuss the limit of our model as the number of states in the PDFA goes to infinity.  We call this limit the probabilistic deterministic infinite automaton (PDIA).  We develop a PDIA sampler that carries over from the finite case in a natural way.
 
 %, and show that many of the elements of the transition matrix can be ignored without affecting the correctness of sampling
 
-\subsection{A Prior over PDFAs}
+\subsection{A PDFA Prior}
 
-We assume that the set of states $Q$, set of symbols $\Sigma$, and initial state $q_0$ of a PDFA are known.  The PDFA prior then consists of a prior over both the transition function $\delta$ and the emission probability function $\pi$.  In the finite case $\delta$ and $\pi$ are representable as finite matrices, with one column per element of $\Sigma$ and one row per element of $Q$.  For each column $j$ ($j$ co-indexes columns and set elements) of the transition matrix $\delta$, our prior stipulates that the row elements of that column are  i.i.d. draws from a discrete distribution $\bphi_j$ over $Q$, that is, $\delta_{ij} \sim [\bphi_1,\ldots,\bphi_{|\Sigma|}], \; 0 \leq i\leq|Q|-1$.  The $\bphi_j$ represent state specific transition tendencies, if the $i$th element of $\phi_{j}$ is large then state $q_i$ is likely to be transitioned to anytime the last symbol was $j.$   The $\phi_{j}$'s are   themselves given a shared Dirichlet prior with parameters $\alpha\bmu$, where $\alpha$ is a concentration and $\bmu$ is a template transition probability vector.   If the $i$th element of $\bmu$ is large then the $i$th state is likely to be transitioned to regardless of the emitted symbol.  We place a uniform Dirichlet prior on $\bmu$ itself, with $\gamma$ total mass and average over $\bmu$ during inference.  This hierarchical Dirichlet construction encourages both general and context specific state reuse.
+We assume that the set of states $Q$, set of symbols $\Sigma$, and initial state $q_0$ of a PDFA are known but that the transition and emission functions are unknown.  The PDFA prior then consists of a prior over both the transition function $\delta$ and the emission probability function $\pi$.  In the finite case $\delta$ and $\pi$ are representable as finite matrices, with one column per element of $\Sigma$ and one row per element of $Q$.  For each column $j$ ($j$ co-indexes columns and set elements) of the transition matrix $\delta$, our prior stipulates that the row elements of that column are  i.i.d. draws from a discrete distribution $\bphi_j$ over $Q$, that is, $\delta_{ij} \sim [\bphi_1,\ldots,\bphi_{|\Sigma|}], \; 0 \leq i\leq|Q|-1$.  The $\bphi_j$ represent state specific transition tendencies, if the $i$th element of $\phi_{j}$ is large then state $q_i$ is likely to be transitioned to anytime the last symbol was $j.$   The $\phi_{j}$'s are   themselves given a shared Dirichlet prior with parameters $\alpha\bmu$, where $\alpha$ is a concentration and $\bmu$ is a template transition probability vector.   If the $i$th element of $\bmu$ is large then the $i$th state is likely to be transitioned to regardless of the emitted symbol.  We place a uniform Dirichlet prior on $\bmu$ itself, with $\gamma$ total mass and average over $\bmu$ during inference.  This hierarchical Dirichlet construction encourages both general and context specific state reuse.
  We also place a uniform Dirichlet prior over the per-state emission probabilities $\bpi_i$ with $\beta$ total mass which smooths emission distribution estimates.  Formally:
-
+%
 \begin{eqnarray}
-\bmu|\gamma,|Q| & \sim & \mathrm{Dir}\left(\gamma/|Q|,\ldots,\gamma/|Q|\right) \label{gen:mu} \\
-\bphi_{j}|\alpha,\bmu  & \sim & \mathrm{Dir}(\alpha\bmu) \label{gen:phi} \\
-\bpi_{i}|\beta,|\Sigma| & \sim & \mathrm{Dir}(\beta/|\Sigma|,\ldots,\beta/|\Sigma|) \label{gen:pi}\\
-\delta_{ij} & \sim & \bphi_{j} \label{gen:delta}
+\bmu|\gamma,|Q| & \sim & \mathrm{Dir}\left(\gamma/|Q|,\ldots,\gamma/|Q|\right) \label{gen:mu} \nonumber \\
+\bphi_{j}|\alpha,\bmu  & \sim & \mathrm{Dir}(\alpha\bmu) \label{gen:phi} \nonumber \\
+\bpi_{i}|\beta,|\Sigma| & \sim & \mathrm{Dir}(\beta/|\Sigma|,\ldots,\beta/|\Sigma|) \label{gen:pi} \nonumber \\
+\delta_{ij} & \sim & \bphi_{j} \label{gen:delta} \nonumber
 \end{eqnarray}
-
+%
 where $0 \leq i \leq |Q|-1$ and $1 \leq j \leq |\Sigma|$.  Given a sample from this model we can run the PDFA to generate a sequence of $T$ symbols:
-
- \fix{font issues}
+%
+ \fix[font issues]
 \begin{eqnarray}
-\q_0 & = & q_0 \label{gen:q0} \\
-x_0 & \sim & \bpi_0 \label{gen:x0} \\
-\q_t & = & \delta(\q_{t-1},x_{t-1}) \label{gen:q} \\
-x_t & \sim & \bpi_t \label{gen:x}
+\q_0 & = & q_0 \label{gen:q0} \nonumber \\
+x_0 & \sim & \bpi_0 \label{gen:x0} \nonumber \\
+\q_t & = & \delta(\q_{t-1},x_{t-1}) \label{gen:q} \nonumber \\
+x_t & \sim & \bpi_t \label{gen:x} \nonumber
 \end{eqnarray}
-
-We choose this particular inductive bias, with transitions tied together within a column of $\delta$, because we wanted the most recent symbol to be informative about what the next state is.  If we instead had a single Dirichlet prior over all elements of $\delta$, transitions to a few states would be highly likely no matter the context and those states would dominate the behavior of the automata.  If we tied together rows of $\delta$ instead of columns, being in a particular state would tell us more about the sequence of states we came from than the symbols that got us there.  
+%
+We choose this particular inductive bias, with transitions tied together within a column of $\delta$, because we wanted the most recent symbol emission to be informative about what the next state is.  If we instead had a single Dirichlet prior over all elements of $\delta$, transitions to a few states would be highly likely no matter the context and those states would dominate the behavior of the automata.  If we tied together rows of $\delta$ instead of columns, being in a particular state would tell us more about the sequence of states we came from than the symbols that got us there.  
 %As we would like states to be good statistics of the past for predicting the future, a bias that depends on the most recent symbol is preferable.
+
+ Note that this prior stipulates a fully connected PDFA in which all states may transition to all others and all symbols may be emitted from each state.  This is slightly different that the cannonical finite state machine literature where sparse connectivity is usually the norm.
 
 \subsection{PDFA likelihood}
 
-Given observational data, we are interested in learning a posterior distribution over PDFAs.  To start inference we need the likelihood function for a fixed PDFA. It is given by 
-
-\[ p(x_{0:T}|\delta,\pi) = \pi(\q_0,x_0)\prod_{t=1}^T \pi(\q_t,x_t) \label{x:def} \].
-
-Remember that $\q_t | \q_{t-1}, x_{t-1}$ is deterministic and given by $\delta$.  Note that our prior is a fully connected PDFA in which all states may transition to all others and all symbols may be emitted from each state.  This is slightly different that the cannonical finite state machine literature where sparse connectivity is usually the norm.
-
-We can marginalize out $\pi$ and express the likelihood in a form that depends only on the counts of symbols emitted from each state.  Define the count matrix $c$ for the sequence $x_{0:T}$ and transition matrix $\delta$ as $c_{ij} = \sum_{t=0}^T I_{ij}(\q_t,x_t)$, where $I_{ij}(\q_t,x_t)$ is an indicator function that returns 1 if the automaton was in state $q_i$ when it generated $x_t$ at step $t$ in the sequence, i.e. $\q_t = q_i$ and $x_t = \sigma_j$, and 0 otherwise. This matrix $c = [c_{ij}]$ gives the number of times each symbol is emitted from each state.  Due to multinomial-Dirichlet conjugacy we can analytically marginalize out $\pi$ and express the probability of a sequence given the transition function $\delta$, $c$ and $\beta$:
+Given observational data, we are interested in learning a posterior distribution over PDFAs.  To start inference we need the likelihood function for a fixed PDFA
+%
+\[ p(x_{0:T}|\delta,\pi) = \pi(\q_0,x_0)\prod_{t=1}^T \pi(\q_t,x_t) \label{x:def}. \]
+%
+Remember that $\q_t | \q_{t-1}, x_{t-1}$ is deterministic given the transition function $\delta$. 
+We can marginalize out $\pi$ and express the likelihood of the data in a form that depends only on the counts of symbols emitted from each state.  Define the count matrix $c$ for the sequence $x_{0:T}$ and transition matrix $\delta$ as $c_{ij} = \sum_{t=0}^T I_{ij}(\q_t,x_t)$, where $I_{ij}(\q_t,x_t)$ is an indicator function that returns 1 if the automaton was in state $q_i$ when it generated $x_t$ at step $t$ in the sequence, i.e. $\q_t = q_i$ and $x_t = \sigma_j$, and 0 otherwise. This matrix $c = [c_{ij}]$ gives the number of times each symbol is emitted from each state.  Due to multinomial-Dirichlet conjugacy we can analytically marginalize out $\pi$ and express the probability of a sequence given the transition function $\delta$, $c$ and $\beta$:
 
 \begin{eqnarray}
  p(x_{0:T}|\delta,c,\beta) & = & \int p(x_{0:T}|\pi,\delta) p(\pi|\beta) d\pi \label{x:factor} \\
@@ -102,7 +103,9 @@ In the finite case, one can sample $\bmu$ by Metropolis-Hastings \comment{, for 
  
  \subsection{The Probabilistic Deterministic Infinite Automaton}
  
-We now consider what happens when $|Q|\rightarrow\infty$.  Given a finite amount of data, there can only be nonzero counts for a finite number of state/symbol pairs, so we can marginalize out all but at most $T$ elements of $\delta$.  Denote these active entries by $\delta^T$.  The predictive probability for a new $\delta_{ij} = q_{i'}$ given $\delta^T$ is given by $\frac{\alpha\mu_{i'} + v_{i'j}}{\alpha + D^+_j}$.  Note that this only depends on $|Q|$ through $\mu_{i'}$, which is well behaved as $|Q|$ grows.  In the limiting case, most of the mass of $\bmu$ will concentrate on a handful of elements, and $\bmu$ becomes a draw from a {\em Dirichlet process} (DP), which is commonly used as a prior in Bayesian models with infinite parameters.  The hierarchical Dirichlet construction given in \eqref{gen:mu} and \eqref{gen:phi} becomes a {\em hierarchical Dirichlet process} (HDP), where the $\bphi_j$ are draws from a Dirichlet process whose parameters are given by $\alpha$ and $\bmu$, which is itself a draw from a Dirichlet process.  An attractive property of HDPs is that both the $\bphi_j$ and $\bmu$ can be integrated out, which makes sampling more straightforward than in the finite case.  This  representation of the model, with all draws from a DP integrated out, is known as the {\em Chinese Restaurant Franchise} (CRF).  This curious name needs some explanation, which we happily provide.
+We would like to avoid placing a strict upper bound on the number of states so that model complexity can grow with the amount of training data.  To see how we do this, consider what happens when $|Q|\rightarrow\infty$.  Given a finite amount of data, there can only be nonzero counts for a finite number of state/symbol pairs, so we can marginalize out all but at most $T$ elements of $\delta$.  Denote these active entries by $\delta^T$.  The predictive probability for a new $\delta_{ij} = q_{i'}$ given $\delta^T$ is given by $\frac{\alpha\mu_{i'} + v_{i'j}}{\alpha + D^+_j}$.  Note that this only depends on $|Q|$ through $\mu_{i'}$, which is well behaved as $|Q|$ grows.  In the limiting case, most of the mass of $\bmu$ will concentrate on a handful of elements, and $\bmu$ becomes a draw from a {\em Dirichlet process} (DP), which is commonly used as a prior in Bayesian models with infinite parameters.  The hierarchical Dirichlet construction given in \eqref{gen:mu} and \eqref{gen:phi} becomes a {\em hierarchical Dirichlet process} (HDP), where the $\bphi_j$ are draws from a Dirichlet process whose parameters are given by $\alpha$ and $\bmu$, which is itself a draw from a Dirichlet process.  An attractive property of HDPs is that both the $\bphi_j$ and $\bmu$ can be integrated out, which makes sampling more straightforward than in the finite case.  This  representation of the model, with all draws from a DP integrated out, is known as the {\em Chinese Restaurant Franchise} (CRF).  This curious name needs some explanation, which we happily provide.
+ 
+  \comment{
  
 Consider each column of $\delta$ to be a restaurant with an infinite number of tables.  The individual $\delta_{ij}$ are customers, who upon entering the restaurant (i.e. when being sampled) must choose a table to sit at.  Each table serves one dish, which is the element of $Q$ that $\delta_{ij}$ maps to if it is seated at that table.  Multiple tables can serve the same dish, even in the same restaurant.  Let $w_{ij}$ be the table $\delta_{ij}$ sits at, let $n_{kj}$ be the number of customers sitting at table $k$ in restaurant $j$, and let $K^+_j$ be the total number of tables for which $n_{kj} \ne 0$.  Then a new $\delta_{ij}$ sits at table $k$ with probability proportional to $n_{kj}$ and sits at an unoccupied table $K^+_j + 1$ with probability proportional to $\alpha$:
 
@@ -137,7 +140,7 @@ Posterior inference in the PDIA is similar to the finite case above, but with an
 \end{equation}
 
 The likelihood of a sequence $p(x_{0:T}|\delta^T)$ takes the same form as in the finite case \eqref{x:end}.  However, changing $\delta_{ij}$ may lead to the data visiting state/symbol pairs that are not in $\delta^T$, and we cannot evaluate the numerator of \eqref{delta:mh} exactly.  Instead we approximate it by sampling the missing elements of $\delta$ according to the CRF.  This can be seen as a single-sample Monte Carlo integration.  If we accept the new $\delta_{ij}$ we then delete all the $\delta_{i'j'}$ for which the counts $c_{i'j'} = 0$, while keeping any elements of $\delta$ we had to sample to evaluate the numerator of \eqref{delta:mh}.  In the terminology of the CRF, this reseats a customer at a new table.  We also resample the dish served at each table, otherwise mixing may be prohibitively slow.  We propose a new dish for the table $k$ in restaurant $j$ by sampling \eqref{crf:high} (with that table removed from the counts) and accept with probability \eqref{delta:mh}, with the individual $\delta_{ij}$ replaced by all $\delta_{ij}$ at table $k$, and add or remove elements of $\delta^T$ in the same way as when reseating customers.  For more on posterior sampling in the hierarchical Dirichlet process, we direct the reader to \cite{Teh2006}.
-  
+  }
 %We can sample incrementally from the joint distribution over $x_{0:T}$ and $\delta$ when $\phi_j$, $\mu$ and $\pi_i$ are integrated out in the $|Q|\rightarrow\infty$ limit.  From the start state $q_0$, we sample a symbol $s_{j_0}$ uniformly and assign $\delta_{0j_0}$ to a new state.  If $q^t = q_i$ then $x_t$ has the probability
 
 % \[P(x_t=s_j|q_i,x_{0:t-1},q^{0:t-1}) = \frac{c_{ij}+\frac{\beta}{|\Sigma|}}{c_{i\cdot} + \beta}\]
