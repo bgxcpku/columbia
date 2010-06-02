@@ -7,14 +7,18 @@
     \setlength{\tabcolsep}{1.3mm}
 \begin{tabular}{r|cccccccccc}
 \hline
-& {\bf PDIA } & PDIA-MAP & PDIA-$\beta=0$ & HMM & 2-gram& 3-gram & 4-gram & 5-gram & 6-gram & SM \\
+& {\bf PDIA } & PDIA-MAP & PDIA-$\beta=0$ & HMM & 2-gram& 3-gram & 4-gram & 5-gram & 6-gram & SSM \\
 \hline
-AIW & 2.25 & 2.64 & 2.25 & 2.98 & 3.29 & 2.73 & 2.45 & 2.38 & 2.35 &\\
-DNA & 1.893 & 1.906 & 1.893 & 1.909 & 1.915 & 1.908 & 1.905 & 1.903 & 1.910 & \\
+AIWS & 2.25* & 2.64* & 2.25* & 2.98 & 3.275 & 2.687 & 2.358 & 2.263 & 2.230 & 2.257 \\
+AIWS & 205.1* & 212* & 203.8* & 52 & 28 & 382 & 2023 & 5592 & 10838 & 19358 \\
 \hline
 \hline
-AIW & 205.1 & 212 & 203.8 & 52 & 28 & 382 & 2023 & 5592 & 10838 &\\
-DNA & 46.0 & 49 & 46.2 & 95 & 5 & 21 & 85 & 341 & 1365 & \\
+AIWL & 2.25* & 2.64* & 2.25* & 2.98 & ? & 2.517 & 2.018 & 1.811 & 1.729 & 1.697 \\
+AIWL & 205.1* & 212* & 203.8* & 52 & 28 & 444 & 3249 & 12324 & 31990 & 177232 \\
+\hline
+\hline
+DNA & 1.893* & 1.906* & 1.893* & 1.909* & 1.915* & 1.908* & 1.905* & 1.903* & 1.910* & 1.832 \\
+DNA & 46.0* & 49* & 46.2* & 95* & 5* & 21* & 85* & 341* & 1365* & 314166 \\
 \hline
 \end{tabular}
 \end{center}
@@ -24,7 +28,7 @@ DNA & 46.0 & 49 & 46.2 & 95 & 5 & 21 & 85 & 341 & 1365 & \\
 
 \begin{figure}[htbp]
 \begin{center}
-\includegraphics[width=10cm]{results/dna_hmm}
+\includegraphics[width=.5\textwidth]{results/dna_hmm}
 \caption{DNA HMM EM Baseline}
 \label{fig:dna_hmm}
 \end{center}
@@ -32,7 +36,7 @@ DNA & 46.0 & 49 & 46.2 & 95 & 5 & 21 & 85 & 341 & 1365 & \\
 
 \begin{figure}[htbp]
 \begin{center}
-\includegraphics[width=10cm]{results/dna_sampler}
+\includegraphics[width=.5\textwidth]{results/dna_sampler}
 \caption{DNA sampler trace }
 \label{fig:dna_sampler}
 \end{center}
@@ -40,7 +44,7 @@ DNA & 46.0 & 49 & 46.2 & 95 & 5 & 21 & 85 & 341 & 1365 & \\
 
 \begin{figure}[htbp]
 \begin{center}
-\includegraphics[width=10cm]{results/dna_numstates}
+\includegraphics[width=.5\textwidth]{results/dna_numstates}
 \caption{DNA number of states}
 \label{fig:dna_numstates}
 \end{center}
@@ -48,7 +52,7 @@ DNA & 46.0 & 49 & 46.2 & 95 & 5 & 21 & 85 & 341 & 1365 & \\
 
 \begin{figure}[htbp]
 \begin{center}
-\includegraphics[width=10cm]{results/aiw_small_hmm}
+\includegraphics[width=.5\textwidth]{results/aiw_small_hmm}
 \caption{AIW HMM EM Baseline}
 \label{fig:aiw_small_hmm}
 \end{center}
@@ -56,7 +60,7 @@ DNA & 46.0 & 49 & 46.2 & 95 & 5 & 21 & 85 & 341 & 1365 & \\
 
 \begin{figure}[htbp]
 \begin{center}
-\includegraphics[width=10cm]{results/aiw_small_sampler}
+\includegraphics[width=.5\textwidth]{results/aiw_small_sampler}
 \caption{AIW small sampler trace }
 \label{fig:aiw_small_sampler}
 \end{center}
@@ -64,7 +68,7 @@ DNA & 46.0 & 49 & 46.2 & 95 & 5 & 21 & 85 & 341 & 1365 & \\
 
 \begin{figure}[htbp]
 \begin{center}
-\includegraphics[width=10cm]{results/aiw_small_numstates}
+\includegraphics[width=.5\textwidth]{results/aiw_small_numstates}
 \caption{AIW number of states}
 \label{fig:aiw_small_numstates}
 \end{center}
