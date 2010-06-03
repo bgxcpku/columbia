@@ -7,18 +7,70 @@
     \setlength{\tabcolsep}{1.3mm}
 \begin{tabular}{r|cccccccccc}
 \hline
-& {\bf PDIA } & PDIA-MAP & PDIA-$\beta=0$ & HMM & 2-gram& 3-gram & 4-gram & 5-gram & 6-gram & SSM \\
+& {\bf PDIA } & PDIA-MAP &  HMM-EM & bigram& trigram & 4-gram & 5-gram & 6-gram & SSM \\
 \hline
-AIWS & 2.25* & 2.64* & 2.25* & 2.98 & 3.275 & 2.687 & 2.358 & 2.263 & 2.230 & 2.257 \\
-AIWS & 205.1* & 212* & 203.8* & 52 & 28 & 382 & 2023 & 5592 & 10838 & 19358 \\
-\hline
-\hline
-AIWL & 2.25* & 2.64* & 2.25* & 2.98 & ? & 2.517 & 2.018 & 1.811 & 1.729 & 1.697 \\
-AIWL & 205.1* & 212* & 203.8* & 52 & 28 & 444 & 3249 & 12324 & 31990 & 177232 \\
+AIWS & 2.36 & 2.45 &  2.98 & 3.28 & 2.69 & 2.36 & 2.26 & 2.23 & 2.26 \\
+AIWS & 373.3 & 379 & 52 & 28 & 382 & 2023 & 5592 & 10,838 & 19,358 \\
 \hline
 \hline
-DNA & 1.893* & 1.906* & 1.893* & 1.909* & 1.915* & 1.908* & 1.905* & 1.903* & 1.910* & 1.832 \\
-DNA & 46.0* & 49* & 46.2* & 95* & 5* & 21* & 85* & 341* & 1365* & 314166 \\
+AIWL & 2.03 & 2.05 &  2.98 & 3.24 & 2.52& 2.02 & 1.81 & 1.73 & 1.70 \\
+AIWL & 1,231.6 & 1,247 &  52 & 28 & 444 & 3,249 & 12,324 & 31,990 & 177,232 \\
+\hline
+\hline
+DNA & 1.89 & 1.90 &  1.91 & 1.92* & 1.91 & 1.90 & 1.90 & 1.90 & 1.83 \\
+DNA & 61.3 & 54 & 46.2* &  5 & 21 & 85 & 341 & 1,365 & 314,166 \\
+\hline
+\end{tabular}
+\end{center}
+\caption[Short]{Benchmark performance of PDIA inference algorithms versus standard sequence models.}
+\label{table:results}
+\end{table}
+
+
+\comment{
+\begin{table}[t]
+    \begin{center}
+    \setlength{\tabcolsep}{1.3mm}
+\begin{tabular}{r|cccccccccc}
+\hline
+& {\bf PDIA } & PDIA-MAP &  HMM & bigram& trigram & 4-gram & 5-gram & 6-gram & SSM \\
+\hline
+AIWS & 2.362 & 2.448 &  2.98 & 3.275 & 2.687 & 2.358 & 2.263 & 2.230 & 2.257 \\
+AIWS & 373.3 & 379 & 52 & 28 & 382 & 2023 & 5592 & 10838 & 19358 \\
+\hline
+\hline
+AIWL & 2.027 & 2.047 &  2.98 & ? & 2.517 & 2.018 & 1.811 & 1.729 & 1.697 \\
+AIWL & 1231.6 & 1247 &  52 & 28 & 444 & 3249 & 12324 & 31990 & 177232 \\
+\hline
+\hline
+DNA & 1.894 & 1.896 &  1.909 & 1.915* & 1.906 & 1.903 & 1.898 & 1.895 & 1.832 \\
+DNA & 61.3 & 54 & 46.2* &  5 & 21 & 85 & 341 & 1365 & 314166 \\
+\hline
+\end{tabular}
+\end{center}
+\caption[Short]{Benchmark performance of PDIA inference algorithms versus standard sequence models.}
+\label{table:results}
+\end{table}
+}
+
+
+\begin{table}[t]
+    \begin{center}
+    \setlength{\tabcolsep}{1.3mm}
+\begin{tabular}{r|cccccccccc}
+\hline
+& {\bf PDIA } & PDIA-MAP &  HMM-EM & bigram& trigram & 4-gram & 5-gram & 6-gram & SSM \\
+\hline
+AIWS & 5.13 & 5.46 &  7.89 & 9.71 & 6.45 & 2.36 & 5.13 & 4.69 & 4.78 \\
+AIWS & 373.3 & 379 & 52 & 28 & 382 & 2023 & 5592 & 10,838 & 19,358 \\
+\hline
+\hline
+AIWL & 4.08 & 4.13 &  7.89 & 9.45 & 5.72 & 4.05 & 3.51 & 3.32 & 3.24 \\
+AIWL & 1,231.6 & 1,247 &  52 & 28 & 444 & 3,249 & 12,324 & 31,990 & 177,232 \\
+\hline
+\hline
+DNA & 3.72 & 3.72 &  3.76 & 1.92* & 3.75 & 3.74 & 3.73 & 3.72 & 3.56 \\
+DNA & 61.3 & 54 & 46.2* &  5 & 21 & 85 & 341 & 1,365 & 314,166 \\
 \hline
 \end{tabular}
 \end{center}
@@ -27,60 +79,26 @@ DNA & 46.0* & 49* & 46.2* & 95* & 5* & 21* & 85* & 341* & 1365* & 314166 \\
 \end{table}
 
 \begin{figure}[htbp]
-\begin{center}
-\includegraphics[width=.5\textwidth]{results/dna_hmm}
-\caption{DNA HMM EM Baseline}
+\centering
+\subfigure[DNA HMM EM Baseline]{\label{fig:dna_hmm}\includegraphics[width=.3\textwidth]{results/dna_hmm}}
+\subfigure[DNA sampler trace]{\label{fig:dna_sampler}\includegraphics[width=.3\textwidth]{results/dna_sampler}}
+\subfigure[DNA number of states]{\label{fig:dna_numstates}\includegraphics[width=.3\textwidth]{results/dna_numstates}}\\
+\subfigure[AIW HMM EM Baseline]{\label{fig:aiw_small_hmm}\includegraphics[width=.3\textwidth]{results/aiw_small_hmm}}
+\subfigure[AIW sampler trace]{\label{fig:aiw_small_sampler}\includegraphics[width=.3\textwidth]{results/aiw_small_sampler}}
+\subfigure[AIW number of states]{\label{fig:aiw_small_numstates}\includegraphics[width=.3\textwidth]{results/aiw_small_numstates}}
+\caption{}
 \label{fig:dna_hmm}
-\end{center}
 \end{figure}
 
-\begin{figure}[htbp]
-\begin{center}
-\includegraphics[width=.5\textwidth]{results/dna_sampler}
-\caption{DNA sampler trace }
-\label{fig:dna_sampler}
-\end{center}
-\end{figure}
+To evaluate our PDIA inference approach we used it to do discrete sequence prediction and compared its performance to other approaches to the same.  We trained our model and others on two datasets: a character sequence from Alice in Wonderland and a short sequence of mouse DNA.  The Alice in Wonderland dataset was preprocessed to remove all characters but letters and spaces, shift all letters from upper case to lower case, and split along sentence dividers to yield a 27-character alphabet (a-z and space) and 1639 sentences with a total of 132794 characters.  We used the first 1200 sentences (100210 characters) to train the models and the rest to test.  \comment{For some experiments we also used a smaller subset of Alice in Wonderland consisting of 100 randomly chosen training sentences (9986 characters) and 50 random test sentences (3891 characters).}  The mouse DNA dataset consisted of a fragment of chromosome 2 with 194173 base pairs, which we treated as a single unbroken string.  We used the first 150000 base pairs for training and the rest for testing.  For Alice in Wonderland, the state of the PDIA model was always set to $q_0$ at the start of each sentence.  For DNA, the state of the PDIA model at the start of the test data was set to the last state of the model after accepting the training data.  We placed Gamma(1,1) priors over $\alpha$,$\beta$ and $\gamma$ and set $\lambda=.001.$
 
-\begin{figure}[htbp]
-\begin{center}
-\includegraphics[width=.5\textwidth]{results/dna_numstates}
-\caption{DNA number of states}
-\label{fig:dna_numstates}
-\end{center}
-\end{figure}
-
-\begin{figure}[htbp]
-\begin{center}
-\includegraphics[width=.5\textwidth]{results/aiw_small_hmm}
-\caption{AIW HMM EM Baseline}
-\label{fig:aiw_small_hmm}
-\end{center}
-\end{figure}
-
-\begin{figure}[htbp]
-\begin{center}
-\includegraphics[width=.5\textwidth]{results/aiw_small_sampler}
-\caption{AIW small sampler trace }
-\label{fig:aiw_small_sampler}
-\end{center}
-\end{figure}
-
-\begin{figure}[htbp]
-\begin{center}
-\includegraphics[width=.5\textwidth]{results/aiw_small_numstates}
-\caption{AIW number of states}
-\label{fig:aiw_small_numstates}
-\end{center}
-\end{figure}
+We evaluated the performance of the learned models by calculating the average log loss per character of the test data.  For training data $x_{1:T}$, test data $y_{1:T'}$, and posterior samples $\boldsymbol\delta$, this is given by $-\frac{1}{T'}$log$_2\, P(y_{1:T'}|x_{1:T},\boldsymbol\delta)$.  It is a measure of the uncertainty of a character given the model, and is at most log$_2\,|\Sigma|$, which for DNA is 2 and for text is 4.755.  We evaluated the probability of the test data incrementally, and averaged each probability over multiple posterior samples: $P(y_{1:T'}|x_{1:T},\boldsymbol\delta) = \prod_{i = 1}^{T'} P(y_i|y_{1:i-1},x_{1:T},\boldsymbol\delta) = \frac{1}{L}\prod_{i = 1}^{T'} \sum_{\ell = 1}^{L} P(y_i|y_{1:i-1},x_{1:T},\delta_\ell)$.  In addition to averaging over multiple $\delta_\ell$, we also evaluated the log loss for each $\delta_\ell$ by itself to find the single model with the best generalization performance, which we call $\delta_{MAP}$.
 
 We found that posterior samples from the PDIA achieve competitive generalization performance on natural language and DNA compared to hidden Markov models and n-gram models.  Averaging predictive probability over multiple samples leads to better generalization than a single sampled model.  Both a single sample and multiple samples generalize better than the best EM-trained HMM.  On natural language, the learned PDIA has more states than the optimal number of states for an HMM found by cross-validation.  The improved generalization is not due to smoothing the emission distribution.  Compared to smoothed n-gram models, the PDIA performs competitively even though there is no backing off to more general contexts.
 
-We ran the PDIA on two datasets: Alice in Wonderland and mouse DNA.  Alice in Wonderland was preprocessed to remove all characters but letters and spaces, shift upper case to lower case, and split along sentence dividers to yield a 27-character alphabet (a-z and space) and 1639 sentences with a total of 132794 characters.  We used the first 1200 sentences (100210 characters) to train the model and the rest to test.  For some experiments we also used a smaller subset of Alice in Wonderland consisting of 100 randomly chosen training sentences (9986 characters) and 50 random test sentences (3891 characters).  The mouse DNA dataset consists of a fragment of chromosome 2 with 194173 base pairs, which we treated as a single unbroken string.  We used the first 150000 base pairs for training and the rest for testing.  For Alice in Wonderland, the state of the model was always set to $q_0$ at the start of a string.  For DNA, the state of the model at the start of the test data was set to the last state of the model after accepting the training data.  We placed Gamma(1,1) priors over $\alpha$,$\beta$ and $\gamma$ (what do we use for $\lambda$?) and saved every tenth MCMC sample for evaluating generalization.
-
 To check the performance of our sampler, we trained it on data from three synthetic grammars: the even process \cite{?}, the Reber grammar \cite{Reber} and the Feldman grammar \cite{Feldman}, which have up to 7 states and 7 symbols in the alphabet.  Performance was good, even on small data.  Details are given in the appendix.
 
-We evaluated the performance of the learned models by calculating the log loss per character of the test data.  For training data $x_{1:T}$, test data $y_{1:T'}$, and posterior samples $\boldsymbol\delta$, this is given by $-\frac{1}{T'}$log$_2\, P(y_{1:T'}|x_{1:T},\boldsymbol\delta)$.  It is a measure of the uncertainty of a character given the model, and is at most log$_2\,|\Sigma|$, which for DNA is 2 and for text is 4.755.  We evaluated the probability of the test data incrementally, and averaged each probability over multiple posterior samples: $P(y_{1:T'}|x_{1:T},\boldsymbol\delta) = \prod_{i = 1}^{T'} P(y_i|y_{1:i-1},x_{1:T},\boldsymbol\delta) = \frac{1}{L}\prod_{i = 1}^{T'} \sum_{\ell = 1}^{L} P(y_i|y_{1:i-1},x_{1:T},\delta_\ell)$.  In addition to averaging over multiple $\delta_\ell$, we also evaluated the log loss for each $\delta_\ell$ by itself to find the single model with the best generalization performance, which we call $\delta_{MAP}$.
+
 
 Even for a single sampled transition matrix $\delta_\ell$, there may be symbols $y_t$ which have not been emitted from the state $\q_t$ in the training data, and thus $\delta_\ell(\q_t,y_t)$ is not known.  In this case we sampled a new element of the transition matrix according to the CRF, as described in \ref{model}.  In the same way that we averaged the predictive probability of each character over multiple $\delta_\ell$, we averaged the probability of a character given a single $\delta_\ell$ over multiple sampled values of $\delta_\ell(\q_t,y_t)$.
 
