@@ -14,10 +14,28 @@ Previous work on PDFA induction has focused on accurately discovering model stru
 
 To test if we can learn the generative mechanism given our inductive bias, we trained the PDIA on data from three synthetic grammars: the even process \cite{Shalizi2004}, the Reber grammar \cite{Reber1967} and the Feldman grammar \cite{Feldman1966}, which have up to 7 states and 7 symbols in the alphabet.  Performance was good, even on small data.  Details are given in the appendix.
 
-\begin{figure}
+\begin{figure}[htbp]
 \begin{center}
 \includegraphics[scale=0.6]{pnfa.pdf}
 \caption{Two PNFAs outside the class of PDFAs.  (a) can be represented by a mixture of two PDFAs, one following the right branch from state 0, the other following the left branch.  (b), in contrast, cannot be represented by any finite mixture of PDFAs, even though it is nearly the same as (a).}
 \label{pnfa}
+\end{center}
+\end{figure}
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[scale=0.6]{results/syntheticResults.pdf}
+\label{fig:synth_results}
+\caption{Number of states learned by PDIA trained on synthetic grammars}
+\end{center}
+\end{figure}
+
+\begin{figure}[htbp]
+\begin{center}
+\subfigure{\includegraphics[scale=0.8]{even.pdf}} \\
+\subfigure{\includegraphics[scale=0.6]{reber.pdf}} \\
+\subfigure{\includegraphics[scale=0.6]{feldman.pdf}}
+\label{fig:synthetic_grammar}
+\caption{Synthetic grammars used in Figure \ref{fig:synth_results}.  Top to bottom: the even process, the Reber grammar, the Feldman grammar.}
 \end{center}
 \end{figure}
