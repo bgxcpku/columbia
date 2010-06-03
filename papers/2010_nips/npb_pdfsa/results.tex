@@ -25,6 +25,18 @@ DNA & 3.72 & 3.72 &  3.76 & 3.77 & 3.75 & 3.74 & 3.73 & 3.72 & 3.56 \\
 \end{center}
 \caption[Short]{PDIA inference performance relative to HMM and fixed order Markov models.  Top rows: perplexity.  Bottom rows: number of states in each model.  For the PDIA this is an average number.\label{table:results}}
 \end{table}
+
+
+\begin{figure}[htbp]
+\centering
+%\subfigure[DNA HMM EM Baseline]{\label{fig:dna_hmm}\includegraphics[width=.3\textwidth]{results/dna_hmm}}
+%\subfigure[DNA]{\label{fig:dna_sampler}\includegraphics[width=.3\textwidth]{results/dna_sampler}}
+%\subfigure[DNA number of states]{\label{fig:dna_numstates}\includegraphics[width=.3\textwidth]{results/dna_numstates}}\\
+%\subfigure[AIW HMM Baseline]{\label{fig:aiw_hmm_baseline}\includegraphics[width=.45\textwidth]{results/aiw_hmm_baseline}}
+\includegraphics[width=1\textwidth]{results/aiw_sampler_trace}
+%\subfigure[AIW number of states]{\label{fig:aiw_small_numstates}\includegraphics[width=.3\textwidth]{results/aiw_small_numstates}}
+\caption{PDIA sampler trace for Alice in Wonderland.  The top trace is the joint log likelihood of the model and training data, the bottom trace is the number of states. \label{fig:aiw_sampler_trace}}
+\end{figure}
 %
 To test our PDIA inference approach we evaluated it on discrete natural sequence prediction and compared its performance to HMMs and smoothed $n$-gram models.  We trained the models on two datasets: a character sequence from {\em Alice in Wonderland} \cite{Carroll1865} and a short sequence of mouse DNA.  The {\em Alice in Wonderland} (AIW) dataset was preprocessed to remove all characters but letters and spaces, shift all letters from upper to lower case, and split along sentence dividers to yield a 27-character alphabet (a-z and space)\comment{ and 1,639 sentences with a total of 132,794 characters.  We used the first 1,200 sentences (100,210 characters) to train the models and the rest to test}.  We trained on 100 random sentences (9,986 characters) and tested on 50 random sentences (3,891 characters).   The mouse DNA dataset consisted of a fragment of chromosome 2 with 194,173 base pairs, which we treated as a single unbroken string.  We used the first 150,000 base pairs for training and the rest for testing.  For AIW, the state of the PDIA model was always set to $q_0$ at the start of each sentence.  For DNA, the state of the PDIA model at the start of the test data was set to the last state of the model after accepting the training data.  We placed Gamma(1,1) priors over $\alpha$, $\beta$ and $\gamma$ and set $\lambda=.001$.
 
@@ -47,21 +59,6 @@ Unlike the HMM, the computational complexity of PDFA prediction does not depend 
 \comment{The predictive performance relative to the HPYP $n$-gram is particularly unexpected given that there is no smoothing hierarchy over the states in the PDIA.  In an $n$-gram model, each state is identified with a context, and thus a natural hierarchy exists for smoothing states by more general states.  In the PDIA states are not identifiable and no hierarchy on which smoothing can be implemented is apparent.  Instead, the PDIA improves predictive performance by averaging over model structure.  Because these models are simple, averaging over structure is computationally feasible, and makes practical an underexplored approach to smoothing.}
 
 \comment{While the PDIA averages over a  class of models that includes finite order Markov models as a subset, the states in HPYP are identifiable which means that hierarchical smoothing of the per-state emission distributions is possible.  In the PDIA model the states are not identifiable and no easily defined hierarchy of contextual specificity exists on which hierarchical smoothing can be implemented.   Note that the PDIA posterior average achieves}
-
-
-\begin{figure}[htbp]
-\centering
-%\subfigure[DNA HMM EM Baseline]{\label{fig:dna_hmm}\includegraphics[width=.3\textwidth]{results/dna_hmm}}
-%\subfigure[DNA]{\label{fig:dna_sampler}\includegraphics[width=.3\textwidth]{results/dna_sampler}}
-%\subfigure[DNA number of states]{\label{fig:dna_numstates}\includegraphics[width=.3\textwidth]{results/dna_numstates}}\\
-%\subfigure[AIW HMM Baseline]{\label{fig:aiw_hmm_baseline}\includegraphics[width=.45\textwidth]{results/aiw_hmm_baseline}}
-\includegraphics[width=1\textwidth]{results/aiw_sampler_trace}
-%\subfigure[AIW number of states]{\label{fig:aiw_small_numstates}\includegraphics[width=.3\textwidth]{results/aiw_small_numstates}}
-\caption{PDIA sampler trace for Alice in Wonderland.  The top trace is the joint log likelihood of the model and training data, the bottom trace is the number of states. \label{fig:aiw_sampler_trace}}
-\end{figure}
-
-
-
 
 
 %We found that both the MAP PDIA and the average over PDIA generalize better than the HMM.  To test the possibility that better generalization was due to smoothing of the PDIA emission probability by $\beta$, we took samples from the PDIA, fixed $\beta$ to be very near 0, and ran the MCMC sampler as before.  We found that neither the average number of states nor the generalization performance was significantly affected.
