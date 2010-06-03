@@ -8,7 +8,7 @@ We start our description of Bayesian PDFA inference by defining a prior distribu
 
 \subsection{A PDFA Prior}
 
-We assume that the set of states $Q$, set of symbols $\Sigma$, and initial state $q_0$ of a PDFA are known but that the transition and emission functions are unknown.  The PDFA prior then consists of a prior over both the transition function $\delta$ and the emission probability function $\pi$.  In the finite case $\delta$ and $\pi$ are representable as finite matrices, with one column per element of $\Sigma$ and one row per element of $Q$.  For each column $j$ ($j$ co-indexes columns and set elements) of the transition matrix $\delta$, our prior stipulates that the row elements of that column are  i.i.d. draws from a discrete distribution $\bphi_j$ over $Q$, that is, $\delta_{ij} \sim [\bphi_1,\ldots,\bphi_{|\Sigma|}], \; 0 \leq i\leq|Q|-1$.  The $\bphi_j$ represent state specific transition tendencies, if the $i$th element of $\phi_{j}$ is large then state $q_i$ is likely to be transitioned to anytime the last symbol was $j.$   The $\phi_{j}$'s are   themselves given a shared Dirichlet prior with parameters $\alpha\bmu$, where $\alpha$ is a concentration and $\bmu$ is a template transition probability vector.   If the $i$th element of $\bmu$ is large then the $i$th state is likely to be transitioned to regardless of the emitted symbol.  We place a uniform Dirichlet prior on $\bmu$ itself, with $\gamma$ total mass and average over $\bmu$ during inference.  This hierarchical Dirichlet construction encourages both general and context specific state reuse.
+We assume that the set of states $Q$, set of symbols $\Sigma$, and initial state $q_0$ of a PDFA are known but that the transition and emission functions are unknown.  The PDFA prior then consists of a prior over both the transition function $\delta$ and the emission probability function $\pi$.  In the finite case $\delta$ and $\pi$ are representable as finite matrices, with one column per element of $\Sigma$ and one row per element of $Q$.  For each column $j$ ($j$ co-indexes columns and set elements) of the transition matrix $\delta$, our prior stipulates that the row elements of that column are  i.i.d. draws from a discrete distribution $\bphi_j$ over $Q$, that is, $\delta_{ij} \sim [\bphi_1,\ldots,\bphi_{|\Sigma|}], \; 0 \leq i\leq|Q|-1$.  The $\bphi_j$ represent state specific transition tendencies, if the $i$th element of $\phi_{j}$ is large then state $q_i$ is likely to be transitioned to anytime the last symbol was $\symb_j$.   The $\phi_{j}$'s are   themselves given a shared Dirichlet prior with parameters $\alpha\bmu$, where $\alpha$ is a concentration and $\bmu$ is a template transition probability vector.   If the $i$th element of $\bmu$ is large then the $i$th state is likely to be transitioned to regardless of the emitted symbol.  We place a uniform Dirichlet prior on $\bmu$ itself, with $\gamma$ total mass and average over $\bmu$ during inference.  This hierarchical Dirichlet construction encourages both general and context specific state reuse.
  We also place a uniform Dirichlet prior over the per-state emission probabilities $\bpi_i$ with $\beta$ total mass which smooths emission distribution estimates.  Formally:
 %
 \begin{eqnarray}
@@ -18,15 +18,14 @@ We assume that the set of states $Q$, set of symbols $\Sigma$, and initial state
 \delta_{ij} & \sim & \bphi_{j} \label{gen:delta} \nonumber
 \end{eqnarray}
 %
-where $0 \leq i \leq |Q|-1$ and $1 \leq j \leq |\Sigma|$.  Given a sample from this model we can run the PDFA to generate a sequence of $T$ symbols:
+where $0 \leq i \leq |Q|-1$ and $1 \leq j \leq |\Sigma|$.  Given a sample from this model we can run the PDFA to generate a sequence of $T$ symbols.  Using $\q_t$ to denote the state of the PDFA at position $t$ in the sequence:
 %
- \fix[font issues]
-\begin{eqnarray}
-\q_0 & = & q_0 \label{gen:q0} \nonumber \\
-x_0 & \sim & \bpi_0 \label{gen:x0} \nonumber \\
-\q_t & = & \delta(\q_{t-1},x_{t-1}) \label{gen:q} \nonumber \\
-x_t & \sim & \bpi_t \label{gen:x} \nonumber
-\end{eqnarray}
+\begin{equation}
+\q_0 = \state_0 \qquad
+x_0 \sim \bpi_0 \qquad
+\q_t = \delta(\q_{t-1},x_{t-1}) \qquad
+x_t \sim \bpi_t \label{gen} \nonumber
+\end{equation}
 %
 We choose this particular inductive bias, with transitions tied together within a column of $\delta$, because we wanted the most recent symbol emission to be informative about what the next state is.  If we instead had a single Dirichlet prior over all elements of $\delta$, transitions to a few states would be highly likely no matter the context and those states would dominate the behavior of the automata.  If we tied together rows of $\delta$ instead of columns, being in a particular state would tell us more about the sequence of states we came from than the symbols that got us there.  
 %As we would like states to be good statistics of the past for predicting the future, a bias that depends on the most recent symbol is preferable.
@@ -35,12 +34,12 @@ We choose this particular inductive bias, with transitions tied together within 
 
 \subsection{PDFA likelihood}
 
-Given observational data, we are interested in learning a posterior distribution over PDFAs.  To start inference we need the likelihood function for a fixed PDFA
+Given observational data, we are interested in learning a posterior distribution over PDFAs.  To start inference we need the likelihood function for a fixed PDFA; it is given by
 %
 \[ p(x_{0:T}|\delta,\pi) = \pi(\q_0,x_0)\prod_{t=1}^T \pi(\q_t,x_t) \label{x:def}. \]
 %
 Remember that $\q_t | \q_{t-1}, x_{t-1}$ is deterministic given the transition function $\delta$. 
-We can marginalize out $\pi$ and express the likelihood of the data in a form that depends only on the counts of symbols emitted from each state.  Define the count matrix $c$ for the sequence $x_{0:T}$ and transition matrix $\delta$ as $c_{ij} = \sum_{t=0}^T I_{ij}(\q_t,x_t)$, where $I_{ij}(\q_t,x_t)$ is an indicator function that returns 1 if the automaton was in state $q_i$ when it generated $x_t$ at step $t$ in the sequence, i.e. $\q_t = q_i$ and $x_t = \sigma_j$, and 0 otherwise. This matrix $c = [c_{ij}]$ gives the number of times each symbol is emitted from each state.  Due to multinomial-Dirichlet conjugacy we can analytically marginalize out $\pi$ and express the probability of a sequence given the transition function $\delta$, $c$ and $\beta$:
+We can marginalize $\pi$ out of this expression and express the likelihood of the data in a form that depends only on the counts of symbols emitted from each state.  Define the count matrix $c$ for the sequence $x_{0:T}$ and transition matrix $\delta$ as $c_{ij} = \sum_{t=0}^T I_{ij}(\q_t,x_t)$, where $I_{ij}(\q_t,x_t)$ is an indicator function that returns 1 if the automaton was in state $q_i$ when it generated $x_t$ at step $t$ in the sequence, i.e. $\q_t = q_i$ and $x_t = \sigma_j$, and 0 otherwise. This matrix $c = [c_{ij}]$ gives the number of times each symbol is emitted from each state.  Due to multinomial-Dirichlet conjugacy we can express the probability of a sequence given the transition function $\delta$, the count matrix $c$ and $\beta$:
 
 \begin{eqnarray}
  p(x_{0:T}|\delta,c,\beta) & = & \int p(x_{0:T}|\pi,\delta) p(\pi|\beta) d\pi \label{x:factor} \nonumber \\
@@ -50,7 +49,7 @@ We can marginalize out $\pi$ and express the likelihood of the data in a form th
  
  
  
- Given that the state to state transitions are deterministic given an observed emission, we can think of the transition matrix $\delta$ as observed and express its marginal likelihood given $\bmu$ by integrating out all $\bphi_j$'s.  Let $v_{ij}$ be the number of times state $q_i$ is transitioned to given that $\sigma_j$ was the last symbol emitted, i.e.~$v_{ij}$ is the number of times $\delta_{i'j} = q_i$ for all states $i'$ in the column $j$. %, that is, $v_{ij} = \displaystyle\sum_{i' = 0}^{|Q|-1} I_{i}(\delta_{i'j})$, $I_i(q_{i'})$ being the indicator function that is only 1 when $q_i' = q_i$. 
+ Given that the state to state transitions are deterministic given the observed emissions, we can think of the transition matrix $\delta$ as observed and express its marginal likelihood given $\bmu$ by integrating out all $\bphi_j$'s.  Let $v_{ij}$ be the number of times state $q_i$ is transitioned to given that $\sigma_j$ was the last symbol emitted, i.e.~$v_{ij}$ is the number of times $\delta_{i'j} = q_i$ for all states $i'$ in the column $j$. %, that is, $v_{ij} = \displaystyle\sum_{i' = 0}^{|Q|-1} I_{i}(\delta_{i'j})$, $I_i(q_{i'})$ being the indicator function that is only 1 when $q_i' = q_i$. 
 %Given $\bmu$, we can integrate out $\phi$ and express t
 The marginal likelihood of $\delta$ in terms of $\bmu$ is then:
  
@@ -94,7 +93,7 @@ When we marginalize out an element from a column of $\delta$ by ignoring it, we 
 \begin{equation}
 P(\delta_{ij} = q_{i'}|\delta_{-ij},\alpha,\bmu) = \frac{\alpha\mu_{i'} + v_{i'j}}{\alpha + D^+_j }. \label{delta:pred_marg}
 \end{equation}
-If when sampling $\delta_{ij}$ it is assigned it a marginalized out state, we simply reinstantiate all necessary entries of $\delta$ incrementally using \eqref{delta:pred_marg} updating $ D^+_j$ as necessary.  When sampling a single $\delta_{ij}$ there can be many such entries as the path through the machine dictated by $x_{0:T}$ may use many transitions in $\delta$ that were marginalized out.  
+If when sampling $\delta_{ij}$ it is assigned it a state $q_{i'}$ such that some $c_{i'j'}$ which was zero is now nonzero, we simply reinstantiate $\delta_{i'j'}$ using \eqref{delta:pred_marg} and update $ D^+_{j'}$.  When sampling a single $\delta_{ij}$ there can be many such entries as the path through the machine dictated by $x_{0:T}$ may use many transitions in $\delta$ that were marginalized out.  In this case we update incrementally, increasing $D^+_j$ and $v_{ij}$ as we go.
 
 %The posterior for $\bmu$ up to a normalization constant is
 
@@ -106,38 +105,38 @@ If when sampling $\delta_{ij}$ it is assigned it a marginalized out state, we si
 
 While it is possible to construct a Gibbs sampler using \eqref{delta:cond} in this collapsed representation, such a sampler technically requires a Monte Carlo integration over a potentially large subset of the marginalized out entries of $\delta,$ a potentially high dimensional integral.  A simpler strategy is to pretend that all entries of $\delta$ exist but are sampled in a ``just-in-time'' manner.  
 %To avoid the problems arising from Monte Carlo approximations to this integral 
-This gives rise to a Metropolis Hastings (MH) sampler for $\delta$ where the choice for $d_{ij}$ is either one of the instantiated states or any one of the equivalent marginalized out states.   Any time any marginalized out element of $\delta$ is required we can pretend as if we had just sampled its value, and we know that because its value had no effect on the likelihood of the data, we know that it would have been sampled directly from \eqref{delta:pred_marg}.  It is in this sense that all marginalized out states are equivalent -- we known nothing more about their connectivity structure than that given by the prior in \eqref{delta:pred_marg}.
+This gives rise to a Metropolis Hastings (MH) sampler for $\delta$ where the choice for $\delta_{ij}$ is either one of the instantiated states or any one of the equivalent marginalized out states.   Any time any marginalized out element of $\delta$ is required we can pretend as if we had just sampled its value, and we know that because its value had no effect on the likelihood of the data, we know that it would have been sampled directly from \eqref{delta:pred_marg}.  It is in this sense that all marginalized out states are equivalent -- we known nothing more about their connectivity structure than that given by the prior in \eqref{delta:pred_marg}.
 
   \comment{, resulting in an algorithm similar to Alg. 5 for Dirichlet process mixtures in \cite{Neal2000}. }
 \comment{ Consider the case where the edge being sampled, $\delta_{ij} = q_{i'}$, is the only one that goes to $q_{i'}$.  Removing this $\delta_{ij}$ from $\delta^T$ means that the conditional probability that $\delta_{ij} = q_{i'}$ given $\delta^T_{-ij}$ is very small: with no elements of $\delta^T_{-ij}$ going to $q_{i'}$, it is just another of the infinite unseen states, all of which are equivalent.  To avoid forgetting a good estimate of $\delta$, we perform Metropolis-Hastings (MH) sampling from the conditional rather than sampling directly.  This way there is always some chance of returning to the previous state of the model.}   For the MH sampler, denote the set of non-marginalized out $\delta$ entries $\delta^+ = \{ \delta_{ij} : c_{ij} > 0\}.$ We propose a new value $q_{i^*}$ for each $\delta_{ij}\in\delta^+$ according to \eqref{delta:pred_marg}.  The conditional posterior probability of this proposal is proportional to $p(x_{0:T}|\delta_{ij}=q_{i^*},\delta^+_{-ij})P(\delta_{ij} = q_{i^*}|\delta^+_{-ij})$.  The Hastings correction exactly cancels out the proposal probability in the accept/reject ratio leaving an MH accept probability for the $\delta_{ij}$ being set to $q_{i^*}$ given that its previous value was $q_{i}$ of
 
 \begin{equation}
- \alpha(\delta_{ij}=q_{i^*} | \delta_{ij}=q_{i}) =  \mathrm{min}\left(1,\frac{p(x_{0:T}|\delta_{ij}=q_{i^*},\delta_{-ij}^+)}{p(x_{0:T}|\delta_{ij}=q_{i},\delta_{-ij}^+)}\right). \label{delta:mh}
+ \alpha(\delta_{ij}=q_{i^*} | \delta_{ij}=q_{i'}) =  \mathrm{min}\left(1,\frac{p(x_{0:T}|\delta_{ij}=q_{i^*},\delta_{-ij}^+)}{p(x_{0:T}|\delta_{ij}=q_{i'},\delta_{-ij}^+)}\right). \label{delta:mh}
 \end{equation}
 
-Whether $q_{i^*}$ is marginalized out or not, evaluating $p(x_{0:T}|\delta_{ij}=q_{i^*},\delta_{-ij}^+)$ may require reinstantiating marginalized out elements of $\delta$.  As before, these values are sampled from \eqref{delta:pred_marg} on a just-in-time schedule.  
+Whether $q_{i^*}$ is marginalized out or not, evaluating $p(x_{0:T}|\delta_{ij}=q_{i^*},\delta_{-ij}^+)$ may require reinstantiating marginalized out elements of $\delta$.  As before, these values are sampled from \eqref{delta:pred_marg} on a just-in-time schedule.  If the new value is accepted, all $\delta_{ij} \in \delta^+$ for which $c_{ij} = 0$ are removed.
 
-In the finite case, one can sample $\bmu$ by Metropolis-Hastings \comment{, for example using Dir($\eta\hat\bmu$) as the proposal, where $\hat\bmu$ is our current estimate and $\eta$ is a large concentration parameter,}or use a MAP estimate as in \cite{Mackay1995}.  
+In the finite case, one can sample $\bmu$ by Metropolis-Hastings \comment{, for example using Dir($\eta\hat\bmu$) as the proposal, where $\hat\bmu$ is our current estimate and $\eta$ is a large concentration parameter,}or use a MAP estimate as in \cite{Mackay1995}.  Hyperparameters $\alpha$, $\beta$ and $\gamma$ are also sampled via Metropolis-Hastings.
  
  \subsection{The Probabilistic Deterministic Infinite Automaton}
  
-We would like to avoid placing a strict upper bound on the number of states so that model complexity can grow with the amount of training data.  To see how to do this, consider what happens when $|Q|\rightarrow\infty$.   In this case, equations \eqref{gen:mu} and \eqref{gen:phi} must be replaced by their infinite dimensional equivalents
+We would like to avoid placing a strict upper bound on the number of states so that model complexity can grow with the amount of training data.  To see how to do this, consider what happens when $|Q|\rightarrow\infty$.   In this case, equations \eqref{gen:mu} and \eqref{gen:phi} must be replaced by infinite dimensional distributions
 %
 \begin{eqnarray*}
 %\bmu &\sim& \mathrm{GEM}(\gamma) \footnote{$\bpi \sim \mathrm{GEM}(\alpha_0)$ means $\bpi$ is a random probability measure,  $\pi_k' \sim \mathrm{Beta}(1,\alpha_0)$ and $\pi_k =  \pi_k' \prod_{l=1}^{k-1}(1-\pi_l')$ }\\
-\bmu &\sim& \mathrm{DP}(\gamma,H)\\
-\bphi_j &\sim& \mathrm{DP}(\alpha, \bmu) \\
+\bmu &\sim& \mathrm{PY}(\gamma,d_0,H)\\
+\bphi_j &\sim& \mathrm{PY}(\alpha, d, \bmu) \\
 \delta_{ij} &\sim& \bphi_j
 \end{eqnarray*}
 %  
-where $H$ in our case is a geometric distribution over the integers with parameter $\lambda$.   The resulting hierarchical model becomes the well known hierarchical Dirichlet process (HDP) over a discrete alphabet \cite{Teh2006}.
-Given a finite amount of data, there can only be nonzero counts for a finite number of state/symbol pairs, so we can marginalize out all but at most $T$ elements of $\delta$.  Denote the remaining non-marginalized out entries by $\delta^+$ as before.  We can sample the elements of $\delta^+$ as before using \eqref{delta:mh} provided that we can propose from the HDP (i.e. sample from the  $|Q|\rightarrow\infty$ limit of \eqref{delta:pred_marg}).  In any of a number of HDP sampler representations this is easy to do.  We use the Chinese restaurant franchise representation \cite{Teh2006} in which posterior predictive distribution of $\delta_{ij}$ given $\delta_{-ij}^+$ can be expressed with $\phi_j$ and $\bmu$ integrated out as
+where $H$ in our case is a geometric distribution over the integers with parameter $\lambda$.   The resulting hierarchical model becomes the hierarchical Pitman-Yor process (HPYP) over a discrete alphabet \cite{Teh2006}.  The discount parameters $d_0$ and $d$ are particular to the infinite case, and when both are zero the HPYP becomes the well known hierarchical Dirichlet process (HDP), which is the infinite dimensional limit of \eqref{gen:mu} and \eqref{gen:phi}.
+Given a finite amount of data, there can only be nonzero counts for a finite number of state/symbol pairs, so our marginalization procedure from the finite case will yield a $\delta$ with at most $T$ elements.  Denote these non-marginalized out entries by $\delta^+$ as before.  We can sample the elements of $\delta^+$ as before using \eqref{delta:mh} provided that we can propose from the HPYP (i.e. sample from the  $|Q|\rightarrow\infty$ limit of \eqref{delta:pred_marg}).  In any of a number of HPYP sampler representations this is easy to do.  We use the Chinese restaurant franchise representation \cite{Teh2006} in which the posterior predictive distribution of $\delta_{ij}$ given $\delta_{-ij}^+$ can be expressed with $\phi_j$ and $\bmu$ integrated out as
 
 \begin{equation}
-P(\delta_{ij} = q_{i'}|\delta_{-ij}^+,\alpha, \gamma) = \frac{v_{i'j}}{\alpha + D^+_j } + \frac{\alpha}{\alpha + D^+_j}\left(\frac{w_{i'}}{\gamma+w_\cdot} + \frac{\gamma}{\gamma+w_\cdot}H(q_{i'})\right). \label{delta:pred_marg}
+P(\delta_{ij} = q_{i'}|\delta_{-ij}^+,\alpha, \gamma) = \frac{v_{i'j}}{\alpha + D^+_j } + \frac{\alpha}{\alpha + D^+_j}\left(\frac{w_{i'}}{\gamma+w_\cdot} + \frac{\gamma}{\gamma+w_\cdot}H(q_{i'})\right). \label{delta:crf}
 \end{equation}
 
-Here $w_{i'}$ and $w_\cdot = \sum_i w_i$ are bookkeeping counts required by the Chinese Restaurant franchise sampler.  These counts are themselves stochastic and must themselves be sampled using the instructions provided in \cite{Teh2006}.  
+Here $w_{i'}$ and $w_\cdot = \sum_i w_i$ are bookkeeping counts required by the Chinese Restaurant franchise sampler.  These counts are themselves stochastic and must themselves be sampled using the instructions provided in \cite{Teh2006}.  The discount hyperparameters can also be sampled by Metropolis-Hastings.
 
   \comment{
  The predictive probability for a new $\delta_{ij} = q_{i'}$ given $\delta^T$ is given by $\frac{\alpha\mu_{i'} + v_{i'j}}{\alpha + D^+_j}$.  Note that this only depends on $|Q|$ through $\mu_{i'}$, which is well behaved as $|Q|$ grows.  In the limiting case, most of the mass of $\bmu$ will concentrate on a handful of elements, and $\bmu$ becomes a draw from a {\em Dirichlet process} (DP), which is commonly used as a prior in Bayesian models with infinite parameters.  The hierarchical Dirichlet construction given in \eqref{gen:mu} and \eqref{gen:phi} becomes a {\em hierarchical Dirichlet process} (HDP), where the $\bphi_j$ are draws from a Dirichlet process whose parameters are given by $\alpha$ and $\bmu$, which is itself a draw from a Dirichlet process.  An attractive property of HDPs is that both the $\bphi_j$ and $\bmu$ can be integrated out, which makes sampling more straightforward than in the finite case.  This  representation of the model, with all draws from a DP integrated out, is known as the {\em Chinese Restaurant Franchise} (CRF).  This curious name needs some explanation, which we happily provide.
