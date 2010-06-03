@@ -8,7 +8,7 @@ We start our description of Bayesian PDFA inference by defining a prior distribu
 
 \subsection{A PDFA Prior}
 
-We assume that the set of states $Q$, set of symbols $\Sigma$, and initial state $q_0$ of a PDFA are known but that the transition and emission functions are unknown.  The PDFA prior then consists of a prior over both the transition function $\delta$ and the emission probability function $\pi$.  In the finite case $\delta$ and $\pi$ are representable as finite matrices, with one column per element of $\Sigma$ and one row per element of $Q$.  For each column $j$ ($j$ co-indexes columns and set elements) of the transition matrix $\delta$, our prior stipulates that the row elements of that column are  i.i.d. draws from a discrete distribution $\bphi_j$ over $Q$, that is, $\delta_{ij} \sim [\bphi_1,\ldots,\bphi_{|\Sigma|}], \; 0 \leq i\leq|Q|-1$.  The $\bphi_j$ represent state specific transition tendencies, if the $i$th element of $\phi_{j}$ is large then state $q_i$ is likely to be transitioned to anytime the last symbol was $\symb_j$.   The $\phi_{j}$'s are   themselves given a shared Dirichlet prior with parameters $\alpha\bmu$, where $\alpha$ is a concentration and $\bmu$ is a template transition probability vector.   If the $i$th element of $\bmu$ is large then the $i$th state is likely to be transitioned to regardless of the emitted symbol.  We place a uniform Dirichlet prior on $\bmu$ itself, with $\gamma$ total mass and average over $\bmu$ during inference.  This hierarchical Dirichlet construction encourages both general and context specific state reuse.
+We assume that the set of states $Q$, set of symbols $\Sigma$, and initial state $q_0$ of a PDFA are known but that the transition and emission functions are unknown.  The PDFA prior then consists of a prior over both the transition function $\delta$ and the emission probability function $\pi$.  In the finite case $\delta$ and $\pi$ are representable as finite matrices, with one column per element of $\Sigma$ and one row per element of $Q$.  For each column $j$ ($j$ co-indexes columns and set elements) of the transition matrix $\delta$, our prior stipulates that the elements of that column are  i.i.d. draws from a discrete distribution $\bphi_j$ over $Q$, that is, $\delta_{ij} \sim [\bphi_1,\ldots,\bphi_{|\Sigma|}], \; 0 \leq i\leq|Q|-1$.  The $\bphi_j$ represent transition tendencies given a symbol, if the $i$th element of $\phi_{j}$ is large then state $q_i$ is likely to be transitioned to anytime the last symbol was $\symb_j$.   The $\phi_{j}$'s are   themselves given a shared Dirichlet prior with parameters $\alpha\bmu$, where $\alpha$ is a concentration and $\bmu$ is a template transition probability vector.   If the $i$th element of $\bmu$ is large then the $i$th state is likely to be transitioned to regardless of the emitted symbol.  We place a uniform Dirichlet prior on $\bmu$ itself, with $\gamma$ total mass and average over $\bmu$ during inference.  This hierarchical Dirichlet construction encourages both general and context specific state reuse.
  We also place a uniform Dirichlet prior over the per-state emission probabilities $\bpi_{q_i}$ with $\beta$ total mass which smooths emission distribution estimates.  Formally:
 %
 \begin{eqnarray}
@@ -22,7 +22,7 @@ where $0 \leq i \leq |Q|-1$ and $1 \leq j \leq |\Sigma|$.  Given a sample from t
 %
 \begin{equation}
 \q_0 = \state_0 \qquad
-x_0 \sim \bpi_0 \qquad
+x_0 \sim \bpi_{q_0} \qquad
 \q_t = \delta(\q_{t-1},x_{t-1}) \qquad
 x_t \sim \bpi_{\q_t} \label{gen} \nonumber
 \end{equation}
@@ -84,7 +84,7 @@ P(\delta_{ij} = q_{i'}|\delta_{-ij},\alpha,\bmu) = \frac{\alpha\mu_{i'} + v_{i'j
 
 where $v_{i'j}$ is the number of elements in column $j$ equal to $q_{i'}$  excluding $\delta_{ij}$.  As $|Q|$ is finite, we compute \eqref{delta:cond} for all values of $\delta_{ij}$ and normalize to produce the required conditional probability distribution.
 
-Note that in \eqref{x:end}, the count matrix $c$ may be profoundly impacted by changing even a single element of $\delta$.  The values in $c$ depend on the specific sequence of states  $\q_{0:T}$, the automata used to generate $x$.  Changing the value of a single element of $\delta$ effects the state trajectory the PDFA must follow to generate $x_{0:T}$  %By changing $\delta_{ij}$, the set of states visited and the order in which those states are visited after the first time $q_i$ emits $\sigma_j$ are affected. 
+Note that in \eqref{x:end}, the count matrix $c$ may be profoundly impacted by changing even a single element of $\delta$.  The values in $c$ depend on the specific sequence of states  $\q_{0:T}$, the automata used to generate $x$.  Changing the value of a single element of $\delta$ effects the state trajectory the PDFA must follow to generate $x_{0:T}$.  %By changing $\delta_{ij}$, the set of states visited and the order in which those states are visited after the first time $q_i$ emits $\sigma_j$ are affected. 
  Among other things this means that some elements of $c$ that were nonzero may become zero, and vice versa.
 
 We can reduce the computational cost of inference by marginalizing out (``ignoring'' until necessary) transitions $\delta_{ij}$ for which the corresponding counts $c_{ij}$ are or become 0.  In practical sampler implementations this means that one need not even represent transitions corresponding to zero counts.  The likelihood of the data \eqref{x:end} does not depend on the value of $\delta_{ij}$ if symbol $\sigma_j$ is never emitted while the machine is in state $\q_i.$   In this case sampling from \eqref{delta:cond} is the same as sampling without conditioning on the data at all.  Thus, if while sampling we change some transition that renders $c_{ij}=0$ for some values for each of $i$ and $j$, we can ignore $\delta_{ij}$ until another transition is changed such that $c_{ij}$ becomes nonzero again.  Under the marginal joint distribution of a column of $\delta$ the row entries in that column are exchangeable, and so ignoring an entry of $\delta$ has the same effect as marginalizing it out.  
@@ -93,7 +93,7 @@ When we marginalize out an element from a column of $\delta$ by ignoring it, we 
 \begin{equation}
 P(\delta_{ij} = q_{i'}|\delta_{-ij},\alpha,\bmu) = \frac{\alpha\mu_{i'} + v_{i'j}}{\alpha + D^+_j }. \label{delta:pred_marg}
 \end{equation}
-If when sampling $\delta_{ij}$ it is assigned it a state $q_{i'}$ such that some $c_{i'j'}$ which was zero is now nonzero, we simply reinstantiate $\delta_{i'j'}$ using \eqref{delta:pred_marg} and update $ D^+_{j'}$.  When sampling a single $\delta_{ij}$ there can be many such entries as the path through the machine dictated by $x_{0:T}$ may use many transitions in $\delta$ that were marginalized out.  In this case we update incrementally, increasing $D^+_j$ and $v_{ij}$ as we go.
+If when sampling $\delta_{ij}$ it is assigned it a state $q_{i'}$ such that some $c_{i'j'}$ which was zero is now nonzero, we simply reinstantiate $\delta_{i'j'}$ by drawing from \eqref{delta:pred_marg} and update $ D^+_{j'}$.  When sampling a single $\delta_{ij}$ there can be many such entries as the path through the machine dictated by $x_{0:T}$ may use many transitions in $\delta$ that were marginalized out.  In this case we update incrementally, increasing $D^+_j$ and $v_{ij}$ as we go.
 
 %The posterior for $\bmu$ up to a normalization constant is
 
@@ -116,7 +116,7 @@ This gives rise to a Metropolis Hastings (MH) sampler for $\delta$ where the cho
 
 Whether $q_{i^*}$ is marginalized out or not, evaluating $p(x_{0:T}|\delta_{ij}=q_{i^*},\delta_{-ij}^+)$ may require reinstantiating marginalized out elements of $\delta$.  As before, these values are sampled from \eqref{delta:pred_marg} on a just-in-time schedule.  If the new value is accepted, all $\delta_{ij} \in \delta^+$ for which $c_{ij} = 0$ are removed.
 
-In the finite case, one can sample $\bmu$ by Metropolis-Hastings \comment{, for example using Dir($\eta\hat\bmu$) as the proposal, where $\hat\bmu$ is our current estimate and $\eta$ is a large concentration parameter,}or use a MAP estimate as in \cite{Mackay1995}.  Hyperparameters $\alpha$, $\beta$ and $\gamma$ are also sampled via Metropolis-Hastings.
+In the finite case, one can sample $\bmu$ by Metropolis-Hastings \comment{, for example using Dir($\eta\hat\bmu$) as the proposal, where $\hat\bmu$ is our current estimate and $\eta$ is a large concentration parameter,}or use a MAP estimate as in \cite{Mackay1995}.  Hyperparameters $\alpha$, $\beta$ and $\gamma$ are also sampled via Metropolis-Hastings updates.
  
  \subsection{The Probabilistic Deterministic Infinite Automaton}
  
