@@ -1,6 +1,7 @@
 % !TEX root = main.tex
 \section{Experiments and Results}
 \label{sec:results}
+\comment{
 
 \begin{table}[t]
     \begin{center}
@@ -27,7 +28,6 @@ DNA & 61.3 & 54 & 46.2* &  5 & 21 & 85 & 341 & 1,365 & 314,166 \\
 \end{table}
 
 
-\comment{
 \begin{table}[t]
     \begin{center}
     \setlength{\tabcolsep}{1.3mm}
@@ -59,9 +59,9 @@ DNA & 61.3 & 54 & 46.2* &  5 & 21 & 85 & 341 & 1365 & 314166 \\
     \setlength{\tabcolsep}{1.3mm}
 \begin{tabular}{r|cccccccccc}
 \hline
-& {\bf PDIA } & PDIA-MAP &  HMM-EM & bigram& trigram & 4-gram & 5-gram & 6-gram & SSM \\
+& PDIA  & PDIA-MAP &  HMM-EM & bigram& trigram & 4-gram & 5-gram & 6-gram & SSM \\
 \hline
-AIWS & 5.13 & 5.46 &  7.89 & 9.71 & 6.45 & 2.36 & 5.13 & 4.69 & 4.78 \\
+AIWS & 5.13 & 5.46 &  7.89 & 9.71 & 6.45 & 5.13 & 4.80 & 4.69 & 4.78 \\
 AIWS & 373.3 & 379 & 52 & 28 & 382 & 2023 & 5592 & 10,838 & 19,358 \\
 \hline
 \hline
@@ -87,23 +87,27 @@ DNA & 61.3 & 54 & 46.2* &  5 & 21 & 85 & 341 & 1,365 & 314,166 \\
 \subfigure[AIW sampler trace]{\label{fig:aiw_small_sampler}\includegraphics[width=.3\textwidth]{results/aiw_small_sampler}}
 \subfigure[AIW number of states]{\label{fig:aiw_small_numstates}\includegraphics[width=.3\textwidth]{results/aiw_small_numstates}}
 \caption{}
-\label{fig:dna_hmm}
+\label{fig:aiw_and_dna_all_figs}
 \end{figure}
 
 To evaluate our PDIA inference approach we used it to do discrete sequence prediction and compared its performance to other approaches to the same.  We trained our model and others on two datasets: a character sequence from Alice in Wonderland and a short sequence of mouse DNA.  The Alice in Wonderland dataset was preprocessed to remove all characters but letters and spaces, shift all letters from upper case to lower case, and split along sentence dividers to yield a 27-character alphabet (a-z and space) and 1639 sentences with a total of 132794 characters.  We used the first 1200 sentences (100210 characters) to train the models and the rest to test.  \comment{For some experiments we also used a smaller subset of Alice in Wonderland consisting of 100 randomly chosen training sentences (9986 characters) and 50 random test sentences (3891 characters).}  The mouse DNA dataset consisted of a fragment of chromosome 2 with 194173 base pairs, which we treated as a single unbroken string.  We used the first 150000 base pairs for training and the rest for testing.  For Alice in Wonderland, the state of the PDIA model was always set to $q_0$ at the start of each sentence.  For DNA, the state of the PDIA model at the start of the test data was set to the last state of the model after accepting the training data.  We placed Gamma(1,1) priors over $\alpha$,$\beta$ and $\gamma$ and set $\lambda=.001.$
 
-We evaluated the performance of the learned models by calculating the average log loss per character of the test data.  For training data $x_{1:T}$, test data $y_{1:T'}$, and posterior samples $\boldsymbol\delta$, this is given by $-\frac{1}{T'}$log$_2\, P(y_{1:T'}|x_{1:T},\boldsymbol\delta)$.  It is a measure of the uncertainty of a character given the model, and is at most log$_2\,|\Sigma|$, which for DNA is 2 and for text is 4.755.  We evaluated the probability of the test data incrementally, and averaged each probability over multiple posterior samples: $P(y_{1:T'}|x_{1:T},\boldsymbol\delta) = \prod_{i = 1}^{T'} P(y_i|y_{1:i-1},x_{1:T},\boldsymbol\delta) = \frac{1}{L}\prod_{i = 1}^{T'} \sum_{\ell = 1}^{L} P(y_i|y_{1:i-1},x_{1:T},\delta_\ell)$.  In addition to averaging over multiple $\delta_\ell$, we also evaluated the log loss for each $\delta_\ell$ by itself to find the single model with the best generalization performance, which we call $\delta_{MAP}$.
+We evaluated the performance of the learned models by calculating the average per character predictive perplexity of the test data.  For training data $x_{1:T}$, test data $y_{1:T'}$ this is given by $2^{-\frac{1}{T'}\log_2\, P(y_{1:T'}|x_{1:T})}$.  It is an average measure of the uncertainty the model has about what character comes next in the sequence given the sequence up to that point. It is at most $|\Sigma|$, which for DNA is 4 and for text is 27.  We evaluated the probability of the test data incrementally, integrating test observations into the model in the standard Bayesian way, and averaged each predictive probability $P(y_{1:T'}|x_{1:T}) =  \prod_{i = 1}^{T'} \int P(y_i|y_{1:i-1},x_{1:T},\delta)P(\delta|y_{1:i-1},x_{1:T})d\delta \approx \frac{1}{L}\prod_{i = 1}^{T'} \sum_{\ell = 1}^{L} P(y_i|y_{1:i-1},x_{1:T},\delta_\ell)$ where $\delta_\ell \sim P(\delta|y_{1:i-1},x_{1:T})$.  %In addition to averaging over multiple $\delta_\ell$, we also evaluated the log loss for each $\delta_\ell$ by itself to find the single model with the best generalization performance, which we call $\delta_{MAP}$.
 
-We found that posterior samples from the PDIA achieve competitive generalization performance on natural language and DNA compared to hidden Markov models and n-gram models.  Averaging predictive probability over multiple samples leads to better generalization than a single sampled model.  Both a single sample and multiple samples generalize better than the best EM-trained HMM.  On natural language, the learned PDIA has more states than the optimal number of states for an HMM found by cross-validation.  The improved generalization is not due to smoothing the emission distribution.  Compared to smoothed n-gram models, the PDIA performs competitively even though there is no backing off to more general contexts.
-
-To check the performance of our sampler, we trained it on data from three synthetic grammars: the even process \cite{?}, the Reber grammar \cite{Reber} and the Feldman grammar \cite{Feldman}, which have up to 7 states and 7 symbols in the alphabet.  Performance was good, even on small data.  Details are given in the appendix.
-
+Test results are shown in Table~\ref{table:results}.  
+For the smoothed $n$-gram models, we report average perplexity results for hierarchical Pitman-Yor process (HPYP) \cite{Teh2006} models of varying Markov order (1 through 5 notated as bigram through 6-gram) burned in for one hundred samples and averaged over 1000.  While the PDIA averages over a  class of models that includes finite order Markov models as a subset, the states in HPYP are identifiable which means that hierarchical smoothing of the per-state emission distributions is possible.  In the PDIA model the states are not identifiable and no easily defined hierarchy of contextual specificity exists on which hierarchical smoothing could be implemented.  
 
 
-Even for a single sampled transition matrix $\delta_\ell$, there may be symbols $y_t$ which have not been emitted from the state $\q_t$ in the training data, and thus $\delta_\ell(\q_t,y_t)$ is not known.  In this case we sampled a new element of the transition matrix according to the CRF, as described in \ref{model}.  In the same way that we averaged the predictive probability of each character over multiple $\delta_\ell$, we averaged the probability of a character given a single $\delta_\ell$ over multiple sampled values of $\delta_\ell(\q_t,y_t)$.
+We show the performance of the incremental variant of the sequence memoizer (SM) \cite{Gasthaus2010}, which is the limit of an $n$-gram as $n\rightarrow\infty$.
 
 For a baseline result to compare our model against, we used two models: a hidden Markov model (HMM) and a smoothed n-gram model.  We used Kevin Murphy's HMM toolbox \cite{Murphy} and trained the HMM using expectation-maximization (EM).  We found the best number of hidden states by cross-validation on the same test data used for the PDIA.  The log loss and optimal number of states are given in Table \ref{table:results}, and plots showing the generalization performance across a range of model sizes relative to PDIA performance is given in Figures \ref{fig:dna_hmm} and \ref{fig:aiw_small_hmm}.  
 
 We found that both the MAP PDIA and the average over PDIA generalize better than the HMM.  To test the possibility that better generalization was due to smoothing of the PDIA emission probability by $\beta$, we took samples from the PDIA, fixed $\beta$ to be very near 0, and ran the MCMC sampler as before.  We found that neither the average number of states nor the generalization performance was significantly affected.
 
-For the smoothed n-gram model, we used a hierarchical Pitman-Yor Process language model (HPYPLM) \cite{Teh}, a hierarchical nonparametric Bayesian generalization of Kneser-Ney smoothing.  While the PDIA learns a larger class of models than an $n$-gram model, the emission probabilities of an HPYPLM are tied together in a more intelligent way than those of the PDIA, such that states with few observations still generalize well.  We ran the HPYPLM with Markov order 1 through 5 (that is, 2-gram through 6-gram).  We also evaluated the performance of the sequence memoizer (SM), which is the limit of an $n$-gram as $n\rightarrow\infty$.
+In general it seems that posterior samples from the PDIA achieve competitive generalization performance on natural language and DNA compared to hidden Markov models and n-gram models.  Averaging predictive probability over multiple samples leads to better generalization than a single sampled model.  Both a single sample and multiple samples generalize better than the best EM-trained HMM.  On natural language, the learned PDIA has more states than the optimal number of states for an HMM found by cross-validation.  The improved generalization is not due to smoothing the emission distribution.  Compared to smoothed n-gram models, the PDIA performs competitively even though there is no backing off to more general contexts.
+
+
+%Even for a single sampled transition matrix $\delta_\ell$, there may be symbols $y_t$ which have not been emitted from the state $\q_t$ in the training data, and thus $\delta_\ell(\q_t,y_t)$ is not known.  In this case we sampled a new element of the transition matrix according to the CRF, as described in \ref{model}.  In the same way that we averaged the predictive probability of each character over multiple $\delta_\ell$, we averaged the probability of a character given a single $\delta_\ell$ over multiple sampled values of $\delta_\ell(\q_t,y_t)$.
+
+
+

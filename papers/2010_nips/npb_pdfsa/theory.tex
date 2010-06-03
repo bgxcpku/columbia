@@ -1,6 +1,6 @@
 % !TEX root = main.tex
-\section{Theory}
-\label{sec:theory}
+\section{Theory and Related Work}
+\label{theory}
 
 The PDIA posterior distribution takes the form of an infinite mixture of PDFAs.  In practice, we run a sampler for some number of iterations and approximate the posterior with a finite mixture of PDFAs.  We consider the expressive power of finite mixtures of PDFAs.  We find that they are strictly more expressive than PDFAs, but strictly less expressive than Hidden Markov Models.
 
@@ -11,6 +11,9 @@ PNFAs are a strictly larger model class than PDFAs.  For example, the simple PNF
 In general, any PNFA where the nondeterministic transitions can only be visited once can be expressed as a mixture of PDFAs.  This can be done by splitting a PNFA with $n$ possible values for $\delta(q_i,s_j)$ into $n$ PNFAs with deterministic $\delta(q_i,s_j)$, and repeating until all transitions are deterministic.  This includes the class of acyclic PNFAs as a trivial subset.  If there are any cycles that return to a state with nondeterministic transition, there is no equivalent finite mixture of PDFAs.
 
 It is important to note that the algorithm presented here will not always discover the appropriate mixture of PDFAs if the data-generating mechanism is like that in \ref{pnfa}(A).  Our intent is to clarify where the class of models that includes our posterior estimate falls in the Chomsky hierarchy, rather than to make any claim as to what class of models can be efficiently learned.
+
+
+To check the performance of our sampler, we trained it on data from three synthetic grammars: the even process \cite{?}, the Reber grammar \cite{Reber} and the Feldman grammar \cite{Feldman}, which have up to 7 states and 7 symbols in the alphabet.  Performance was good, even on small data.  Details are given in the appendix.
 
 \begin{figure}
 \begin{center}
