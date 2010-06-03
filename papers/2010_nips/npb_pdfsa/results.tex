@@ -84,7 +84,7 @@ We evaluated the performance of the learned models by calculating the average pe
 
 Test perplexity results are shown in Table~\ref{table:results} on the first line of each of the AIW (Alice in Wonderland) and DNA (mouse DNA) subtables.  
 For the smoothed $n$-gram models, we report thousand-sample average perplexity results for hierarchical Pitman-Yor process (HPYP) \cite{Teh2006} models of varying Markov order (1 through 5 notated as bigram through 6-gram) after burning each model in for one hundred samples.  We also show the performance of the single particle incremental variant of the sequence memoizer (SM) \cite{Gasthaus2010}, the SM being the limit of an $n$-gram model as $n\rightarrow\infty$.
-We also show results for a hidden Markov model (HMM) \cite{Murphy} trained using expectation-maximization (EM).  We determined the best number of hidden states by cross-validation on the test data (an procedure used here to produce optimistic HMM performance for comparison purposes only).  
+We also show results for a hidden Markov model (HMM) \cite{Murphy2005} trained using expectation-maximization (EM).  We determined the best number of hidden states by cross-validation on the test data (an procedure used here to produce optimistic HMM performance for comparison purposes only).  
 
 %The log loss and optimal number of states are given in Table \ref{table:results}, and plots showing the generalization performance across a range of model sizes relative to PDIA performance is given in Figures \ref{fig:dna_hmm} and \ref{fig:aiw_small_hmm}.  
 

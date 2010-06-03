@@ -9,12 +9,12 @@ We start our description of Bayesian PDFA inference by defining a prior distribu
 \subsection{A PDFA Prior}
 
 We assume that the set of states $Q$, set of symbols $\Sigma$, and initial state $q_0$ of a PDFA are known but that the transition and emission functions are unknown.  The PDFA prior then consists of a prior over both the transition function $\delta$ and the emission probability function $\pi$.  In the finite case $\delta$ and $\pi$ are representable as finite matrices, with one column per element of $\Sigma$ and one row per element of $Q$.  For each column $j$ ($j$ co-indexes columns and set elements) of the transition matrix $\delta$, our prior stipulates that the row elements of that column are  i.i.d. draws from a discrete distribution $\bphi_j$ over $Q$, that is, $\delta_{ij} \sim [\bphi_1,\ldots,\bphi_{|\Sigma|}], \; 0 \leq i\leq|Q|-1$.  The $\bphi_j$ represent state specific transition tendencies, if the $i$th element of $\phi_{j}$ is large then state $q_i$ is likely to be transitioned to anytime the last symbol was $\symb_j$.   The $\phi_{j}$'s are   themselves given a shared Dirichlet prior with parameters $\alpha\bmu$, where $\alpha$ is a concentration and $\bmu$ is a template transition probability vector.   If the $i$th element of $\bmu$ is large then the $i$th state is likely to be transitioned to regardless of the emitted symbol.  We place a uniform Dirichlet prior on $\bmu$ itself, with $\gamma$ total mass and average over $\bmu$ during inference.  This hierarchical Dirichlet construction encourages both general and context specific state reuse.
- We also place a uniform Dirichlet prior over the per-state emission probabilities $\bpi_i$ with $\beta$ total mass which smooths emission distribution estimates.  Formally:
+ We also place a uniform Dirichlet prior over the per-state emission probabilities $\bpi_{q_i}$ with $\beta$ total mass which smooths emission distribution estimates.  Formally:
 %
 \begin{eqnarray}
 \bmu|\gamma,|Q| & \sim & \mathrm{Dir}\left(\gamma/|Q|,\ldots,\gamma/|Q|\right) \label{gen:mu}  \\
 \bphi_{j}|\alpha,\bmu  & \sim & \mathrm{Dir}(\alpha\bmu) \label{gen:phi} \\
-\bpi_{i}|\beta,|\Sigma| & \sim & \mathrm{Dir}(\beta/|\Sigma|,\ldots,\beta/|\Sigma|) \label{gen:pi} \nonumber \\
+\bpi_{q_i}|\beta,|\Sigma| & \sim & \mathrm{Dir}(\beta/|\Sigma|,\ldots,\beta/|\Sigma|) \label{gen:pi} \nonumber \\
 \delta_{ij} & \sim & \bphi_{j} \label{gen:delta} \nonumber
 \end{eqnarray}
 %
@@ -24,7 +24,7 @@ where $0 \leq i \leq |Q|-1$ and $1 \leq j \leq |\Sigma|$.  Given a sample from t
 \q_0 = \state_0 \qquad
 x_0 \sim \bpi_0 \qquad
 \q_t = \delta(\q_{t-1},x_{t-1}) \qquad
-x_t \sim \bpi_t \label{gen} \nonumber
+x_t \sim \bpi_{\q_t} \label{gen} \nonumber
 \end{equation}
 %
 We choose this particular inductive bias, with transitions tied together within a column of $\delta$, because we wanted the most recent symbol emission to be informative about what the next state is.  If we instead had a single Dirichlet prior over all elements of $\delta$, transitions to a few states would be highly likely no matter the context and those states would dominate the behavior of the automata.  If we tied together rows of $\delta$ instead of columns, being in a particular state would tell us more about the sequence of states we came from than the symbols that got us there.  
@@ -166,7 +166,7 @@ p(\delta_{ij} = q_{i'} | \delta_{-ij}, w_{-ij}, w_{ij} = K^+_j + 1) =
 This is {\em another} CRP, which comes as a result of integrating out $\bmu$, while the first CRP came from integrating out the $\bphi_j$.  When the number of observations grows large, the probability of sitting at a new table, and the probability of drawing a new dish given a new table, becomes small.  Thus a new $\delta_{ij}$ is most likely to be assigned to a state already seen in column $j$, then has some probability of being assigned to a state seen in another column but not in $j$, and then with small, but not zero, probability, will be assigned to a new state.  This coupling across multiple levels of generality is one of the attractive features of HDPs for machine learning.
 
 
-Having defined a prior over a transition matrix with an infinite number of rows, we can now generate a string from the probabilistic deterministic infinite automaton (PDIA).  First, draw $\bpi_0$ from \eqref{gen:pi} as before, and draw $\sigma_j|q_0 \sim \bpi_0$.  Draw $\delta_{0j}$ from the CRF, which for the first observation will always be seated at a new table with a new dish.  From there, if the current state $\q_t = q_i$ is a new one, draw $\bpi_i$, otherwise $\bpi_i$ is already known, and draw $x_t$ from $\bpi_i$.  If $(\q_t,x_t) \in \Delta^t$, the set of state/symbol pairs that have been visited by time $t$, $\q_{t+1} = \delta(\q_t,x_t)$, otherwise draw $\delta(\q_t,x_t)$ from the CRF given $\delta^t = \{\delta_{ij}|(q_i,\sigma_j)\in\Delta^t\}$ and let $\Delta^{t+1} = \Delta^t \cup (\q_t,x_t)$.
+Having defined a prior over a transition matrix with an infinite number of rows, we can now generate a string from the probabilistic deterministic infinite automaton (PDIA).  First, draw $\bpi_0$ from \eqref{gen:pi} as before, and draw $\sigma_j|q_0 \sim \bpi_0$.  Draw $\delta_{0j}$ from the CRF, which for the first observation will always be seated at a new table with a new dish.  From there, if the current state $\q_t = q_i$ is a new one, draw $\bpi_{q_i}$, otherwise $\bpi_{q_i}$ is already known, and draw $x_t$ from $\bpi_{q_i}$.  If $(\q_t,x_t) \in \Delta^t$, the set of state/symbol pairs that have been visited by time $t$, $\q_{t+1} = \delta(\q_t,x_t)$, otherwise draw $\delta(\q_t,x_t)$ from the CRF given $\delta^t = \{\delta_{ij}|(q_i,\sigma_j)\in\Delta^t\}$ and let $\Delta^{t+1} = \Delta^t \cup (\q_t,x_t)$.
 
 
 
