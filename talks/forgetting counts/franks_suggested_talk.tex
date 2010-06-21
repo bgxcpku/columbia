@@ -138,9 +138,9 @@ Representation can be ``compressed'' to counts of ``types.''  Number of types gr
 }
 
 \begin{frame}[t]{Example: A Hierarchical PYP Model}
-	Consider arranging Pitman-Yor processes hierarchically, such as in the HPYP trigram language model
+	Consider a {\em hierarchical} Pitman-Yor process, such as a smoothed second order Markov model
 	\[
-	\begin{array}{rccl}
+	\begin{array}{rcll}
 		G_{[]} | d_0,c_0,\mathcal{U} &\sim& \PY(d_0, c_0, \mathcal{U})\\
 		G_{[x]} | d_1, c_1, G_{[]} &\sim& \PY(d_1, c_1, G_{[]}) & \forall x \in \Sigma \\
 		G_{[x,y]} | d_2, c_2, G_{[y]} &\sim& \PY(d_2, c_2, G_{[y]} )& \forall x, y \in \Sigma\\
@@ -148,30 +148,30 @@ Representation can be ``compressed'' to counts of ``types.''  Number of types gr
 	\end{array}
 	\]
 
-	Inferring the posterior distribution requires maintaining counts of all observed values in all observed length 2 contexts.
+	Inference in this model requires maintaining counts of all observed values in all observed contexts of length two.  This quantity grows $O(n)$ which becomes impractical for large $n$ (streams, life-long learning, etc.).  
 \end{frame}
 
-\begin{frame}[t]{Goals}
-	\begin{block}{Stationary Model for Dependent Data}
-\begin{itemize}
-\item 	Data generator may change over time or as a function of some other covariate.  
-\item	Would like single coherent model for such data
-\item	One way of introducing dependence is through ``forgetting.'' 
-\item	Dependent Dirichlet and Pitman-Yor processes have been defined \cite{MacEachern2000, Srebro2005, Griffin2006, Caron2007, Caron2007a} 
-\end{itemize}
-
-	\end{block}
-	\begin{block}{Bounded Memory Inference}
+\begin{frame}[t]{Contribution}
+	\begin{block}{Bounded Memory HPYP Inference}
 			\begin{itemize}
-\item   Constant memory requires that we constrain the model.  
-\item The resulting estimator may be inconsistent.  
-\item In sparse Gaussian process modeling, forgetting strategies have been used to achieve constant time and space (independent of the number of observations) inference procedures \cite{ Lawrence2003, Csat'o2002, Snelson2006}.
-\item DP inference generally has no such problems in most practical situations.  Hierarchical Dirichlet process inference does in the streaming setting.
+\item   Constant memory requires ``forgetting'' counts.  
+\item Sparse Gaussian processes use forgetting strategies to achieve constant time and space  inference \cite{ Lawrence2003, Csat'o2002, Snelson2006}.
+%\item DP inference generally has no such problems in most practical situations.  Hierarchical Dirichlet process inference does in the streaming setting.
 
 \end{itemize}
 
 			
 	\end{block}
+	\begin{block}{Dependent HPYP}
+\begin{itemize}
+\item 	Data generator may change over time or as a function of some other covariate.  
+\item	Would like single coherent model for such data
+\item	One way of introducing dependence is through forgetting. 
+\item	Dependent Dirichlet and Pitman-Yor processes have been defined \cite{MacEachern2000, Srebro2005, Griffin2006, Caron2007, Caron2007a} 
+\end{itemize}
+
+	\end{block}
+
 	
 
 \end{frame}
@@ -417,7 +417,7 @@ Representation can be ``compressed'' to counts of ``types.''  Number of types gr
 	\begin{itemize}
 		\item{Single particle particle filter}
 		\item{Parametric model vs.~nonparametric model constrained to be constant space}
-		\item{}
+		\item{The resulting estimator may be inconsistent.  }
 	\end{itemize}
 \end{frame}
 
