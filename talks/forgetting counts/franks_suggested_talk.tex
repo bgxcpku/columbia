@@ -73,7 +73,7 @@ Data
 Model (e.g.~density estimation)
 \[x_i \sim G  \mbox{ and } \mathsf{P}(G)\]
 Inference
-\[\mathsf{P}(X = x | \mathcal{X}) = \int \mathsf{P}(X=x|F)d\mathsf{P}(G | \mathcal{X})\]
+\[\mathsf{P}(X = x | \mathcal{X}) = \int \mathsf{P}(X=x| G)d\mathsf{P}(G | \mathcal{X})\]
 %Estimator (frequentist interpretation)
 %\[\hat G = \argmax_{G} \mathsf{P}(G | \mathcal{X}) \mbox{  or  }  \hat G = \int F d\mathsf{P}(G | \mathcal{X}) \]
 
@@ -91,7 +91,7 @@ Inference
 \begin{block}{Considerations}
 \begin{itemize}
 \item Inference always function of {\em all data}.
-\item In high dimensions, prior on $F$ plays a key role.
+\item In high dimensions, prior on $G$ plays a key role.
 \end{itemize}
 \end{block}
 \begin{alertblock}{Drawbacks}
@@ -102,22 +102,24 @@ Inference
 \end{alertblock}
 \end{frame}	
 
-\begin{frame}[t]{Example : A Simple DP Model}
+\begin{frame}[t]{Example : A Simple PYP Model}
 Consider
 \begin{eqnarray*}
-G | c, G_0 &\sim& \DP(c,G_0) \\
+G | d,c, G_0 &\sim& \PY(d,c,G_0) \\
 x_i | G &\sim& G, \;\; i=1,\ldots,n
 \end{eqnarray*}
 where prediction is performed using
 \[P(x_n | x_1,\ldots,x_{n-1}) = \int P(x_n | G)dP(G | x_1, \ldots, x_{n-1})\]
-
+\\
+Inferring the posterior distribution requires maintaining counts of all observed values.
 \end{frame}
 
+\comment{
 \begin{frame}[t]{Memory complexity of DP inference}
 \begin{block}{Polya Urn representation \citep{Blackwell1973}}
 \begin{eqnarray*}
 x_n | x_1,\ldots, x_{n-1} &\sim& \frac{1}{n-1+c}\sum_{i=1}^{n-1}\delta_{x_i} + \frac{c}{n-1+c}G_0 \\
-G | x_1, \ldots, x_n &\sim& \DP\left(n+c, \frac{1}{n+c}\sum_{i=1}^n \delta_{x_i} + \frac{c}{n+c}G_0\right)
+%G | x_1, \ldots, x_n &\sim& \DP\left(n+c, \frac{1}{n+c}\sum_{i=1}^n \delta_{x_i} + \frac{c}{n+c}G_0\right)
 \end{eqnarray*}
 All data retained.
 
@@ -132,7 +134,21 @@ All data retained.
 Representation can be ``compressed'' to counts of ``types.''  Number of types grows as function of length of data.
 \end{block}
 \end{frame}	
+}
 
+\begin{frame}[t]{Example: A Hierarchical PYP Model}
+	Consider arranging Pitman-Yor processes hierarchically, such as in the HPYP trigram language model
+	\[
+	\begin{array}{rccl}
+		G_{[]} | d_0,c_0,\mathcal{U} &\sim& \PY(d_0, c_0, \mathcal{U})\\
+		G_{[x]} | d_1, c_1, G_{[]} &\sim& \PY(d_1, c_1, G_{[]}) & \forall x \in \Sigma \\
+		G_{[x,y]} | d_2, c_2, G_{[y]} &\sim& \PY(d_2, c_2, G_{[y]} )& \forall x, y \in \Sigma\\
+		z_n | G_{[z_{n-2}, z_{n-1}]} &\sim& G_{[z_{n-2}, z_{n-1}]} 
+	\end{array}
+	\]
+
+	Inferring the posterior distribution requires maintaining counts of all observed values in all observed length 2 contexts.
+\end{frame}
 
 \begin{frame}[t]{Goals}
 	\begin{block}{Stationary Model for Dependent Data}
