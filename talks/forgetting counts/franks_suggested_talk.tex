@@ -81,6 +81,7 @@ Inference
 \end{frame}	
 
 
+
 \begin{frame}[t]{Bayesian Nonparametric Modeling}
 \begin{exampleblock}{Features}
 \begin{itemize}
@@ -171,24 +172,24 @@ Representation can be ``compressed'' to counts of ``types.''  Number of types gr
 \section{Review}
 \subsection{Pitman-Yor Process (PYP)}
 
-\begin{frame}[t]{Definition}
-	The Pitman-Yor Process (PYP) is a stochastic process defined such that sample paths are distribution functions over some sample space $\mathcal{X}$ with probability one \cite{Pitman1997} .  PYP priors are used in Bayesian models as priors over distributions with power-law properties.
+%\begin{frame}[t]{Definition}
+%	The Pitman-Yor Process (PYP) is a stochastic process defined such that sample paths are distribution functions over some sample space $\mathcal{X}$ with probability one \cite{Pitman1997} .  PYP priors are used in Bayesian models as priors over distributions with power-law properties.
 	
-	\vspace{.65cm}
+%	\vspace{.65cm}
 
-	\begin{block}{Notation}
-		\[
-		\begin{array}{rcll}
-			\G | d, c, \G_0 &\sim& \PY(d,c,\G_0) &\\
-			X_i | \G &\sim& \G \hspace{1cm} &\forall i
-		\end{array}
-		\]
-	\end{block}
+%	\begin{block}{Notation}
+%		\[
+%		\begin{array}{rcll}
+%			\G | d, c, \G_0 &\sim& \PY(d,c,\G_0) &\\
+%			X_i | \G &\sim& \G \hspace{1cm} &\forall i
+%		\end{array}
+%		\]
+%	\end{block}
 	
-	PYP can be hierarchically composed.  One resulting model is the HPYP \cite{teh2006a}.  Another is the sequence memoizer \cite{Wood2009}
-\end{frame}
+%	PYP can be hierarchically composed.  One resulting model is the HPYP \cite{teh2006a}.  Another is the sequence memoizer \cite{Wood2009}
+%\end{frame}
 
-\begin{frame}{Drawing $\{ X_i \}_{i =1}^n$}
+\begin{frame}[t]{Drawing $\{ X_i \}_{i =1}^n$}
 	\begin{block}{Process}
 		\begin{itemize}
 			\item Draw a partition of the first $n$ natural numbers from the two parameter Ewen's Sampling Distribution ($\ES_n(d,c)$) \cite{Ewens1995}.
@@ -202,7 +203,7 @@ Representation can be ``compressed'' to counts of ``types.''  Number of types gr
 
 \subsection{Ewen's Sampling Distribution}
 
-\begin{frame}{$\ES_n(d,c)$}
+\begin{frame}[t]{$\ES_n(d,c)$}
 	\begin{block}{Drawing from $\ES_n(d,c)$ (Urn Representation)}
 		\begin{itemize}
 			\item Assign the integer $1$ to part $1$ of the partition.
@@ -219,10 +220,10 @@ Representation can be ``compressed'' to counts of ``types.''  Number of types gr
 	\end{block}
 \end{frame}
 
-\section{Dependent PYP and HPYP}
+\section{Dependent HPYP}
 \subsection{Construction}
 
-\begin{frame}{Consistency of $\ES$ Under Deletion}
+\begin{frame}[t]{Consistency of $\ES$ Under Deletion}
 	\begin{block}{Property}
 		If an integer is removed at random from a partition following $\ES_n(d,c)$ the resulting partition of $n-1$ integers follows $\ES_{n-1}(d,c)$  \cite{Pitman1995}.
 	\end{block}
@@ -231,15 +232,14 @@ Representation can be ``compressed'' to counts of ``types.''  Number of types gr
 		This consistency property can be exploited in a generative procedure defined using the urn representation to draw samples from a sequence of dependent distributions $\{ \G^t \}_{t = 1}^T$ such that 
 		\[
 		\begin{array}{rcll}
-			\G_1 | d_0, c_0, \G_0 &\sim& \PY(d_0,c_0, \G_0) \\
-			\G_2^t | d_1,c_1,\G_1 &\sim& \PY(d_1,c_1,\G_1)& t = 1, \ldots, T\\
-			X_i^t | \G_2^t &\sim& \G_2^t& i = 1, \ldots, N_t, t = 1, \ldots, T
+			\G^t | d,c,\G_0 &\sim& \PY(d,c,\G_0)& t = 1, \ldots, T\\
+			X_i^t | \G^t &\sim& \G^t& i = 1, \ldots, N_t, t = 1, \ldots, T
 		\end{array}
 		\]
 	\end{block}
 \end{frame}
 
-\begin{frame}[t] {Dependent HPYP Depiction}
+\begin{frame}[t] {Dependent HPYP}
 	\begin{figure}[t]
 		\begin{center}
 			\includegraphics[height = 7cm]{../../papers/2010_icml/bounded_memory_compression/figure2.pdf}
@@ -247,49 +247,8 @@ Representation can be ``compressed'' to counts of ``types.''  Number of types gr
 	\end{figure}
 \end{frame}
 
-\subsection{Constrained Memory}
-
-\begin{frame}[t]{Dependent HPYP as Constrained Memory}
-	\begin{itemize}
-		\item{``The number of instantiated nodes can be limited using the deletion scheme developed for dependent HPYPÕs. Memory savings can be achieved by deleting all the elements in a leaf node \ldots " \citet{Bartlett2010}.}
-		\item{Inference performed with forgetting estimates a dynamic stationary generative process.  Marginally the process is the same as the sequence memoizer model.}
-		\item{``Our deletion process requires us to assume the independence of a large number of distributions. While this may seem troubling, a key insight is that the entire set of distributions for which we must make the independence assumption are dependent on an existing node in the tree. Much of the information will be retained in the tree by the remaining node " \citet{Bartlett2010}.}
-	\end{itemize}
-\end{frame}
-
-\begin{frame}[t]{Intuitions}
-	\begin{exampleblock}{Features}
-		\begin{itemize}
-			\item Generative process allows for time-varying distributions
-			\item Number of instantiated nodes can be limited by removing entire restaurants
-		\end{itemize}
-	\end{exampleblock}
-	
-	\begin{block}{Considerations}
-		\begin{itemize}
-			\item{stuff}
-		\end{itemize}
-	\end{block}
-\end{frame}
-
-\begin{frame}[t]{Constant Space Sequence Memoizer}
-	\begin{figure}[t]
-		\begin{center}
-			\includegraphics[width=10cm]{../../papers/2010_icml/bounded_memory_compression/results_calgary_corpus.pdf}
-		\end{center}
-	\end{figure}
-	
-	\begin{itemize}
-		\item Calgary corpus
-		\item Different constant memory approaches
-		\item $256$ character alphabet
-	\end{itemize}
-	
-	With random forgetting and 2 million instantiated nodes, we attain a compression rate of {\bf 1.49} bits per byte on the first 50 million bytes of the NYT Corpus.  The sequence memoizer can only process 1,488,233 bytes before needing to instantiate more than 2 million nodes, on the which the sequence memoizer attains a {\bf 1.72} bits per byte compression rate.
-\end{frame}
-
-
 \section{Experiments}
+
 
 \begin{frame}[t]{Sequence Memoizer Computational Problems}
 	Current state of the art results for inference in the sequence memoizer model are:
@@ -335,7 +294,22 @@ Representation can be ``compressed'' to counts of ``types.''  Number of types gr
 \end{frame}
 
 
-\begin{frame}{Motivation: Streams}
+\begin{frame}[t]{Task}
+	\begin{block}{Prediction}
+		Given a sequence of discrete observations $X_1, \ldots, X_n$, predict the next observation $X_{n+1}$.
+	\end{block}
+	
+	\begin{block}{Requirements}
+		\begin{itemize}
+			\item{Linear time estimation in the length of the sequence}
+			\item{Constant time prediction}
+			\item{Constant space memory complexity}
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+
+\begin{frame}[t]{Motivation: Streams}
 	\begin{block}{Byte Stream}
 		\[
 		\begin{array}{l}
@@ -356,19 +330,49 @@ Representation can be ``compressed'' to counts of ``types.''  Number of types gr
 \end{frame}
 
 
-\begin{frame}[t]{Task}
-	\begin{block}{Prediction}
-		Given a sequence of discrete observations $X_1, \ldots, X_n$, predict the next observation $X_{n+1}$.
-	\end{block}
-	
-	\begin{block}{Requirements}
+
+\begin{frame}[t]{Example Applications}
+	\begin{itemize}
+		\item{Natural Language}
 		\begin{itemize}
-			\item{Linear time estimation in the length of the sequence}
-			\item{Constant time prediction}
-			\item{Constant space memory complexity}
+			\item Words, i.e.~the united \_
+			\item Characters, i.e.~un\_
+			\item Parts of speech, i.e.~NNV\_
 		\end{itemize}
-	\end{block}
+
+		\vspace{.75cm}		
+		
+		\item{Compression}
+		\begin{itemize}
+			\item  Bits i.e.~0101000011110001\_
+			\item  Bytes i.e.~6A7B4ED22100D\_
+		\end{itemize}
+		
+		\item \ldots
+	\end{itemize}
 \end{frame}
+
+
+\subsection{Constrained Memory}
+
+
+
+\begin{frame}[t]{Constant Space Sequence Memoizer}
+	\begin{figure}[t]
+		\begin{center}
+			\includegraphics[width=10cm]{../../papers/2010_icml/bounded_memory_compression/results_calgary_corpus.pdf}
+		\end{center}
+	\end{figure}
+	
+	\begin{itemize}
+		\item Calgary corpus
+		\item Different forgetting schemes
+		\item $256$ character alphabet
+	\end{itemize}
+	
+	With random forgetting and 2 million instantiated nodes, we attain a compression rate of {\bf 1.49} bits per byte on the first 50 million bytes of the NYT Corpus.  The sequence memoizer can only process 1,488,233 bytes before needing to instantiate more than 2 million nodes, on the which the sequence memoizer attains a {\bf 1.72} bits per byte compression rate.
+\end{frame}
+
 
 \begin{frame}[t]{Constant Space Sequence Memoizer}
 	\begin{figure}[t]
@@ -383,15 +387,27 @@ Representation can be ``compressed'' to counts of ``types.''  Number of types gr
 		\item $256$ character alphabet
 	\end{itemize}
 \end{frame}
-
+\section{Discussion}
+\subsection{}
 \begin{frame}[t]{Discussion}
+	\begin{itemize}
+		\item{The number of instantiated nodes can be limited using the deletion scheme developed for dependent HPYPÕs. Memory savings can be achieved by deleting all the elements in a leaf node.}
+		\item{Inference performed with forgetting estimates a dynamic stationary generative process.  Marginally the process is the same as the sequence memoizer model.}
+		\item{Our deletion process requires us to assume the independence of a large number of distributions. While this may seem troubling, a key insight is that the entire set of distributions for which we must make the independence assumption are dependent on an existing node in the tree. Much of the information will be retained in the tree by the remaining node.}
+	\end{itemize}
+\end{frame}
 
+\begin{frame}[t]{Thoughts}
+	\begin{itemize}
+		\item{Single particle particle filter}
+		\item{Parametric model vs.~nonparametric model constrained to be constant space}
+		\item{}
+	\end{itemize}
 \end{frame}
 
 \begin{frame}[t,allowframebreaks]{Bibliograpy}
 	\bibliography{../../papers/uber}
 \end{frame}
-
 
 \end{document}
 
