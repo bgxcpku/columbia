@@ -40,7 +40,7 @@
 
 \author[Bartlett]
 {
-  Nicholas~Bartlett, David~Pfau, Frank~Wood %\inst{1}
+  Nicholas~Bartlett \\ {\tiny joint work with David~Pfau and Frank~Wood } %\inst{1}
 }
 
 \institute[Columbia University]
@@ -80,6 +80,8 @@ Inference
 \end{block}
 \end{frame}	
 
+
+
 \begin{frame}[t]{Bayesian Nonparametric Modeling}
 \begin{exampleblock}{Features}
 \begin{itemize}
@@ -101,15 +103,54 @@ Inference
 \end{alertblock}
 \end{frame}	
 
+\begin{frame}[t]{Example : A Simple DP Model}
+Consider
+\begin{eqnarray*}
+G | c, G_0 &\sim& \DP(c,G_0) \\
+x_i | G &\sim& G, \;\; i=1,\ldots,n
+\end{eqnarray*}
+where prediction is performed using
+\[P(x_n | x_1,\ldots,x_{n-1}) = \int P(x_n | G)dP(G | x_1, \ldots, x_{n-1})\]
+
+\end{frame}
+
+\begin{frame}[t]{Memory complexity of DP inference}
+\begin{block}{Polya Urn representation \citep{Blackwell1973}}
+\begin{eqnarray*}
+x_n | x_1,\ldots, x_{n-1} &\sim& \frac{1}{n-1+c}\sum_{i=1}^{n-1}\delta_{x_i} + \frac{c}{n-1+c}G_0 \\
+G | x_1, \ldots, x_n &\sim& \DP\left(n+c, \frac{1}{n+c}\sum_{i=1}^n \delta_{x_i} + \frac{c}{n+c}G_0\right)
+\end{eqnarray*}
+All data retained.
+
+%Note: 
+%begin{itemize}
+%\item Neither posterior predictive nor posterior distributions depend on the order of the $x_i$'s ($x_i$'s ``exchangeable'')
+%\item Many $x_i$'s will share the same value, call a shared value $\phi_k$
+%\item ``Observing'' $\phi_k$ once increases probability of observing it again and this is reinforced
+%\end{itemize}
+\end{block}
+\begin{block}{Chinese restaurant process (CRP) \cite{Pitman}}
+Representation can be ``compressed'' to counts of ``types.''  Number of types grows as function of length of data.
+\end{block}
+\end{frame}	
 
 
-\begin{frame}{Goals}
-	\begin{block}{Nonstationarity}
-	Previous work on dependent Dirichlet and Pitman-Yor processes \cite{MacEachern2000, Srebro2005, Griffin2006, Caron2007, Caron2007a} was motivated by the desire to construct generative procedures that induce dependence between related processes.  In our work we are motivated instead by the goal of performing constant space inference in a HPYP.  As the HPYP is a (Bayesian) nonparametric model, in order to achieve this we must ``forget'' data. 
+\begin{frame}[t]{Goals}
+	\begin{block}{Stationary Model for Dependent Data}
+\begin{itemize}
+\item 	Data generator may change over time or as a function of some other covariate.  
+\item	Would like single coherent model for such data
+\item	One way of introducing dependence is through ``forgetting.'' 
+\item	Dependent Dirichlet and Pitman-Yor processes have been defined \cite{MacEachern2000, Srebro2005, Griffin2006, Caron2007, Caron2007a} 
+\end{itemize}
+
 	\end{block}
 	\begin{block}{Bounded Memory Inference}
 			\begin{itemize}
-\item   If, on the other hand, the true generative process does not vary, the constant memory constraint still requires that we forget.  This means choosing an informative subset of the data to retain at the cost of using an estimator that may be inconsistent.  This strategy of selecting a most informative subset of training data is not unique in the Bayesian nonparametric modeling literature.  In sparse Gaussian process modeling, forgetting strategies are used to achieve constant time and space (independent of the number of observations) inference procedures \cite{ Lawrence2003, Csat'o2002, Snelson2006}.
+\item   Constant memory requires that we constrain the model.  
+\item The resulting estimator may be inconsistent.  
+\item In sparse Gaussian process modeling, forgetting strategies have been used to achieve constant time and space (independent of the number of observations) inference procedures \cite{ Lawrence2003, Csat'o2002, Snelson2006}.
+\item DP inference generally has no such problems in most practical situations.  Hierarchical Dirichlet process inference does in the streaming setting.
 
 \end{itemize}
 
@@ -125,66 +166,18 @@ Inference
 %\subsection{}
 
 
-\begin{frame}[t]{Sequence Memoizer Computational Problems}
-	Current state of the art results for inference in the sequence memoizer model are:
-	\begin{itemize}
-		\item Number of represented nodes grows as $\mathcal{O}(n)$ \cite{Wood2009}.  
-		\begin{itemize}
-			\item Since the model can be represented in space proportional to the number of represented nodes this corresponds to a linear complexity in space.
-		\end{itemize}
-		
-		\item Prediction time grows as $\mathcal{O}(n)$ (empirically more like $\mathcal{O}(k)$ for non-adversarial data) \cite{Gasthaus2010}.
-		\item Estimation time grows as $\mathcal{O}(n^2)$ (empirically more like $\mathcal{O}(n)$ for non-adversarial data) \cite{Gasthaus2010}.
-	\end{itemize}
-\end{frame}
+%\section{Pitman-Yor Process (PYP)}
+%\subsection{PYP Prior}
 
-\begin{frame}[t]{Example Prefix Tree: $patat$}
-	\begin{center}
-		\includegraphics[width = 10cm]{../../papers/2010_icml/bounded_memory_compression/prefix_tree.pdf}
-	\end{center}
-\end{frame}
+\section{Review}
+\subsection{Pitman-Yor Process (PYP)}
 
-\begin{frame}[t]{A Tangible Goal}
-	Define a stochastic process which approximates the inferential power of the sequence memoizer model, requires fewer nodes to be represented, and permits tractable inference.\\
-	\vspace{1cm}
-	\begin{center}
-		Easily stated, but how?
-	\end{center}
-\end{frame}
-
-\begin{frame}[t]{Forget Some Data}
-	Imagine that in the example prefix tree for $patat$, we ``forget" the observation $t$ in the context $pa$.  In this case, the node labeled $\G_{pa}$ no longer has any observations associated with it and will not need to be represented in the tree.
-	
-	\vspace{-.5cm}
-	
-	\begin{center}
-		\includegraphics[height = 6cm]{../../papers/2010_icml/bounded_memory_compression/prefix_tree.pdf}
-	\end{center}
-\end{frame}
-
-\begin{frame}[t]{Intuition}
-	When could we ``forget" data in a Bayesian inference procedure?
-	\begin{itemize}
-		\item{If all the information from the observation $t$ in the context $pa$ regarding $\G_a$ is retained.}
-		\item{$\G_{pa}$ before forgetting is assumed independent of $\G_{pa}$ after the forgetting.} 
-	\end{itemize}
-	
-	\vspace{-.6cm}
-	
-	\begin{center}
-		\includegraphics[height = 5.5cm]{../../papers/2010_icml/bounded_memory_compression/prefix_tree.pdf}
-	\end{center}	
-\end{frame}
-
-\section{Pitman-Yor Process (PYP)}
-\subsection{PYP Prior}
-
-\begin{frame}{Pitman-Yor Process Prior}
-	The Pitman-Yor Process (PYP) is a stochastic process defined such that sample paths are distribution functions over some sample space $\mathcal{X}$ with probability one \cite{Pitman1997} .  PYP priors are used in Bayesian models to replace a less flexible parametric prior.
+\begin{frame}[t]{Definition}
+	The Pitman-Yor Process (PYP) is a stochastic process defined such that sample paths are distribution functions over some sample space $\mathcal{X}$ with probability one \cite{Pitman1997} .  PYP priors are used in Bayesian models as priors over distributions with power-law properties.
 	
 	\vspace{.65cm}
 
-	\begin{block}{Model}
+	\begin{block}{Notation}
 		\[
 		\begin{array}{rcll}
 			\G | d, c, \G_0 &\sim& \PY(d,c,\G_0) &\\
@@ -193,7 +186,7 @@ Inference
 		\]
 	\end{block}
 	
-	The PYP can also be hierarchically composed and will be denoted HPYP \cite{teh2006a}
+	PYP can be hierarchically composed.  One resulting model is the HPYP \cite{teh2006a}.  Another is the sequence memoizer \cite{Wood2009}
 \end{frame}
 
 \begin{frame}{Drawing $\{ X_i \}_{i =1}^n$}
@@ -281,6 +274,52 @@ Inference
 \end{frame}
 
 \section{Experiments}
+
+
+\begin{frame}[t]{Sequence Memoizer Computational Problems}
+	Current state of the art results for inference in the sequence memoizer model are:
+	\begin{itemize}
+		\item Number of represented nodes grows as $\mathcal{O}(n)$ \cite{Wood2009}.  
+		\begin{itemize}
+			\item Since the model can be represented in space proportional to the number of represented nodes this corresponds to a linear complexity in space.
+		\end{itemize}
+		
+		\item Prediction time grows as $\mathcal{O}(n)$ (empirically more like $\mathcal{O}(k)$ for non-adversarial data) \cite{Gasthaus2010}.
+		\item Estimation time grows as $\mathcal{O}(n^2)$ (empirically more like $\mathcal{O}(n)$ for non-adversarial data) \cite{Gasthaus2010}.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[t]{Example Prefix Tree: $patat$}
+	\begin{center}
+		\includegraphics[width = 10cm]{../../papers/2010_icml/bounded_memory_compression/prefix_tree.pdf}
+	\end{center}
+\end{frame}
+
+\begin{frame}[t]{Forget Some Data}
+	Imagine that in the example prefix tree for $patat$, we ``forget" the observation $t$ in the context $pa$.  In this case, the node labeled $\G_{pa}$ no longer has any observations associated with it and will not need to be represented in the tree.
+	
+	\vspace{-.5cm}
+	
+	\begin{center}
+		\includegraphics[height = 6cm]{../../papers/2010_icml/bounded_memory_compression/prefix_tree.pdf}
+	\end{center}
+\end{frame}
+
+\begin{frame}[t]{Intuition}
+	When could we ``forget" data in a Bayesian inference procedure?
+	\begin{itemize}
+		\item{If all the information from the observation $t$ in the context $pa$ regarding $\G_a$ is retained.}
+		\item{$\G_{pa}$ before forgetting is assumed independent of $\G_{pa}$ after the forgetting.} 
+	\end{itemize}
+	
+	\vspace{-.6cm}
+	
+	\begin{center}
+		\includegraphics[height = 5.5cm]{../../papers/2010_icml/bounded_memory_compression/prefix_tree.pdf}
+	\end{center}	
+\end{frame}
+
+
 \begin{frame}{Motivation: Streams}
 	\begin{block}{Byte Stream}
 		\[
@@ -349,6 +388,10 @@ Inference
 		\item Different forgetting schemes
 		\item $256$ character alphabet
 	\end{itemize}
+\end{frame}
+
+\begin{frame}[t]{Discussion}
+
 \end{frame}
 
 \begin{frame}[t,allowframebreaks]{Bibliograpy}
