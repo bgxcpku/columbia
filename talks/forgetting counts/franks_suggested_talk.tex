@@ -81,7 +81,6 @@ Inference
 \end{frame}	
 
 
-
 \begin{frame}[t]{Bayesian Nonparametric Modeling}
 \begin{exampleblock}{Features}
 \begin{itemize}
@@ -147,7 +146,6 @@ Representation can be ``compressed'' to counts of ``types.''  Number of types gr
 		z_n | G_{[z_{n-2}, z_{n-1}]} &\sim& G_{[z_{n-2}, z_{n-1}]} 
 	\end{array}
 	\]
-
 	Inferring the posterior distribution requires maintaining counts of all observed values in all observed length 2 contexts.
 \end{frame}
 
@@ -309,6 +307,7 @@ Representation can be ``compressed'' to counts of ``types.''  Number of types gr
 	\end{center}	
 \end{frame}
 
+\center{
 
 \begin{frame}[t]{Task}
 	\begin{block}{Prediction}
@@ -368,11 +367,9 @@ Representation can be ``compressed'' to counts of ``types.''  Number of types gr
 	\end{itemize}
 \end{frame}
 
-
+}
 \subsection{Constrained Memory}
 
-
-
 \begin{frame}[t]{Constant Space Sequence Memoizer}
 	\begin{figure}[t]
 		\begin{center}
@@ -382,27 +379,13 @@ Representation can be ``compressed'' to counts of ``types.''  Number of types gr
 	
 	\begin{itemize}
 		\item Calgary corpus
-		\item Different forgetting schemes
+		\item Two forgetting schemes and two other constant space modeling approaches
 		\item $256$ character alphabet
-	\end{itemize}
-	
-	With random forgetting and 2 million instantiated nodes, we attain a compression rate of {\bf 1.49} bits per byte on the first 50 million bytes of the NYT Corpus.  The sequence memoizer can only process 1,488,233 bytes before needing to instantiate more than 2 million nodes, on the which the sequence memoizer attains a {\bf 1.72} bits per byte compression rate.
-\end{frame}
-
-
-\begin{frame}[t]{Constant Space Sequence Memoizer}
-	\begin{figure}[t]
-		\begin{center}
-			\includegraphics[width=10cm]{../../papers/2010_icml/bounded_memory_compression/results_calgary_corpus.pdf}
-		\end{center}
-	\end{figure}
-	
-	\begin{itemize}
-		\item Calgary corpus
-		\item Different forgetting schemes
-		\item $256$ character alphabet
+		\item A restaurant is the unit of memory (SM requires 1.16 million)
+		\item Y-axis is the predictive negative entropy of data
 	\end{itemize}
 \end{frame}
+
 \section{Discussion}
 \subsection{}
 \begin{frame}[t]{Discussion}
