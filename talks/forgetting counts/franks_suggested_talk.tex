@@ -81,7 +81,6 @@ Inference
 \end{frame}	
 
 
-
 \begin{frame}[t]{Bayesian Nonparametric Modeling}
 \begin{exampleblock}{Features}
 \begin{itemize}
@@ -232,8 +231,9 @@ Representation can be ``compressed'' to counts of ``types.''  Number of types gr
 		This consistency property can be exploited in a generative procedure defined using the urn representation to draw samples from a sequence of dependent distributions $\{ \G^t \}_{t = 1}^T$ such that 
 		\[
 		\begin{array}{rcll}
-			\G^t | d,c,\G_0 &\sim& \PY(d,c,\G_0)& t = 1, \ldots, T\\
-			X_i^t | \G^t &\sim& \G^t& i = 1, \ldots, N_t, t = 1, \ldots, T
+			\G_1 | d_0, c_0, \G_0 &\sim& \PY(d_0,c_0, \G_0) \\
+			\G_2^t | d_1,c_1,\G_1 &\sim& \PY(d_1,c_1,\G_1)& t = 1, \ldots, T\\
+			X_i^t | \G_2^t &\sim& \G_2^t& i = 1, \ldots, N_t, t = 1, \ldots, T
 		\end{array}
 		\]
 	\end{block}
@@ -257,6 +257,21 @@ Representation can be ``compressed'' to counts of ``types.''  Number of types gr
 	\end{itemize}
 \end{frame}
 
+\begin{frame}[t]{Intuitions}
+	\begin{exampleblock}{Features}
+		\begin{itemize}
+			\item Generative process allows for time-varying distributions
+			\item Number of instantiated nodes can be limited by removing entire restaurants
+		\end{itemize}
+	\end{exampleblock}
+	
+	\begin{block}{Considerations}
+		\begin{itemize}
+			\item{stuff}
+		\end{itemize}
+	\end{block}
+\end{frame}
+
 \begin{frame}[t]{Constant Space Sequence Memoizer}
 	\begin{figure}[t]
 		\begin{center}
@@ -266,15 +281,15 @@ Representation can be ``compressed'' to counts of ``types.''  Number of types gr
 	
 	\begin{itemize}
 		\item Calgary corpus
-		\item Different forgetting schemes
+		\item Different constant memory approaches
 		\item $256$ character alphabet
 	\end{itemize}
 	
 	With random forgetting and 2 million instantiated nodes, we attain a compression rate of {\bf 1.49} bits per byte on the first 50 million bytes of the NYT Corpus.  The sequence memoizer can only process 1,488,233 bytes before needing to instantiate more than 2 million nodes, on the which the sequence memoizer attains a {\bf 1.72} bits per byte compression rate.
 \end{frame}
 
-\section{Experiments}
 
+\section{Experiments}
 
 \begin{frame}[t]{Sequence Memoizer Computational Problems}
 	Current state of the art results for inference in the sequence memoizer model are:
@@ -355,27 +370,6 @@ Representation can be ``compressed'' to counts of ``types.''  Number of types gr
 	\end{block}
 \end{frame}
 
-\begin{frame}[t]{Example Applications}
-	\begin{itemize}
-		\item{Natural Language}
-		\begin{itemize}
-			\item Words, i.e.~the united \_
-			\item Characters, i.e.~un\_
-			\item Parts of speech, i.e.~NNV\_
-		\end{itemize}
-
-		\vspace{.75cm}		
-		
-		\item{Compression}
-		\begin{itemize}
-			\item  Bits i.e.~0101000011110001\_
-			\item  Bytes i.e.~6A7B4ED22100D\_
-		\end{itemize}
-		
-		\item \ldots
-	\end{itemize}
-\end{frame}
-
 \begin{frame}[t]{Constant Space Sequence Memoizer}
 	\begin{figure}[t]
 		\begin{center}
@@ -397,6 +391,7 @@ Representation can be ``compressed'' to counts of ``types.''  Number of types gr
 \begin{frame}[t,allowframebreaks]{Bibliograpy}
 	\bibliography{../../papers/uber}
 \end{frame}
+
 
 \end{document}
 
