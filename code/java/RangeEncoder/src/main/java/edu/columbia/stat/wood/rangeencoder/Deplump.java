@@ -6,6 +6,7 @@ package edu.columbia.stat.wood.rangeencoder;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -25,10 +26,11 @@ public class Deplump {
 
         BufferedInputStream bis = null;
         DeplumpStream dps = null;
+        File f = new File(filename);
 
         try {
-            bis = new BufferedInputStream(new FileInputStream(filename), 1024 * 512);
-            dps = new DeplumpStream(new BufferedOutputStream(new FileOutputStream(filename + ".deplump"), 1024 * 512));
+            bis = new BufferedInputStream(new FileInputStream(filename));
+            dps = new DeplumpStream(new BufferedOutputStream(new FileOutputStream(filename + ".deplump")), (int) f.length());
 
             int b;
             while ((b = bis.read()) > -1) {
@@ -44,7 +46,5 @@ public class Deplump {
         }
 
         System.out.println(Long.toBinaryString(dps.enc.minRange).length());
-        System.out.println((double) dps.enc.bitsEmitted / 8);
-        System.out.println(dps.enc.logLoss / 8);
     }
 }

@@ -17,8 +17,12 @@ public class DeplumpStream extends OutputStream {
 
     public Encoder enc;
 
-    public DeplumpStream(OutputStream out) {
-        enc =  new Encoder(new FiniteDepthHPYPPredictiveModel(), out);
+    public DeplumpStream(OutputStream out, int size) throws IOException {
+        out.write(size >> 24);
+        out.write(size >> 16);
+        out.write(size >> 8);
+        out.write(size);
+        enc =  new Encoder(new SMPredictiveModel(), out);
     }
 
     @Override

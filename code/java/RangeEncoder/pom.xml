@@ -23,12 +23,12 @@
     <dependencies>
         <dependency>
             <groupId>edu.columbia.stat.wood</groupId>
-            <artifactId>sequencememoizer</artifactId>
+            <artifactId>hpyp</artifactId>
             <version>1.0</version>
         </dependency>
          <dependency>
             <groupId>edu.columbia.stat.wood</groupId>
-            <artifactId>finitedepthhpyp</artifactId>
+            <artifactId>stochasticmemoizerforsequencedata</artifactId>
             <version>1.0</version>
              <type>jar</type>
          </dependency>

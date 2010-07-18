@@ -6,7 +6,6 @@ package edu.columbia.stat.wood.rangeencoder;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -29,7 +28,7 @@ public class Plump {
         BufferedOutputStream bos = null;
         
         try {
-            ps = new PlumpStream(new File(file));
+            ps = new PlumpStream(new BufferedInputStream(new FileInputStream(file)));
             file = file.substring(0, file.lastIndexOf('.'));
             bos = new BufferedOutputStream(new FileOutputStream(file));
 

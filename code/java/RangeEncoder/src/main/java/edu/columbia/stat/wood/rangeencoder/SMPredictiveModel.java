@@ -4,57 +4,54 @@
  */
 package edu.columbia.stat.wood.rangeencoder;
 
-import edu.columbia.stat.wood.sequencememoizer.*;
-import java.util.Arrays;
+import edu.columbia.stat.wood.hpyp.MutableInteger;
+import edu.columbia.stat.wood.hpyp.Pair;
+import edu.columbia.stat.wood.stochasticmemoizerforsequencedata.SMParameters;
+import edu.columbia.stat.wood.stochasticmemoizerforsequencedata.SequenceMemoizer;
 
 /**
  *
  * @author nicholasbartlett
  */
-public class SMPredictiveModel extends SMTree implements PredictiveModel {
+public class SMPredictiveModel extends SequenceMemoizer implements PredictiveModel {
 
     public SMPredictiveModel(){
-        super(257, 5, -1, SeatingStyle.SIMPLE,0);
+        super(new SMParameters(256, -1, 0));
     }
 
-    public double[] cumulativeDistributionInterval(int token) {
-        double[] initialPredDist = new double[alphabetSize];
-        Arrays.fill(initialPredDist, 1.0 / alphabetSize);
-        double[] predDist = getPredictiveDist(contextFreeRestaurant, 0, seq.getLastElementIndex(), initialPredDist);
+    public void cumulativeDistributionInterval(int token, double[] interval) {
+        double[] cdf;
+        double cuSum;
+        
+        cdf = continueSequenceCdf(token);
 
-        int i = 0;
-        while(i < alphabetSize){
-            predDist[i] *= 99.0/100;
-            predDist[i++] += (1.0/100)*(1.0/alphabetSize);
+        cuSum = 0.0;
+        for(int i = 0; i < token; i++){
+            cuSum += cdf[i];
         }
 
-        double[] intVals = new double[2];
-        for (int j = 0; j < token; j++) {
-            intVals[0] += predDist[j];
-        }
-        intVals[1] = intVals[1] + predDist[token];
-        return intVals;
+        interval[0] = cuSum;
+        interval[1] = cuSum + cdf[token];
     }
+    
+    public int inverseCDF(double pointOnCDF, double [] interval){
+        double[] cdf;
+        int token;
+        Pair<MutableInteger, double[]> ret;
+        double cuSum;
 
-    public int inverseCDF(double pointOnCDF){
-        double[] initialPredDist = new double[alphabetSize];
-        Arrays.fill(initialPredDist, 1.0 / alphabetSize);
-        double[] predDist = this.getPredictiveDist(contextFreeRestaurant, 0, seq.getLastElementIndex(), initialPredDist);
+        ret = this.continueSequencePointOnCdf(pointOnCDF);
+        token = ret.first().intVal();
+        cdf = ret.second();
 
-        int i = 0;
-        while(i < alphabetSize){
-            predDist[i] *= 99.0/100;
-            predDist[i++] += (1.0/100)*(1.0/alphabetSize);
+        cuSum = 0.0;
+        for(int i = 0; i < token; i++){
+            cuSum += cdf[i];
         }
 
-        double cumSum = 0.0;
-        for(int k = 0; k<predDist.length; k++){
-            cumSum += predDist[k];
-            if(cumSum > pointOnCDF){
-                return k;
-            }
-        }
+        interval[0] = cuSum;
+        interval[1] = cuSum + cdf[token];
 
-        return 256;
+        return token;
     }
 }
