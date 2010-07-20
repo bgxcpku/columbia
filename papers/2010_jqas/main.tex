@@ -1,0 +1,184 @@
+\documentclass[12pt, letter]{article}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{pifont}
+\usepackage{multirow}
+
+\input{helpfun.tex}
+
+
+\textheight 215mm \textwidth 155mm
+\hoffset -10mm \voffset -20mm
+\pagestyle{empty} \parindent 0pt \parskip 8pt
+
+\begin{document}
+
+{\sc\today \hfill \Large Fitting Soccer Data\\[.2cm]}
+
+%\input{abstract.tex}
+
+%\input{introduction.tex}
+
+%\input{todo.tex}
+
+
+{\LARGE INTRODUCTION: BASIC MODEL}
+
+$$y_{id}\mid X_{id}, \beta \sim \mathrm{Pois}\zag{g(\beta^T X_{id})}$$
+
+$$P(\mathrm{Data}\mid X, \beta) \propto P(\beta) \prod_i \prod_d 
+    g(\beta^T X_{id})^{y_{id}} e^{-g(\beta^T X_{id})}/y_{id}!$$
+
+   -- $d$ are minutes in a match (1-44, 46-89 for both teams; D = 176 per match)\\
+   -- $i$ are matches ($I=302$)\\
+   -- $g$ is a link function ($\exp(x)$ is default)\\
+   -- $K$ number of variables
+
+$$\ell(\beta) = \log(\mathrm{P(\beta)}) + \sum_{l=(i,d)} \zags{y_l\log\zag{g(\beta^T X_l)} - g(\beta^T X_l)}$$
+
+In gradient descent algorithm in each step $k \in 1,\dots K$ we are maximizing $\ell$ as a function of one parameter $z=\beta_k$.
+
+So goal is to minimize
+$$h(z) = \sum_l \zags{g(r_l + (z-\beta_k)x_{lk}) - y_l\log\zag{g(r_l + (z-\beta_k)x_{lk})}} + z^2/2\tau$$
+
+where $r_l = \beta^T X_l$ and $\tau$ is regularization parameter.
+
+One good way to find the maximum $\ell$ is that in each step we find maximum of 2nd degree Tailor polynomial of $h$, so suggested shift for $\beta_k$ will be $\Delta u_k = -h'(\beta_k)/h''(\beta_k)$ where
+
+$$h'(\beta_k) = \sum_l \zags{g'(r_l)x_{lk} - y_l x_{lk} g'(r_l)/g(r_l)} + z/\tau$$
+$$h'(\beta_k) = \sum_l \zags{g''(r_l)x_{lk}^2 - y_l x_{lk}^2 \frac{g''(r_l)g(r_l) - g'(r_l)^2}{g(r_l)^2}} + 1/\tau$$
+
+
+\newpage
+{\LARGE SHAWN'S MODEL}
+
+$$y_{id}\mid X_{id}, \beta \sim \mathrm{Pois}\zag{\alpha_i g(\beta^T X_{id})}$$
+
+$$P(\mathrm{Data}\mid X, \beta) \propto P(\beta) \prod_i \prod_d
+    \zag{\alpha_i g(\beta^T X_{id})}^{y_{id}} e^{-\alpha_i g(\beta^T X_{id})}/y_{id}!$$
+
+Since $n_i = \sum_d y_{id}$ is sufficient statistic for $\alpha_i$ we should maximize
+
+$$P(\mathrm{Data}\mid X, \beta, n) = P(\beta) \prod_i \prod_d
+    \zag{\frac{g(\beta^T X_{id})}{\sum_{d^\star}g(\beta^T X_{id^\star})}}^{y_{id}}$$
+
+
+$$\ell(\beta) = \log(\mathrm{P(\beta)}) + \sum_i \sum_d y_{id}\log{g(\beta^T X_{id})} -
+    \sum_i n_i \log {\TS\sum_{d^\star}{g(\beta^T X_{id^\star})}}$$
+
+$$h(z) = \sum_i n_i \log {\TS\sum_{d}{g(r_{id} + (z-\beta_k) x_{idk})}} -
+    \sum_{i,d} y_{id}\log{g(r_{id} + (z-\beta_k) x_{idk})} + z^2/2\tau$$
+
+$$h'(\beta_k) = \sum_i n_i \frac{\sum_{d}g'(r_{id})x_{idk}}{\sum_{d} g(r_{id})} -
+    \sum_{i,d} y_{id}\frac{g'(r_{id})x_{idk}}{ g(r_{id})} + z/\tau$$
+
+\begin{equation*}
+\begin{split}
+h''(\beta_k) = \sum_i n_i& \frac{\zag{\sum_{d}g''(r_{id})x_{idk}^2}\zag{\sum_{d}g(r_{id})} - \zag{\sum_{d}g'(r_{id})x_{idk}}^2 }{\zag{\sum_{d} g(r_{id})}^2} \\ -&
+\sum_{i,d} y_{id}x_{idk}^2\frac{g''(r_{id})g(r_{id})- {g'(r_{id})}^2}{{g(r_{id})}^2} + 1/\tau
+\end{split}
+\end{equation*}
+
+\input{genetic.tex}
+
+\newpage
+
+
+%\input{relatedwork.tex}
+
+METHODS:
+
+VARIABLE SELECTION:
+
+ALGORITHM:
+Explain algorithm like David did (formulas for flexible allowed jump)
+
+Pre-selection of good variables:
+
+
+DATA:
+
+1. Simulate fake data
+
+2. save data in .Rdata. SoccerSmall1, SoccerSmall2, SoccerLarge1, ..., with or without interactions (double or triple)
+
+3. First 104 variable into txt file and zip and it should  unpack and work
+
+4. prepare different OKs
+
+
+Fitters:
+
+1. Gradient descent
+2. Gradient descent for L1 with flexible allowed jumps (should include part that jumps only if it increases LL)
+1. Davids like
+2. Mine 1 (fix tau thing -- divide by nvar)
+3. Mine 2
+4. variable tau fit for forward selection (
+fix tau, find best var, fix vars and find best tau, fix tau and find next best var,...)
+
+early stopping of a fitter:
+
+1. if adding new var doesn't improve LL.TE then it is out
+
+2. should record the evolution of the quality of variables, to see if any becomes more important eventually.
+
+EXPERIMENTS:
+
+CODE:
+
+save all interesting output of the fitter into files (condor)
+
+write it to be more clean, prepares and saves data and results automatically (in DAG),
+
+also load data,
+
+loads link functions
+
+maybe:
+
+- have new staring point for beta
+
+- include different tau for for fitter. Finding optimal tau?
+
+
+RESULTS:
+
+table(L2 basic, L1 basic, L2 Shawn, L1 Shawn, L2 preselected, ..., \\
+TR.fit\\
+TE.fit\\
+time)
+
+1. What is the result of homogenous Poisson (baseline)
+2. Can we do better than market
+3. Get and plot results from J0 folder. Save into .Rdata
+4. for those 20000 fittings find the distributions of non-zero and of zero coefficients. Find (some) score for variables. Make a top list of variables for each tau. Is it different
+5. 
+
+
+Picture:
+
+How to check for significance
+
+Saturated link does better?
+
+PDF file for estimates
+
+
+DISCUSSION:
+
+
+\input{comments.tex}
+
+
+
+
+
+
+
+\end{document}
+
