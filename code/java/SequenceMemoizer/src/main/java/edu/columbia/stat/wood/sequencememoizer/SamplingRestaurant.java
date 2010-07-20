@@ -13,10 +13,10 @@ import java.util.TreeMap;
  * @author nicholasbartlett
  *
  */
-public class Restaurant extends TreeMap<Integer, Restaurant> {
+public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
 
     private TreeMap<Integer, int[]> tableConfig;
-    private Restaurant parent;
+    private SamplingRestaurant parent;
     private int customers, tables;
     private Discounts discounts;
     private int edgeStart, edgeLength;
@@ -30,7 +30,7 @@ public class Restaurant extends TreeMap<Integer, Restaurant> {
      * @param edgeLength
      * @param discounts
      */
-    public Restaurant(Restaurant parent, int edgeStart, int edgeLength, Discounts discounts) {
+    public SamplingRestaurant(SamplingRestaurant parent, int edgeStart, int edgeLength, Discounts discounts) {
         this.parent = parent;
         this.edgeStart = edgeStart;
         this.edgeLength = edgeLength;
@@ -149,7 +149,7 @@ public class Restaurant extends TreeMap<Integer, Restaurant> {
                 tc += cust;
             }
 
-            r = SequenceMemoizer.RNG.nextDouble();
+            r = SamplingSequenceMemoizer.RNG.nextDouble();
             tw = (double) tc - (double) tsa.length * discount + (double) tables * discount * pp;
 
             cuSum = 0.0;
@@ -206,7 +206,7 @@ public class Restaurant extends TreeMap<Integer, Restaurant> {
         }
 
         /*************do data structure stuff, this is recursive piece ********/
-        Restaurant child, newChild;
+        SamplingRestaurant child, newChild;
         int overlap, el, es;
         boolean leafNode, seat;
 
@@ -228,10 +228,10 @@ public class Restaurant extends TreeMap<Integer, Restaurant> {
             if (child == null) {
                 if (depth == -1) {
                     el = index + 1;
-                    child = new Restaurant(this, 0, index + 1, discounts);
+                    child = new SamplingRestaurant(this, 0, index + 1, discounts);
                 } else {
                     el = (depth - d < index + 1) ? depth - d : index + 1;
-                    child = new Restaurant(this, index - el + 1, el, discounts);
+                    child = new SamplingRestaurant(this, index - el + 1, el, discounts);
                 }
                 put(context[index], child);
                 seat = child.seat(p, type, d + el, depth, context, index - el, returnP, discountMultFactor);
@@ -282,7 +282,7 @@ public class Restaurant extends TreeMap<Integer, Restaurant> {
                 seatInParent = true;
             } else {
 
-                r = SequenceMemoizer.RNG.nextDouble();
+                r = SamplingSequenceMemoizer.RNG.nextDouble();
                 tw = (double) tc - (double) tt * discount + (double) tables * discount * pp;
 
                 cuSum = 0.0;
@@ -338,7 +338,7 @@ public class Restaurant extends TreeMap<Integer, Restaurant> {
         }
 
         /*************do data structure stuff, this is recursive piece ********/
-        Restaurant child, newChild;
+        SamplingRestaurant child, newChild;
         int overlap, el, es;
         boolean leafNode, seat;
 
@@ -359,10 +359,10 @@ public class Restaurant extends TreeMap<Integer, Restaurant> {
             if (child == null) {
                 if (depth == -1) {
                     el = index + 1;
-                    child = new Restaurant(this, 0, index + 1, discounts);
+                    child = new SamplingRestaurant(this, 0, index + 1, discounts);
                 } else {
                     el = (depth - d < index + 1) ? depth - d : index + 1;
-                    child = new Restaurant(this, index - el + 1, el, discounts);
+                    child = new SamplingRestaurant(this, index - el + 1, el, discounts);
                 }
                 put(context[index], child);
                 seat = child.seatCdf(pArray, type, d + el, depth, context, index - el, discountMultFactor);
@@ -424,7 +424,7 @@ public class Restaurant extends TreeMap<Integer, Restaurant> {
                 seatInParent = true;
             } else {
 
-                r = SequenceMemoizer.RNG.nextDouble();
+                r = SamplingSequenceMemoizer.RNG.nextDouble();
                 tw = (double) tc - (double) tt * discount + (double) tables * discount * pp;
 
                 cuSum = 0.0;
@@ -483,7 +483,7 @@ public class Restaurant extends TreeMap<Integer, Restaurant> {
         }
 
         /*************do data structure stuff, this is recursive piece ********/
-        Restaurant child, newChild;
+        SamplingRestaurant child, newChild;
         int overlap, el, es;
         boolean leafNode, seat;
         double cuSum;
@@ -514,10 +514,10 @@ public class Restaurant extends TreeMap<Integer, Restaurant> {
             if (child == null) {
                 if (depth == -1) {
                     el = index + 1;
-                    child = new Restaurant(this, 0, index + 1, discounts);
+                    child = new SamplingRestaurant(this, 0, index + 1, discounts);
                 } else {
                     el = (depth - d < index + 1) ? depth - d : index + 1;
-                    child = new Restaurant(this, index - el + 1, el, discounts);
+                    child = new SamplingRestaurant(this, index - el + 1, el, discounts);
                 }
                 put(context[index], child);
                 seat = child.seatPointOnCdf(pointOnCdf, pArray, type, d + el, depth, context, index - el, discountMultFactor);
@@ -583,7 +583,7 @@ public class Restaurant extends TreeMap<Integer, Restaurant> {
                 
             } else {
                 
-                r = SequenceMemoizer.RNG.nextDouble();
+                r = SamplingSequenceMemoizer.RNG.nextDouble();
                 tw = (double) tc - (double) tt * discount + (double) tables * discount * pp[type.intVal()];
 
                 cuSum = 0.0;
@@ -621,15 +621,15 @@ public class Restaurant extends TreeMap<Integer, Restaurant> {
      * @param intermediateRestaurantParentPath
      * @return
      */
-    public Restaurant fragment(Restaurant irParent, int irEdgeStart, int irEdgeLength, boolean forPrediction) {
+    public SamplingRestaurant fragment(SamplingRestaurant irParent, int irEdgeStart, int irEdgeLength, boolean forPrediction) {
         double discount, irDiscount, fragDiscount, fragConcentration, r, cuSum, totalWeight;
-        Restaurant intermediateRestaurant;
+        SamplingRestaurant intermediateRestaurant;
         int[] tsa, irtsa, newtsa;
         int table;
         ArrayList<MutableInteger> fragmentedTable;
         ArrayList<MutableInteger> allTables;
 
-        intermediateRestaurant = new Restaurant(irParent, irEdgeStart, irEdgeLength, discounts);
+        intermediateRestaurant = new SamplingRestaurant(irParent, irEdgeStart, irEdgeLength, discounts);
         irDiscount = intermediateRestaurant.discount();
         discount = discount();
         fragDiscount = discount / irDiscount;
@@ -654,7 +654,7 @@ public class Restaurant extends TreeMap<Integer, Restaurant> {
                 topFor:
                 for (int customer = 1; customer < tableSize; customer++) {
                     totalWeight++;
-                    r = SequenceMemoizer.RNG.nextDouble();
+                    r = SamplingSequenceMemoizer.RNG.nextDouble();
                     cuSum = 0.0;
 
                     for (MutableInteger t : fragmentedTable) {
@@ -805,7 +805,7 @@ public class Restaurant extends TreeMap<Integer, Restaurant> {
             tables--;
             parent.unseat(type);
         } else {
-            r = SequenceMemoizer.RNG.nextDouble();
+            r = SamplingSequenceMemoizer.RNG.nextDouble();
             cuSum = 0.0;
             for (int table = 0; table < tsa.length; table++) {
                 cuSum += (double) tsa[table] / (double) tc;
@@ -947,7 +947,7 @@ public class Restaurant extends TreeMap<Integer, Restaurant> {
             }
         }
 
-        r = SequenceMemoizer.RNG.nextDouble();
+        r = SamplingSequenceMemoizer.RNG.nextDouble();
         cuSum = 0.0;
         pp = parent.predictiveProbability(type);
         totalWeight = (double) tc - (double) tt * discount + (double) tables * discount * pp;
@@ -1107,7 +1107,7 @@ public class Restaurant extends TreeMap<Integer, Restaurant> {
             randomOrder = new int[n];
             s = set.size();
             while(s > 0){
-                rand = SequenceMemoizer.RNG.nextDouble();
+                rand = SamplingSequenceMemoizer.RNG.nextDouble();
                 cuSum = 0.0;
                 for(Integer i:set){
                     cuSum += 1.0 / (double) s;

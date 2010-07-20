@@ -12,7 +12,7 @@ import java.util.Random;
  * 
  */
 
-public class SequenceMemoizer extends HPYPAbstract {
+public class SamplingSequenceMemoizer extends BaseSequenceMemoizer {
     /**
      * Random object used for random number generation throughout the model.
      */
@@ -21,13 +21,13 @@ public class SequenceMemoizer extends HPYPAbstract {
     
     private int alphabetSize, depth;
     private long seed;
-    private Restaurant emptyContextRestaurant;
-    private BaseRestaurant baseRestaurant;
+    private SamplingRestaurant emptyContextRestaurant;
+    private SamplingBaseRestaurant baseRestaurant;
     private Sequence sequence;
     private Discounts discounts;
     private DiscreteDistribution baseDistribution;
 
-    public SequenceMemoizer(SMParameters params){
+    public SamplingSequenceMemoizer(SMParameters params){
        alphabetSize = params.alphabetSize;
        depth = params.depth;
        seed = params.seed;
@@ -36,8 +36,8 @@ public class SequenceMemoizer extends HPYPAbstract {
 
        RNG = new Random(seed);
        sequence = new Sequence();
-       baseRestaurant = new BaseRestaurant(baseDistribution);
-       emptyContextRestaurant = new Restaurant(baseRestaurant, 0,0, discounts);
+       baseRestaurant = new SamplingBaseRestaurant(baseDistribution);
+       emptyContextRestaurant = new SamplingRestaurant(baseRestaurant, 0,0, discounts);
     }
 
     public void limitMemory(long maxNumberRestaurants){
@@ -176,8 +176,8 @@ public class SequenceMemoizer extends HPYPAbstract {
         return new SMParameters(d, discounts.getdInfinity(), alphabetSize, depth, seed, baseDistribution);
     }
 
-    private Restaurant get(Restaurant r, int[] context, int index, boolean forPrediction) {
-        Restaurant child, newChild;
+    private SamplingRestaurant get(SamplingRestaurant r, int[] context, int index, boolean forPrediction) {
+        SamplingRestaurant child, newChild;
         int overlap, es, el, d;
         boolean leafNode;
         int[] seq;
@@ -205,10 +205,10 @@ public class SequenceMemoizer extends HPYPAbstract {
             } else {
 
                 if (depth == -1) {
-                    child = new Restaurant(r, 0, index + 1, discounts);
+                    child = new SamplingRestaurant(r, 0, index + 1, discounts);
                 } else {
                     el = (depth - d < index + 1) ? depth - d : index + 1;
-                    child = new Restaurant(r, index - el + 1, el, discounts);
+                    child = new SamplingRestaurant(r, index - el + 1, el, discounts);
                 }
 
                 r.put(context[index], child);
@@ -246,8 +246,8 @@ public class SequenceMemoizer extends HPYPAbstract {
         return get(newChild, context, index - overlap, forPrediction);
     }
 
-    private void sampleSeatingArrangments(Restaurant r){
-        for(Restaurant child : r.values()){
+    private void sampleSeatingArrangments(SamplingRestaurant r){
+        for(SamplingRestaurant child : r.values()){
             sampleSeatingArrangments(child);
         }
         r.sampleSeatingArrangements();
@@ -294,12 +294,12 @@ public class SequenceMemoizer extends HPYPAbstract {
         return logLik;
     }
 
-    private double score(Restaurant r){
+    private double score(SamplingRestaurant r){
         double logLik;
 
         logLik = 0.0;
 
-        for(Restaurant child : r.values()){
+        for(SamplingRestaurant child : r.values()){
             logLik += score(child);
         }
 

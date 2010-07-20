@@ -24,7 +24,7 @@ public class Main {
 
         SequenceMemoizer sm;
         
-        sm = new SequenceMemoizer(new SMParameters(256, -1, 0));
+        sm = new SamplingSequenceMemoizer(new SMParameters(256, -1, 0));
         
         BufferedInputStream bis = null;
         File f, g;

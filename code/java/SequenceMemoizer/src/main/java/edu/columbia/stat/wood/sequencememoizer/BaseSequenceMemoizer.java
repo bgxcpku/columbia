@@ -10,7 +10,7 @@ package edu.columbia.stat.wood.sequencememoizer;
  
  */
 
-public abstract class HPYPAbstract implements HPYPInterface {
+public abstract class BaseSequenceMemoizer implements SequenceMemoizer {
 
     public double continueSequence(int[] observations) {
         double logLik;

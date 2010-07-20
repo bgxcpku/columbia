@@ -9,11 +9,11 @@ package edu.columbia.stat.wood.sequencememoizer;
  *
  * @author nicholasbartlett
  */
-public class BaseRestaurant extends Restaurant {
+public class SamplingBaseRestaurant extends SamplingRestaurant {
     private int[] customers;
     private DiscreteDistribution baseDistribution;
 
-    public BaseRestaurant(DiscreteDistribution baseDistribution){
+    public SamplingBaseRestaurant(DiscreteDistribution baseDistribution){
         super(null, 0, 0, null);
         customers = new int[baseDistribution.alphabetSize()];
         this.baseDistribution = baseDistribution;
@@ -103,7 +103,7 @@ public class BaseRestaurant extends Restaurant {
     }
 
     @Override
-    public Restaurant fragment(Restaurant irParent, int irEdgeStart, int irEdgeLength, boolean forPrediction) {
+    public SamplingRestaurant fragment(SamplingRestaurant irParent, int irEdgeStart, int irEdgeLength, boolean forPrediction) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

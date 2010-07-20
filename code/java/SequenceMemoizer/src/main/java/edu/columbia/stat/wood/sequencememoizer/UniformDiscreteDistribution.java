@@ -12,7 +12,7 @@ import java.util.Arrays;
  * @author nicholasbartlett
  */
 
-public class UniformDiscreteDistribution  extends DiscreteDistributionBase {
+public class UniformDiscreteDistribution  extends BaseDiscreteDistribution {
 
     private int alphabetSize;
 

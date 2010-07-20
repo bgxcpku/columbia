@@ -6,7 +6,7 @@ package edu.columbia.stat.wood.sequencememoizer;
  * @author nicholasbartlett
  * 
  */
-public interface HPYPInterface {
+public interface SequenceMemoizer {
 
     /**
      * Limits the number of restaurants the HPYP is allowed to instantiate.  Memory
