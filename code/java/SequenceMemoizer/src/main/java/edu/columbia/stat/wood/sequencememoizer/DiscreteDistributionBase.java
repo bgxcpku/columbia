@@ -9,7 +9,7 @@ package edu.columbia.stat.wood.sequencememoizer;
  *
  * @author nicholasbartlett
  */
-public abstract class DiscreteBaseDistributionAbstract implements DiscreteBaseDistribution {
+public abstract class DiscreteDistributionBase implements DiscreteDistribution {
 
     /**
      * Dumb implementation of cdf based on the probability() method.  Can probably be

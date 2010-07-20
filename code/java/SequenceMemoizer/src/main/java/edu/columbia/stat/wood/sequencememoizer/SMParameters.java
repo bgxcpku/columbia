@@ -12,7 +12,16 @@ package edu.columbia.stat.wood.sequencememoizer;
  *
  * @author nicholasbartlett
  */
-public class SMParameters extends ParametersAbstract{
+public class SMParameters {
+    public double[] discounts;
+    
+    public int alphabetSize;
+    
+    public int depth;
+    
+    public long seed;
+    
+    public DiscreteDistribution baseDistribution;
 
     /**
      * Mariginal discount of an infinite depth restaurant wrt restaurants at the discounts.lenghth - 1 depth.
@@ -28,7 +37,7 @@ public class SMParameters extends ParametersAbstract{
      * @param depth maximum context length
      * @param seed seed for random number generator
      */
-    public SMParameters(double[] discounts, double infiniteDiscount, int alphabetSize, int depth, long seed, DiscreteBaseDistribution baseDistribution) {
+    public SMParameters(double[] discounts, double infiniteDiscount, int alphabetSize, int depth, long seed, DiscreteDistribution baseDistribution) {
         this.discounts = discounts;
         this.infiniteDiscount = infiniteDiscount;
         this.alphabetSize = alphabetSize;
@@ -52,7 +61,7 @@ public class SMParameters extends ParametersAbstract{
         this.alphabetSize = alphabetSize;
         this.depth = depth;
         this.seed = seed;
-        this.baseDistribution = new UniformDiscreteBaseDistribution(alphabetSize);
+        this.baseDistribution = new UniformDiscreteDistribution(alphabetSize);
     }
 
     /**
@@ -70,7 +79,7 @@ public class SMParameters extends ParametersAbstract{
         this.alphabetSize = alphabetSize;
         this.depth = depth;
         this.seed = seed;
-        this.baseDistribution = new UniformDiscreteBaseDistribution(alphabetSize);
+        this.baseDistribution = new UniformDiscreteDistribution(alphabetSize);
     }
 
     /**

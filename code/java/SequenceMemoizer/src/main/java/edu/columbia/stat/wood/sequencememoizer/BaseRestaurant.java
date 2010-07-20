@@ -11,9 +11,9 @@ package edu.columbia.stat.wood.sequencememoizer;
  */
 public class BaseRestaurant extends Restaurant {
     private int[] customers;
-    private DiscreteBaseDistribution baseDistribution;
+    private DiscreteDistribution baseDistribution;
 
-    public BaseRestaurant(DiscreteBaseDistribution baseDistribution){
+    public BaseRestaurant(DiscreteDistribution baseDistribution){
         super(null, 0, 0, null);
         customers = new int[baseDistribution.alphabetSize()];
         this.baseDistribution = baseDistribution;

@@ -25,7 +25,7 @@ public class SequenceMemoizer extends HPYPAbstract {
     private BaseRestaurant baseRestaurant;
     private Sequence sequence;
     private Discounts discounts;
-    private DiscreteBaseDistribution baseDistribution;
+    private DiscreteDistribution baseDistribution;
 
     public SequenceMemoizer(SMParameters params){
        alphabetSize = params.alphabetSize;

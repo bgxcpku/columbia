@@ -9,7 +9,7 @@ package edu.columbia.stat.wood.sequencememoizer;
  *
  * @author nicholasbartlett
  */
-public interface DiscreteBaseDistribution {
+public interface DiscreteDistribution {
 
     /**
      * Gets the probability of the integer type.  Type should be in interval [0, alphabetSize());

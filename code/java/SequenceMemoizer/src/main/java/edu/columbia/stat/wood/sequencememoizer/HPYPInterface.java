@@ -127,5 +127,5 @@ public interface HPYPInterface {
      *
      * @return values of parameters of the model in its current state
      */
-    public ParametersAbstract getParameters();
+    public SMParameters getParameters();
 }
