@@ -2,570 +2,1129 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.columbia.stat.wood.sequencememoizer;
+package edu.columbia.stat.wood.stochasticmemoizerforsequencedata;
+
+import edu.columbia.stat.wood.hpyp.MutableDouble;
+import edu.columbia.stat.wood.hpyp.MutableInteger;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.TreeMap;
 
 /**
  *
  * @author nicholasbartlett
+ *
  */
-import java.util.ArrayList;
-import java.util.HashMap;
+public class Restaurant extends TreeMap<Integer, Restaurant> {
 
-public class Restaurant extends HashMap<Integer, Restaurant> {
+    private TreeMap<Integer, int[]> tableConfig;
+    private Restaurant parent;
+    private int customers, tables;
+    private Discounts discounts;
+    private int edgeStart, edgeLength;
 
-    public int[][] state;
-    public Restaurant parent;
-    public int[] parentPath;
-    public int[][] deletionState = null;
-    public PredictiveCounts predictiveCounts = null;
-    public static int numberRest = 0;
+    public static int count = 0;
 
-    public Restaurant(Restaurant parent, int[] parentPath) {
-        super(2);
+    /**
+     * A specialized node object for the tree used to represent the a
+     * hierarchical Pitman-Yor process model (specifically the sequence memoizer)
+     *
+     * @param parent parent restaurant in tree
+     * @param parentPath index into original sequence identifying edge label
+     */
+    public Restaurant(Restaurant parent, int edgeStart, int edgeLength, Discounts discounts) {
         this.parent = parent;
-        this.parentPath = parentPath;
-        numberRest++;
+        this.edgeStart = edgeStart;
+        this.edgeLength = edgeLength;
+        this.discounts = discounts;
+        tableConfig = new TreeMap<Integer, int[]>();
+        customers = 0;
+        tables = 0;
+        count++;
     }
 
-    //method to return the number of tables in the restaurant
-    public int getNumberOfTables() {
-        int numberOfTables = 0;
+    /**
+     * Sets the edge start index.
+     *
+     * @param edgeStart new edge start value
+     */
+    public void setEdgeStart(int edgeStart) {
+        this.edgeStart = edgeStart;
+    }
 
-        if (state != null) {
-            for (int j = 0; j < state.length; j++) {
-                numberOfTables += state[j].length - 1;
-            }
+    /**
+     * Gets the edge start index.
+     *
+     * @return edge start index
+     */
+    public int edgeStart() {
+        return edgeStart;
+    }
+
+    /**
+     * Gets the edge length.
+     *
+     * @return edge length
+     */
+    public int edgeLength() {
+        return edgeLength;
+    }
+
+    /**
+     * Decreases the edge length by a given amount.
+     *
+     * @param decrementAmount amount to decrease edge length
+     */
+    public void decrementEdgeLength(int decrementAmount) {
+        if (decrementAmount >= edgeLength) {
+            throw new IllegalArgumentException("resulting edge length must be positive");
         }
-        return numberOfTables;
+
+        edgeLength -= decrementAmount;
     }
 
-    //method to return the number of people in the restaurant
-    public int getNumberOfCustomers() {
-        int numberOfCustomers = 0;
-        for (int typeIndex = 0; typeIndex < state.length; typeIndex++) {
-            for (int table = 1; table < state[typeIndex].length; table++) {
-                numberOfCustomers += state[typeIndex][table];
+    /**
+     * Allows the table configurations to be set for each type seperately.  A table
+     * configuation is an int[] which is equal in length to the number of tables
+     * of the given type.  Eeach entry of the int[] specifies the number of customers
+     * sitting at a unique table. This is required for the fragmentation step when
+     * creating the sequence memozier tree.
+     *
+     * @param type integer value of type
+     * @param config actual table configuration to be used
+     */
+    public void setTableConfig(int type, int[] config) {
+        int[] currentConfig;
+
+        currentConfig = tableConfig.get(type);
+
+        //update customers and tables if will be deleting a row by replacement
+        if (currentConfig != null) {
+            for (int cust : currentConfig) {
+                customers -= cust;
             }
+            tables -= currentConfig.length;
         }
-        return numberOfCustomers;
+
+        //update customers and tables
+        for (int cust : config) {
+            customers += cust;
+        }
+        tables += config.length;
+
+        tableConfig.put(type, config);
     }
 
-    //method to retun an array of length four
-    //entry 0 : total number of customers of specified type
-    //entry 1 : total tables of customers of specified type
-    //entry 2 : total customers in restaurant
-    //entry 3 : total number of tables in restaurant
-    public int[] getRestCounts(int type) {
-        int custOfType = 0;
-        int tablesOfType = 0;
-        int totalCust = 0;
-        int totalTables = 0;
+    /**
+     * Seats a customer of the given type in the restaurant.  Also, if a new table
+     * is created a new customer of the same type is seated in the parent restaurant.
+     *
+     * @param type type to be seated
+     * @return the log likelihood of the type prior to seating
+     */
+    public double seat(int type) {
+        double ll, pp, p, r, tw, cuSum, discount;
+        int[] tsa, ntsa;
+        int tc;
 
-        if (state != null) {
-            for (int j = 0; j < state.length; j++) {
-                if (type == state[j][0]) {
-                    for (int i = 1; i < state[j].length; i++) {
-                        custOfType += state[j][i];
-                        totalCust += state[j][i];
-                    }
-                    tablesOfType = state[j].length - 1;
-                    totalTables += state[j].length - 1;
+        discount = discount();
+        pp = parent.predictiveProbability(type);
+
+        tc = 0;
+        tsa = tableConfig.get(type);
+        
+        if (tsa == null) {
+            tableConfig.put(type, new int[]{1});
+
+            if (tables == 0) {
+                p = pp;
+            } else {
+                p = (double) tables * discount * pp / (double) customers;
+            }
+
+            tables++;
+            parent.seat(type);
+
+            ll = Math.log(p);
+        } else {
+            for (int cust : tsa) {
+                tc += cust;
+            }
+
+            r = SequenceMemoizer.RNG.nextDouble();
+            tw = (double) tc - (double) tsa.length * discount + (double) tables * discount * pp;
+
+            cuSum = 0.0;
+            for (int table = 0; table < tsa.length; table++) {
+                cuSum += ((double) tsa[table] - discount) / tw;
+                if (cuSum > r) {
+                    tsa[table]++;
+                    break;
+                }
+            }
+
+            if (cuSum <= r) {
+                ntsa = new int[tsa.length + 1];
+                System.arraycopy(tsa, 0, ntsa, 0, tsa.length);
+                ntsa[tsa.length] = 1;
+                tableConfig.put(type, ntsa);
+                tables++;
+                parent.seat(type);
+            }
+
+            p = tw / (double) customers;
+            ll = Math.log(p);
+        }
+
+        customers++;
+
+        return ll;
+    }
+
+    public boolean seat(double p, int type, int d, int depth, int[] context, int index, MutableDouble returnP, MutableDouble discountMultFactor){
+        double discount, multFactor, pp;
+        int[] tsa;
+        int tc, tt;
+        
+        discount = discount(d);
+        pp = p;
+        
+        if(customers > 0){
+            multFactor = (double) tables * discount / (double) customers;
+            p *= multFactor;
+        }
+
+        tsa = tableConfig.get(type);
+        tc = 0;
+        tt = 0;
+        
+        if(tsa != null){
+            for(int c : tsa){
+                tc += c;
+            }
+            tt = tsa.length;
+
+            p += ((double) tc - (double) tt * discount) / (double) customers;
+        }
+
+        /*************do data structure stuff, this is recursive piece ********/
+        Restaurant child, newChild;
+        int overlap, el, es;
+        boolean leafNode, seat;
+
+        seat = false;
+
+        if (depth == -1) {
+            leafNode = index == -1;
+        } else {
+            leafNode = index == -1 || d == depth;
+        }
+
+        if (leafNode) {
+            seat = true;
+            returnP.set(p);
+        } else {
+
+            child = get(context[index]);
+
+            if (child == null) {
+                if (depth == -1) {
+                    el = index + 1;
+                    child = new Restaurant(this, 0, index + 1, discounts);
                 } else {
-                    for (int i = 1; i < state[j].length; i++) {
-                        totalCust += state[j][i];
-                    }
-                    totalTables += state[j].length - 1;
+                    el = (depth - d < index + 1) ? depth - d : index + 1;
+                    child = new Restaurant(this, index - el + 1, el, discounts);
                 }
-            }
-        }
-
-        int[] restCounts = new int[4];
-        restCounts[0] = custOfType;
-        restCounts[1] = tablesOfType;
-        restCounts[2] = totalCust;
-        restCounts[3] = totalTables;
-
-        return restCounts;
-    }
-
-    //method to add a child rest in restaurant hashmap
-    //the argument seq is the entire sequence being seated
-    public void putChild(Restaurant child, MemoizedSequence seq) {
-        int newKeyIndex = child.parentPath[1] - 1;
-        Integer newKey = new Integer(seq.get(child.parentPath[2], newKeyIndex));
-        this.put(newKey, child);
-    }
-
-    /* this method sits a type at a given restaurant and returns a value of true
-     * or false.  true indicates that the table the type was seated at was drawn
-     * from the upper level restaurant/distribution and thus a customer must be
-     * also seated in the upper level restaurant.  the method takes as its
-     * arguements, a type to sit, and a probability value corresponding to the
-     * proportional probability of drawing from the upper level restaurant. This
-     * probability is calculated on the way down the tree and thus represents
-     * a cumulative effect of the succession of parent nodes. */
-    public Restaurant sitAtRest(int type, double probUpper, double logDiscount) {
-        //if no one is sitting in restaurant
-        if (state == null) {
-            state = new int[1][2];
-            state[0][0] = type;
-            state[0][1] = 1;
-            return parent;
-        }
-
-        //else loop through state to see if type is already represented
-        int typeIndex = -1;
-        int numCustAtType = 0;
-        int numTablesAtType = 0;
-        int numTablesInRest = 0;
-        for (int tIndex = 0; tIndex < state.length; tIndex++) {
-            if (state[tIndex][0] == type) {
-                for (int table = 1; table < state[tIndex].length; table++) {
-                    numCustAtType += state[tIndex][table];
-                }
-                numTablesAtType += state[tIndex].length - 1;
-                numTablesInRest += state[tIndex].length - 1;
-                typeIndex = tIndex;
+                put(context[index], child);
+                seat = child.seat(p, type, d + el, depth, context, index - el, returnP, discountMultFactor);
             } else {
-                numTablesInRest += state[tIndex].length - 1;
+
+                es = child.edgeStart();
+                el = child.edgeLength();
+                overlap = 0;
+                while (overlap < el && context[es + el - 1 - overlap] == context[index - overlap]) {
+                    overlap++;
+                }
+
+                assert overlap > 0;
+
+                if (overlap == el) {
+
+                    seat = child.seat(p, type, d + el, depth, context, index - el, returnP, discountMultFactor);
+
+                } else {
+
+                    newChild = child.fragment(this, index - overlap + 1, overlap, false);
+                    put(context[index], newChild);
+                    newChild.put(context[es + el - overlap - 1], child);
+
+                    seat = newChild.seat(p, type, d + overlap, depth, context, index - overlap, returnP, discountMultFactor);
+
+                }
             }
         }
 
-        //if found the type in the state then add
-        if (typeIndex > -1) {
-            double cumSum = 0.0;
-            double rawRandomSample = SMTree.RNG.nextDouble();
-            double totalWeight = 1.0 * (numCustAtType - Math.exp(Math.log(numTablesAtType) + logDiscount)) + Math.exp(Math.log(numTablesInRest) + logDiscount + Math.log(probUpper));
+        /*********************now actually seat if needed**********************/
+        boolean seatInParent;
 
-            for (int table = 1; table < state[typeIndex].length; table++) {
-                cumSum += (1.0 * state[typeIndex][table] - Math.exp(logDiscount)) / totalWeight;
-                if (cumSum > rawRandomSample) {
-                    state[typeIndex][table]++;
-                    return null;
+        seatInParent = false;
+        
+        discounts.updateGradient(d - edgeLength, d, tt, customers, tables, pp, discount, discountMultFactor.doubleVal());
+        if(customers > 0){
+            discountMultFactor.times((double) tables * discount / (double) customers);
+        }
+
+        if (seat) {
+            double r, tw, cuSum;
+            int[] ntsa;
+
+            if (tsa == null) {
+                tableConfig.put(type, new int[]{1});
+                tables++;
+                seatInParent = true;
+            } else {
+
+                r = SequenceMemoizer.RNG.nextDouble();
+                tw = (double) tc - (double) tt * discount + (double) tables * discount * pp;
+
+                cuSum = 0.0;
+                for (int table = 0; table < tt; table++) {
+                    cuSum += ((double) tsa[table] - discount) / tw;
+                    if (cuSum > r) {
+                        tsa[table]++;
+                        break;
+                    }
+                }
+
+                if (cuSum <= r) {
+                    ntsa = new int[tt + 1];
+                    System.arraycopy(tsa, 0, ntsa, 0, tt);
+                    ntsa[tt] = 1;
+                    tableConfig.put(type, ntsa);
+                    tables++;
+                    seatInParent = true;
                 }
             }
 
-            int[] newTypeTableStructure = new int[state[typeIndex].length + 1];
-            System.arraycopy(state[typeIndex], 0, newTypeTableStructure, 0, state[typeIndex].length);
-            newTypeTableStructure[state[typeIndex].length] = 1;
-            state[typeIndex] = newTypeTableStructure;
-            return parent;
+            customers++;
         }
 
-        //if not found then will need to create a row for this type
-        int[][] newState = new int[state.length + 1][];
-        System.arraycopy(state, 0, newState, 0, state.length);
-
-        newState[state.length] = new int[2];
-        newState[state.length][0] = type;
-        newState[state.length][1] = 1;
-
-        state = newState;
-        return parent;
+        return seatInParent;
     }
 
-    public Restaurant fragmentAndAdd(int[] rest2ParentPath, int rest2Depth, MemoizedSequence seq, Discounts discounts) {
-        //get log discount parameters
-        double rest3LogDiscount = discounts.getLog(rest2Depth, rest2Depth + parentPath[1] - parentPath[0] - rest2ParentPath[1] + rest2ParentPath[0]);
-        double rest2LogDiscount = discounts.getLog(rest2Depth - rest2ParentPath[1] + rest2ParentPath[0], rest2Depth);
+    public boolean seatCdf(double[] pArray, int type, int d, int depth, int[] context, int index, MutableDouble discountMultFactor) {
+        /***********update ppArray to reflect counts in this restaurant************/
+        double pp, discount, multFactor;
+        int[] tsa;
+        int tc;
 
-        //create rest2
-        Restaurant rest2 = new Restaurant(parent, rest2ParentPath);
+        pp = pArray[type];
+        discount = discount(d);
 
-        //update the child reference for rest1 to point to rest2 as it's child
-        parent.putChild(rest2, seq);
+        if (customers > 0) {
+            multFactor = (double) tables * discount / (double) customers;
+            for (int i = 0; i < pArray.length; i++) {
+                pArray[i] *= multFactor;
+            }
+        }
 
-        //update the parent path for rest3
-        parentPath[1] -= (rest2.parentPath[1] - rest2.parentPath[0]);
+        for (Integer t : tableConfig.keySet()) {
+            tsa = tableConfig.get(t);
 
-        //update rest 2 so that rest 3 is a/the child rest
-        rest2.putChild(this, seq);
+            tc = 0;
+            for (int c : tsa) {
+                tc += c;
+            }
 
-        //update the parent of rest3 to be rest2
-        parent = rest2;
+            pArray[t] += ((double) tc - (double) tsa.length * discount) / (double) customers;
+        }
 
-        //instantiate the state of rest 2
-        rest2.state = new int[state.length][];
+        /*************do data structure stuff, this is recursive piece ********/
+        Restaurant child, newChild;
+        int overlap, el, es;
+        boolean leafNode, seat;
 
-        //Set the concentration parameter for the splitting procedure.  The new
-        //discount parameter is used for the breaking procedure as the discount
-        //parameter, the old discount is used as the concentration paramter,
-        //with a negative attached.
-        double concentration = -1.0 * Math.exp(rest3LogDiscount + rest2LogDiscount);
+        seat = false;
 
-        //now do the fragmenting of this restaurant
-        for (int typeIndex = 0; typeIndex < state.length; typeIndex++) {
+        if (depth == -1) {
+            leafNode = index == -1;
+        } else {
+            leafNode = index == -1 || d == depth;
+        }
 
-            rest2.state[typeIndex] = new int[state[typeIndex].length];
-            rest2.state[typeIndex][0] = state[typeIndex][0];
+        if (leafNode) {
+            seat = true;
+        } else {
 
-            //create arraylist to hold new seating arrangement
-            ArrayList<SetableInteger> newTableStructure = new ArrayList<SetableInteger>(state[typeIndex].length);
+            child = get(context[index]);
 
-            for (int table = 1; table < state[typeIndex].length; table++) {
-                ArrayList<SetableInteger> fragmentedTable = new ArrayList<SetableInteger>(2);
-                fragmentedTable.add(new SetableInteger(1));
-                double totalWeight = 1.0 + concentration;
+            if (child == null) {
+                if (depth == -1) {
+                    el = index + 1;
+                    child = new Restaurant(this, 0, index + 1, discounts);
+                } else {
+                    el = (depth - d < index + 1) ? depth - d : index + 1;
+                    child = new Restaurant(this, index - el + 1, el, discounts);
+                }
+                put(context[index], child);
+                seat = child.seatCdf(pArray, type, d + el, depth, context, index - el, discountMultFactor);
+            } else {
+
+                es = child.edgeStart();
+                el = child.edgeLength();
+                overlap = 0;
+                while (overlap < el && context[es + el - 1 - overlap] == context[index - overlap]) {
+                    overlap++;
+                }
+
+                assert overlap > 0;
+
+                if (overlap == el) {
+
+                    seat = child.seatCdf(pArray, type, d + el, depth, context, index - el, discountMultFactor);
+
+                } else {
+
+                    newChild = child.fragment(this, index - overlap + 1, overlap, false);
+                    put(context[index], newChild);
+                    newChild.put(context[es + el - overlap - 1], child);
+
+                    seat = newChild.seatCdf(pArray, type, d + overlap, depth, context, index - overlap, discountMultFactor);
+
+                }
+            }
+        }
+
+        /*********************now actually seat if needed**********************/
+        boolean seatInParent;
+        int tt;
+        
+        seatInParent = false;
+        tc = 0;
+        tt = 0;
+        tsa = tableConfig.get(type);
+
+        if(tsa != null){
+            for (int c : tsa) {
+                tc += c;
+            }
+            tt = tsa.length;
+        }
+
+        discounts.updateGradient(d - edgeLength, d, tt, customers, tables, pp, discount, discountMultFactor.doubleVal());
+        if(customers > 0){
+            discountMultFactor.times((double) tables * discount / (double) customers);
+        }
+
+        if (seat) {
+            double r, tw, cuSum;
+            int[] ntsa;
+
+            if (tsa == null) {
+                tableConfig.put(type, new int[]{1});
+                tables++;
+                seatInParent = true;
+            } else {
+
+                r = SequenceMemoizer.RNG.nextDouble();
+                tw = (double) tc - (double) tt * discount + (double) tables * discount * pp;
+
+                cuSum = 0.0;
+                for (int table = 0; table < tt; table++) {
+                    cuSum += ((double) tsa[table] - discount) / tw;
+                    if (cuSum > r) {
+                        tsa[table]++;
+                        break;
+                    }
+                }
+
+                if (cuSum <= r) {
+                    ntsa = new int[tt + 1];
+                    System.arraycopy(tsa, 0, ntsa, 0, tt);
+                    ntsa[tt] = 1;
+                    tableConfig.put(type, ntsa);
+                    tables++;
+                    seatInParent = true;
+                }
+            }
+
+            customers++;
+        }
+        
+        return seatInParent;
+    }
+
+    public boolean seatPointOnCdf(double pointOnCdf, double[] pArray, MutableInteger type, int d, int depth, int[] context, int index, MutableDouble discountMultFactor) {
+        /***********update ppArray to reflect counts in this restaurant************/
+        double discount, multFactor;
+        int[] tsa;
+        int tc;
+        double[] pp;
+
+        tc = 0;
+        discount = discount(d);
+        pp = new double[pArray.length];
+        System.arraycopy(pArray, 0, pp, 0, pArray.length);
+
+        if (customers > 0) {
+            multFactor = (double) tables * discount / (double) customers;
+            for (int i = 0; i < pArray.length; i++) {
+                pArray[i] *= multFactor;
+            }
+        }
+
+        for (Integer t : tableConfig.keySet()) {
+            tsa = tableConfig.get(t);
+
+            tc = 0;
+            for (int c : tsa) {
+                tc += c;
+            }
+
+            pArray[t] += ((double) tc - (double) tsa.length * discount) / (double) customers;
+        }
+
+        /*************do data structure stuff, this is recursive piece ********/
+        Restaurant child, newChild;
+        int overlap, el, es;
+        boolean leafNode, seat;
+        double cuSum;
+
+        seat = false;
+
+        if (depth == -1) {
+            leafNode = index == -1;
+        } else {
+            leafNode = index == -1 || d == depth;
+        }
+
+        if (leafNode) {
+            seat = true;
+
+            cuSum = 0.0;
+            for(int t = 0; t < pArray.length; t++){
+                cuSum += pArray[t];
+                if(cuSum > pointOnCdf){
+                    type.set(t);
+                    break;
+                }
+            }
+        } else {
+
+            child = get(context[index]);
+
+            if (child == null) {
+                if (depth == -1) {
+                    el = index + 1;
+                    child = new Restaurant(this, 0, index + 1, discounts);
+                } else {
+                    el = (depth - d < index + 1) ? depth - d : index + 1;
+                    child = new Restaurant(this, index - el + 1, el, discounts);
+                }
+                put(context[index], child);
+                seat = child.seatPointOnCdf(pointOnCdf, pArray, type, d + el, depth, context, index - el, discountMultFactor);
+            } else {
+
+                es = child.edgeStart();
+                el = child.edgeLength();
+                overlap = 0;
+                while (overlap < el && context[es + el - 1 - overlap] == context[index - overlap]) {
+                    overlap++;
+                }
+
+                assert overlap > 0;
+
+                if (overlap == el) {
+
+                    seat = child.seatPointOnCdf(pointOnCdf, pArray, type, d + el, depth, context, index - el, discountMultFactor);
+
+                } else {
+
+                    newChild = child.fragment(this, index - overlap + 1, overlap, false);
+                    put(context[index], newChild);
+                    newChild.put(context[es + el - overlap - 1], child);
+
+                    seat = newChild.seatPointOnCdf(pointOnCdf, pArray, type, d + overlap, depth, context, index - overlap, discountMultFactor);
+                }
+            }
+        }
+
+        /*********************now actually seat if needed**********************/
+        boolean seatInParent;
+        int tt;
+
+        seatInParent = false;
+        tc = 0;
+        tt = 0;
+        tsa = tableConfig.get(type.intVal());
+
+        if(tsa != null){
+            for (int c : tsa) {
+                tc += c;
+            }
+            tt = tsa.length;
+        }
+
+        discounts.updateGradient(d - edgeLength, d, tt, customers, tables, pp[type.intVal()], discount, discountMultFactor.doubleVal());
+        if(customers > 0){
+            discountMultFactor.times((double) tables * discount / (double) customers);
+        }
+
+        if (seat) {
+            double r, tw;
+            int[] ntsa;
+
+            seatInParent = false;
+            tsa = tableConfig.get(type.intVal());
+
+            if (tsa == null) {
+                
+                tableConfig.put(type.intVal(), new int[]{1});
+                tables++;
+                seatInParent = true;
+                
+            } else {
+                
+                r = SequenceMemoizer.RNG.nextDouble();
+                tw = (double) tc - (double) tt * discount + (double) tables * discount * pp[type.intVal()];
+
+                cuSum = 0.0;
+                for (int table = 0; table < tt; table++) {
+                    cuSum += ((double) tsa[table] - discount) / tw;
+                    if (cuSum > r) {
+                        tsa[table]++;
+                        break;
+                    }
+                }
+
+                if (cuSum <= r) {
+                    ntsa = new int[tt + 1];
+                    System.arraycopy(tsa, 0, ntsa, 0, tt);
+                    ntsa[tt] = 1;
+                    tableConfig.put(type.intVal(), ntsa);
+                    tables++;
+                    seatInParent = true;
+                }
+            }
+
+            customers++;
+        }
+
+        return seatInParent;
+    }
+
+    /**
+     * Fragments a restaurant and returns the intermediate restaurant.  Each
+     * restaurant is internally coherent, but the graph needs to be updated
+     * externally to reflect that a restaurant has been inserted in the middle
+     * of an edge.
+     *
+     * @param intermediateRestauranParent
+     * @param intermediateRestaurantParentPath
+     * @return
+     */
+    public Restaurant fragment(Restaurant irParent, int irEdgeStart, int irEdgeLength, boolean forPrediction) {
+        double discount, irDiscount, fragDiscount, fragConcentration, r, cuSum, totalWeight;
+        Restaurant intermediateRestaurant;
+        int[] tsa, irtsa, newtsa;
+        int table;
+        ArrayList<MutableInteger> fragmentedTable;
+        ArrayList<MutableInteger> allTables;
+
+        intermediateRestaurant = new Restaurant(irParent, irEdgeStart, irEdgeLength, discounts);
+        irDiscount = intermediateRestaurant.discount();
+        discount = discount();
+        fragDiscount = discount / irDiscount;
+        fragConcentration = -1 * discount;
+
+        for (Integer type : tableConfig.keySet()) {
+            allTables = new ArrayList<MutableInteger>();
+
+            tsa = tableConfig.get(type);
+            if(!forPrediction){
+                tables -= tsa.length;
+            }
+
+            irtsa = new int[tsa.length];
+            table = 0;
+            for (int tableSize : tsa) {
+
+                fragmentedTable = new ArrayList<MutableInteger>();
+                fragmentedTable.add(new MutableInteger(1));
+                totalWeight = fragConcentration;
 
                 topFor:
-                for (int person = 0; person < state[typeIndex][table] - 1; person++) {
-                    double rawRandomSample = SMTree.RNG.nextDouble();
-                    double cumSum = 0.0;
-                    for (SetableInteger fragWeight : fragmentedTable) {
-                        cumSum += (fragWeight.getVal() - Math.exp(rest3LogDiscount)) / totalWeight;
-                        if (cumSum > rawRandomSample) {
-                            fragWeight.increment();
-                            totalWeight++;
+                for (int customer = 1; customer < tableSize; customer++) {
+                    totalWeight++;
+                    r = SequenceMemoizer.RNG.nextDouble();
+                    cuSum = 0.0;
+
+                    for (MutableInteger t : fragmentedTable) {
+                        cuSum += ((double) t.intVal() - fragDiscount) / totalWeight;
+                        if (cuSum > r) {
+                            t.increment();
                             continue topFor;
                         }
                     }
-                    fragmentedTable.add(new SetableInteger(1));
-                    totalWeight++;
+                    fragmentedTable.add(new MutableInteger(1));
                 }
-                rest2.state[typeIndex][table] = fragmentedTable.size();
-                newTableStructure.addAll(fragmentedTable);
+                irtsa[table++] = fragmentedTable.size();
+                allTables.addAll(fragmentedTable);
+            }
+            intermediateRestaurant.setTableConfig(type, irtsa);
+            newtsa = new int[allTables.size()];
+            table = 0;
+            for (MutableInteger tableSize : allTables) {
+                newtsa[table++] = tableSize.intVal();
             }
 
-            int[] newTypeState = new int[newTableStructure.size() + 1];
-            newTypeState[0] = state[typeIndex][0];
-            int index = 1;
-            for (SetableInteger table : newTableStructure) {
-                newTypeState[index++] = table.getVal();
-            }
-            state[typeIndex] = newTypeState;
-        }
-        return rest2;
-    }
-
-    public Restaurant fragment(int[] rest2ParentPath, int rest2Depth, MemoizedSequence seq, Discounts discounts) {
-        //get log discount parameters
-        double rest3LogDiscount = discounts.getLog(rest2Depth, rest2Depth + parentPath[1] - parentPath[0] - rest2ParentPath[1] + rest2ParentPath[0]);
-        double rest2LogDiscount = discounts.getLog(rest2Depth - rest2ParentPath[1] + rest2ParentPath[0], rest2Depth);
-
-        //create rest2
-        Restaurant rest2 = new Restaurant(parent, rest2ParentPath);
-
-        //instantiate the state of rest 2
-        rest2.state = new int[state.length][];
-
-        //Set the concentration parameter for the splitting procedure.  The new
-        //discount parameter is used for the breaking procedure as the discount
-        //parameter, the old discount is used as the concentration paramter,
-        //with a negative attached.
-        double concentration = -1.0 * Math.exp(rest3LogDiscount + rest2LogDiscount);
-
-        //now do the fragmenting of this restaurant
-        for (int typeIndex = 0; typeIndex < state.length; typeIndex++) {
-
-            rest2.state[typeIndex] = new int[state[typeIndex].length];
-            rest2.state[typeIndex][0] = state[typeIndex][0];
-
-            for (int table = 1; table < state[typeIndex].length; table++) {
-                ArrayList<SetableInteger> fragmentedTable = new ArrayList<SetableInteger>(2);
-                fragmentedTable.add(new SetableInteger(1));
-                double totalWeight = 1.0 + concentration;
-
-                topFor:
-                for (int person = 0; person < state[typeIndex][table] - 1; person++) {
-                    double rawRandomSample = SMTree.RNG.nextDouble();
-                    double cumSum = 0.0;
-                    for (SetableInteger fragWeight : fragmentedTable) {
-                        cumSum += (fragWeight.getVal() - Math.exp(rest3LogDiscount)) / totalWeight;
-                        if (cumSum > rawRandomSample) {
-                            fragWeight.increment();
-                            totalWeight++;
-                            continue topFor;
-                        }
-                    }
-                    fragmentedTable.add(new SetableInteger(1));
-                    totalWeight++;
-                }
-                rest2.state[typeIndex][table] = fragmentedTable.size();
+            if(!forPrediction){
+                tableConfig.put(type, newtsa);
+                tables += newtsa.length;
             }
         }
 
-        return rest2;
+        if(!forPrediction){
+            parent = intermediateRestaurant;
+            decrementEdgeLength(irEdgeLength);
+        } else {
+            count--;
+        }
+
+        return intermediateRestaurant;
     }
 
-    /*******************************SAMPLING***********************************/
-    public Restaurant sitAtRestS(int type, double probUpper, double logDiscount) {
-        int typeIndex = -1;
-        int numCustAtType = 0;
-        int numTablesAtType = 0;
-        int numTablesInRest = 0;
-        for (int tIndex = 0; tIndex < state.length; tIndex++) {
-            if (state[tIndex][0] == type) {
-                for (int table = 1; table < state[tIndex].length; table++) {
-                    numCustAtType += state[tIndex][table];
-                    if (state[tIndex][table] != 0) {
-                        numTablesAtType++;
-                        numTablesInRest++;
-                    }
+    /**
+     * Gets the discount for the restaurant from the discounts object.
+     *
+     * @return double discount value
+     */
+    public double discount() {
+        int depth;
+
+        depth = depth();
+
+        return discounts.get(depth - edgeLength, depth);
+    }
+
+    /**
+     * Gets the discount for the restaurant from the discounts object.
+     *
+     * @param depth depth of restaurant
+     * @return double discount value
+     */
+    public double discount(int depth){
+        return discounts.get(depth - edgeLength, depth);
+    }
+
+    /**
+     * Gets the predictive probability of a given type in this restaurant /
+     * conditional distribution.
+     *
+     * @param type type for requested predictive probability
+     * @return predictive probability of type
+     */
+    public double predictiveProbability(int type) {
+        double p, discount;
+        int tc, tt;
+        int[] tsa;
+
+        if (customers > 0) {
+            discount = discount();
+            tc = 0;
+            tt = 0;
+            tsa = tableConfig.get(type);
+            if (tsa != null) {
+                for (int cust : tsa) {
+                    tc += cust;
                 }
-                typeIndex = tIndex;
+                tt = tsa.length;
+            }
+
+            p = ((double) tc - (double) tt * discount + (double) tables * discount * parent.predictiveProbability(type)) / (double) customers;
+        } else {
+            p = parent.predictiveProbability(type);
+        }
+
+        return p;
+    }
+
+    /**
+     * Gets the predictive CDF at this node.  Predictive probabilities are for
+     * types [0,alphabetSize), in order.
+     *
+     * @return double[] of predictive probabilities
+     */
+    public double[] predictiveProbability() {
+        double[] pp;
+        int[] tsa;
+        double multFactor, discount;
+        int tc;
+
+        pp = parent.predictiveProbability();
+        if (customers > 0) {
+
+            discount = discount();
+            multFactor = discount * (double) tables / (double) customers;
+
+            for (int t = 0; t < pp.length; t++) {
+                pp[t] *= multFactor;
+            }
+
+            for (Integer type : tableConfig.keySet()) {
+                tsa = tableConfig.get(type);
+
+                tc = 0;
+                for (int c : tsa) {
+                    tc += c;
+                }
+
+                pp[type] += ((double) tc - (double) tsa.length * discount) / (double) customers;
+            }
+        }
+
+        return pp;
+    }
+
+    /**
+     * Unseats a given type from the restaurant.  This method is used in sampling.
+     *
+     * @param type type to useat
+     */
+    public void unseat(int type) {
+        double r, cuSum;
+        int[] tsa, ntsa;
+        int tc;
+
+        tc = 0;
+        tsa = tableConfig.get(type);
+        for (int cust : tsa) {
+            tc += cust;
+        }
+
+        if (tsa.length == 1 && tsa[0] == 1) {
+            tableConfig.remove(type);
+            tables--;
+            parent.unseat(type);
+        } else {
+            r = SequenceMemoizer.RNG.nextDouble();
+            cuSum = 0.0;
+            for (int table = 0; table < tsa.length; table++) {
+                cuSum += (double) tsa[table] / (double) tc;
+                if (cuSum > r) {
+                    tsa[table]--;
+                    if (tsa[table] == 0) {
+                        ntsa = new int[tsa.length - 1];
+                        System.arraycopy(tsa, 0, ntsa, 0, table);
+                        System.arraycopy(tsa, table + 1, ntsa, table, tsa.length - table - 1);
+                        tableConfig.put(type, ntsa);
+                        tables--;
+                        parent.unseat(type);
+                    }
+                    break;
+                }
+            }
+            assert cuSum > r;
+        }
+        customers--;
+    }
+
+    /**
+     * Gets the depth of the restaurant.  The depth is equal to the context
+     * length and is zero at the root restaurant.
+     *
+     * @return depth of restaurant
+     */
+    public int depth() {
+        return parent.depth() + edgeLength;
+    }
+
+    /**
+     * Prints the state of the restaurant.  Each line starts with the type folowed
+     * by a colon and then a vector showing the size of each table associated with
+     * the printed type.  The length of the vector is the number of tables associated
+     * with the given type.
+     */
+    public void printState() {
+        int[] tsa;
+        for (Integer type : tableConfig.keySet()) {
+            tsa = tableConfig.get(type);
+            System.out.print(type + "  :  [" + tsa[0]);
+            for (int i = 1; i < tsa.length; i++) {
+                System.out.print(", " + tsa[i]);
+            }
+            System.out.println("]");
+        }
+    }
+
+    /**
+     * Gets the log likelihood of the seating arrangement in the restaurant.
+     *
+     * @return log likelihood of seating arrangement;
+     */
+    public double logLik() {
+        int c, t;
+        double logLik, discount;
+
+        c = 0;
+        t = 0;
+        logLik = 0.0;
+        discount = discount();
+
+        for (int[] tsa : tableConfig.values()) {
+            for (int custs : tsa) {
+                logLik += logLikTable(custs, c, t, discount);
+                t++;
+                c += custs;
+            }
+        }
+
+        return logLik;
+    }
+
+    /**
+     * Gets the log likelihood contribution of a given table..
+     * 
+     * @param tableSize size of table
+     * @param existingCust number of customers already accounted for
+     * @param existingTables number of tables already accounted for
+     * @param discount value of discount
+     * @return contribution of table to log likelihood of seating arrangment
+     */
+    private double logLikTable(int tableSize, int existingCust, int existingTables, double discount) {
+        double logLik, p;
+
+        logLik = 0.0;
+        
+        if(existingCust > 0){
+            p = ((double) existingTables * discount) / (double) existingCust;
+            logLik += Math.log(p);
+        }
+
+        existingCust++;
+
+        for (int i = 1; i < tableSize; i++) {
+            p = ((double) i - discount) / (double) existingCust;
+            logLik += Math.log(p);
+            existingCust++;
+        }
+
+        return logLik;
+    }
+
+    /**
+     * Samples a customer of a given type sitting at a certain table.  Since table
+     * arrangements are maintained in an int[], the table is the index in the int[].
+     * Sampling consists of unseating the customer and then re-seating them by sampling
+     * a seating location from the conditional distribution.
+     *
+     * @param type int type
+     * @param table index to table
+     * @param discount discount for restaurant
+     */
+    private void sampleCustomer(int type, int table, double discount) {
+        double r, cuSum, totalWeight, pp;
+        int tt, tc, zeroInd;
+        int[] tsa, ntsa;
+
+        tsa = tableConfig.get(type);
+
+        tsa[table]--; assert tsa[table] >= 0;
+
+        if (tsa[table] == 0) {
+            parent.unseat(type);
+            tables--;
+        }
+
+        tt = 0;
+        tc = 0;
+
+        zeroInd = -1;
+        for (int i = 0; i < tsa.length; i++) {
+            tc += tsa[i];
+            if (tsa[i] > 0) {
+                tt++;
             } else {
-                for (int table = 1; table < state[tIndex].length; table++) {
-                    if (state[tIndex][table] != 0) {
-                        numTablesInRest++;
-                    }
-                }
+                zeroInd = i;
             }
         }
 
-        //if found the type in the state then add
-        if (typeIndex > -1) {
-            double cumSum = 0.0;
-            double rawRandomSample = SMTree.RNG.nextDouble();
-            double totalWeight = 1.0 * (numCustAtType - Math.exp(Math.log(numTablesAtType) + logDiscount)) + Math.exp(Math.log(numTablesInRest) + logDiscount + Math.log(probUpper));
+        r = SequenceMemoizer.RNG.nextDouble();
+        cuSum = 0.0;
+        pp = parent.predictiveProbability(type);
+        totalWeight = (double) tc - (double) tt * discount + (double) tables * discount * pp;
 
-            for (int table = 1; table < state[typeIndex].length; table++) {
-                if (1.0 * state[typeIndex][table] != 0) {
-                    cumSum += (1.0 * state[typeIndex][table] - Math.exp(logDiscount)) / totalWeight;
-                }
-                if (cumSum > rawRandomSample) {
-                    state[typeIndex][table]++;
-                    return null;
-                }
+        for (int i = 0; i < tsa.length; i++) {
+            if (tsa[i] > 0) {
+                cuSum += ((double) tsa[i] - discount) / totalWeight;
             }
-
-            int[] newTypeTableStructure = new int[state[typeIndex].length + 1];
-            System.arraycopy(state[typeIndex], 0, newTypeTableStructure, 0, state[typeIndex].length);
-            newTypeTableStructure[state[typeIndex].length] = 1;
-            state[typeIndex] = newTypeTableStructure;
-            return parent;
-        }
-
-        //if not found then will need to create a row for this type
-        int[][] newState = new int[state.length + 1][];
-        System.arraycopy(state, 0, newState, 0, state.length);
-
-        newState[state.length] = new int[2];
-        newState[state.length][0] = type;
-        newState[state.length][1] = 1;
-
-        state = newState;
-        return parent;
-    }
-
-    public Restaurant unseat(int type) {
-        int rowIndex = -1;
-
-        for (int typeIndex = 0; typeIndex < state.length; typeIndex++) {
-            if (state[typeIndex][0] == type) {
-                rowIndex = typeIndex;
+            if (cuSum > r) {
+                tsa[i]++;
                 break;
             }
         }
 
-        if (state[rowIndex].length == 2) {
-            if (state[rowIndex][1] == 1) {
-                int[][] newState = new int[state.length - 1][];
-                System.arraycopy(state, 0, newState, 0, rowIndex);
-                System.arraycopy(state, rowIndex + 1, newState, rowIndex, state.length - rowIndex - 1);
-                state = newState;
-                return parent;
+        if (cuSum <= r) {
+            tables++;
+            if (zeroInd > -1) {
+                tsa[zeroInd]++;
             } else {
-                state[rowIndex][1]--;
-                return null;
+                ntsa = new int[tsa.length + 1];
+                System.arraycopy(tsa, 0, ntsa, 0, tsa.length);
+                ntsa[tsa.length] = 1;
+                tableConfig.put(type, ntsa);
             }
+            parent.seat(type);
         }
+    }
 
-        int custOfType = 0;
-        for (int table = 1; table < state[rowIndex].length; table++) {
-            custOfType += state[rowIndex][table];
+    /**
+     * Samples entire seating arrangments for entire restaurant.
+     */
+    public void sampleSeatingArrangements(){
+        int b;
+        int[] typeTable;
+        RandomCustomer randomCustomer;
+        double discount;
+
+        if(customers > 1){
+            typeTable = new int[2];
+            randomCustomer = new RandomCustomer();
+            discount = discount();
+
+            while ((b = randomCustomer.nextCustomer(typeTable)) > -1) {
+                sampleCustomer(typeTable[0], typeTable[1], discount);
+            }
+
+            fixZeros();
         }
+    }
 
-        double cumSum = 0.0;
-        double rawRandomSample = Math.random();
-        for (int table = 1; table < state[rowIndex].length; table++) {
-            cumSum += 1.0 * state[rowIndex][table] / custOfType;
-            if (cumSum > rawRandomSample) {
-                if (state[rowIndex][table] == 1) {
-                    int[] newTypeState = new int[state[rowIndex].length - 1];
-                    System.arraycopy(state[rowIndex], 0, newTypeState, 0, table);
-                    System.arraycopy(state[rowIndex], table + 1, newTypeState, table, state[rowIndex].length - table - 1);
-                    state[rowIndex] = newTypeState;
-                    return parent;
-                } else {
-                    state[rowIndex][table]--;
-                    return null;
+    /**
+     * Fixes the zeros created during the sampling process.
+     */
+    private void fixZeros(){
+        int[] tsa,ntsa;
+        int numZeros,ind;
+
+        for(Integer type : tableConfig.keySet()){
+            tsa = tableConfig.get(type);
+
+            numZeros = 0;
+            for(int tableSize : tsa){
+                assert tableSize >= 0 ;
+                if(tableSize == 0){
+                    numZeros++;
                 }
             }
-        }
-        throw new RuntimeException("should not get to this point in the code " +
-                "since the person should already be deleted at this point");
-    }
 
-    public void fillPredictiveCounts(int as, double d, double c) {
-        predictiveCounts = new PredictiveCounts();
-
-        predictiveCounts.discount = d;
-        predictiveCounts.concentration = c;
-
-        predictiveCounts.cust = 0;
-        predictiveCounts.tables = 0;
-        predictiveCounts.typeNum = new double[as];
-
-        if (this.state == null) {
-            return;
-        }
-
-        int type;
-        int custAtTable;
-        int tablesOfType;
-        for (int typeIndex = 0; typeIndex < state.length; typeIndex++) {
-            type = state[typeIndex][0];
-            tablesOfType = state[typeIndex].length - 1;
-            predictiveCounts.tables += tablesOfType;
-            predictiveCounts.typeNum[type] -= d * (tablesOfType);
-            for (int table = 1; table < state[typeIndex].length; table++) {
-                custAtTable = state[typeIndex][table];
-                predictiveCounts.cust += custAtTable;
-                predictiveCounts.typeNum[type] += custAtTable;
+            if(numZeros > 0){
+                ntsa = new int[tsa.length - numZeros];
+                ind = 0;
+                for(int tableSize:tsa){
+                   if(tableSize > 0){
+                       ntsa[ind++] = tableSize;
+                   }
+                }
+                tableConfig.put(type,ntsa);
             }
         }
     }
 
-    /******************************DELETION OPERATIONS*************************/
-    public void delete(MemoizedSequence seq) {
-        int keyIndex = parentPath[1] - 1;
-        Integer key = new Integer(seq.get(parentPath[2], keyIndex));
-        if (parent.remove(key) == null) {
-            throw new RuntimeException("trying to delete a restaurant incorrectly");
-        }
-        numberRest--;
-    }
+    private class RandomCustomer{
+        
+        private int[] randomType;
+        private int[] randomTable;
+        private int index;
+        private int customersToSample;
 
-    //method to remove restaurant and update the deletion state of the parent
-    //restaurant
-    public void deleteWithDeletionStateUpdate(MemoizedSequence seq) {
-        HashMap<Integer, Integer> deletionUpdate = new HashMap(20);
+        /**
+         * Class to generate and then iterate over a random customer ordering
+         * within the restaurant.  Object acts essentially like an iterator object.
+         */
+        public RandomCustomer() {
+            int ind;
+            int[] tsa, randomOrder;
 
-        //populate HashMap with current state of deletion state
-        Integer key;
-        Integer val;
-        if (deletionState != null) {
-            for (int typeIndex = 0; typeIndex < deletionState.length; typeIndex++) {
-                key = new Integer(deletionState[typeIndex][0]);
-                val = new Integer(deletionState[typeIndex][1]);
-                deletionUpdate.put(key, val);
+            index = 0;
+            randomType = new int[customers];
+            randomTable = new int[customers];
+
+            customersToSample = customers;
+            for (int[] ts : tableConfig.values()) {
+                if (ts.length == 1 && ts[0] == 1) {
+                    customersToSample--;
+                }
             }
-        }
+            
+            randomOrder = sampleWOReplacement(customersToSample);
 
-        //add in elements contributed to parent deletion state by this restaurant
-        int valValue;
-        for (int typeIndex = 0; typeIndex < state.length; typeIndex++) {
-            key = new Integer(state[typeIndex][0]);
-            valValue = 0;
-            for (int table = 1; table < state[typeIndex].length; table++) {
-                valValue += (state[typeIndex][table] - 1);
-            }
-            if ((val = deletionUpdate.get(key)) != null) {
-                val = new Integer(valValue + val.intValue());
-                deletionUpdate.put(key, val);
-            } else {
-                val = new Integer(valValue);
-                deletionUpdate.put(key, val);
-            }
-        }
-
-        //now go up and add in current state of parent deletion state if it exists
-        if (parent.deletionState != null) {
-            for (int typeIndex = 0; typeIndex < parent.deletionState.length; typeIndex++) {
-                key = new Integer(parent.deletionState[typeIndex][0]);
-                if ((val = deletionUpdate.get(key)) != null) {
-                    val = new Integer(parent.deletionState[typeIndex][1] + val.intValue());
-                    deletionUpdate.put(key, val);
-                } else {
-                    val = new Integer(parent.deletionState[typeIndex][1]);
-                    deletionUpdate.put(key, val);
+            ind = 0;
+            for (Integer type : tableConfig.keySet()) {
+                tsa = tableConfig.get(type);
+                if (!(tsa.length == 1 && tsa[0] == 1)) {
+                    for (int table = 0; table < tsa.length; table++) {
+                        for (int customer = 0; customer < tsa[table]; customer++) {
+                            randomType[randomOrder[ind]] = type;
+                            randomTable[randomOrder[ind++]] = table;
+                        }
+                    }
                 }
             }
         }
 
-        //create parent.deletionState by exporting hashMap to int[][]
-        parent.deletionState = new int[deletionUpdate.size()][2];
-        int index = 0;
-        for (Integer type : deletionUpdate.keySet()) {
-            parent.deletionState[index][0] = type.intValue();
-            parent.deletionState[index++][1] = deletionUpdate.get(type).intValue();
-        }
-
-        //actually delete restaurant
-        this.delete(seq);
-    }
-
-    //method to return logProbOfSeq difference that would result in deleting this
-    //restaurant.  Method assumes this is a leaf node
-    public double getLogProbDiffIfDelete(double[] logProbDistInParent, int depth, Discounts discounts) {
-        double logDiscount;
-        if (this.parent != null) {
-            logDiscount = discounts.getLog(depth - parentPath[1] + parentPath[0], depth);
-        } else {
-            logDiscount = discounts.getLog(0);
-        }
-
-        if (this.size() != 0) {
-            throw new RuntimeException("Cannot calculate the difference in log" +
-                    " probability of this string if this is deleted because the" +
-                    " node must be a leaf node");
-        }
-
-        double startLogProb = 0.0;
-        double endLogProb = 0.0;
-
-        int tablesInRest = 0;
-        int custInRest = 0;
-        for (int typeIndex = 0; typeIndex < state.length; typeIndex++) {
-            tablesInRest += state[typeIndex].length - 1;
-            for (int table = 1; table < state[typeIndex].length; table++) {
-                custInRest += state[typeIndex][table];
+        /**
+         * Gets the next customer to be sampled.
+         * @param typeAndTable array to place return type and table
+         * @return 0 if there are return values, -1 if not
+         */
+        public int nextCustomer(int[] typeAndTable){
+            if(index == customersToSample){
+                return -1;
+            } else{
+                typeAndTable[0] = randomType[index];
+                typeAndTable[1] = randomTable[index++];
+                return 0;
             }
         }
 
-        double[] logPredDist = new double[logProbDistInParent.length];
+        /**
+         * Helper method to create a random ordering of n objects.
+         *
+         * @param n number of objects
+         * @return int[] of numbers 0 through n-1 in random order
+         */
+        private int[] sampleWOReplacement(int n){
+            HashSet<Integer> set;
+            int[] randomOrder;
+            int s;
+            double rand,cuSum;
 
-        int custOfType;
-        int tablesOfType;
-        for (int typeIndex = 0; typeIndex < state.length; typeIndex++) {
-            custOfType = 0;
-            tablesOfType = state[typeIndex].length - 1;
-            for (int table = 1; table < state[typeIndex].length; table++) {
-                custOfType += state[typeIndex][table];
+            set = new HashSet<Integer>(n);
+
+            for(int i = 0; i<n;i++){
+                set.add(i);
             }
-            logPredDist[state[typeIndex][0]] = Math.log((custOfType - Math.exp(Math.log(tablesOfType) + logDiscount)) / custInRest + Math.exp(Math.log(tablesInRest) + logDiscount + logProbDistInParent[state[typeIndex][0]]) / custInRest);
 
-            startLogProb += custOfType * logPredDist[state[typeIndex][0]];
-            endLogProb += custOfType * logProbDistInParent[state[typeIndex][0]];
-        }
-
-        if (deletionState != null) {
-            for (int typeIndex = 0; typeIndex < deletionState.length; typeIndex++) {
-                startLogProb += deletionState[typeIndex][1] * logPredDist[state[typeIndex][0]];
-                endLogProb += deletionState[typeIndex][1] * logProbDistInParent[state[typeIndex][0]];
+            randomOrder = new int[n];
+            s = set.size();
+            while(s > 0){
+                rand = SequenceMemoizer.RNG.nextDouble();
+                cuSum = 0.0;
+                for(Integer i:set){
+                    cuSum += 1.0 / (double) s;
+                    if(cuSum > rand){
+                        randomOrder[n-s] = i;
+                        set.remove(i);
+                        break;
+                    }
+                }
+                s--;
+                assert s == set.size();
+                s = set.size();
             }
+            
+            return randomOrder ;
         }
-
-        return (startLogProb - endLogProb);
-    }
-
-    /******************************PRINTING************************************/
-    public void printState() {
-        if (state == null) {
-            return;
-        }
-        System.out.print("[");
-        for (int i = 0; i < state.length; i++) {
-            System.out.print("['" + state[i][0] + "', ");
-            for (int j = 1; j < state[i].length - 1; j++) {
-                System.out.print(state[i][j] + ", ");
-            }
-            System.out.print(state[i][state[i].length - 1] + "]");
-        }
-        System.out.println("]");
-    }
-
-    public void printParentPath() {
-        System.out.println("[" + parentPath[0] + ", " + parentPath[1] + "]");
     }
 }

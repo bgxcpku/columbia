@@ -3,26 +3,41 @@
  * and open the template in the editor.
  */
 
-package edu.columbia.stat.wood.sequencememoizer;
+package edu.columbia.stat.wood.hpyp;
 
 /**
+ * Container object for two objects.
  *
  * @author nicholasbartlett
  */
-public class Pair<E,V> {
-    E e;
-    V v;
+public class Pair<F,S> {
+    private F first;
+    private S second;
 
-    public Pair(E e, V v) {
-        this.e = e;
-        this.v = v;
+    /**
+     * @param first first object
+     * @param second second object
+     */
+    public Pair(F first, S second){
+        this.first = first;
+        this.second = second;
     }
 
-    public E first() {
-        return e;
+    /**
+     * Gets the first object.
+     *
+     * @return first object
+     */
+    public F first(){
+        return first;
     }
 
-    public V second() {
-        return v;
+    /**
+     * Gets the seond object.
+     *
+     * @return second object
+     */
+    public S second(){
+        return second;
     }
 }
