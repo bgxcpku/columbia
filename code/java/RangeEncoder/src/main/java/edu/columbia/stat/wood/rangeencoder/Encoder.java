@@ -26,57 +26,44 @@ public class Encoder {
     private int currentByte = 0;
     private int byteIndex = 0;
 
+    double[] interval;
+
     //stuff I don't really need to actually do the work, only to check results
-    public double logLoss = 0.0;
-    public int bitsEmitted = 0;
     public long minRange = LONG_MAX_VALUE;
 
     public Encoder(PredictiveModel pm, OutputStream out) {
         this.pm = pm;
         this.out = out;
+        interval = new double[2];
     }
 
     public void encode(int observation) throws IOException {
-        assert(0 <= observation && observation <= 256);
-
-        double[] lu = pm.cumulativeDistributionInterval(observation);
-        low += lu[0] * range;
-        range *= (lu[1] - lu[0]);
+        pm.cumulativeDistributionInterval(observation, interval);
+        low += interval[0] * range;
+        range *= (interval[1] - interval[0]);
 
         minRange = range < minRange ? range : minRange;
 
         while ((low ^ (low + range)) < FIRST_BIT_INDICATOR) {
-            bitsEmitted++;
-
-            this.write(low >> 62);
+            write(low >> 62);
 
             range = range << 1 ;
             low = low << 1 & LONG_MAX_VALUE;
         }
-
-        logLoss -= pm.continueSequence(observation) / Math.log(2);
     }
 
     public void emitRange() throws IOException{
-        long rangeCode = low + range/2;
+        long rangeCode;
 
-        long xOrHigh = rangeCode ^ (low + range);
-        long xOrLow = rangeCode ^ low;
+        rangeCode = low + range/2;
 
-        int hLength = Long.toBinaryString(xOrHigh).length();
-        int lLength = Long.toBinaryString(xOrLow).length();
-
-        int lowerIndex = hLength < lLength ? hLength : lLength;
-
-        for(int i = 0; i< (63 - lowerIndex); i++){
-            this.write(rangeCode>>62);
+        for(int i = 0 ; i < 63; i++){
+            write(rangeCode >> 62);
             rangeCode = rangeCode << 1 & LONG_MAX_VALUE;
         }
     }
 
     public void write(long bit) throws IOException {
-        assert (bit == 0 || bit == 1);
-
         if(bit == 1){
             currentByte += 1<<(7-byteIndex);
         }
@@ -95,9 +82,8 @@ public class Encoder {
     }
 
     public void close() throws IOException {
-        this.encode(256);
-        this.emitRange();
-        this.flush();
+        emitRange();
+        flush();
         out.close();
     }
 }

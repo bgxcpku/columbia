@@ -8,7 +8,7 @@ package edu.columbia.stat.wood.rangeencoder;
  *
  * @author nicholasbartlett
  */
-import java.io.File;
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -16,8 +16,8 @@ public class PlumpStream extends InputStream {
 
     public Decoder dec;
 
-    public PlumpStream(File inFile) throws IOException {
-        dec = new Decoder(new FiniteDepthHPYPPredictiveModel(), inFile);
+    public PlumpStream(InputStream is) throws IOException {
+        dec = new Decoder(new SMPredictiveModel(), is);
     }
 
     @Override

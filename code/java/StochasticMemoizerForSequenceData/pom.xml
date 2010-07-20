@@ -4,11 +4,11 @@
         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.columbia.stat.wood</groupId>
-    <artifactId>rangeencoder</artifactId>
+    <artifactId>stochasticmemoizerforsequencedata</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
 
-    <name>Range Encoder</name>
+    <name>Sequence Memoizer</name>
     <description></description>
 
     <repositories>
@@ -26,12 +26,6 @@
             <artifactId>hpyp</artifactId>
             <version>1.0</version>
         </dependency>
-         <dependency>
-            <groupId>edu.columbia.stat.wood</groupId>
-            <artifactId>stochasticmemoizerforsequencedata</artifactId>
-            <version>1.0</version>
-             <type>jar</type>
-         </dependency>
     </dependencies>
 
     <build>
@@ -50,11 +44,6 @@
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
-                    <archive>
-                        <manifest>
-                            <mainClass>edu.columbia.stat.wood.rangeencoder.Deplump</mainClass>
-                        </manifest>
-                    </archive>
                 </configuration>
                 <executions>
                     <execution>

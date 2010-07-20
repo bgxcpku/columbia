@@ -103,7 +103,7 @@ Inference
 \end{alertblock}
 \end{frame}	
 
-\begin{frame}[t]{Example : A Simple PYP Model}
+\begin{frame}[t]{Example : A Simple PYP Model  \cite{Pitman1997}}
 Consider
 \begin{eqnarray*}
 G | d,c, G_0 &\sim& \PY(d,c,G_0) \\
@@ -137,7 +137,7 @@ Representation can be ``compressed'' to counts of ``types.''  Number of types gr
 \end{frame}	
 }
 
-\begin{frame}[t]{Example: A Hierarchical PYP Model}
+\begin{frame}[t]{Example: A Hierarchical PYP Model \cite{teh2006a}}
 	Consider a {\em hierarchical} Pitman-Yor process, such as a smoothed second order Markov model
 	\[
 	\begin{array}{rcll}
@@ -154,7 +154,7 @@ Representation can be ``compressed'' to counts of ``types.''  Number of types gr
 \begin{frame}[t]{Contribution}
 	\begin{block}{Bounded Memory HPYP Inference}
 			\begin{itemize}
-\item   Constant memory requires ``forgetting'' counts.  
+\item   Constant memory requires ``forgetting."  
 \item Sparse Gaussian processes use forgetting strategies to achieve constant time and space  inference \cite{ Lawrence2003, Csat'o2002, Snelson2006}.
 %\item DP inference generally has no such problems in most practical situations.  Hierarchical Dirichlet process inference does in the streaming setting.
 
@@ -164,9 +164,9 @@ Representation can be ``compressed'' to counts of ``types.''  Number of types gr
 	\end{block}
 	\begin{block}{Dependent HPYP}
 \begin{itemize}
-\item 	Data generator may change over time or as a function of some other covariate.  
+\item 	Data generator may change over time or as a function of some other covariate
 \item	Would like single coherent model for such data
-\item	One way of introducing dependence is through forgetting. 
+\item	One way of introducing dependence is through forgetting
 \item	Dependent Dirichlet and Pitman-Yor processes have been defined \cite{MacEachern2000, Srebro2005, Griffin2006, Caron2007, Caron2007a} 
 \end{itemize}
 
@@ -176,7 +176,16 @@ Representation can be ``compressed'' to counts of ``types.''  Number of types gr
 
 \end{frame}
 
-
+\begin{frame}[t]{Outline}
+	\begin{block}{Talk Outline}
+		\begin{itemize}
+			\item Review the generative process for the Pitman-Yor process and its relationship with the Ewen's sampling distribution
+			\item Discuss generative process for the Ewen's sampling distribution and its properties
+			\item Define a generative process for a dependent HPYP
+			\item Experiments
+		\end{itemize}
+	\end{block}
+\end{frame}
 
 %\section{Results and Motivation}
 %\subsection{}
@@ -186,7 +195,8 @@ Representation can be ``compressed'' to counts of ``types.''  Number of types gr
 %\subsection{PYP Prior}
 
 \section{Review}
-\subsection{Pitman-Yor Process (PYP)}
+\subsection{}
+
 
 %\begin{frame}[t]{Definition}
 %	The Pitman-Yor Process (PYP) is a stochastic process defined such that sample paths are distribution functions over some sample space $\mathcal{X}$ with probability one \cite{Pitman1997} .  PYP priors are used in Bayesian models as priors over distributions with power-law properties.
@@ -205,22 +215,27 @@ Representation can be ``compressed'' to counts of ``types.''  Number of types gr
 %	PYP can be hierarchically composed.  One resulting model is the HPYP \cite{teh2006a}.  Another is the sequence memoizer \cite{Wood2009}
 %\end{frame}
 
-\begin{frame}[t]{Drawing $\{ X_i \}_{i =1}^n$}
-	\begin{block}{Process}
+\begin{frame}[t]{Pitman-Yor Process}
+	\begin{block}{Model}
+		\vspace{-.5cm}
+		\begin{eqnarray*}
+			G | d,c, G_0 &\sim& \PY(d,c,G_0) \\
+			x_i | G &\sim& G, \;\; i=1,\ldots,n
+		\end{eqnarray*}
+	\end{block}
+	%
+	\begin{block}{Generative Process}
 		\begin{itemize}
 			\item Draw a partition of the first $n$ natural numbers from the two parameter Ewen's Sampling Distribution ($\ES_n(d,c)$) \cite{Ewens1995}.
-			\vspace{.5cm}
 			\item Assign a value $\psi_t \sim \G_0$ to part $t$ of the partition.
-			\vspace{.5cm}
 			\item Set $X_i = \psi_t$ if $i$ is in the $t^{\rm th}$ part of the partition.
 		\end{itemize}
 	\end{block}
 \end{frame}
 
-\subsection{Ewen's Sampling Distribution}
 
-\begin{frame}[t]{$\ES_n(d,c)$}
-	\begin{block}{Drawing from $\ES_n(d,c)$ (Urn Representation)}
+\begin{frame}[t]{Ewen's Sampling Distribution ($\ES_n(d,c)$)}
+	\begin{block}{Drawing from $\ES_n(d,c)$}
 		\begin{itemize}
 			\item Assign the integer $1$ to part $1$ of the partition.
 			\item {For $i = 2, \ldots, n$, assign integer $i$ to a part drawn from the following distribution: \\
@@ -237,7 +252,7 @@ Representation can be ``compressed'' to counts of ``types.''  Number of types gr
 \end{frame}
 
 \section{Dependent HPYP}
-\subsection{Construction}
+\subsection{}
 
 \begin{frame}[t]{Consistency of $\ES$ Under Deletion}
 	\begin{block}{Property}
@@ -255,7 +270,42 @@ Representation can be ``compressed'' to counts of ``types.''  Number of types gr
 	\end{block}
 \end{frame}
 
-\begin{frame}[t] {Dependent HPYP}
+\begin{frame}[t]{Dependent PYP}
+	\begin{block}{Model}
+		\vspace{-.5cm}
+		\begin{eqnarray*}
+			G^t | d,c, G_0 &\sim& \PY(d,c,G_0) \\
+			x^t_i | G^t &\sim& G, \;\; i=1,\ldots,n^t
+		\end{eqnarray*}
+	\end{block}
+
+	\begin{block}{Generative Process}
+		\begin{itemize}
+			\item For $t = 1$, draw a size  $n^1$ sample as in PYP
+			\item Between time steps, remove objects from the partition
+			\item To generate a sample at time $t$, add $n^t$ objects to the partition following to the sequential generative process of the $\ES(d,c)$
+			\item Assign a random draw from $G_0$ to any new parts.  Sample elements are given values according to the location of the $n^t$ newly placed objects
+			\item This process is an extension of GPU DDP \cite{Caron2007}
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+\begin{frame}[t]{Dependent HPYP}
+	\begin{block}{Vocabulary}
+		It is often convenient to think of this generative process as a Chinese restaurant where each part of the partition is a table and each object a customer sitting at a table
+	\end{block}
+	
+	\begin{block}{HPYP}
+		\begin{itemize}
+			\item The dependent generative process can be extended to the HPYP
+			\item Deletion may only occur in leaf restaurants
+			\item A leaf restaurant is one such that all restaurants in the subtree stemming downward are empty
+		\end{itemize}
+
+	\end{block}
+\end{frame}
+
+\begin{frame}[t] {Depiction of Dependent HPYP}
 	\begin{figure}[t]
 		\begin{center}
 			\includegraphics[height = 7cm]{../../papers/2010_icml/bounded_memory_compression/figure2.pdf}
@@ -263,9 +313,75 @@ Representation can be ``compressed'' to counts of ``types.''  Number of types gr
 	\end{figure}
 \end{frame}
 
+\begin{frame}[t]{Deletion}
+	\begin{block}{Deletion Points}
+		\begin{itemize}
+			\item The number of customers deleted during the deletion step is independent of the consistency result
+			\item The number of customers deleted from a given restaurant can be either deterministic or stochastic
+			\item Only customers in leaf restaurants may be deleted during the deletion step
+		\end{itemize}
+	\end{block}
+	
+	\begin{block}{Constant Space}
+		\begin{itemize}
+			\item A generative procedure which deterministically deletes all customers in a chosen leaf restaurant is well specified.  Since empty restaurants are not represented during inference, such a model could be used to limit the number of instantiated restaurants and allow for constant space representation.
+			\end{itemize}
+	\end{block}
+\end{frame}
+
 \section{Experiments}
+\subsection{}
 
+\begin{frame}[t]{Description}
+	\begin{block}{Compression}
+		\begin{itemize}
+			\item The Sequence Memoizer, an infinite order HPYP,  is an effective predictive model for the task of compression \cite{Gasthaus2010}
+			\item Files are modeled as a sequence of bytes
+			\item The linear space requirement of the SM prohibits it's use on large files
+		\end{itemize}
+	\end{block}
+	
+	\begin{block}{DHPYP for Compression}
+		\begin{itemize}
+			\item We create a dependent SM for the task of compression
+			\item We control the amount of space required by the model by the number of instantiated restaurants
+			\item Inference is performed using  a single particle particle filter, a technique which works well with the SM \cite{Gasthaus2010}
+		\end{itemize}
+	\end{block}
+\end{frame}
 
+\begin{frame}[t]{Constant Space Sequence Memoizer}
+	\begin{figure}[t]
+		\begin{center}
+			\includegraphics[width=10cm]{../../papers/2010_icml/bounded_memory_compression/results_calgary_corpus.pdf}
+		\end{center}
+	\end{figure}
+	
+	\begin{itemize}
+		\item Horizontal axis is memory, measured in restaurants
+		\item Vertical axis is the average negative log loss of the data	
+		\item Calgary corpus (14 files, max size = 769kb)
+		\item Two forgetting schemes and two other constant space modeling approaches
+		\item $256$ character alphabet
+		\item SM requires 1.16 million instantiated restaurants
+	\end{itemize}
+\end{frame}
+
+\section{Discussion}
+\subsection{}
+
+\begin{frame}[t]{Discussion}
+	\begin{block}{Future Work}
+		\begin{itemize}
+			\item Other ways to create dependence in a sequence of HPYPs
+			\item More extensive testing with massive data
+			\item Testing of structure discovery with synthetic data
+			\item Properties of single particle sequential Monte Carlo
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+\comment{
 \begin{frame}[t]{Sequence Memoizer Computational Problems}
 	Current state of the art results for inference in the sequence memoizer model are:
 	\begin{itemize}
@@ -390,19 +506,6 @@ Representation can be ``compressed'' to counts of ``types.''  Number of types gr
 \end{frame}
 
 
-\begin{frame}[t]{Constant Space Sequence Memoizer}
-	\begin{figure}[t]
-		\begin{center}
-			\includegraphics[width=10cm]{../../papers/2010_icml/bounded_memory_compression/results_calgary_corpus.pdf}
-		\end{center}
-	\end{figure}
-	
-	\begin{itemize}
-		\item Calgary corpus
-		\item Different forgetting schemes
-		\item $256$ character alphabet
-	\end{itemize}
-\end{frame}
 \section{Discussion}
 \subsection{}
 \begin{frame}[t]{Discussion}
@@ -421,9 +524,12 @@ Representation can be ``compressed'' to counts of ``types.''  Number of types gr
 	\end{itemize}
 \end{frame}
 
+}
+
 \begin{frame}[t,allowframebreaks]{Bibliograpy}
 	\bibliography{../../papers/uber}
 \end{frame}
+
 
 \end{document}
 
