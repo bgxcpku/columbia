@@ -4,8 +4,8 @@
  */
 package edu.columbia.stat.wood.rangeencoder;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  *
@@ -21,13 +21,28 @@ public class Decoder {
     private long range = LONG_MAX_VALUE;
     private long code;
 
+    private int length;
+    private double[] interval;
+    private int decodedBytes;
+
     private BufferedBitInputStream bbis;
     private PredictiveModel pm;
 
-    public Decoder(PredictiveModel pm, File inFile) throws IOException{
+    public Decoder(PredictiveModel pm, InputStream is) throws IOException{
+        int b;
+
+        length = 0;
+        length += is.read() << 24;
+        length += is.read() << 16;
+        length += is.read() << 8;
+        length += is.read();
+
+        decodedBytes = 0;
+
         this.pm = pm;
-        this.bbis = new BufferedBitInputStream(inFile);
+        this.bbis = new BufferedBitInputStream(is);
         this.initializeCode();
+        interval = new double[2];
     }
 
     private void initializeCode() throws IOException{
@@ -42,21 +57,19 @@ public class Decoder {
     }
 
     public int read() throws IOException{
-        double pointOnCDF = (double) (code - low)/range;
-
-        int decodedByte = pm.inverseCDF(pointOnCDF);
-
-        //if decoded byte is last byte indication
-        if(decodedByte == 256){
+        double pointOnCDF;
+        int decodedByte, b;
+        
+        pointOnCDF = (double) (code - low)/range;
+        decodedByte = pm.inverseCDF(pointOnCDF, interval);
+        
+        if(decodedBytes++ >= length){
             return -1;
         }
 
-        //update predictive model as we did in the encoder
-        double[] lu = pm.cumulativeDistributionInterval(decodedByte);
-        low += lu[0] * range;
-        range *= (lu[1] - lu[0]);
+        low += interval[0] * range;
+        range *= (interval[1] - interval[0]);
 
-        int b;
         while ((low ^ (low + range)) < FIRST_BIT_INDICATOR) {
             range = range << 1 ;
             low = low << 1 & LONG_MAX_VALUE;
@@ -67,8 +80,6 @@ public class Decoder {
                 code++;
             }
         }
-
-        pm.continueSequence(decodedByte);
 
         return decodedByte;
     }

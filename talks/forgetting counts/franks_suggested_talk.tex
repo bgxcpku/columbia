@@ -1,0 +1,536 @@
+% Copyright 2010 by Nicholas Bartlett
+
+\documentclass{beamer}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage[numbers]{natbib}
+
+% Setup appearance:
+
+\usetheme{Darmstadt}
+%\usetheme{Copenhagen}
+\usefonttheme[onlylarge]{structurebold}
+\setbeamerfont*{frametitle}{size=\normalsize,series=\bfseries}
+\setbeamertemplate{navigation symbols}{}
+
+% Standard packages
+\usepackage[english]{babel}
+%\usepackage[latin1]{inputenc}
+%\usepackage{times}
+%\usepackage[T1]{fontenc}
+%\usepackage{nnfootnote}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+%\newcommand{\argmax}{\operatornamewithlimits{argmax}}
+\def\newblock{\hskip .11em plus .33em minus .07em}
+% Setup TikZ
+
+%\usepackage{tikz}
+%\usetikzlibrary{arrows}
+%\tikzstyle{block}=[draw opacity=0.7,line width=1.4cm]
+
+\bibliographystyle{plainnat}
+
+% Author, Title, etc.
+
+\title[Forgetting Counts: A Constant Memory Approach to Online Prediction of a Discrete Sequence] 
+{
+	Forgetting Counts
+}
+
+\author[Bartlett]
+{
+  Nicholas~Bartlett \\ {\tiny joint work with David~Pfau and Frank~Wood } %\inst{1}
+}
+
+\institute[Columbia University]
+{
+  %\inst{1}%
+  Columbia University
+}
+
+%\date[Apr 17, 2010]
+%{Apr 17, 2010}
+
+%\def\blfootnote{\xdef\@thefnmark{}\@footnotetext}
+
+% The main document
+\input{definitions}
+
+\begin{document}
+
+\begin{frame}
+	\titlepage
+\end{frame}
+
+\section{Introduction}
+\subsection{}
+
+\begin{frame}[t]{Bayesian Nonparametric Modeling}
+\begin{block}{General Setup}
+Data 
+\[\mathcal{X} = \{x_1, x_2, \ldots, x_n\}\]
+Model (e.g.~density estimation)
+\[x_i \sim G  \mbox{ and } \mathsf{P}(G)\]
+Inference
+\[\mathsf{P}(X = x | \mathcal{X}) = \int \mathsf{P}(X=x| G)d\mathsf{P}(G | \mathcal{X})\]
+%Estimator (frequentist interpretation)
+%\[\hat G = \argmax_{G} \mathsf{P}(G | \mathcal{X}) \mbox{  or  }  \hat G = \int F d\mathsf{P}(G | \mathcal{X}) \]
+
+\end{block}
+\end{frame}	
+
+
+
+\begin{frame}[t]{Bayesian Nonparametric Modeling}
+\begin{exampleblock}{Features}
+\begin{itemize}
+\item Infinite model``complexity'' enables complex inference.  
+\item As $n$ grows, posterior concentrates on empirical distribution.
+\end{itemize}
+\end{exampleblock}
+\begin{block}{Considerations}
+\begin{itemize}
+\item Inference always function of {\em all data}.
+\item In high dimensions, prior on $G$ plays a key role.
+\end{itemize}
+\end{block}
+\begin{alertblock}{Drawbacks}
+\begin{itemize}
+\item Memory and computational complexity grow as a function $n$.
+%\item Frequentist analyses of Bayesian nonparametric models are incomplete, there are risks \citep{Diaconis1986}, but there is hope \citep{Ghosal2010}.
+\end{itemize}
+\end{alertblock}
+\end{frame}	
+
+\begin{frame}[t]{Example : A Simple PYP Model  \cite{Pitman1997}}
+Consider
+\begin{eqnarray*}
+G | d,c, G_0 &\sim& \PY(d,c,G_0) \\
+x_i | G &\sim& G, \;\; i=1,\ldots,n
+\end{eqnarray*}
+where prediction is performed using
+\[P(x_n | x_1,\ldots,x_{n-1}) = \int P(x_n | G)dP(G | x_1, \ldots, x_{n-1})\]
+\\
+Inferring the posterior distribution requires maintaining counts of all observed values.
+\end{frame}
+
+\comment{
+\begin{frame}[t]{Memory complexity of DP inference}
+\begin{block}{Polya Urn representation \citep{Blackwell1973}}
+\begin{eqnarray*}
+x_n | x_1,\ldots, x_{n-1} &\sim& \frac{1}{n-1+c}\sum_{i=1}^{n-1}\delta_{x_i} + \frac{c}{n-1+c}G_0 \\
+%G | x_1, \ldots, x_n &\sim& \DP\left(n+c, \frac{1}{n+c}\sum_{i=1}^n \delta_{x_i} + \frac{c}{n+c}G_0\right)
+\end{eqnarray*}
+All data retained.
+
+%Note: 
+%begin{itemize}
+%\item Neither posterior predictive nor posterior distributions depend on the order of the $x_i$'s ($x_i$'s ``exchangeable'')
+%\item Many $x_i$'s will share the same value, call a shared value $\phi_k$
+%\item ``Observing'' $\phi_k$ once increases probability of observing it again and this is reinforced
+%\end{itemize}
+\end{block}
+\begin{block}{Chinese restaurant process (CRP) \cite{Pitman}}
+Representation can be ``compressed'' to counts of ``types.''  Number of types grows as function of length of data.
+\end{block}
+\end{frame}	
+}
+
+\begin{frame}[t]{Example: A Hierarchical PYP Model \cite{teh2006a}}
+	Consider a {\em hierarchical} Pitman-Yor process, such as a smoothed second order Markov model
+	\[
+	\begin{array}{rcll}
+		G_{[]} | d_0,c_0,\mathcal{U} &\sim& \PY(d_0, c_0, \mathcal{U})\\
+		G_{[x]} | d_1, c_1, G_{[]} &\sim& \PY(d_1, c_1, G_{[]}) & \forall x \in \Sigma \\
+		G_{[x,y]} | d_2, c_2, G_{[y]} &\sim& \PY(d_2, c_2, G_{[y]} )& \forall x, y \in \Sigma\\
+		z_n | G_{[z_{n-2}, z_{n-1}]} &\sim& G_{[z_{n-2}, z_{n-1}]} 
+	\end{array}
+	\]
+
+	Inference in this model requires maintaining counts of all observed values in all observed contexts of length two.  This quantity grows $O(n)$ which becomes impractical for large $n$ (streams, life-long learning, etc.).  
+\end{frame}
+
+\begin{frame}[t]{Contribution}
+	\begin{block}{Bounded Memory HPYP Inference}
+			\begin{itemize}
+\item   Constant memory requires ``forgetting."  
+\item Sparse Gaussian processes use forgetting strategies to achieve constant time and space  inference \cite{ Lawrence2003, Csat'o2002, Snelson2006}.
+%\item DP inference generally has no such problems in most practical situations.  Hierarchical Dirichlet process inference does in the streaming setting.
+
+\end{itemize}
+
+			
+	\end{block}
+	\begin{block}{Dependent HPYP}
+\begin{itemize}
+\item 	Data generator may change over time or as a function of some other covariate
+\item	Would like single coherent model for such data
+\item	One way of introducing dependence is through forgetting
+\item	Dependent Dirichlet and Pitman-Yor processes have been defined \cite{MacEachern2000, Srebro2005, Griffin2006, Caron2007, Caron2007a} 
+\end{itemize}
+
+	\end{block}
+
+	
+
+\end{frame}
+
+\begin{frame}[t]{Outline}
+	\begin{block}{Talk Outline}
+		\begin{itemize}
+			\item Review the generative process for the Pitman-Yor process and its relationship with the Ewen's sampling distribution
+			\item Discuss generative process for the Ewen's sampling distribution and its properties
+			\item Define a generative process for a dependent HPYP
+			\item Experiments
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+%\section{Results and Motivation}
+%\subsection{}
+
+
+%\section{Pitman-Yor Process (PYP)}
+%\subsection{PYP Prior}
+
+\section{Review}
+\subsection{}
+
+
+%\begin{frame}[t]{Definition}
+%	The Pitman-Yor Process (PYP) is a stochastic process defined such that sample paths are distribution functions over some sample space $\mathcal{X}$ with probability one \cite{Pitman1997} .  PYP priors are used in Bayesian models as priors over distributions with power-law properties.
+	
+%	\vspace{.65cm}
+
+%	\begin{block}{Notation}
+%		\[
+%		\begin{array}{rcll}
+%			\G | d, c, \G_0 &\sim& \PY(d,c,\G_0) &\\
+%			X_i | \G &\sim& \G \hspace{1cm} &\forall i
+%		\end{array}
+%		\]
+%	\end{block}
+	
+%	PYP can be hierarchically composed.  One resulting model is the HPYP \cite{teh2006a}.  Another is the sequence memoizer \cite{Wood2009}
+%\end{frame}
+
+\begin{frame}[t]{Pitman-Yor Process}
+	\begin{block}{Model}
+		\vspace{-.5cm}
+		\begin{eqnarray*}
+			G | d,c, G_0 &\sim& \PY(d,c,G_0) \\
+			x_i | G &\sim& G, \;\; i=1,\ldots,n
+		\end{eqnarray*}
+	\end{block}
+	%
+	\begin{block}{Generative Process}
+		\begin{itemize}
+			\item Draw a partition of the first $n$ natural numbers from the two parameter Ewen's Sampling Distribution ($\ES_n(d,c)$) \cite{Ewens1995}.
+			\item Assign a value $\psi_t \sim \G_0$ to part $t$ of the partition.
+			\item Set $X_i = \psi_t$ if $i$ is in the $t^{\rm th}$ part of the partition.
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+
+\begin{frame}[t]{Ewen's Sampling Distribution ($\ES_n(d,c)$)}
+	\begin{block}{Drawing from $\ES_n(d,c)$}
+		\begin{itemize}
+			\item Assign the integer $1$ to part $1$ of the partition.
+			\item {For $i = 2, \ldots, n$, assign integer $i$ to a part drawn from the following distribution: \\
+				\vspace{-.65cm}
+				\begin{eqnarray*}
+					p({\rm part~}t \leq k_{i-1}  | {\rm previous~assignments}) &=& \frac{n^{i-1}_t - d}{i-1 + c}\\
+					p({\rm  part~} k_{i-1} + 1 | {\rm previous~ assignments}) &=& \frac{k^{i-1}d + c}{i-1 + c}\\
+				\end{eqnarray*}
+				\noindent where $k^{i-1}$ is the number of partitions to which the first $i-1$ integers have been assigned and $n^{i-1}_t$ is the number of integers $< i$ assigned to part $t$.
+			}
+			\item{Resulting partition follows $\ES_n(d,c)$  \cite{Pitman1995}}.
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+\section{Dependent HPYP}
+\subsection{}
+
+\begin{frame}[t]{Consistency of $\ES$ Under Deletion}
+	\begin{block}{Property}
+		If an integer is removed at random from a partition following $\ES_n(d,c)$ the resulting partition of $n-1$ integers follows $\ES_{n-1}(d,c)$  \cite{Pitman1995}.
+	\end{block}
+	
+	\begin{block}{Application}
+		This consistency property can be exploited in a generative procedure defined using the urn representation to draw samples from a sequence of dependent distributions $\{ \G^t \}_{t = 1}^T$ such that 
+		\[
+		\begin{array}{rcll}
+			\G^t | d,c,\G_0 &\sim& \PY(d,c,\G_0)& t = 1, \ldots, T\\
+			X_i^t | \G^t &\sim& \G^t& i = 1, \ldots, N_t, t = 1, \ldots, T
+		\end{array}
+		\]
+	\end{block}
+\end{frame}
+
+\begin{frame}[t]{Dependent PYP}
+	\begin{block}{Model}
+		\vspace{-.5cm}
+		\begin{eqnarray*}
+			G^t | d,c, G_0 &\sim& \PY(d,c,G_0) \\
+			x^t_i | G^t &\sim& G, \;\; i=1,\ldots,n^t
+		\end{eqnarray*}
+	\end{block}
+
+	\begin{block}{Generative Process}
+		\begin{itemize}
+			\item For $t = 1$, draw a size  $n^1$ sample as in PYP
+			\item Between time steps, remove objects from the partition
+			\item To generate a sample at time $t$, add $n^t$ objects to the partition following to the sequential generative process of the $\ES(d,c)$
+			\item Assign a random draw from $G_0$ to any new parts.  Sample elements are given values according to the location of the $n^t$ newly placed objects
+			\item This process is an extension of GPU DDP \cite{Caron2007}
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+\begin{frame}[t]{Dependent HPYP}
+	\begin{block}{Vocabulary}
+		It is often convenient to think of this generative process as a Chinese restaurant where each part of the partition is a table and each object a customer sitting at a table
+	\end{block}
+	
+	\begin{block}{HPYP}
+		\begin{itemize}
+			\item The dependent generative process can be extended to the HPYP
+			\item Deletion may only occur in leaf restaurants
+			\item A leaf restaurant is one such that all restaurants in the subtree stemming downward are empty
+		\end{itemize}
+
+	\end{block}
+\end{frame}
+
+\begin{frame}[t] {Depiction of Dependent HPYP}
+	\begin{figure}[t]
+		\begin{center}
+			\includegraphics[height = 7cm]{../../papers/2010_icml/bounded_memory_compression/figure2.pdf}
+		\end{center}
+	\end{figure}
+\end{frame}
+
+\begin{frame}[t]{Deletion}
+	\begin{block}{Deletion Points}
+		\begin{itemize}
+			\item The number of customers deleted during the deletion step is independent of the consistency result
+			\item The number of customers deleted from a given restaurant can be either deterministic or stochastic
+			\item Only customers in leaf restaurants may be deleted during the deletion step
+		\end{itemize}
+	\end{block}
+	
+	\begin{block}{Constant Space}
+		\begin{itemize}
+			\item A generative procedure which deterministically deletes all customers in a chosen leaf restaurant is well specified.  Since empty restaurants are not represented during inference, such a model could be used to limit the number of instantiated restaurants and allow for constant space representation.
+			\end{itemize}
+	\end{block}
+\end{frame}
+
+\section{Experiments}
+\subsection{}
+
+\begin{frame}[t]{Description}
+	\begin{block}{Compression}
+		\begin{itemize}
+			\item The Sequence Memoizer, an infinite order HPYP,  is an effective predictive model for the task of compression \cite{Gasthaus2010}
+			\item Files are modeled as a sequence of bytes
+			\item The linear space requirement of the SM prohibits it's use on large files
+		\end{itemize}
+	\end{block}
+	
+	\begin{block}{DHPYP for Compression}
+		\begin{itemize}
+			\item We create a dependent SM for the task of compression
+			\item We control the amount of space required by the model by the number of instantiated restaurants
+			\item Inference is performed using  a single particle particle filter, a technique which works well with the SM \cite{Gasthaus2010}
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+\begin{frame}[t]{Constant Space Sequence Memoizer}
+	\begin{figure}[t]
+		\begin{center}
+			\includegraphics[width=10cm]{../../papers/2010_icml/bounded_memory_compression/results_calgary_corpus.pdf}
+		\end{center}
+	\end{figure}
+	
+	\begin{itemize}
+		\item Horizontal axis is memory, measured in restaurants
+		\item Vertical axis is the average negative log loss of the data	
+		\item Calgary corpus (14 files, max size = 769kb)
+		\item Two forgetting schemes and two other constant space modeling approaches
+		\item $256$ character alphabet
+		\item SM requires 1.16 million instantiated restaurants
+	\end{itemize}
+\end{frame}
+
+\section{Discussion}
+\subsection{}
+
+\begin{frame}[t]{Discussion}
+	\begin{block}{Future Work}
+		\begin{itemize}
+			\item Other ways to create dependence in a sequence of HPYPs
+			\item More extensive testing with massive data
+			\item Testing of structure discovery with synthetic data
+			\item Properties of single particle sequential Monte Carlo
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+\comment{
+\begin{frame}[t]{Sequence Memoizer Computational Problems}
+	Current state of the art results for inference in the sequence memoizer model are:
+	\begin{itemize}
+		\item Number of represented nodes grows as $\mathcal{O}(n)$ \cite{Wood2009}.  
+		\begin{itemize}
+			\item Since the model can be represented in space proportional to the number of represented nodes this corresponds to a linear complexity in space.
+		\end{itemize}
+		
+		\item Prediction time grows as $\mathcal{O}(n)$ (empirically more like $\mathcal{O}(k)$ for non-adversarial data) \cite{Gasthaus2010}.
+		\item Estimation time grows as $\mathcal{O}(n^2)$ (empirically more like $\mathcal{O}(n)$ for non-adversarial data) \cite{Gasthaus2010}.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[t]{Example Prefix Tree: $patat$}
+	\begin{center}
+		\includegraphics[width = 10cm]{../../papers/2010_icml/bounded_memory_compression/prefix_tree.pdf}
+	\end{center}
+\end{frame}
+
+\begin{frame}[t]{Forget Some Data}
+	Imagine that in the example prefix tree for $patat$, we ``forget" the observation $t$ in the context $pa$.  In this case, the node labeled $\G_{pa}$ no longer has any observations associated with it and will not need to be represented in the tree.
+	
+	\vspace{-.5cm}
+	
+	\begin{center}
+		\includegraphics[height = 6cm]{../../papers/2010_icml/bounded_memory_compression/prefix_tree.pdf}
+	\end{center}
+\end{frame}
+
+\begin{frame}[t]{Intuition}
+	When could we ``forget" data in a Bayesian inference procedure?
+	\begin{itemize}
+		\item{If all the information from the observation $t$ in the context $pa$ regarding $\G_a$ is retained.}
+		\item{$\G_{pa}$ before forgetting is assumed independent of $\G_{pa}$ after the forgetting.} 
+	\end{itemize}
+	
+	\vspace{-.6cm}
+	
+	\begin{center}
+		\includegraphics[height = 5.5cm]{../../papers/2010_icml/bounded_memory_compression/prefix_tree.pdf}
+	\end{center}	
+\end{frame}
+
+
+\begin{frame}[t]{Task}
+	\begin{block}{Prediction}
+		Given a sequence of discrete observations $X_1, \ldots, X_n$, predict the next observation $X_{n+1}$.
+	\end{block}
+	
+	\begin{block}{Requirements}
+		\begin{itemize}
+			\item{Linear time estimation in the length of the sequence}
+			\item{Constant time prediction}
+			\item{Constant space memory complexity}
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+
+\begin{frame}[t]{Motivation: Streams}
+	\begin{block}{Byte Stream}
+		\[
+		\begin{array}{l}
+			01001001 , 01101110 , 00100000 , 01110100,\\
+			01101000 , 01110010 , 01100101 , 01100101,\\
+			00100000 , 01100100 , 01100001 , 01111001,\\
+			01110010 , 01100001 , 01110011 , 01101000\ldots
+		\end{array}
+		\]
+	\end{block}
+	
+	\begin{block}{Word Stream}
+		the, rabbit, hole, went, straight, on, like, a, tunnel, for, some\\
+		way, and, then, dipped, suddenly, down, so, suddenly, that\\
+		alice, had, not, a, moment, to, think, about, stopping, herself\\
+		before, she, found, herself, falling, down, a, very, deep, well
+	\end{block}
+\end{frame}
+
+
+
+\begin{frame}[t]{Example Applications}
+	\begin{itemize}
+		\item{Natural Language}
+		\begin{itemize}
+			\item Words, i.e.~the united \_
+			\item Characters, i.e.~un\_
+			\item Parts of speech, i.e.~NNV\_
+		\end{itemize}
+
+		\vspace{.75cm}		
+		
+		\item{Compression}
+		\begin{itemize}
+			\item  Bits i.e.~0101000011110001\_
+			\item  Bytes i.e.~6A7B4ED22100D\_
+		\end{itemize}
+		
+		\item \ldots
+	\end{itemize}
+\end{frame}
+
+
+\subsection{Constrained Memory}
+
+
+
+\begin{frame}[t]{Constant Space Sequence Memoizer}
+	\begin{figure}[t]
+		\begin{center}
+			\includegraphics[width=10cm]{../../papers/2010_icml/bounded_memory_compression/results_calgary_corpus.pdf}
+		\end{center}
+	\end{figure}
+	
+	\begin{itemize}
+		\item Calgary corpus
+		\item Different forgetting schemes
+		\item $256$ character alphabet
+	\end{itemize}
+	
+	With random forgetting and 2 million instantiated nodes, we attain a compression rate of {\bf 1.49} bits per byte on the first 50 million bytes of the NYT Corpus.  The sequence memoizer can only process 1,488,233 bytes before needing to instantiate more than 2 million nodes, on the which the sequence memoizer attains a {\bf 1.72} bits per byte compression rate.
+\end{frame}
+
+
+\section{Discussion}
+\subsection{}
+\begin{frame}[t]{Discussion}
+	\begin{itemize}
+		\item{The number of instantiated nodes can be limited using the deletion scheme developed for dependent HPYPÕs. Memory savings can be achieved by deleting all the elements in a leaf node.}
+		\item{Inference performed with forgetting estimates a dynamic stationary generative process.  Marginally the process is the same as the sequence memoizer model.}
+		\item{Our deletion process requires us to assume the independence of a large number of distributions. While this may seem troubling, a key insight is that the entire set of distributions for which we must make the independence assumption are dependent on an existing node in the tree. Much of the information will be retained in the tree by the remaining node.}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[t]{Thoughts}
+	\begin{itemize}
+		\item{Single particle particle filter}
+		\item{Parametric model vs.~nonparametric model constrained to be constant space}
+		\item{The resulting estimator may be inconsistent.  }
+	\end{itemize}
+\end{frame}
+
+}
+
+\begin{frame}[t,allowframebreaks]{Bibliograpy}
+	\bibliography{../../papers/uber}
+\end{frame}
+
+
+\end{document}
+
+
