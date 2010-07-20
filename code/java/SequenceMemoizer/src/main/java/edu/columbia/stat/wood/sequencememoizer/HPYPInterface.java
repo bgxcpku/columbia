@@ -1,4 +1,4 @@
-package edu.columbia.stat.wood.hpyp;
+package edu.columbia.stat.wood.sequencememoizer;
 
 
 /**

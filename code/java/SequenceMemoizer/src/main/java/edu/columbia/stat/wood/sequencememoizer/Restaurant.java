@@ -2,10 +2,8 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.columbia.stat.wood.stochasticmemoizerforsequencedata;
+package edu.columbia.stat.wood.sequencememoizer;
 
-import edu.columbia.stat.wood.hpyp.MutableDouble;
-import edu.columbia.stat.wood.hpyp.MutableInteger;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.TreeMap;
@@ -26,11 +24,11 @@ public class Restaurant extends TreeMap<Integer, Restaurant> {
     public static int count = 0;
 
     /**
-     * A specialized node object for the tree used to represent the a
-     * hierarchical Pitman-Yor process model (specifically the sequence memoizer)
-     *
-     * @param parent parent restaurant in tree
-     * @param parentPath index into original sequence identifying edge label
+     * 
+     * @param parent
+     * @param edgeStart
+     * @param edgeLength
+     * @param discounts
      */
     public Restaurant(Restaurant parent, int edgeStart, int edgeLength, Discounts discounts) {
         this.parent = parent;

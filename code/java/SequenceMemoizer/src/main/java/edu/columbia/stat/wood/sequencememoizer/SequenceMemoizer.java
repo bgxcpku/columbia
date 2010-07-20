@@ -2,14 +2,8 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.columbia.stat.wood.stochasticmemoizerforsequencedata;
+package edu.columbia.stat.wood.sequencememoizer;
 
-import edu.columbia.stat.wood.hpyp.DiscreteBaseDistribution;
-import edu.columbia.stat.wood.hpyp.Sequence;
-import edu.columbia.stat.wood.hpyp.HPYPAbstract;
-import edu.columbia.stat.wood.hpyp.MutableDouble;
-import edu.columbia.stat.wood.hpyp.MutableInteger;
-import edu.columbia.stat.wood.hpyp.Pair;
 import java.util.Random;
 
 /**

@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package edu.columbia.stat.wood.stochasticmemoizerforsequencedata;
+package edu.columbia.stat.wood.sequencememoizer;
 
 import java.io.BufferedInputStream;
 import java.io.File;

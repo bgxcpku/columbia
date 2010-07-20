@@ -2,11 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.columbia.stat.wood.stochasticmemoizerforsequencedata;
-
-import edu.columbia.stat.wood.hpyp.DiscreteBaseDistribution;
-import edu.columbia.stat.wood.hpyp.ParametersAbstract;
-import edu.columbia.stat.wood.hpyp.UniformDiscreteBaseDistribution;
+package edu.columbia.stat.wood.sequencememoizer;
 
 /**
  * A container object for the parameters of a sequence memoizer. For depths >= discounts.length, the discount is
