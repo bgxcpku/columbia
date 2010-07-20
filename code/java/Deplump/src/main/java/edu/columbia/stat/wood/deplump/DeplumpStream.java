@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package edu.columbia.stat.wood.rangeencoder;
+package edu.columbia.stat.wood.deplump;
 
 import java.io.IOException;
 import java.io.OutputStream;

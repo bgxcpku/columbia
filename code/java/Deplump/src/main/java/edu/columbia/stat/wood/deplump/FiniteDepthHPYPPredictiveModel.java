@@ -1,4 +1,4 @@
-package edu.columbia.stat.wood.rangeencoder;
+package edu.columbia.stat.wood.deplump;
 
 /*
  * To change this template, choose Tools | Templates

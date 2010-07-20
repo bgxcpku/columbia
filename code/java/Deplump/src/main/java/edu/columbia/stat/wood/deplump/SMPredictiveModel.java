@@ -2,18 +2,18 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.columbia.stat.wood.rangeencoder;
+package edu.columbia.stat.wood.deplump;
 
-import edu.columbia.stat.wood.hpyp.MutableInteger;
-import edu.columbia.stat.wood.hpyp.Pair;
-import edu.columbia.stat.wood.stochasticmemoizerforsequencedata.SMParameters;
-import edu.columbia.stat.wood.stochasticmemoizerforsequencedata.SequenceMemoizer;
+import edu.columbia.stat.wood.sequencememoizer.MutableInteger;
+import edu.columbia.stat.wood.sequencememoizer.Pair;
+import edu.columbia.stat.wood.sequencememoizer.SMParameters;
+import edu.columbia.stat.wood.sequencememoizer.SamplingSequenceMemoizer;
 
 /**
  *
  * @author nicholasbartlett
  */
-public class SMPredictiveModel extends SequenceMemoizer implements PredictiveModel {
+public class SMPredictiveModel extends SamplingSequenceMemoizer implements PredictiveModel {
 
     public SMPredictiveModel(){
         super(new SMParameters(256, -1, 0));
