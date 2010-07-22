@@ -34,7 +34,6 @@ public class Main {
         //f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/nyt/lmdata-nyt.1-10000");
         //f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/wikipedia/enwik8");
         //f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/calgary_corpus/geo");
-        
 
         double logLik = 0.0;
 

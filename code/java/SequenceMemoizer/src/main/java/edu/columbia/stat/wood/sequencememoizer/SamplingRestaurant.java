@@ -22,6 +22,7 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
     private int edgeStart, edgeLength;
 
     public static int count = 0;
+    private static double MIN_SYMBOL_PROB = 5.01 / (double) (Integer.MAX_VALUE);
 
     /**
      * 
@@ -486,7 +487,7 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
         SamplingRestaurant child, newChild;
         int overlap, el, es;
         boolean leafNode, seat;
-        double cuSum;
+        double cuSum, eofAdjustment;
 
         seat = false;
 
@@ -499,9 +500,11 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
         if (leafNode) {
             seat = true;
 
+            eofAdjustment = 1.0 + MIN_SYMBOL_PROB * (double) pArray.length ;
             cuSum = 0.0;
             for(int t = 0; t < pArray.length; t++){
-                cuSum += pArray[t];
+
+                cuSum += (pArray[t] + MIN_SYMBOL_PROB) / eofAdjustment;
                 if(cuSum > pointOnCdf){
                     type.set(t);
                     break;
