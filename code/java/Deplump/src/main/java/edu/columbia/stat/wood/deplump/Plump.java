@@ -12,16 +12,30 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
+ * Actually decompresses and deplumped file.
  *
  * @author nicholasbartlett
  */
 public class Plump {
 
+    /**
+     * Decompresses a deplumped file.
+     *
+     * @param args single deplumped file with full path
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
     public static void main(String[] args) throws FileNotFoundException, IOException {
         Plump.Plump(args[0]);
     }
 
 
+    /**
+     * Decompresses a deplumped file.
+     * @param file deplumped file with full path
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
     public static void Plump(String file) throws FileNotFoundException, IOException {
 
         PlumpStream ps = null;

@@ -8,84 +8,119 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- *
+ * Class which implements range decoder.
  * @author nicholasbartlett
  */
-
 public class Decoder {
 
-    private static long FIRST_BIT_INDICATOR = (long) 1 << 62;
-    private static long LONG_MAX_VALUE = Long.MAX_VALUE;
-
+    private long first_bit_indicator = (long) 1 << 62;
+    private long long_max_value = Long.MAX_VALUE;
+    private long range_min_value = Integer.MAX_VALUE;
     private long low = 0;
-    private long range = LONG_MAX_VALUE;
+    private long range = long_max_value;
     private long code;
-
-    private int length;
     private double[] interval;
-    private int decodedBytes;
-
     private BufferedBitInputStream bbis;
     private PredictiveModel pm;
 
-    public Decoder(PredictiveModel pm, InputStream is) throws IOException{
-        int b;
-
-        length = 0;
-        length += is.read() << 24;
-        length += is.read() << 16;
-        length += is.read() << 8;
-        length += is.read();
-
-        decodedBytes = 0;
-
+    /**
+     * Initializes decoder with specified PredictiveModel and unerlying InputStream.
+     *
+     * @param pm PredictiveModel used for copmressing
+     * @param is underlying InputStream
+     * @throws IOException
+     */
+    public Decoder(PredictiveModel pm, InputStream is) throws IOException {
         this.pm = pm;
         this.bbis = new BufferedBitInputStream(is);
         this.initializeCode();
         interval = new double[2];
     }
 
-    private void initializeCode() throws IOException{
+    private void initializeCode() throws IOException {
         code = 0;
         int bit;
-        for(int i = 62;i>=0; i--){
+        for (int i = 62; i >= 0; i--) {
             bit = bbis.read();
-            if(bit == 1){
-                code += (long) 1<<i;
+            if (bit == 1) {
+                code += (long) 1 << i;
             }
         }
     }
 
-    public int read() throws IOException{
+    /**
+     * Decodes the next byte and returns as int.  Returns -1 if end of stream code is decoded.
+     * 
+     * @return next byte or -1 if end of stream is reached
+     * @throws IOException
+     */
+    public int read() throws IOException {
         double pointOnCDF;
         int decodedByte, b;
-        
-        pointOnCDF = (double) (code - low)/range;
-        decodedByte = pm.inverseCDF(pointOnCDF, interval);
-        
-        if(decodedBytes++ >= length){
-            return -1;
-        }
 
-        low += interval[0] * range;
-        range *= (interval[1] - interval[0]);
+            pointOnCDF = (double) (code - low) / (double) range;
+            decodedByte = pm.inverseCDF(pointOnCDF, interval);
 
-        while ((low ^ (low + range)) < FIRST_BIT_INDICATOR) {
-            range = range << 1 ;
-            low = low << 1 & LONG_MAX_VALUE;
-            code = code<<1 & LONG_MAX_VALUE;
+            if (decodedByte == 256) {
+                return -1;
+            }
+
+            low += interval[0] * range;
+            range *= (interval[1] - interval[0]);
+
+            while ((low ^ (low + range)) < first_bit_indicator) {
+                range = range << 1;
+                low = low << 1 & long_max_value;
+                code = code << 1 & long_max_value;
+
+                b = bbis.read();
+                if (b == 1) {
+                    code++;
+                }
+            }
+
+            if (range < range_min_value) {
+                emitRange();
+            }
+
+            return decodedByte;
+        
+    }
+
+    private void emitRange() throws IOException {
+        int b;
+
+        while (range < first_bit_indicator) {
+            range = range << 1 & long_max_value;
+            low = low << 1 & long_max_value;
 
             b = bbis.read();
-            if(b == 1){
+            if (b == 1) {
                 code++;
             }
         }
 
-        return decodedByte;
+        b = bbis.read();
+        if (b == 1) {
+            code++;
+        }
+
+        b = bbis.read();
+        if (b == 1) {
+            code++;
+        }
+
+        low = 0;
+        range = long_max_value;
     }
 
-    public void close() throws IOException{
-        if(bbis != null){
+    /**
+     * Closes the buffered bit input stream used by this decoder.
+     * 
+     * @throws IOException
+     */
+    public void close() throws IOException {
+        if (bbis != null) {
             bbis.close();
         }
     }

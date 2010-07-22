@@ -21,14 +21,9 @@
     </repositories>
 
     <dependencies>
-        <dependency>
-            <groupId>edu.columbia.stat.wood</groupId>
-            <artifactId>hpyp</artifactId>
-            <version>1.0</version>
-        </dependency>
          <dependency>
             <groupId>edu.columbia.stat.wood</groupId>
-            <artifactId>stochasticmemoizerforsequencedata</artifactId>
+            <artifactId>sequencememoizer</artifactId>
             <version>1.0</version>
              <type>jar</type>
          </dependency>

@@ -18,10 +18,25 @@ import java.io.IOException;
  */
 public class Deplump {
 
+    /**
+     * Deplumps a single file.
+     *
+     * @param args single file with full path
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
+
     public static void main(String[] args) throws FileNotFoundException, IOException {
         Deplump.Deplump(args[0]);
     }
 
+    /**
+     * Deplumps a single file.
+     *
+     * @param filename full path of file
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
     public static void Deplump(String filename) throws FileNotFoundException, IOException {
 
         BufferedInputStream bis = null;
@@ -30,7 +45,7 @@ public class Deplump {
 
         try {
             bis = new BufferedInputStream(new FileInputStream(filename));
-            dps = new DeplumpStream(new BufferedOutputStream(new FileOutputStream(filename + ".deplump")), (int) f.length());
+            dps = new DeplumpStream(new BufferedOutputStream(new FileOutputStream(filename + ".deplump")));
 
             int b;
             while ((b = bis.read()) > -1) {
@@ -44,7 +59,6 @@ public class Deplump {
                 dps.close();
             }
         }
-
-        System.out.println(Long.toBinaryString(dps.enc.minRange).length());
+        
     }
 }
