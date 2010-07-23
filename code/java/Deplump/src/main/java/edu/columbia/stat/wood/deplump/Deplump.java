@@ -13,6 +13,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
+ * Compresses a file using the sequence memoizer predictive model.
  *
  * @author nicholasbartlett
  */

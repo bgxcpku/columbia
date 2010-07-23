@@ -7,9 +7,9 @@ package edu.columbia.stat.wood.sequencememoizer;
 import java.util.Random;
 
 /**
- *
- * @author nicholasbartlett
+ * Sequence memoizer model with sampling functionality.
  * 
+ * @author nicholasbartlett 
  */
 
 public class SamplingSequenceMemoizer extends BaseSequenceMemoizer {

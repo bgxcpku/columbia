@@ -6,7 +6,8 @@
 package edu.columbia.stat.wood.sequencememoizer;
 
 /**
- *
+ * Implements some methods of Discrete Distribution.
+ * 
  * @author nicholasbartlett
  */
 public abstract class BaseDiscreteDistribution implements DiscreteDistribution {

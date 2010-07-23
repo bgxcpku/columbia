@@ -6,7 +6,8 @@
 package edu.columbia.stat.wood.sequencememoizer;
 
 /**
- *
+ * Convenient container object for native double.
+ * 
  * @author nicholasbartlett
  */
 public class MutableDouble {

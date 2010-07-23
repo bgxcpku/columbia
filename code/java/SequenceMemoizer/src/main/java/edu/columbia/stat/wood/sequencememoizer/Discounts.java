@@ -6,7 +6,8 @@
 package edu.columbia.stat.wood.sequencememoizer;
 
 /**
- *
+ * Discount parameter wrapper for sequence memoizer.
+ * 
  * @author nicholasbartlett
  */
 public class Discounts {
