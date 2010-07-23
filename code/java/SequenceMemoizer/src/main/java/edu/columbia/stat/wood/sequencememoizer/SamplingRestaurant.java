@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.TreeMap;
 
 /**
+ * Tree node object used in the Chinese restaurant representation for HPYP models.
  *
  * @author nicholasbartlett
  *
@@ -21,15 +22,21 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
     private Discounts discounts;
     private int edgeStart, edgeLength;
 
-    public static int count = 0;
     private static double MIN_SYMBOL_PROB = 5.01 / (double) (Integer.MAX_VALUE);
 
     /**
-     * 
-     * @param parent
-     * @param edgeStart
-     * @param edgeLength
-     * @param discounts
+     * Count of instantiated restaurants.
+     */
+    public static int count = 0;
+
+
+    /**
+     * Initializes restaurant with given parameters.
+     *
+     * @param parent parent restaurant
+     * @param edgeStart index of edge start
+     * @param edgeLength edge length
+     * @param discounts discounts for sequence memoizer
      */
     public SamplingRestaurant(SamplingRestaurant parent, int edgeStart, int edgeLength, Discounts discounts) {
         this.parent = parent;
@@ -45,7 +52,7 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
     /**
      * Sets the edge start index.
      *
-     * @param edgeStart new edge start value
+     * @param edgeStart new edge start
      */
     public void setEdgeStart(int edgeStart) {
         this.edgeStart = edgeStart;
@@ -85,7 +92,7 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
     /**
      * Allows the table configurations to be set for each type seperately.  A table
      * configuation is an int[] which is equal in length to the number of tables
-     * of the given type.  Eeach entry of the int[] specifies the number of customers
+     * of the given type.  Each entry of the int[] specifies the number of customers
      * sitting at a unique table. This is required for the fragmentation step when
      * creating the sequence memozier tree.
      *
@@ -119,7 +126,7 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
      * is created a new customer of the same type is seated in the parent restaurant.
      *
      * @param type type to be seated
-     * @return the log likelihood of the type prior to seating
+     * @return the predictive log likelihood of the type prior to insertion in the model
      */
     public double seat(int type) {
         double ll, pp, p, r, tw, cuSum, discount;
@@ -180,6 +187,20 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
         return ll;
     }
 
+    /**
+     * Method to insert types in one pass down the tree.  This method creates necessary
+     * nodes and then does the insertion in a single pass down the tree.
+     *
+     * @param p probability of type in parent node
+     * @param type type to be inserted
+     * @param d current depth
+     * @param depth max depth of tree
+     * @param context context array
+     * @param index index of current place in context
+     * @param returnP container for predictive probability of type prior to insertion
+     * @param discountMultFactor container used for calculating the discount hessian
+     * @return indicator that a customer must be seated in the parent restaurant
+     */
     public boolean seat(double p, int type, int d, int depth, int[] context, int index, MutableDouble returnP, MutableDouble discountMultFactor){
         double discount, multFactor, pp;
         int[] tsa;
@@ -311,7 +332,20 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
         return seatInParent;
     }
 
-    public boolean seatCdf(double[] pArray, int type, int d, int depth, int[] context, int index, MutableDouble discountMultFactor) {
+    /**
+     * Like recursive seat, only calculates the full predictive CDF prior to insertion of the type.
+     *
+     * @param pArray predictive CDF in parent node
+     * @param type type to be inserted
+     * @param d depth of current node
+     * @param depth max depth of tree
+     * @param context context array
+     * @param index index of current place in context
+     * @param discountMultFactor container used for calculating the discount hessian
+     * @return indicator that a customer must be seated in the parent restaurant
+     */
+
+    public boolean seatCDF(double[] pArray, int type, int d, int depth, int[] context, int index, MutableDouble discountMultFactor) {
         /***********update ppArray to reflect counts in this restaurant************/
         double pp, discount, multFactor;
         int[] tsa;
@@ -366,7 +400,7 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
                     child = new SamplingRestaurant(this, index - el + 1, el, discounts);
                 }
                 put(context[index], child);
-                seat = child.seatCdf(pArray, type, d + el, depth, context, index - el, discountMultFactor);
+                seat = child.seatCDF(pArray, type, d + el, depth, context, index - el, discountMultFactor);
             } else {
 
                 es = child.edgeStart();
@@ -380,7 +414,7 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
 
                 if (overlap == el) {
 
-                    seat = child.seatCdf(pArray, type, d + el, depth, context, index - el, discountMultFactor);
+                    seat = child.seatCDF(pArray, type, d + el, depth, context, index - el, discountMultFactor);
 
                 } else {
 
@@ -388,7 +422,7 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
                     put(context[index], newChild);
                     newChild.put(context[es + el - overlap - 1], child);
 
-                    seat = newChild.seatCdf(pArray, type, d + overlap, depth, context, index - overlap, discountMultFactor);
+                    seat = newChild.seatCDF(pArray, type, d + overlap, depth, context, index - overlap, discountMultFactor);
 
                 }
             }
@@ -453,7 +487,23 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
         return seatInParent;
     }
 
-    public boolean seatPointOnCdf(double pointOnCdf, double[] pArray, MutableInteger type, int d, int depth, int[] context, int index, MutableDouble discountMultFactor) {
+    /**
+     * Like recursive seatCDF, but now only way to identify the type to seat is
+     * a point on the predictive CDF.  The predictive CDF is calculated prior to insertion,
+     * the correct type is identified, and the type is then inserted into the model.
+     *
+     * @param pointOnCdf point on CDF
+     * @param pArray predictive CDF in parent node
+     * @param type container object for type to be seated
+     * @param d depth of current node
+     * @param depth max depth of tree
+     * @param context context array
+     * @param index index of current place in context
+     * @param discountMultFactor container used for calculating the discount hessian
+     * @return indicator that a customer must be seated in the parent restaurant
+     *
+     */
+    public boolean seatPointOnCDF(double pointOnCdf, double[] pArray, MutableInteger type, int d, int depth, int[] context, int index, MutableDouble discountMultFactor) {
         /***********update ppArray to reflect counts in this restaurant************/
         double discount, multFactor;
         int[] tsa;
@@ -523,7 +573,7 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
                     child = new SamplingRestaurant(this, index - el + 1, el, discounts);
                 }
                 put(context[index], child);
-                seat = child.seatPointOnCdf(pointOnCdf, pArray, type, d + el, depth, context, index - el, discountMultFactor);
+                seat = child.seatPointOnCDF(pointOnCdf, pArray, type, d + el, depth, context, index - el, discountMultFactor);
             } else {
 
                 es = child.edgeStart();
@@ -537,7 +587,7 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
 
                 if (overlap == el) {
 
-                    seat = child.seatPointOnCdf(pointOnCdf, pArray, type, d + el, depth, context, index - el, discountMultFactor);
+                    seat = child.seatPointOnCDF(pointOnCdf, pArray, type, d + el, depth, context, index - el, discountMultFactor);
 
                 } else {
 
@@ -545,7 +595,7 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
                     put(context[index], newChild);
                     newChild.put(context[es + el - overlap - 1], child);
 
-                    seat = newChild.seatPointOnCdf(pointOnCdf, pArray, type, d + overlap, depth, context, index - overlap, discountMultFactor);
+                    seat = newChild.seatPointOnCDF(pointOnCdf, pArray, type, d + overlap, depth, context, index - overlap, discountMultFactor);
                 }
             }
         }
@@ -620,9 +670,12 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
      * externally to reflect that a restaurant has been inserted in the middle
      * of an edge.
      *
-     * @param intermediateRestauranParent
-     * @param intermediateRestaurantParentPath
-     * @return
+     * @param irParent parent of new restaurant
+     * @param irEdgeStart edge start of new restaurant
+     * @param irEdgeLength edge length of new restaurant
+     * @param forPrediction indicator that fragmentation is for prediction and thus
+     * will not ultimately be inserted in the tree
+     * @return restaurant either for insertion in the tree or for prediction
      */
     public SamplingRestaurant fragment(SamplingRestaurant irParent, int irEdgeStart, int irEdgeLength, boolean forPrediction) {
         double discount, irDiscount, fragDiscount, fragConcentration, r, cuSum, totalWeight;
@@ -883,15 +936,6 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
         return logLik;
     }
 
-    /**
-     * Gets the log likelihood contribution of a given table..
-     * 
-     * @param tableSize size of table
-     * @param existingCust number of customers already accounted for
-     * @param existingTables number of tables already accounted for
-     * @param discount value of discount
-     * @return contribution of table to log likelihood of seating arrangment
-     */
     private double logLikTable(int tableSize, int existingCust, int existingTables, double discount) {
         double logLik, p;
 
@@ -913,16 +957,6 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
         return logLik;
     }
 
-    /**
-     * Samples a customer of a given type sitting at a certain table.  Since table
-     * arrangements are maintained in an int[], the table is the index in the int[].
-     * Sampling consists of unseating the customer and then re-seating them by sampling
-     * a seating location from the conditional distribution.
-     *
-     * @param type int type
-     * @param table index to table
-     * @param discount discount for restaurant
-     */
     private void sampleCustomer(int type, int table, double discount) {
         double r, cuSum, totalWeight, pp;
         int tt, tc, zeroInd;
@@ -980,7 +1014,7 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
     }
 
     /**
-     * Samples entire seating arrangments for entire restaurant.
+     * Samples seating arrangment for entire restaurant.
      */
     public void sampleSeatingArrangements(){
         int b;
@@ -1001,9 +1035,6 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
         }
     }
 
-    /**
-     * Fixes the zeros created during the sampling process.
-     */
     private void fixZeros(){
         int[] tsa,ntsa;
         int numZeros,ind;

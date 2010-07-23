@@ -13,14 +13,29 @@ package edu.columbia.stat.wood.sequencememoizer;
  * @author nicholasbartlett
  */
 public class SMParameters {
+    /**
+     * Unique discount parameters.
+     */
     public double[] discounts;
-    
+
+    /**
+     * Alphabet size.
+     */
     public int alphabetSize;
-    
+
+    /**
+     * Max depth of model.
+     */
     public int depth;
-    
+
+    /**
+     * Random number seed used.
+     */
     public long seed;
-    
+
+    /**
+     * Discrete base distribution used as root.
+     */
     public DiscreteDistribution baseDistribution;
 
     /**
@@ -36,6 +51,7 @@ public class SMParameters {
      * @param alphabetSize
      * @param depth maximum context length
      * @param seed seed for random number generator
+     * @param baseDistribution base distribution for root node
      */
     public SMParameters(double[] discounts, double infiniteDiscount, int alphabetSize, int depth, long seed, DiscreteDistribution baseDistribution) {
         this.discounts = discounts;

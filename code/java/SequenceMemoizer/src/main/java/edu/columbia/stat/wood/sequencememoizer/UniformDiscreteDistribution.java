@@ -9,6 +9,7 @@ import java.util.Arrays;
 
 /**
  * Uniform base distribution over finite alphabet size.
+ *
  * @author nicholasbartlett
  */
 
@@ -29,7 +30,7 @@ public class UniformDiscreteDistribution  extends BaseDiscreteDistribution {
      * Gets probability from uniform distribution.
      *
      * @param type
-     * @return probability
+     * @return probability probability of type
      */
     public double probability(int type) {
         return 1.0 / (double) alphabetSize;
@@ -45,12 +46,12 @@ public class UniformDiscreteDistribution  extends BaseDiscreteDistribution {
     }
 
     /**
-     * Overides cdf() method to provide more efficient implementation.
+     * Overides CDF() method to provide more efficient implementation.
      *
-     * @return cdf
+     * @return predictive CDF
      */
     @Override
-    public double[] cdf(){
+    public double[] CDF(){
         double cdf[];
 
         cdf = new double[alphabetSize];
