@@ -6,7 +6,7 @@
 package edu.columbia.stat.wood.sequencememoizer;
 
 /**
- *
+ * Simple interface for a discrete distribution.
  * @author nicholasbartlett
  */
 public interface DiscreteDistribution {
@@ -20,11 +20,11 @@ public interface DiscreteDistribution {
     public double probability(int type);
 
     /**
-     * Gets cdf of discrete distribution.
+     * Gets CDF of discrete distribution.
      *
-     * @return cdf
+     * @return predictive CDF
      */
-    public double[] cdf();
+    public double[] CDF();
 
     /**
      * Gets alphabetSize.

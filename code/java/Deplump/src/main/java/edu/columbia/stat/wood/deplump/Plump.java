@@ -12,7 +12,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
- * Actually decompresses and deplumped file.
+ * Decompresses a deplumped file.
  *
  * @author nicholasbartlett
  */

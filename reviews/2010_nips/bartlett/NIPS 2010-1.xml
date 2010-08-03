@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<conference ShortName="NIPS 2010" ReviewDeadline="Please see Conference Website">
+  <paper PaperId="350" Title="Hierarchical Block Sequence Sampler">
+    <question Number="1" Text="Comments to author(s).  First provide a summary of the paper, and then address the following criteria:  Quality, clarity, originality and significance.   (For detailed reviewing guidelines, see http://nips.cc/PaperInformation/ReviewerInstructions)">
+      <YourAnswer>The paper provides a sequence model for models proposed of discrete composed blocks, such as bars of music, etc.  The generative model proposes that to create a sequence, one either creates an identical sequence to one already seen, or one chooses to compose smaller blocks to create the sequence.  When choosing which blocks to compose, one either chooses blocks already seen, or one composes new blocks by composing even smaller blocks. This process continues until you reach somea atomic level.  The model is a hierachical Dirichlet process model.
+      
+      While the work is clear and well written and appears to be correct, the contribution here is minimal.  Even though the model is proposed to model sequences, it does not take into account the sequential nature of the data.  When blocks are composed, there is no attention paid to the order in which they are composed.  Also, the only evaluation of the model is simulation of data after the model has been fit to real data.  Since the model independently composes the blocks the simulated data looks like blocks of the real data randomly composed together.  No other evaluation is done, even against the large body of work which has been done regarding hierarchical Pitman-Yor process language models which are specifically designed to model dependence in discrete sequences.
+      </YourAnswer>
+    </question>
+    <question Number="2" Text="Please summarize your review in 1-2 sentences">
+      <YourAnswer>Paper is well written and understandable.  Contribution is minimal, model is simplistic and does not capture key characteristics of the data they are modeling.</YourAnswer>
+    </question>
+    <question Number="3" Text="Numerical score">
+      <PossibleAnswer>10: Top 5% of accepted NIPS papers</PossibleAnswer>
+      <PossibleAnswer>9: Top 15% of accepted NIPS papers</PossibleAnswer>
+      <PossibleAnswer>8: Top 50% of accepted NIPS papers</PossibleAnswer>
+      <PossibleAnswer>7: Good paper, accept</PossibleAnswer>
+      <PossibleAnswer>6: Marginally above the acceptance threshold</PossibleAnswer>
+      <PossibleAnswer>5: Marginally below the acceptance threshold</PossibleAnswer>
+      <PossibleAnswer>4: An OK paper, but not good enough</PossibleAnswer>
+      <PossibleAnswer>3: A clear rejection</PossibleAnswer>
+      <PossibleAnswer>2: A strong rejection</PossibleAnswer>
+      <PossibleAnswer>1: Trivial,  wrong or known</PossibleAnswer>
+      <YourAnswer>3</YourAnswer>
+    </question>
+    <question Number="4" Text="Confidence">
+      <PossibleAnswer>5: Reviewer is absolutely certain</PossibleAnswer>
+      <PossibleAnswer>4: Reviewer is confident but not absolutely certai</PossibleAnswer>
+      <PossibleAnswer>3: Reviewer is fairly confident</PossibleAnswer>
+      <PossibleAnswer>2: It is quite likely that the reviewer did not un</PossibleAnswer>
+      <PossibleAnswer>1: Reviewer's evaluation is an educated guess</PossibleAnswer>
+      <YourAnswer>5</YourAnswer>
+    </question>
+    <question Number="5" Text="Confidential comments to the PC members">
+      <YourAnswer>REPLACE THIS WITH YOUR ANSWER</YourAnswer>
+    </question>
+  </paper>
+  <paper PaperId="464" Title="Nonparametric Bayesian Restricted Boltzmann Machine">
+    <question Number="1" Text="Comments to author(s).  First provide a summary of the paper, and then address the following criteria:  Quality, clarity, originality and significance.   (For detailed reviewing guidelines, see http://nips.cc/PaperInformation/ReviewerInstructions)">
+      <YourAnswer>In this paper the authors propose to use the bayesian nonparametric IBP prior to govern the structure of a Restricted Boltzmann Machine (RBM).  The paper provides a clear and concise review of the IBP prior and then introduces the main model.  Inference in the model is addressed, and thorough experimentation was performed.
+      
+      The paper continues the trend of using the IBP prior to govern structure in models for machine learning.  The application to RBMs is novel, interesting, and proves to have excellent performance.  The Introduction section of this paper could use some re-writing as it is clumsy in some places and could be shortened to provide more room for expansion later in the paper.  The preliminary section is good providing clear and concise review of the two main models.  The model definition part coule be more explicit with an equation array to detail the model.  I beleive equation 6 is incorrect, it is only in each conditional distribution where the exchangeability permits that equation.  Good work is done to show the exact marginal predictive distributions needed for inference, though they need to be more careful with the notation as I beleive that the conditional distributions need to be conditioned on h as well.  The results section is clearly written and shows the superiority of the method.  My only final question is regarding the H matrix.  The paper indicates that it is easier to do inference using a large finite number of nodes as an approximation to the true infinite model.  In the infinite model, the H matrix must also be infinite.  How would the infinite H matrix be handeled in the truly infinite case?  </YourAnswer>
+    </question>
+    <question Number="2" Text="Please summarize your review in 1-2 sentences">
+      <YourAnswer>The paper is clearly written, though more care should be given to the technical sections of the paper.  The method is strong and shows good performance.</YourAnswer>
+    </question>
+    <question Number="3" Text="Numerical score">
+      <PossibleAnswer>10: Top 5% of accepted NIPS papers</PossibleAnswer>
+      <PossibleAnswer>9: Top 15% of accepted NIPS papers</PossibleAnswer>
+      <PossibleAnswer>8: Top 50% of accepted NIPS papers</PossibleAnswer>
+      <PossibleAnswer>7: Good paper, accept</PossibleAnswer>
+      <PossibleAnswer>6: Marginally above the acceptance threshold</PossibleAnswer>
+      <PossibleAnswer>5: Marginally below the acceptance threshold</PossibleAnswer>
+      <PossibleAnswer>4: An OK paper, but not good enough</PossibleAnswer>
+      <PossibleAnswer>3: A clear rejection</PossibleAnswer>
+      <PossibleAnswer>2: A strong rejection</PossibleAnswer>
+      <PossibleAnswer>1: Trivial,  wrong or known</PossibleAnswer>
+      <YourAnswer>7</YourAnswer>
+    </question>
+    <question Number="4" Text="Confidence">
+      <PossibleAnswer>5: Reviewer is absolutely certain</PossibleAnswer>
+      <PossibleAnswer>4: Reviewer is confident but not absolutely certai</PossibleAnswer>
+      <PossibleAnswer>3: Reviewer is fairly confident</PossibleAnswer>
+      <PossibleAnswer>2: It is quite likely that the reviewer did not un</PossibleAnswer>
+      <PossibleAnswer>1: Reviewer's evaluation is an educated guess</PossibleAnswer>
+      <YourAnswer>3</YourAnswer>
+    </question>
+    <question Number="5" Text="Confidential comments to the PC members">
+      <YourAnswer>REPLACE THIS WITH YOUR ANSWER</YourAnswer>
+    </question>
+  </paper>
+  <paper PaperId="836" Title="Tanslation Model Smoothing and Language Model Smoothing: Pitman-Yor Process">
+    <question Number="1" Text="Comments to author(s).  First provide a summary of the paper, and then address the following criteria:  Quality, clarity, originality and significance.   (For detailed reviewing guidelines, see http://nips.cc/PaperInformation/ReviewerInstructions)">
+      <YourAnswer> This paper suggests a few smoothing methods for the models used in the task of machine translation.  All smoothing methods are based on the Pitman-Yor process.  The paper also verifies that the increase in perplexity attributed to HPYP language models translates to better translation.
+      
+    This paper is very hard to read and fairly unclear.  The review of the Pitman-Yor process is not well written, though is does cover the key points of the model regarding the application.  There is virtually no review of the translation model used.  Furthermore, though they are proposing probabilistic models there is no place in the paper where the models are actually explicitly stated.  Showing how to calculate a predictive distribution cannot replace explicitly writing down the generative model being used.  There are no details regarding inference in the model either.  The language model already has established inference procedures, but what inference procedures are used and how are they implemented for the translation model.  Finally, the notation used in the paper is incosistent and I beleive that it is sometimes misleading and possibly incorrect.
+      </YourAnswer>
+    </question>
+    <question Number="2" Text="Please summarize your review in 1-2 sentences">
+      <YourAnswer>The paper introduces a new smoothing method for the translation model in a machine translation task and verifies that improvements in the perplexity of a language model translates to better translation.  The paper is poorly written, has inconsistent notation, and is very hard to understand, especially for someone not fluent in the translation literature.</YourAnswer>
+    </question>
+    <question Number="3" Text="Numerical score">
+      <PossibleAnswer>10: Top 5% of accepted NIPS papers</PossibleAnswer>
+      <PossibleAnswer>9: Top 15% of accepted NIPS papers</PossibleAnswer>
+      <PossibleAnswer>8: Top 50% of accepted NIPS papers</PossibleAnswer>
+      <PossibleAnswer>7: Good paper, accept</PossibleAnswer>
+      <PossibleAnswer>6: Marginally above the acceptance threshold</PossibleAnswer>
+      <PossibleAnswer>5: Marginally below the acceptance threshold</PossibleAnswer>
+      <PossibleAnswer>4: An OK paper, but not good enough</PossibleAnswer>
+      <PossibleAnswer>3: A clear rejection</PossibleAnswer>
+      <PossibleAnswer>2: A strong rejection</PossibleAnswer>
+      <PossibleAnswer>1: Trivial,  wrong or known</PossibleAnswer>
+      <YourAnswer>3</YourAnswer>
+    </question>
+    <question Number="4" Text="Confidence">
+      <PossibleAnswer>5: Reviewer is absolutely certain</PossibleAnswer>
+      <PossibleAnswer>4: Reviewer is confident but not absolutely certai</PossibleAnswer>
+      <PossibleAnswer>3: Reviewer is fairly confident</PossibleAnswer>
+      <PossibleAnswer>2: It is quite likely that the reviewer did not un</PossibleAnswer>
+      <PossibleAnswer>1: Reviewer's evaluation is an educated guess</PossibleAnswer>
+      <YourAnswer>REPLACE THIS WITH YOUR ANSWER</YourAnswer>
+    </question>
+    <question Number="5" Text="Confidential comments to the PC members">
+      <YourAnswer>3</YourAnswer>
+    </question>
+  </paper>
+  <paper PaperId="1060" Title="Technical Term Recognition with Semi-supervised Learning Using Hierarchical Bayes Language Models">
+    <question Number="1" Text="Comments to author(s).  First provide a summary of the paper, and then address the following criteria:  Quality, clarity, originality and significance.   (For detailed reviewing guidelines, see http://nips.cc/PaperInformation/ReviewerInstructions)">
+      <YourAnswer>The paper proposes a method to incorporate character level information, the way words are spelled, in the task of part of speach tagging. Specifially, the task is to identify technical terms in corpora.  The approach is to process labeled training data by adding tokens to the corpora before and after technical terms.  This permits the use of a character level model based on the hierarchical Pitman-Yor language model to predict the tag of each word.  The predictive distribution obtained from the character level data is then used as the base distribution of a HPYLM describing the sequence of tags observed in the data.
+      
+      Unfortunately the exact details of the method are very hard to decipher.  The quick review of HPYP models and the variable length version proposed by Mochihashi et. al. is unclear and without extensive former knowledge of both would be nearly unreadable.  It is clear that they are using the variable length HPYP for both HPYP models (character and tag level), but it is not clear exactly how the use of the specialized token before the word in the character level models permits a predictive distribution over tags to be gathered from the character level model. In no part of the paper is there a clear model specified, for example in an equation array or the like.
+      
+      The work seems like it is probably technically sound given the authors familiarity with the material, but because the clarity is so poor it is very hard to assess. Furthermore, the use of spelling information in the task of part of speach tagging is interesting and probably useful.  The results indicate that the work is not tremendously significant, but there is certainly a contribution to be made here.
+      
+      Some specific issues with the clarity are as follows, thought this list is not exhaustive
+      
+      The heuristics in section 3.2 are not technical enough and do not actually explain what the model is.
+      In line 202, what is the probability of (I,L,-, 2)?  Is that with or without context?
+      How exactly is the insertion of the tags before and after the words used with the character level predictive distribution?
+      Are tokens inserted for every part of speach or only technical terms?
+      Figure 3 is not adequately described or explained.
+      In line 320, what is an F-score?? Explain.
+      
+      In general, it is hard to evaluate the sampling alrogithm proposed given that I cannot nail down the exact model being proposed.
+      </YourAnswer>
+    </question>
+    <question Number="2" Text="Please summarize your review in 1-2 sentences">
+      <YourAnswer>The exact model being used is hard to decipher.  The idea is good and potentially helpful.  The paper is extremely rough and needs lots of editing and work before a technical reading assessing the validity of the inference algorithms is possible.  </YourAnswer>
+    </question>
+    <question Number="3" Text="Numerical score">
+      <PossibleAnswer>10: Top 5% of accepted NIPS papers</PossibleAnswer>
+      <PossibleAnswer>9: Top 15% of accepted NIPS papers</PossibleAnswer>
+      <PossibleAnswer>8: Top 50% of accepted NIPS papers</PossibleAnswer>
+      <PossibleAnswer>7: Good paper, accept</PossibleAnswer>
+      <PossibleAnswer>6: Marginally above the acceptance threshold</PossibleAnswer>
+      <PossibleAnswer>5: Marginally below the acceptance threshold</PossibleAnswer>
+      <PossibleAnswer>4: An OK paper, but not good enough</PossibleAnswer>
+      <PossibleAnswer>3: A clear rejection</PossibleAnswer>
+      <PossibleAnswer>2: A strong rejection</PossibleAnswer>
+      <PossibleAnswer>1: Trivial,  wrong or known</PossibleAnswer>
+      <YourAnswer>5</YourAnswer>
+    </question>
+    <question Number="4" Text="Confidence">
+      <PossibleAnswer>5: Reviewer is absolutely certain</PossibleAnswer>
+      <PossibleAnswer>4: Reviewer is confident but not absolutely certain</PossibleAnswer>
+      <PossibleAnswer>3: Reviewer is fairly confident</PossibleAnswer>
+      <PossibleAnswer>2: It is quite likely that the reviewer did not un</PossibleAnswer>
+      <PossibleAnswer>1: Reviewer's evaluation is an educated guess</PossibleAnswer>
+      <YourAnswer>REPLACE THIS WITH YOUR ANSWER</YourAnswer>
+    </question>
+    <question Number="5" Text="Confidential comments to the PC members">
+      <YourAnswer>4</YourAnswer>
+    </question>
+  </paper>
+</conference>

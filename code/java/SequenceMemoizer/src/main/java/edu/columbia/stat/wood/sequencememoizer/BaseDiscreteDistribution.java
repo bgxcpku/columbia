@@ -6,18 +6,19 @@
 package edu.columbia.stat.wood.sequencememoizer;
 
 /**
- *
+ * Implements some methods of Discrete Distribution.
+ * 
  * @author nicholasbartlett
  */
 public abstract class BaseDiscreteDistribution implements DiscreteDistribution {
 
     /**
-     * Dumb implementation of cdf based on the probability() method.  Can probably be
+     * Dumb implementation of CDF based on the probability() method.  Can probably be
      * more efficiently implemented by specific implementations of interface.
      *
-     * @return cdf
+     * @return predictive CDF
      */
-    public double[] cdf(){
+    public double[] CDF(){
         double[] cdf;
         int as;
 

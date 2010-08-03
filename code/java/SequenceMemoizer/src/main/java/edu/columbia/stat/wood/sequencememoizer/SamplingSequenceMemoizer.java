@@ -7,16 +7,16 @@ package edu.columbia.stat.wood.sequencememoizer;
 import java.util.Random;
 
 /**
- *
- * @author nicholasbartlett
+ * Sequence memoizer model with sampling functionality.
  * 
+ * @author nicholasbartlett 
  */
 
 public class SamplingSequenceMemoizer extends BaseSequenceMemoizer {
+
     /**
      * Random object used for random number generation throughout the model.
      */
-    
     public static Random RNG;
     
     private int alphabetSize, depth;
@@ -27,6 +27,11 @@ public class SamplingSequenceMemoizer extends BaseSequenceMemoizer {
     private Discounts discounts;
     private DiscreteDistribution baseDistribution;
 
+    /**
+     * Initializes the object based on the specified parameters.
+     *
+     * @param params
+     */
     public SamplingSequenceMemoizer(SMParameters params){
        alphabetSize = params.alphabetSize;
        depth = params.depth;
@@ -40,10 +45,23 @@ public class SamplingSequenceMemoizer extends BaseSequenceMemoizer {
        emptyContextRestaurant = new SamplingRestaurant(baseRestaurant, 0,0, discounts);
     }
 
+    /**
+     * Unsupported.
+     *
+     * @param maxNumberRestaurants
+     */
     public void limitMemory(long maxNumberRestaurants){
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * Incorporates the observation in the model with the assumption that this observation
+     * is the next in a continuing sequence. Observations are restricted to the interval [0,alphabetSize).
+     *
+     * @param observation integer value of observation
+     * @return the log probability of the observation in the predictive
+     * distribution prior to the incorporation of the observation in the model
+     */
     public double continueSequence(int observation) {
         if (observation < 0 || observation >= alphabetSize) {
             throw new IllegalArgumentException("Observations must be integers in the interval [0,alphabetSize).");
@@ -61,7 +79,14 @@ public class SamplingSequenceMemoizer extends BaseSequenceMemoizer {
         return Math.log(p.doubleVal());
     }
 
-    public double[] continueSequenceCdf(int observation) {
+    /**
+     * Incorporates the observation in the model with the assumption that this observation
+     * is the next in a continuing sequence. Observations are restricted to the interval [0,alphabetSize).
+     *
+     * @param observation integer value of observation
+     * @return predictive predictive CDF prior to incorporating the observation into the model
+     */
+    public double[] continueSequenceCDF(int observation) {
         if (observation < 0 || observation >= alphabetSize) {
             throw new IllegalArgumentException("Observations must be integers in the interval [0,alphabetSize).");
         }
@@ -70,7 +95,7 @@ public class SamplingSequenceMemoizer extends BaseSequenceMemoizer {
 
         cdf = baseRestaurant.predictiveProbability();
 
-        if(emptyContextRestaurant.seatCdf(cdf, observation, 0, depth, sequence.fullSeq(),sequence.length() - 1, new MutableDouble(1.0))) {
+        if(emptyContextRestaurant.seatCDF(cdf, observation, 0, depth, sequence.fullSeq(),sequence.length() - 1, new MutableDouble(1.0))) {
             baseRestaurant.seat(observation);
         }
 
@@ -80,7 +105,16 @@ public class SamplingSequenceMemoizer extends BaseSequenceMemoizer {
         return cdf;
     }
 
-    public Pair<MutableInteger, double[]> continueSequencePointOnCdf(double pointOnCdf) {
+    /**
+     * Finds the observation on the predictive CDF with the assumption that the next observation
+     * is the next in a continuing sequence.  The observation is then incorporated into
+     * the model.
+     *
+     * @param pointOnCdf point on cdf, must be in [0.0,1.0)
+     * @return Pair containing type of observation seated and predictive cdf prior to incorporating the
+     * type into the model
+     */
+    public Pair<MutableInteger, double[]> continueSequencePointOnCDF(double pointOnCdf) {
         if (pointOnCdf < 0.0 || pointOnCdf >= 1.0) {
             throw new IllegalArgumentException("Point on CDF must be a double in the interval [0,1).");
         }
@@ -91,7 +125,7 @@ public class SamplingSequenceMemoizer extends BaseSequenceMemoizer {
         type = new MutableInteger(-1);
         cdf = baseRestaurant.predictiveProbability();
 
-        if(emptyContextRestaurant.seatPointOnCdf(pointOnCdf, cdf, type, 0, depth, sequence.fullSeq(), sequence.length()-1, new MutableDouble(1.0))){
+        if(emptyContextRestaurant.seatPointOnCDF(pointOnCdf, cdf, type, 0, depth, sequence.fullSeq(), sequence.length()-1, new MutableDouble(1.0))){
             baseRestaurant.seat(type.intVal());
         }
 
@@ -101,6 +135,13 @@ public class SamplingSequenceMemoizer extends BaseSequenceMemoizer {
         return new Pair(type, cdf);
     }
 
+    /**
+     * Generates iid draws from the predictive distribution given the context.
+     *
+     * @param context sequence of integers specifying context
+     * @param numSamples number of iid draws to draw
+     * @return integer array of samples from context specific predictive distribution
+     */
     public int[] generate(Sequence context, int numSamples) {
         double[] cdf;
         int[] samples;
@@ -125,14 +166,34 @@ public class SamplingSequenceMemoizer extends BaseSequenceMemoizer {
         return samples;
     }
 
+    /**
+     * Gets the predictive CDF over the entire alphabet given a specific context.
+     *
+     * @param context context
+     * @return array of predictive probabilities for tokens 0 - (alphabetSize - 1)
+     */
     public double[] predictiveProbability(Sequence context) {
         return get(emptyContextRestaurant, context.fullSeq(), context.length()-1, true).predictiveProbability();
     }
 
+    /**
+     * Gets the predictive probability of a  token in a given context.
+     *
+     * @param context context
+     * @param token token to get predictive probability of
+     * @return predicitve probability of token in given context
+     */
     public double predictiveProbability(Sequence context, int token){
-        return get(emptyContextRestaurant, context.fullSeq(), context.length()-1, false).predictiveProbability(token);
+        return get(emptyContextRestaurant, context.fullSeq(), context.length()-1, true).predictiveProbability(token);
     }
 
+    /**
+     * Scores a sequence given that it starts after a certain context.
+     *
+     * @param initialContext intial context
+     * @param seqeunce seqeunce of observations to score
+     * @return log predictive probability of observing seqeunce after context
+     */
     public double sequenceProbability(Sequence initialContext, int[] sequence) {
         double logPredictiveProb;
         Sequence context;
@@ -148,6 +209,16 @@ public class SamplingSequenceMemoizer extends BaseSequenceMemoizer {
         return logPredictiveProb;
     }
 
+    /**
+     * Do Gibbs sampling of the parameters of the model. Seating
+     * arrangements are sampled according to the exact conditional distributions
+     * while discount parameters are sampled using a Metropolis step with a
+     * normal jumping distribution.  Independent flat priors are imposed on the
+     * individual discount parameters.
+     *
+     * @param numSweeps number of passes to make Gibbs sampling
+     * @return joint log likelihood of the data and model parameters
+     */
     public double sample(int numSweeps) {
         double logLik;
 
@@ -161,10 +232,20 @@ public class SamplingSequenceMemoizer extends BaseSequenceMemoizer {
         return logLik;
     }
 
+    /**
+     * Get the joint log likelihood of the data and model parameters.
+     *
+     * @return joint log likelihood of the data and model parameters
+     */
     public double score() {
         return score(emptyContextRestaurant);
     }
 
+    /**
+     * Get paramters in a SMParameters object.
+     *
+     * @return values of parameters of the model in its current state
+     */
     public SMParameters getParameters() {
         double[] d;
 

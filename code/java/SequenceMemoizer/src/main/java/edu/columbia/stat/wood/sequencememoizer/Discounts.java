@@ -6,13 +6,20 @@
 package edu.columbia.stat.wood.sequencememoizer;
 
 /**
- *
+ * Discount parameter wrapper for sequence memoizer.
+ * 
  * @author nicholasbartlett
  */
 public class Discounts {
     private double[] discounts, logDiscounts, discountGradient;
     private double alpha, alphaGradient;
 
+    /**
+     * Sets the discount parameters.
+     *
+     * @param initialDiscounts unique discount parameters
+     * @param dInfinity discount between restaurant of depth (initialDiscounts.length -1) and restaurants infinitely deep
+     */
     public Discounts(double[] initialDiscounts, double dInfinity){
         if(dInfinity <= 0.0 || dInfinity >= 1.0){
             throw new IllegalArgumentException("dInfinity must be in the interval (0.0,1.0)");
@@ -26,6 +33,12 @@ public class Discounts {
         fillLogDiscounts();
     }
 
+    /**
+     * Gets the discount for a given index.  Index must be in [0, length()).
+     *
+     * @param index index of desired discount
+     * @return discount value
+     */
     public double get(int index){
         if(index >= discounts.length){
             throw new IllegalArgumentException("Must only get discounts with an index in [0, length())");
@@ -33,6 +46,11 @@ public class Discounts {
         return discounts[index];
     }
 
+    /**
+     * Sets discount for a given index.  Index must be in [0, length()).
+     * @param index index of desired discount
+     * @param value value to set chosed discount
+     */
     public void set(int index, double value){
         if(index >= discounts.length){
             throw new IllegalArgumentException("Must only set discounts with an index in [0, length())");
@@ -40,14 +58,31 @@ public class Discounts {
         discounts[index] = value;
     }
 
+    /**
+     * Gets the infinite discount.
+     *
+     * @return infinite discount
+     */
     public double getdInfinity(){
         return Math.pow(discounts[discounts.length-1],alpha / (1 - alpha));
     }
 
+    /**
+     * Sets infinite discount.
+     *
+     * @param value value to set infinite discount to
+     */
     public void setDInfinity(double value){
         alpha = Math.log(value) / (Math.log(value) + Math.log(discounts[discounts.length-1]));
     }
 
+    /**
+     * Gets discount given a the specified parent and current depth.
+     *
+     * @param parentDepth parent depth
+     * @param depth current depth
+     * @return calculated discount
+     */
     public double get(int parentDepth, int depth){
         double logDiscount;
         int d;
@@ -75,6 +110,11 @@ public class Discounts {
         return Math.exp(logDiscount);
     }
 
+    /**
+     * Gets number of unique discount parameters.
+     *
+     * @return number of unique discount parameters
+     */
     public int length(){
         return discounts.length;
     }
@@ -86,7 +126,19 @@ public class Discounts {
         alphaGradient = 0.0;
     }
 
-    //assume going up the path from the node to the root
+    /**
+     * Adds a factor to discount gradient.  Method assumes that information is provided
+     * as you go UP the tree.
+     *
+     * @param parentDepth parent depth
+     * @param depth current depth
+     * @param typeTables number of tables of type inserted
+     * @param customers number of total customers in node
+     * @param tables number of total tables in node
+     * @param pp predictive probability of type in parent node
+     * @param discount discount in node
+     * @param multFactor factor by which to down-weight gradient update
+     */
     public void updateGradient(int parentDepth, int depth, int typeTables, int customers, int tables, double pp, double discount, double multFactor) {
         double derivLogDa, derivLogDd;
         int d;
@@ -122,7 +174,12 @@ public class Discounts {
         }
     }
 
-    public int cnt = 0;
+    /**
+     * Using gradient information, step the discounts.  Then clears gradient information.
+     *
+     * @param eps governs step size
+     * @param p predictive probability of type prior to insertion into the model
+     */
     public void stepDiscounts(double eps, double p) {
         double proposal;
 
@@ -162,6 +219,9 @@ public class Discounts {
         }
     }
 
+    /**
+     * Conveneince method for printing discount values.
+     */
     public void print(){
         System.out.print("[" + discounts[0]);
         for(int i = 1; i<discounts.length; i++){

@@ -38,7 +38,7 @@ public class SMPredictiveModel extends SamplingSequenceMemoizer implements Predi
         double[] cdf;
         double cuSum, eofAdjustment;
         
-        cdf = continueSequenceCdf(token);
+        cdf = continueSequenceCDF(token);
         eofAdjustment =  1.0 + MIN_SYMBOL_PROB * (double) cdf.length ;
 
         cuSum = 0.0;
@@ -65,7 +65,7 @@ public class SMPredictiveModel extends SamplingSequenceMemoizer implements Predi
         Pair<MutableInteger, double[]> ret;
         double cuSum, eofAdjustment;
         
-        ret = continueSequencePointOnCdf(pointOnCDF);
+        ret = continueSequencePointOnCDF(pointOnCDF);
         token = ret.first().intVal();
         cdf = ret.second();
 
