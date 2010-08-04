@@ -6,7 +6,8 @@
 package edu.columbia.stat.wood.sequencememoizer;
 
 /**
- * Simple interface for a discrete distribution.
+ * Interface for a discrete distribution.
+ *
  * @author nicholasbartlett
  */
 public interface DiscreteDistribution {

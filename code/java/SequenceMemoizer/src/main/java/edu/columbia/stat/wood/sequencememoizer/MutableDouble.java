@@ -6,7 +6,7 @@
 package edu.columbia.stat.wood.sequencememoizer;
 
 /**
- * Convenient container object for native double.
+ * Container object for native double.
  * 
  * @author nicholasbartlett
  */
@@ -31,9 +31,9 @@ public class MutableDouble {
     }
 
     /**
-     * Multiplies object by double factor.
+     * Multiplies object by multiplication factor.
      *
-     * @param multFactor factor multimply by
+     * @param multFactor factor to multiply by
      */
     public void times(double multFactor){
         value *= multFactor;

@@ -8,7 +8,9 @@ package edu.columbia.stat.wood.sequencememoizer;
 import java.util.Random;
 
 /**
- *
+ * A sequence memoizer object using a compressed respresentation and permitting a
+ * usage with a constant memory footprint.
+ * 
  * @author nicholasbartlett
  */
 public class OnlineSequenceMemoizer {

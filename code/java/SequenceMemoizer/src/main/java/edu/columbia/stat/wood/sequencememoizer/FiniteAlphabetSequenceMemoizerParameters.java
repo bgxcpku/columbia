@@ -6,7 +6,7 @@
 package edu.columbia.stat.wood.sequencememoizer;
 
 /**
- *
+ * Extends SequenceMemoizerParameters to specify the base distribution as finite.
  * @author nicholasbartlett
  */
 public class FiniteAlphabetSequenceMemoizerParameters extends SequenceMemoizerParameters {
@@ -34,6 +34,7 @@ public class FiniteAlphabetSequenceMemoizerParameters extends SequenceMemoizerPa
     }
 
     /**
+     * Constructor allowing for some of the parameters to be specified.
      * Default values are discounts = {0.05, 0.7, 0.8, 0.82, 0.84, 0.88, 0.91, 0.92, 0.93, 0.94, 0.95},
      * infiniteDiscount = 0.5, depth = -1, seed = 1, and baseDistribution = UniformDiscreteDistribution(256).
      *
@@ -50,12 +51,12 @@ public class FiniteAlphabetSequenceMemoizerParameters extends SequenceMemoizerPa
     }
 
     /**
+     * Constructor allowing for some of the parameters to be specified.
      * Default values are discounts = {0.05, 0.7, 0.8, 0.82, 0.84, 0.88, 0.91, 0.92, 0.93, 0.94, 0.95},
      * infiniteDiscount = 0.5, depth = -1, seed = 1, and baseDistribution = UniformDiscreteDistribution(256).
      *
      * @param alphabetSize
      */
-
     public FiniteAlphabetSequenceMemoizerParameters(int alphabetSize){
         this(alphabetSize, -1, 1);
     }

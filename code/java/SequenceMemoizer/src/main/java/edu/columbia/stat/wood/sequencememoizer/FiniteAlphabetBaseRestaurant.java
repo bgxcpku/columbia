@@ -171,7 +171,7 @@ public class FiniteAlphabetBaseRestaurant extends FiniteAlphabetRestaurant {
      * @param edgeStart
      */
     @Override
-    public boolean seatCDF(double[] pArray, int type, int d, int depth, int[] context, int index, MutableDouble discountMultFactor) {
+    public boolean seatPDF(double[] pArray, int type, int d, int depth, int[] context, int index, MutableDouble discountMultFactor) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

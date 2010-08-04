@@ -20,7 +20,7 @@ public class UniformDiscreteDistribution extends FiniteDiscreteDistribution {
     private double p;
 
     /**
-     * Contstructs object with given alphabet size.
+     * Contstructs the object with given alphabet size.
      *
      * @param alphabetSize alphabet size
      */
@@ -33,7 +33,7 @@ public class UniformDiscreteDistribution extends FiniteDiscreteDistribution {
     }
 
     /**
-     * Gets probability from uniform distribution.
+     * Gets the probability from the uniform distribution.
      *
      * @param type
      * @return probability probability of type
@@ -46,7 +46,7 @@ public class UniformDiscreteDistribution extends FiniteDiscreteDistribution {
     }
 
     /**
-     * Gets alphabet size.
+     * Gets the alphabet size.
      *
      * @return alphabet size
      */
@@ -55,7 +55,7 @@ public class UniformDiscreteDistribution extends FiniteDiscreteDistribution {
     }
 
     /**
-     * Overides PDF() method to privide more efficient implementation.
+     * Overides PDF() method to provide more efficient implementation.
      *
      * @return PDF ordered by type
      */
@@ -70,9 +70,9 @@ public class UniformDiscreteDistribution extends FiniteDiscreteDistribution {
     }
 
     /**
-     * Overides PDF(double[] pdf) method to prived more efficient implementation.
+     * Overides PDF(double[] pdf) method to proved more efficient implementation.
      *
-     * @param pdf container object for pdf ordered by type
+     * @param pdf container object for PDF, ordered by type
      */
     @Override
     public void PDF(double[] pdf){
@@ -85,9 +85,9 @@ public class UniformDiscreteDistribution extends FiniteDiscreteDistribution {
 
     /**
      * Gets an iterator object which iterates over the set of type, probability pairs
-     * which defines the PDF of this discrete distribution.
+     * which define the PDF of this discrete distribution.
      *
-     * @return iterator
+     * @return iterator object
      */
     @Override
     public UniformFiniteDiscretePDFIterator iterator(){

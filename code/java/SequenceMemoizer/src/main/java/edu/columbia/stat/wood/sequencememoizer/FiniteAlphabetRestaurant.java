@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.TreeMap;
 
 /**
- * Tree node object used in the Chinese restaurant representation for HPYP models.
+ * Tree node object used in the Chinese restaurant representation for the Sequence Memoizer
  *
  * @author nicholasbartlett
  *
@@ -27,7 +27,6 @@ public class FiniteAlphabetRestaurant extends TreeMap<Integer, FiniteAlphabetRes
      */
     public static int count = 0;
 
-
     /**
      * Initializes restaurant with given parameters.
      *
@@ -43,7 +42,6 @@ public class FiniteAlphabetRestaurant extends TreeMap<Integer, FiniteAlphabetRes
         this.discounts = discounts;
 
         tableConfig = new TreeMap<Integer, int[]>();
-        //tableConfig = new HashMap<Integer, int[]>();
         customers = 0;
         tables = 0;
 
@@ -105,7 +103,6 @@ public class FiniteAlphabetRestaurant extends TreeMap<Integer, FiniteAlphabetRes
 
         currentConfig = tableConfig.get(type);
 
-        //update customers and tables if will be deleting a row by replacement
         if (currentConfig != null) {
             for (int cust : currentConfig) {
                 customers -= cust;
@@ -113,7 +110,6 @@ public class FiniteAlphabetRestaurant extends TreeMap<Integer, FiniteAlphabetRes
             tables -= currentConfig.length;
         }
 
-        //update customers and tables
         for (int cust : config) {
             customers += cust;
         }
@@ -334,9 +330,9 @@ public class FiniteAlphabetRestaurant extends TreeMap<Integer, FiniteAlphabetRes
     }
 
     /**
-     * Like recursive seat, only calculates the full predictive CDF prior to insertion of the type.
+     * Like recursive seat, only calculates the full predictive PDF prior to insertion of the type.
      *
-     * @param pArray predictive CDF in parent node
+     * @param pArray predictive PDF in parent node
      * @param type type to be inserted
      * @param d depth of current node
      * @param depth max depth of tree
@@ -346,7 +342,7 @@ public class FiniteAlphabetRestaurant extends TreeMap<Integer, FiniteAlphabetRes
      * @return indicator that a customer must be seated in the parent restaurant
      */
 
-    public boolean seatCDF(double[] pArray, int type, int d, int depth, int[] context, int index, MutableDouble discountMultFactor) {
+    public boolean seatPDF(double[] pArray, int type, int d, int depth, int[] context, int index, MutableDouble discountMultFactor) {
         /***********update ppArray to reflect counts in this restaurant************/
         double pp, discount, multFactor;
         int[] tsa;
@@ -401,7 +397,7 @@ public class FiniteAlphabetRestaurant extends TreeMap<Integer, FiniteAlphabetRes
                     child = new FiniteAlphabetRestaurant(this, index - el + 1, el, discounts);
                 }
                 put(context[index], child);
-                seat = child.seatCDF(pArray, type, d + el, depth, context, index - el, discountMultFactor);
+                seat = child.seatPDF(pArray, type, d + el, depth, context, index - el, discountMultFactor);
             } else {
 
                 es = child.edgeStart();
@@ -415,7 +411,7 @@ public class FiniteAlphabetRestaurant extends TreeMap<Integer, FiniteAlphabetRes
 
                 if (overlap == el) {
 
-                    seat = child.seatCDF(pArray, type, d + el, depth, context, index - el, discountMultFactor);
+                    seat = child.seatPDF(pArray, type, d + el, depth, context, index - el, discountMultFactor);
 
                 } else {
 
@@ -423,7 +419,7 @@ public class FiniteAlphabetRestaurant extends TreeMap<Integer, FiniteAlphabetRes
                     put(context[index], newChild);
                     newChild.put(context[es + el - overlap - 1], child);
 
-                    seat = newChild.seatCDF(pArray, type, d + overlap, depth, context, index - overlap, discountMultFactor);
+                    seat = newChild.seatPDF(pArray, type, d + overlap, depth, context, index - overlap, discountMultFactor);
 
                 }
             }
@@ -489,7 +485,7 @@ public class FiniteAlphabetRestaurant extends TreeMap<Integer, FiniteAlphabetRes
     }
 
     /**
-     * Like recursive seatCDF, but now only way to identify the type to seat is
+     * Like recursive seatPDF, but now only way to identify the type to seat is
      * a point on the predictive CDF.  The predictive CDF is calculated prior to insertion,
      * the correct type is identified, and the type is then inserted into the model.
      *
@@ -842,7 +838,7 @@ public class FiniteAlphabetRestaurant extends TreeMap<Integer, FiniteAlphabetRes
     }
 
     /**
-     * Unseats a given type from the restaurant.  This method is used in sampling.
+     * Unseats a given type from the restaurant.
      *
      * @param type type to useat
      */

@@ -4,8 +4,14 @@
  */
 package edu.columbia.stat.wood.sequencememoizer;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 /**
- * Sequence memoizer model with sampling functionality.
+ * Sequence memoizer model for finite alphabets.
  * 
  * @author nicholasbartlett 
  */
@@ -16,16 +22,22 @@ public class FiniteAlphabetSequenceMemoizer extends BaseSequenceMemoizer {
      * Random object used for random number generation throughout the model.
      */
     public static MersenneTwisterFast RNG;
+
+    /**
+     * A number used to provide a lower bound on the predictive probabilities
+     * obtained by the model.
+     */
     public static double MIN_SYMBOL_PROB = 5.01 / (double) (Integer.MAX_VALUE);
     
     private int alphabetSize, depth;
-    private long seed;
-    private FiniteAlphabetRestaurant emptyContextRestaurant;
     private FiniteAlphabetBaseRestaurant baseRestaurant;
+    private FiniteAlphabetRestaurant emptyContextRestaurant;
     private Sequence sequence;
     private Discounts discounts;
+    
+    private long seed;
     private FiniteDiscreteDistribution baseDistribution;
-
+    
     /**
      * Initializes the object based on the specified parameters.
      *
@@ -71,7 +83,7 @@ public class FiniteAlphabetSequenceMemoizer extends BaseSequenceMemoizer {
 
     /**
      * Incorporates the observation in the model with the assumption that this observation
-     * is the next in a continuing sequence. Observations are restricted to the interval [0,alphabetSize).
+     * is the next in a continuing sequence.
      *
      * @param observation integer value of observation
      * @return the log probability of the observation in the predictive
@@ -99,10 +111,10 @@ public class FiniteAlphabetSequenceMemoizer extends BaseSequenceMemoizer {
 
     /**
      * Incorporates the observation in the model with the assumption that this observation
-     * is the next in a continuing sequence. Observations are restricted to the interval [0,alphabetSize).
+     * is the next in a continuing sequence.
      *
      * @param observation integer value of observation
-     * @return predictive predictive CDF prior to incorporating the observation into the model
+     * @param range container object for values of CDF(observation-1) and CDF(observation)
      */
     public void continueSequenceRange(int observation, Range r) {
         if (observation < 0 || observation >= alphabetSize) {
@@ -114,7 +126,7 @@ public class FiniteAlphabetSequenceMemoizer extends BaseSequenceMemoizer {
 
         pdf = baseRestaurant.predictivePDF();
 
-        if(emptyContextRestaurant.seatCDF(pdf, observation, 0, depth, sequence.fullSeq(),sequence.length() - 1, new MutableDouble(1.0))) {
+        if(emptyContextRestaurant.seatPDF(pdf, observation, 0, depth, sequence.fullSeq(),sequence.length() - 1, new MutableDouble(1.0))) {
             baseRestaurant.seat(observation);
         }
 
@@ -132,13 +144,13 @@ public class FiniteAlphabetSequenceMemoizer extends BaseSequenceMemoizer {
     }
 
     /**
-     * Finds the observation on the predictive CDF with the assumption that the next observation
-     * is the next in a continuing sequence.  The observation is then incorporated into
+     * Finds the observation on the predictive CDF such that CDF(observation) greater than pointOnCDF
+     * and CDF(observation - 1) less than or equal to pointOnCDF. The predictive CDF is calculated based on the
+     * assumption that the observation is the next in a continuing sequence. The observation is then incorporated into
      * the model.
      *
      * @param pointOnCdf point on cdf, must be in [0.0,1.0)
-     * @return Pair containing type of observation seated and predictive cdf prior to incorporating the
-     * type into the model
+     * @param rad container object for observation type, CDF(observation-1), and CDF(observation)
      */
     public void continueSequenceRangeAndDecode(double pointOnCdf, RangeAndDecode rad) {
         if (pointOnCdf < 0.0 || pointOnCdf >= 1.0) {
@@ -205,7 +217,7 @@ public class FiniteAlphabetSequenceMemoizer extends BaseSequenceMemoizer {
 
     /**
      * Gets an iterator object to return the type, probability pairs which define
-     * the predictive PDF given the specified context.
+     * the predictive PDF in the specified context.
      *
      * @param context context
      * @return iterator object to return type, probability pairs of the predictive PDF
@@ -280,7 +292,7 @@ public class FiniteAlphabetSequenceMemoizer extends BaseSequenceMemoizer {
     }
 
     /**
-     * Get paramters in a SMParameters object.
+     * Get paramters.
      *
      * @return values of parameters of the model in its current state
      */
@@ -423,5 +435,41 @@ public class FiniteAlphabetSequenceMemoizer extends BaseSequenceMemoizer {
         }
 
         return logLik + r.logLik();
+    }
+
+    public static void main(String[] args) throws FileNotFoundException, IOException{
+        FiniteAlphabetSequenceMemoizer sm;
+        sm = new FiniteAlphabetSequenceMemoizer();
+
+        BufferedInputStream bis = null;
+        File f, g;
+
+        //f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/pride_and_prejudice/pride_and_prejudice.txt");
+        f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/alice_in_wonderland/AliceInWonderland.txt");
+        //f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/nyt/lmdata-nyt.1-10000");
+        //f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/wikipedia/enwik8");
+        //f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/calgary_corpus/geo");
+
+        double logLik = 0.0;
+
+        try{
+            bis = new BufferedInputStream(new FileInputStream(f));
+
+            int b, ind;
+            ind = 0;
+            while((b = bis.read()) > -1 ) {
+                if(ind++ % 100000 == 0){
+                    System.out.println(ind++-1);
+                }
+                logLik += sm.continueSequence(b);
+            }
+        } finally {
+            if (bis != null){
+                bis.close();
+            }
+        }
+
+        System.out.println(-logLik / Math.log(2) / f.length());
+        System.out.println(FiniteAlphabetRestaurant.count);
     }
 }

@@ -6,15 +6,16 @@ package edu.columbia.stat.wood.sequencememoizer;
 
 /**
  * A container object for the parameters of a sequence memoizer. For depths >= discounts.length, the discount is
- * discounts[discounts.length -1]^(alpha ^ (depth - discounts.length + 1)).  Alpha is set such that the marginal
- * discount value for an infinitely deep restaurant, which governs its relationship to restaurants are the
- * discounts.length - 1 depth, is equal to the infiniteDiscount.
+ * discounts[discounts.length -1]^(alpha ^ (depth - discounts.length + 1)).  Alpha is set such that the product of discounts
+ * for depths = discounts.length through infinity converges to the specified infinite discount.  This prevents the
+ * product of the discounts from converging to 0.0 and helps prevent the overdeterminism seen in some other parameterizations
+ * of the model.
  *
  * @author nicholasbartlett
  */
 public class SequenceMemoizerParameters {
     /**
-     * Unique discount parameters.
+     * Unique discount parameters for first few (0 - discounts.length-1) depths.
      */
     public double[] discounts;
 
@@ -34,7 +35,10 @@ public class SequenceMemoizerParameters {
     public DiscreteDistribution baseDistribution;
 
     /**
-     * Mariginal discount of an infinite depth restaurant wrt restaurants at the discounts.lenghth - 1 depth.
+     * The product of the discounts for depths of discounts.length through infinity will converge to this infinite discount.
+     * In more interpretable terms this means that if condition distribution R is at depth discounts.length-1 then the prior indicates that
+     * restaurants at near infinite depth which share the same recent context of length discounts.length-1 will follow a Pitman-Yor
+     * distribution centered at R with discount infiniteDiscount and concentration 0.0.
      */
     public double infiniteDiscount;
 
@@ -56,6 +60,7 @@ public class SequenceMemoizerParameters {
     }
 
     /**
+     * Constructor allowing for some of the parameters to be specified.
      * Default values are discounts = {0.05, 0.7, 0.8, 0.82, 0.84, 0.88, 0.91, 0.92, 0.93, 0.94, 0.95},
      * infiniteDiscount = 0.5, depth = -1, seed = 1, and baseDistribution = UniformDiscreteDistribution(256).
      * 
@@ -72,12 +77,12 @@ public class SequenceMemoizerParameters {
     }
 
     /**
+     * Constructor allowing for some of the parameters to be specified.
      * Default values are discounts = {0.05, 0.7, 0.8, 0.82, 0.84, 0.88, 0.91, 0.92, 0.93, 0.94, 0.95},
      * infiniteDiscount = 0.5, depth = -1, seed = 1, and baseDistribution = UniformDiscreteDistribution(256).
      * 
      * @param alphabetSize
      */
-
     public SequenceMemoizerParameters(int alphabetSize){
         this(alphabetSize, -1, 1);
     }

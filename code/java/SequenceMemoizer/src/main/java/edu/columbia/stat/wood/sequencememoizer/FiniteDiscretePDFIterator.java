@@ -16,6 +16,10 @@ public class FiniteDiscretePDFIterator extends DiscretePDFIterator{
     private double[] pdf;
     private int index, l;
 
+    /**
+     * Creates the iterator object with the specified double[] backing it.
+     * @param pdf the actual PDF ordered by type
+     */
     public FiniteDiscretePDFIterator(double[] pdf){
         this.pdf = pdf;
         index = 0;
@@ -33,9 +37,9 @@ public class FiniteDiscretePDFIterator extends DiscretePDFIterator{
 
     /**
      * Gets the next value of the PDF and the type to which it corresponds.  This allows
-     * you to iterate over the PDF in the order the prorammer finds most convenient.
+     * you to iterate over the PDF in arbitrary order.
      *
-     * @return an Integer, Double pair representing the type and the probability of that type
+     * @return an Integer, Double pair containing a type and the probability of that type
      */
     public Pair<Integer, Double> next() {
         if(index >= l){

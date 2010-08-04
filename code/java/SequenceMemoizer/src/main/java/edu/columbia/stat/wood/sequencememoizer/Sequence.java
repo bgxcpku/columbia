@@ -5,7 +5,7 @@
 package edu.columbia.stat.wood.sequencememoizer;
 
 /**
- * Container object for int[] containing the values of the sequence being memoized. 
+ * Container object for an int[] containing the values of the sequence being memoized.
  * Object implements specific methods useful in the data manipulation needed
  * for the sequence memoizer.
  *
@@ -37,7 +37,7 @@ public class Sequence {
     /**
      * Gets the underlying full sequence.
      *
-     * @return an int[] which is the full sequence, possibly with 0's filling in
+     * @return an int[] which is the full sequence, probably with 0's filling in
      * the end
      */
     public int[] fullSeq() {
@@ -55,7 +55,7 @@ public class Sequence {
     }
 
     /**
-     * Adds token to the sequence.  Automatically makes the underlying int[] longer
+     * Adds a token to the sequence.  Automatically makes the underlying int[] longer
      * if need be.  Increments are made in batches of 100k.
      *
      * @param token int value to be added

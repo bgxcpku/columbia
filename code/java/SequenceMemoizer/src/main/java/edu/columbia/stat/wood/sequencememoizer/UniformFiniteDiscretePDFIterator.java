@@ -8,6 +8,8 @@ package edu.columbia.stat.wood.sequencememoizer;
 import java.util.NoSuchElementException;
 
 /**
+ * An iterator object to iterate over the type probability pairs which define
+ * the PDF of a uniform finite discrete distribution.
  *
  * @author nicholasbartlett
  */
@@ -15,6 +17,9 @@ public class UniformFiniteDiscretePDFIterator extends FiniteDiscretePDFIterator 
     private int alphabetSize, index;
     private double p;
 
+    /**
+     * @param alphabetSize finite size of alphabet
+     */
     public UniformFiniteDiscretePDFIterator(int alphabetSize){
         super(null);
         p = 1.0 / (double) alphabetSize;
@@ -31,10 +36,10 @@ public class UniformFiniteDiscretePDFIterator extends FiniteDiscretePDFIterator 
     }
 
     /**
-     * Gets the next value of the PDF and the type to which it corresponds.  This allows
-     * you to iterate over the PDF in the order the prorammer finds most convenient.
+     * Gets the next type in the distribution and the  corresponding value of the PDF.  
+     * This allows you to iterate over the PDF in an abritrary order.
      *
-     * @return an Integer, Double pair representing the type and the probability of that type
+     * @return an Integer, Double pair containing the type and the probability of that type
      */
     @Override
     public Pair<Integer, Double> next() {
