@@ -4,45 +4,59 @@
  */
 package edu.columbia.stat.wood.sequencememoizer;
 
-import java.util.Random;
-
 /**
  * Sequence memoizer model with sampling functionality.
  * 
  * @author nicholasbartlett 
  */
 
-public class SamplingSequenceMemoizer extends BaseSequenceMemoizer {
+public class FiniteAlphabetSequenceMemoizer extends BaseSequenceMemoizer {
 
     /**
      * Random object used for random number generation throughout the model.
      */
-    public static Random RNG;
+    public static MersenneTwisterFast RNG;
     
     private int alphabetSize, depth;
     private long seed;
-    private SamplingRestaurant emptyContextRestaurant;
-    private SamplingBaseRestaurant baseRestaurant;
+    private FiniteAlphabetRestaurant emptyContextRestaurant;
+    private FiniteAlphabetBaseRestaurant baseRestaurant;
     private Sequence sequence;
     private Discounts discounts;
-    private DiscreteDistribution baseDistribution;
+    private FiniteDiscreteDistribution baseDistribution;
 
     /**
      * Initializes the object based on the specified parameters.
      *
      * @param params
      */
-    public SamplingSequenceMemoizer(SMParameters params){
-       alphabetSize = params.alphabetSize;
+    public FiniteAlphabetSequenceMemoizer(FiniteAlphabetSequenceMemoizerParameters params){
        depth = params.depth;
        seed = params.seed;
        discounts = new Discounts(params.discounts, params.infiniteDiscount);
        baseDistribution = params.baseDistribution;
+       alphabetSize = params.baseDistribution.alphabetSize();
 
-       RNG = new Random(seed);
+       RNG = new MersenneTwisterFast(seed);
        sequence = new Sequence();
-       baseRestaurant = new SamplingBaseRestaurant(baseDistribution);
-       emptyContextRestaurant = new SamplingRestaurant(baseRestaurant, 0,0, discounts);
+       baseRestaurant = new FiniteAlphabetBaseRestaurant(params.baseDistribution);
+       emptyContextRestaurant = new FiniteAlphabetRestaurant(baseRestaurant, 0,0, discounts);
+    }
+
+    /**
+     * Initializes the object with a specified alphabet size.
+     *
+     * @param alphabetSize
+     */
+    public FiniteAlphabetSequenceMemoizer(int alphabetSize){
+        this(new FiniteAlphabetSequenceMemoizerParameters(alphabetSize));
+    }
+
+    /**
+     * Initializes the object with default parameters.
+     */
+    public FiniteAlphabetSequenceMemoizer(){
+        this(new FiniteAlphabetSequenceMemoizerParameters());
     }
 
     /**
@@ -77,6 +91,9 @@ public class SamplingSequenceMemoizer extends BaseSequenceMemoizer {
         discounts.stepDiscounts(0.0001, p.doubleVal());
 
         return Math.log(p.doubleVal());
+
+        /*sequence.add(observation);
+        return get(emptyContextRestaurant, sequence.fullSeq(), sequence.length() - 2, false).seat(observation);*/
     }
 
     /**
@@ -93,7 +110,7 @@ public class SamplingSequenceMemoizer extends BaseSequenceMemoizer {
 
         double[] cdf;
 
-        cdf = baseRestaurant.predictiveProbability();
+        cdf = baseRestaurant.predictivePDF();
 
         if(emptyContextRestaurant.seatCDF(cdf, observation, 0, depth, sequence.fullSeq(),sequence.length() - 1, new MutableDouble(1.0))) {
             baseRestaurant.seat(observation);
@@ -123,7 +140,7 @@ public class SamplingSequenceMemoizer extends BaseSequenceMemoizer {
         double[] cdf;
 
         type = new MutableInteger(-1);
-        cdf = baseRestaurant.predictiveProbability();
+        cdf = baseRestaurant.predictivePDF();
 
         if(emptyContextRestaurant.seatPointOnCDF(pointOnCdf, cdf, type, 0, depth, sequence.fullSeq(), sequence.length()-1, new MutableDouble(1.0))){
             baseRestaurant.seat(type.intVal());
@@ -143,23 +160,26 @@ public class SamplingSequenceMemoizer extends BaseSequenceMemoizer {
      * @return integer array of samples from context specific predictive distribution
      */
     public int[] generate(Sequence context, int numSamples) {
-        double[] cdf;
+        FiniteDiscretePDFIterator iterator;
+        Pair<Integer, Double> pdfPair;
         int[] samples;
         double r, cuSum;
 
         samples = new int[numSamples];
-        cdf = predictiveProbability(context);
+        iterator = predictivePDF(context);
 
         for(int i = 0; i < numSamples; i++){
             r = RNG.nextDouble();
             cuSum = 0.0;
-            for(int token = 0; token < cdf.length; token++){
-                cuSum += cdf[token];
+            iterator.reset();
+            while(iterator.hasNext()){
+                pdfPair = iterator.next();
+                cuSum += pdfPair.second();
                 if(cuSum > r){
-                    samples[i] = token;
+                    samples[i] = pdfPair.first();
                     break;
                 }
-                assert token != cdf.length - 1;
+                assert cuSum < 1.0;
             }
         }
 
@@ -167,13 +187,14 @@ public class SamplingSequenceMemoizer extends BaseSequenceMemoizer {
     }
 
     /**
-     * Gets the predictive CDF over the entire alphabet given a specific context.
+     * Gets an iterator object to return the type, probability pairs which define
+     * the predictive PDF given the specified context.
      *
      * @param context context
-     * @return array of predictive probabilities for tokens 0 - (alphabetSize - 1)
+     * @return iterator object to return type, probability pairs of the predictive PDF
      */
-    public double[] predictiveProbability(Sequence context) {
-        return get(emptyContextRestaurant, context.fullSeq(), context.length()-1, true).predictiveProbability();
+    public FiniteDiscretePDFIterator predictivePDF(Sequence context) {
+        return new FiniteDiscretePDFIterator(get(emptyContextRestaurant, context.fullSeq(), context.length()-1, true).predictivePDF());
     }
 
     /**
@@ -246,7 +267,7 @@ public class SamplingSequenceMemoizer extends BaseSequenceMemoizer {
      *
      * @return values of parameters of the model in its current state
      */
-    public SMParameters getParameters() {
+    public SequenceMemoizerParameters getParameters() {
         double[] d;
 
         d = new double[discounts.length()];
@@ -254,11 +275,11 @@ public class SamplingSequenceMemoizer extends BaseSequenceMemoizer {
             d[i] = discounts.get(i);
         }
 
-        return new SMParameters(d, discounts.getdInfinity(), alphabetSize, depth, seed, baseDistribution);
+        return new FiniteAlphabetSequenceMemoizerParameters(d, discounts.getdInfinity(), depth, seed, baseDistribution);
     }
 
-    private SamplingRestaurant get(SamplingRestaurant r, int[] context, int index, boolean forPrediction) {
-        SamplingRestaurant child, newChild;
+    private FiniteAlphabetRestaurant get(FiniteAlphabetRestaurant r, int[] context, int index, boolean forPrediction) {
+        FiniteAlphabetRestaurant child, newChild;
         int overlap, es, el, d;
         boolean leafNode;
         int[] seq;
@@ -286,10 +307,10 @@ public class SamplingSequenceMemoizer extends BaseSequenceMemoizer {
             } else {
 
                 if (depth == -1) {
-                    child = new SamplingRestaurant(r, 0, index + 1, discounts);
+                    child = new FiniteAlphabetRestaurant(r, 0, index + 1, discounts);
                 } else {
                     el = (depth - d < index + 1) ? depth - d : index + 1;
-                    child = new SamplingRestaurant(r, index - el + 1, el, discounts);
+                    child = new FiniteAlphabetRestaurant(r, index - el + 1, el, discounts);
                 }
 
                 r.put(context[index], child);
@@ -327,8 +348,8 @@ public class SamplingSequenceMemoizer extends BaseSequenceMemoizer {
         return get(newChild, context, index - overlap, forPrediction);
     }
 
-    private void sampleSeatingArrangments(SamplingRestaurant r){
-        for(SamplingRestaurant child : r.values()){
+    private void sampleSeatingArrangments(FiniteAlphabetRestaurant r){
+        for(FiniteAlphabetRestaurant child : r.values()){
             sampleSeatingArrangments(child);
         }
         r.sampleSeatingArrangements();
@@ -375,12 +396,12 @@ public class SamplingSequenceMemoizer extends BaseSequenceMemoizer {
         return logLik;
     }
 
-    private double score(SamplingRestaurant r){
+    private double score(FiniteAlphabetRestaurant r){
         double logLik;
 
         logLik = 0.0;
 
-        for(SamplingRestaurant child : r.values()){
+        for(FiniteAlphabetRestaurant child : r.values()){
             logLik += score(child);
         }
 

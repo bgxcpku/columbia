@@ -27,8 +27,8 @@ public class Main {
         sm = new OnlineSequenceMemoizer(new SMParameters(256, 15, 1));
         */
 
-        SamplingSequenceMemoizer sm;
-        sm = new SamplingSequenceMemoizer(new SMParameters(256,-1, 0));
+        FiniteAlphabetSequenceMemoizer sm;
+        sm = new FiniteAlphabetSequenceMemoizer();
         
         BufferedInputStream bis = null;
         File f, g;
@@ -59,8 +59,8 @@ public class Main {
         }
 
         System.out.println(-logLik / Math.log(2) / f.length());
-        System.out.println(OnlineRestaurant.count);
-        System.out.println(SamplingRestaurant.count);
+        //System.out.println(OnlineRestaurant.count);
+        System.out.println(FiniteAlphabetRestaurant.count);
     }
     
     public static void printVector(int[] vect){

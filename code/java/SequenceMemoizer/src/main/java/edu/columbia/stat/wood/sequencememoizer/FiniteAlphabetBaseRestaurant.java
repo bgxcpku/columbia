@@ -10,16 +10,16 @@ package edu.columbia.stat.wood.sequencememoizer;
  *
  * @author nicholasbartlett
  */
-public class SamplingBaseRestaurant extends SamplingRestaurant {
+public class FiniteAlphabetBaseRestaurant extends FiniteAlphabetRestaurant {
     private int[] customers;
-    private DiscreteDistribution baseDistribution;
+    private FiniteDiscreteDistribution baseDistribution;
 
     /**
      * Initializes the restaurant with a discrete distribution.
      *
      * @param baseDistribution discrete distribution used as base distribution
      */
-    public SamplingBaseRestaurant(DiscreteDistribution baseDistribution){
+    public FiniteAlphabetBaseRestaurant(FiniteDiscreteDistribution baseDistribution){
         super(null, 0, 0, null);
         customers = new int[baseDistribution.alphabetSize()];
         this.baseDistribution = baseDistribution;
@@ -66,8 +66,8 @@ public class SamplingBaseRestaurant extends SamplingRestaurant {
      * @return double[] of predictive probabilities
      */
     @Override
-    public double[] predictiveProbability(){
-        return baseDistribution.CDF();
+    public double[] predictivePDF(){
+        return baseDistribution.PDF();
     }
 
     /**
@@ -191,7 +191,7 @@ public class SamplingBaseRestaurant extends SamplingRestaurant {
      * @param edgeStart
      */
     @Override
-    public SamplingRestaurant fragment(SamplingRestaurant irParent, int irEdgeStart, int irEdgeLength, boolean forPrediction) {
+    public FiniteAlphabetRestaurant fragment(FiniteAlphabetRestaurant irParent, int irEdgeStart, int irEdgeLength, boolean forPrediction) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

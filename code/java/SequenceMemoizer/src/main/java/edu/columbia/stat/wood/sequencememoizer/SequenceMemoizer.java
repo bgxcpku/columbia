@@ -77,12 +77,13 @@ public interface SequenceMemoizer {
     public int[] generateSequence(Sequence initialContext, int sequenceLength);
 
     /**
-     * Gets the predictive CDF over the entire alphabet given a specific context.
+     * Gets an iterator object to return the type, probability pairs which define
+     * the predictive PDF given the specified context.
      *
      * @param context context
-     * @return array of predictive probabilities for tokens 0 - (alphabetSize - 1)
+     * @return iterator object to return type, probability pairs of the predictive PDF
      */
-    public double[] predictiveProbability(Sequence context);
+    public DiscretePDFIterator predictivePDF(Sequence context);
 
     /**
      * Gets the predictive probability of a  token in a given context.
@@ -126,5 +127,5 @@ public interface SequenceMemoizer {
      *
      * @return values of parameters of the model in its current state
      */
-    public SMParameters getParameters();
+    public SequenceMemoizerParameters getParameters();
 }
