@@ -11,10 +11,10 @@ package edu.columbia.stat.wood.sequencememoizer;
  */
 class OnlineBaseRestaurant extends OnlineRestaurant{
 
-    DiscreteDistribution baseDistribution;
+    FiniteDiscreteDistribution baseDistribution;
     private int[] customers;
 
-    public OnlineBaseRestaurant(DiscreteDistribution baseDistribution) {
+    public OnlineBaseRestaurant(FiniteDiscreteDistribution baseDistribution) {
         super(null, null, null);
         this.baseDistribution = baseDistribution;
         customers = new int[baseDistribution.alphabetSize()];
@@ -32,7 +32,7 @@ class OnlineBaseRestaurant extends OnlineRestaurant{
 
     @Override
     public double[] predictiveProbability(){
-        return baseDistribution.CDF();
+        return baseDistribution.PDF();
     }
     
     public void seat(int type) {

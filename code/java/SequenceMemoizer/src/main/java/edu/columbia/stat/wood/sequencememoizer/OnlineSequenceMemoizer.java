@@ -20,18 +20,18 @@ public class OnlineSequenceMemoizer {
     private OnlineBaseRestaurant baseRestaurant;
     private Discounts discounts;
     private long seed;
-    private DiscreteDistribution baseDistribution;
+    private FiniteDiscreteDistribution baseDistribution;
     private int[] context;
 
-    public OnlineSequenceMemoizer(SMParameters params){
-       alphabetSize = params.alphabetSize;
+    public OnlineSequenceMemoizer(FiniteAlphabetSequenceMemoizerParameters params){
+       alphabetSize = params.baseDistribution.alphabetSize();
        depth = params.depth;
        seed = params.seed;
        discounts = new Discounts(params.discounts, params.infiniteDiscount);
        baseDistribution = params.baseDistribution;
 
        RNG = new Random(seed);
-       baseRestaurant = new OnlineBaseRestaurant(baseDistribution);
+       baseRestaurant = new OnlineBaseRestaurant(params.baseDistribution);
        emptyContextRestaurant = new OnlineRestaurant(baseRestaurant, new int[0], discounts);
        context = new int[0];
     }

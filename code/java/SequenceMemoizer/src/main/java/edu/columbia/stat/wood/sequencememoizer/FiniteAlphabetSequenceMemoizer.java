@@ -16,6 +16,7 @@ public class FiniteAlphabetSequenceMemoizer extends BaseSequenceMemoizer {
      * Random object used for random number generation throughout the model.
      */
     public static MersenneTwisterFast RNG;
+    public static double MIN_SYMBOL_PROB = 5.01 / (double) (Integer.MAX_VALUE);
     
     private int alphabetSize, depth;
     private long seed;
@@ -92,8 +93,8 @@ public class FiniteAlphabetSequenceMemoizer extends BaseSequenceMemoizer {
 
         return Math.log(p.doubleVal());
 
-        /*sequence.add(observation);
-        return get(emptyContextRestaurant, sequence.fullSeq(), sequence.length() - 2, false).seat(observation);*/
+        //sequence.add(observation);
+        //return get(emptyContextRestaurant, sequence.fullSeq(), sequence.length() - 2, false).seat(observation);
     }
 
     /**
@@ -103,23 +104,31 @@ public class FiniteAlphabetSequenceMemoizer extends BaseSequenceMemoizer {
      * @param observation integer value of observation
      * @return predictive predictive CDF prior to incorporating the observation into the model
      */
-    public double[] continueSequenceCDF(int observation) {
+    public void continueSequenceRange(int observation, Range r) {
         if (observation < 0 || observation >= alphabetSize) {
             throw new IllegalArgumentException("Observations must be integers in the interval [0,alphabetSize).");
         }
 
-        double[] cdf;
+        double[] pdf;
+        double eofAdjustment, cuSum;
 
-        cdf = baseRestaurant.predictivePDF();
+        pdf = baseRestaurant.predictivePDF();
 
-        if(emptyContextRestaurant.seatCDF(cdf, observation, 0, depth, sequence.fullSeq(),sequence.length() - 1, new MutableDouble(1.0))) {
+        if(emptyContextRestaurant.seatCDF(pdf, observation, 0, depth, sequence.fullSeq(),sequence.length() - 1, new MutableDouble(1.0))) {
             baseRestaurant.seat(observation);
         }
 
         sequence.add(observation);
-        discounts.stepDiscounts(0.0001, cdf[observation]);
+        discounts.stepDiscounts(0.0001, pdf[observation]);
 
-        return cdf;
+        eofAdjustment =  1.0 + MIN_SYMBOL_PROB * (double) alphabetSize ;
+
+        cuSum = 0.0;
+        for(int i = 0; i < observation; i++){
+            cuSum += (pdf[i] + MIN_SYMBOL_PROB) / eofAdjustment;
+        }
+
+        r.set(cuSum, cuSum + (pdf[observation] + MIN_SYMBOL_PROB) / eofAdjustment);
     }
 
     /**
@@ -131,25 +140,33 @@ public class FiniteAlphabetSequenceMemoizer extends BaseSequenceMemoizer {
      * @return Pair containing type of observation seated and predictive cdf prior to incorporating the
      * type into the model
      */
-    public Pair<MutableInteger, double[]> continueSequencePointOnCDF(double pointOnCdf) {
+    public void continueSequenceRangeAndDecode(double pointOnCdf, RangeAndDecode rad) {
         if (pointOnCdf < 0.0 || pointOnCdf >= 1.0) {
             throw new IllegalArgumentException("Point on CDF must be a double in the interval [0,1).");
         }
 
         MutableInteger type;
-        double[] cdf;
+        double[] pdf;
+        double eofAdjustment, cuSum;
 
         type = new MutableInteger(-1);
-        cdf = baseRestaurant.predictivePDF();
+        pdf = baseRestaurant.predictivePDF();
 
-        if(emptyContextRestaurant.seatPointOnCDF(pointOnCdf, cdf, type, 0, depth, sequence.fullSeq(), sequence.length()-1, new MutableDouble(1.0))){
+        if(emptyContextRestaurant.seatPointOnCDF(pointOnCdf, pdf, type, 0, depth, sequence.fullSeq(), sequence.length()-1, new MutableDouble(1.0))){
             baseRestaurant.seat(type.intVal());
         }
 
         sequence.add(type.intVal());
-        discounts.stepDiscounts(0.0001, cdf[type.intVal()]);
+        discounts.stepDiscounts(0.0001, pdf[type.intVal()]);
 
-        return new Pair(type, cdf);
+        eofAdjustment =  1.0 + MIN_SYMBOL_PROB * (double) alphabetSize ;
+
+        cuSum = 0.0;
+        for(int i = 0; i < type.intVal(); i++){
+            cuSum += (pdf[i] + MIN_SYMBOL_PROB) / eofAdjustment;
+        }
+
+        rad.set(type.intVal(), cuSum, cuSum + (pdf[type.intVal()] + MIN_SYMBOL_PROB) / eofAdjustment);
     }
 
     /**

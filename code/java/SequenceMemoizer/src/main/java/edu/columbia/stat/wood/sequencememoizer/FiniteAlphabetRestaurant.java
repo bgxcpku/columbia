@@ -22,8 +22,6 @@ public class FiniteAlphabetRestaurant extends TreeMap<Integer, FiniteAlphabetRes
     private Discounts discounts;
     private int edgeStart, edgeLength;
 
-    private static double MIN_SYMBOL_PROB = 5.01 / (double) (Integer.MAX_VALUE);
-
     /**
      * Count of instantiated restaurants.
      */
@@ -553,11 +551,11 @@ public class FiniteAlphabetRestaurant extends TreeMap<Integer, FiniteAlphabetRes
         if (leafNode) {
             seat = true;
 
-            eofAdjustment = 1.0 + MIN_SYMBOL_PROB * (double) pArray.length ;
+            eofAdjustment = 1.0 + FiniteAlphabetSequenceMemoizer.MIN_SYMBOL_PROB * (double) pArray.length ;
             cuSum = 0.0;
             for(int t = 0; t < pArray.length; t++){
 
-                cuSum += (pArray[t] + MIN_SYMBOL_PROB) / eofAdjustment;
+                cuSum += (pArray[t] + FiniteAlphabetSequenceMemoizer.MIN_SYMBOL_PROB) / eofAdjustment;
                 if(cuSum > pointOnCdf){
                     type.set(t);
                     break;

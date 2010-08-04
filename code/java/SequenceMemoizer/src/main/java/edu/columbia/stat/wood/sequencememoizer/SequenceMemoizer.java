@@ -34,7 +34,7 @@ public interface SequenceMemoizer {
      * @param observation integer value of observation
      * @return predictive predictive CDF prior to incorporating the observation into the model
      */
-    public double[] continueSequenceCDF(int observation);
+    public void continueSequenceRange(int observation, Range range);
 
     /**
      * Finds the observation on the predictive CDF with the assumption that the next observation
@@ -45,7 +45,7 @@ public interface SequenceMemoizer {
      * @return Pair containing type of observation seated and predictive cdf prior to incorporating the
      * type into the model
      */
-    public Pair<MutableInteger, double[]> continueSequencePointOnCDF(double pointOnCdf);
+    public void continueSequenceRangeAndDecode(double pointOnCdf, RangeAndDecode rad);
 
     /**
      * Incorporates an array of observations with the assumption that they are the next observations

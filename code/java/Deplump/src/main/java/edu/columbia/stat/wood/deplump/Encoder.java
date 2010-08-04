@@ -4,6 +4,7 @@
  */
 package edu.columbia.stat.wood.deplump;
 
+import edu.columbia.stat.wood.sequencememoizer.Range;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -28,7 +29,7 @@ public class Encoder {
     private int currentByte = 0;
     private int byteIndex = 0;
 
-    private double[] interval;
+    private Range r;
 
     /**
      * Creates the encoder using a specified predictive model and an underlying
@@ -40,7 +41,7 @@ public class Encoder {
     public Encoder(PredictiveModel pm, OutputStream out) {
         this.pm = pm;
         this.out = out;
-        interval = new double[2];
+        r = new Range(0.0,0.0);
     }
 
     /**
@@ -50,10 +51,15 @@ public class Encoder {
      * @throws IOException
      */
     public void encode(int observation) throws IOException {
-        pm.cumulativeDistributionInterval(observation, interval);
+        double l,h;
 
-        low += interval[0] * range;
-        range *= (interval[1] - interval[0]);
+        pm.continueSequenceRange(observation, r);
+        l = r.low();
+        h = r.high();
+
+
+        low += l * range;
+        range *= (h-l);
 
         while ((low ^ (low + range)) < first_bit_indicator) {
             write(low >> 62);
