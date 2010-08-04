@@ -5,6 +5,7 @@
 package edu.columbia.stat.wood.sequencememoizer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.TreeMap;
 
@@ -15,8 +16,9 @@ import java.util.TreeMap;
  *
  */
 public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
-
+//public class SamplingRestaurant extends HashMap<Integer, SamplingRestaurant> {
     private TreeMap<Integer, int[]> tableConfig;
+    //private HashMap<Integer, int[]> tableConfig;
     private SamplingRestaurant parent;
     private int customers, tables;
     private Discounts discounts;
@@ -43,9 +45,12 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
         this.edgeStart = edgeStart;
         this.edgeLength = edgeLength;
         this.discounts = discounts;
+
         tableConfig = new TreeMap<Integer, int[]>();
+        //tableConfig = new HashMap<Integer, int[]>();
         customers = 0;
         tables = 0;
+
         count++;
     }
 

@@ -51,7 +51,7 @@ public class SamplingSequenceMemoizer extends BaseSequenceMemoizer {
      * @param maxNumberRestaurants
      */
     public void limitMemory(long maxNumberRestaurants){
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new UnsupportedOperationException("Not supported in this implementing class.");
     }
 
     /**

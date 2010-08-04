@@ -47,7 +47,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>edu.columbia.stat.wood.rangeencoder.Deplump</mainClass>
+                            <mainClass>edu.columbia.stat.wood.deplump.Deplump</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

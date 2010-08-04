@@ -22,9 +22,13 @@ public class Main {
      */
     public static void main(String[] args) throws FileNotFoundException, IOException {
 
-        SequenceMemoizer sm;
-        
-        sm = new SamplingSequenceMemoizer(new SMParameters(256, -1, 0));
+        /*
+        OnlineSequenceMemoizer sm;
+        sm = new OnlineSequenceMemoizer(new SMParameters(256, 15, 1));
+        */
+
+        SamplingSequenceMemoizer sm;
+        sm = new SamplingSequenceMemoizer(new SMParameters(256,-1, 0));
         
         BufferedInputStream bis = null;
         File f, g;
@@ -44,14 +48,10 @@ public class Main {
             ind = 0;
             while((b = bis.read()) > -1 ) {
                 if(ind++ % 100000 == 0){
-                    System.out.println(ind-1);
+                    System.out.println(ind++-1);
                 }
-                
-                //logLik += Math.log(sm.continueSequenceCdf(b)[b]);
                 logLik += sm.continueSequence(b);
-
             }
-
         } finally {
             if (bis != null){
                 bis.close();
@@ -59,6 +59,8 @@ public class Main {
         }
 
         System.out.println(-logLik / Math.log(2) / f.length());
+        System.out.println(OnlineRestaurant.count);
+        System.out.println(SamplingRestaurant.count);
     }
     
     public static void printVector(int[] vect){
