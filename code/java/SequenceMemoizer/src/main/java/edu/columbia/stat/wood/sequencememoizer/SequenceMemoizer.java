@@ -1,7 +1,7 @@
 package edu.columbia.stat.wood.sequencememoizer;
 
 /**
- * Sequence Memoizer class.
+ * Discrete probabilistic sequence model based on hierarchical Pitman-Yor processes.
  * 
  * @author nicholasbartlett
  * 
@@ -19,7 +19,7 @@ public interface SequenceMemoizer {
 
     /**
      * Incorporates the observation in the model with the assumption that this observation
-     * is the next in a continuing sequence. Observations are restricted to the interval [0,alphabetSize).
+     * is the next in a continuing sequence.
      *
      * @param observation integer value of observation
      * @return the log probability of the observation in the predictive
@@ -29,27 +29,27 @@ public interface SequenceMemoizer {
 
     /**
      * Incorporates the observation in the model with the assumption that this observation
-     * is the next in a continuing sequence. Observations are restricted to the interval [0,alphabetSize).
+     * is the next in a continuing sequence.
      * 
      * @param observation integer value of observation
-     * @return predictive predictive CDF prior to incorporating the observation into the model
+     * @param range container object for values of CDF(observation-1) and CDF(observation)
      */
-    public double[] continueSequenceCDF(int observation);
+    public void continueSequenceRange(int observation, Range range);
 
     /**
-     * Finds the observation on the predictive CDF with the assumption that the next observation
-     * is the next in a continuing sequence.  The observation is then incorporated into
+     * Finds the observation on the predictive CDF such that CDF(observation) greater than pointOnCDF
+     * and CDF(observation - 1) less than or equal to pointOnCDF. The predictive CDF is calculated based on the
+     * assumption that the observation is the next in a continuing sequence. The observation is then incorporated into
      * the model.
      *
      * @param pointOnCdf point on cdf, must be in [0.0,1.0)
-     * @return Pair containing type of observation seated and predictive cdf prior to incorporating the
-     * type into the model
+     * @param rad container object for observation type, CDF(observation-1), and CDF(observation)
      */
-    public Pair<MutableInteger, double[]> continueSequencePointOnCDF(double pointOnCdf);
+    public void continueSequenceRangeAndDecode(double pointOnCdf, RangeAndDecode rad);
 
     /**
-     * Incorporates an array of observations with the assumption that they are the next observations
-     * in a continuing sequence.
+     * Incorporates an array of observations into the model with the assumption that
+     * they are the next observations in a continuing sequence.
      *
      * @param observations observations to append
      * @return the summed log probability of each observation prior to
@@ -77,12 +77,13 @@ public interface SequenceMemoizer {
     public int[] generateSequence(Sequence initialContext, int sequenceLength);
 
     /**
-     * Gets the predictive CDF over the entire alphabet given a specific context.
+     * Gets an iterator object to return the type, probability pairs which define
+     * the predictive PDF in the specified context.
      *
      * @param context context
-     * @return array of predictive probabilities for tokens 0 - (alphabetSize - 1)
+     * @return iterator object to return type, probability pairs of the predictive PDF
      */
-    public double[] predictiveProbability(Sequence context);
+    public DiscretePDFIterator predictivePDF(Sequence context);
 
     /**
      * Gets the predictive probability of a  token in a given context.
@@ -122,9 +123,9 @@ public interface SequenceMemoizer {
     public double score();
 
     /**
-     * Get paramters in a SMParameters object.
+     * Get paramters.
      *
      * @return values of parameters of the model in its current state
      */
-    public SMParameters getParameters();
+    public SequenceMemoizerParameters getParameters();
 }

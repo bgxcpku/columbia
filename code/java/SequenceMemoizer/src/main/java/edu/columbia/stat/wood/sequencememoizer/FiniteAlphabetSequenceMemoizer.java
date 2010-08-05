@@ -4,45 +4,72 @@
  */
 package edu.columbia.stat.wood.sequencememoizer;
 
-import java.util.Random;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
- * Sequence memoizer model with sampling functionality.
+ * Sequence memoizer model for finite alphabets.
  * 
  * @author nicholasbartlett 
  */
 
-public class SamplingSequenceMemoizer extends BaseSequenceMemoizer {
+public class FiniteAlphabetSequenceMemoizer extends BaseSequenceMemoizer {
 
     /**
      * Random object used for random number generation throughout the model.
      */
-    public static Random RNG;
+    public static MersenneTwisterFast RNG;
+
+    /**
+     * A number used to provide a lower bound on the predictive probabilities
+     * obtained by the model.
+     */
+    public static double MIN_SYMBOL_PROB = 5.01 / (double) (Integer.MAX_VALUE);
     
     private int alphabetSize, depth;
-    private long seed;
-    private SamplingRestaurant emptyContextRestaurant;
-    private SamplingBaseRestaurant baseRestaurant;
+    private FiniteAlphabetBaseRestaurant baseRestaurant;
+    private FiniteAlphabetRestaurant emptyContextRestaurant;
     private Sequence sequence;
     private Discounts discounts;
-    private DiscreteDistribution baseDistribution;
-
+    
+    private long seed;
+    private FiniteDiscreteDistribution baseDistribution;
+    
     /**
      * Initializes the object based on the specified parameters.
      *
      * @param params
      */
-    public SamplingSequenceMemoizer(SMParameters params){
-       alphabetSize = params.alphabetSize;
+    public FiniteAlphabetSequenceMemoizer(FiniteAlphabetSequenceMemoizerParameters params){
        depth = params.depth;
        seed = params.seed;
        discounts = new Discounts(params.discounts, params.infiniteDiscount);
        baseDistribution = params.baseDistribution;
+       alphabetSize = params.baseDistribution.alphabetSize();
 
-       RNG = new Random(seed);
+       RNG = new MersenneTwisterFast(seed);
        sequence = new Sequence();
-       baseRestaurant = new SamplingBaseRestaurant(baseDistribution);
-       emptyContextRestaurant = new SamplingRestaurant(baseRestaurant, 0,0, discounts);
+       baseRestaurant = new FiniteAlphabetBaseRestaurant(params.baseDistribution);
+       emptyContextRestaurant = new FiniteAlphabetRestaurant(baseRestaurant, 0,0, discounts);
+    }
+
+    /**
+     * Initializes the object with a specified alphabet size.
+     *
+     * @param alphabetSize
+     */
+    public FiniteAlphabetSequenceMemoizer(int alphabetSize){
+        this(new FiniteAlphabetSequenceMemoizerParameters(alphabetSize));
+    }
+
+    /**
+     * Initializes the object with default parameters.
+     */
+    public FiniteAlphabetSequenceMemoizer(){
+        this(new FiniteAlphabetSequenceMemoizerParameters());
     }
 
     /**
@@ -51,12 +78,12 @@ public class SamplingSequenceMemoizer extends BaseSequenceMemoizer {
      * @param maxNumberRestaurants
      */
     public void limitMemory(long maxNumberRestaurants){
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new UnsupportedOperationException("Not supported in this implementing class.");
     }
 
     /**
      * Incorporates the observation in the model with the assumption that this observation
-     * is the next in a continuing sequence. Observations are restricted to the interval [0,alphabetSize).
+     * is the next in a continuing sequence.
      *
      * @param observation integer value of observation
      * @return the log probability of the observation in the predictive
@@ -77,62 +104,81 @@ public class SamplingSequenceMemoizer extends BaseSequenceMemoizer {
         discounts.stepDiscounts(0.0001, p.doubleVal());
 
         return Math.log(p.doubleVal());
+
+        //sequence.add(observation);
+        //return get(emptyContextRestaurant, sequence.fullSeq(), sequence.length() - 2, false).seat(observation);
     }
 
     /**
      * Incorporates the observation in the model with the assumption that this observation
-     * is the next in a continuing sequence. Observations are restricted to the interval [0,alphabetSize).
+     * is the next in a continuing sequence.
      *
      * @param observation integer value of observation
-     * @return predictive predictive CDF prior to incorporating the observation into the model
+     * @param range container object for values of CDF(observation-1) and CDF(observation)
      */
-    public double[] continueSequenceCDF(int observation) {
+    public void continueSequenceRange(int observation, Range r) {
         if (observation < 0 || observation >= alphabetSize) {
             throw new IllegalArgumentException("Observations must be integers in the interval [0,alphabetSize).");
         }
 
-        double[] cdf;
+        double[] pdf;
+        double eofAdjustment, cuSum;
 
-        cdf = baseRestaurant.predictiveProbability();
+        pdf = baseRestaurant.predictivePDF();
 
-        if(emptyContextRestaurant.seatCDF(cdf, observation, 0, depth, sequence.fullSeq(),sequence.length() - 1, new MutableDouble(1.0))) {
+        if(emptyContextRestaurant.seatPDF(pdf, observation, 0, depth, sequence.fullSeq(),sequence.length() - 1, new MutableDouble(1.0))) {
             baseRestaurant.seat(observation);
         }
 
         sequence.add(observation);
-        discounts.stepDiscounts(0.0001, cdf[observation]);
+        discounts.stepDiscounts(0.0001, pdf[observation]);
 
-        return cdf;
+        eofAdjustment =  1.0 + MIN_SYMBOL_PROB * (double) alphabetSize ;
+
+        cuSum = 0.0;
+        for(int i = 0; i < observation; i++){
+            cuSum += (pdf[i] + MIN_SYMBOL_PROB) / eofAdjustment;
+        }
+
+        r.set(cuSum, cuSum + (pdf[observation] + MIN_SYMBOL_PROB) / eofAdjustment);
     }
 
     /**
-     * Finds the observation on the predictive CDF with the assumption that the next observation
-     * is the next in a continuing sequence.  The observation is then incorporated into
+     * Finds the observation on the predictive CDF such that CDF(observation) greater than pointOnCDF
+     * and CDF(observation - 1) less than or equal to pointOnCDF. The predictive CDF is calculated based on the
+     * assumption that the observation is the next in a continuing sequence. The observation is then incorporated into
      * the model.
      *
      * @param pointOnCdf point on cdf, must be in [0.0,1.0)
-     * @return Pair containing type of observation seated and predictive cdf prior to incorporating the
-     * type into the model
+     * @param rad container object for observation type, CDF(observation-1), and CDF(observation)
      */
-    public Pair<MutableInteger, double[]> continueSequencePointOnCDF(double pointOnCdf) {
+    public void continueSequenceRangeAndDecode(double pointOnCdf, RangeAndDecode rad) {
         if (pointOnCdf < 0.0 || pointOnCdf >= 1.0) {
             throw new IllegalArgumentException("Point on CDF must be a double in the interval [0,1).");
         }
 
         MutableInteger type;
-        double[] cdf;
+        double[] pdf;
+        double eofAdjustment, cuSum;
 
         type = new MutableInteger(-1);
-        cdf = baseRestaurant.predictiveProbability();
+        pdf = baseRestaurant.predictivePDF();
 
-        if(emptyContextRestaurant.seatPointOnCDF(pointOnCdf, cdf, type, 0, depth, sequence.fullSeq(), sequence.length()-1, new MutableDouble(1.0))){
+        if(emptyContextRestaurant.seatPointOnCDF(pointOnCdf, pdf, type, 0, depth, sequence.fullSeq(), sequence.length()-1, new MutableDouble(1.0))){
             baseRestaurant.seat(type.intVal());
         }
 
         sequence.add(type.intVal());
-        discounts.stepDiscounts(0.0001, cdf[type.intVal()]);
+        discounts.stepDiscounts(0.0001, pdf[type.intVal()]);
 
-        return new Pair(type, cdf);
+        eofAdjustment =  1.0 + MIN_SYMBOL_PROB * (double) alphabetSize ;
+
+        cuSum = 0.0;
+        for(int i = 0; i < type.intVal(); i++){
+            cuSum += (pdf[i] + MIN_SYMBOL_PROB) / eofAdjustment;
+        }
+
+        rad.set(type.intVal(), cuSum, cuSum + (pdf[type.intVal()] + MIN_SYMBOL_PROB) / eofAdjustment);
     }
 
     /**
@@ -143,23 +189,26 @@ public class SamplingSequenceMemoizer extends BaseSequenceMemoizer {
      * @return integer array of samples from context specific predictive distribution
      */
     public int[] generate(Sequence context, int numSamples) {
-        double[] cdf;
+        FiniteDiscretePDFIterator iterator;
+        Pair<Integer, Double> pdfPair;
         int[] samples;
         double r, cuSum;
 
         samples = new int[numSamples];
-        cdf = predictiveProbability(context);
+        iterator = predictivePDF(context);
 
         for(int i = 0; i < numSamples; i++){
             r = RNG.nextDouble();
             cuSum = 0.0;
-            for(int token = 0; token < cdf.length; token++){
-                cuSum += cdf[token];
+            iterator.reset();
+            while(iterator.hasNext()){
+                pdfPair = iterator.next();
+                cuSum += pdfPair.second();
                 if(cuSum > r){
-                    samples[i] = token;
+                    samples[i] = pdfPair.first();
                     break;
                 }
-                assert token != cdf.length - 1;
+                assert cuSum < 1.0;
             }
         }
 
@@ -167,13 +216,14 @@ public class SamplingSequenceMemoizer extends BaseSequenceMemoizer {
     }
 
     /**
-     * Gets the predictive CDF over the entire alphabet given a specific context.
+     * Gets an iterator object to return the type, probability pairs which define
+     * the predictive PDF in the specified context.
      *
      * @param context context
-     * @return array of predictive probabilities for tokens 0 - (alphabetSize - 1)
+     * @return iterator object to return type, probability pairs of the predictive PDF
      */
-    public double[] predictiveProbability(Sequence context) {
-        return get(emptyContextRestaurant, context.fullSeq(), context.length()-1, true).predictiveProbability();
+    public FiniteDiscretePDFIterator predictivePDF(Sequence context) {
+        return new FiniteDiscretePDFIterator(get(emptyContextRestaurant, context.fullSeq(), context.length()-1, true).predictivePDF());
     }
 
     /**
@@ -242,11 +292,11 @@ public class SamplingSequenceMemoizer extends BaseSequenceMemoizer {
     }
 
     /**
-     * Get paramters in a SMParameters object.
+     * Get paramters.
      *
      * @return values of parameters of the model in its current state
      */
-    public SMParameters getParameters() {
+    public SequenceMemoizerParameters getParameters() {
         double[] d;
 
         d = new double[discounts.length()];
@@ -254,11 +304,11 @@ public class SamplingSequenceMemoizer extends BaseSequenceMemoizer {
             d[i] = discounts.get(i);
         }
 
-        return new SMParameters(d, discounts.getdInfinity(), alphabetSize, depth, seed, baseDistribution);
+        return new FiniteAlphabetSequenceMemoizerParameters(d, discounts.getdInfinity(), depth, seed, baseDistribution);
     }
 
-    private SamplingRestaurant get(SamplingRestaurant r, int[] context, int index, boolean forPrediction) {
-        SamplingRestaurant child, newChild;
+    private FiniteAlphabetRestaurant get(FiniteAlphabetRestaurant r, int[] context, int index, boolean forPrediction) {
+        FiniteAlphabetRestaurant child, newChild;
         int overlap, es, el, d;
         boolean leafNode;
         int[] seq;
@@ -286,10 +336,10 @@ public class SamplingSequenceMemoizer extends BaseSequenceMemoizer {
             } else {
 
                 if (depth == -1) {
-                    child = new SamplingRestaurant(r, 0, index + 1, discounts);
+                    child = new FiniteAlphabetRestaurant(r, 0, index + 1, discounts);
                 } else {
                     el = (depth - d < index + 1) ? depth - d : index + 1;
-                    child = new SamplingRestaurant(r, index - el + 1, el, discounts);
+                    child = new FiniteAlphabetRestaurant(r, index - el + 1, el, discounts);
                 }
 
                 r.put(context[index], child);
@@ -327,8 +377,8 @@ public class SamplingSequenceMemoizer extends BaseSequenceMemoizer {
         return get(newChild, context, index - overlap, forPrediction);
     }
 
-    private void sampleSeatingArrangments(SamplingRestaurant r){
-        for(SamplingRestaurant child : r.values()){
+    private void sampleSeatingArrangments(FiniteAlphabetRestaurant r){
+        for(FiniteAlphabetRestaurant child : r.values()){
             sampleSeatingArrangments(child);
         }
         r.sampleSeatingArrangements();
@@ -375,15 +425,51 @@ public class SamplingSequenceMemoizer extends BaseSequenceMemoizer {
         return logLik;
     }
 
-    private double score(SamplingRestaurant r){
+    private double score(FiniteAlphabetRestaurant r){
         double logLik;
 
         logLik = 0.0;
 
-        for(SamplingRestaurant child : r.values()){
+        for(FiniteAlphabetRestaurant child : r.values()){
             logLik += score(child);
         }
 
         return logLik + r.logLik();
+    }
+
+    public static void main(String[] args) throws FileNotFoundException, IOException{
+        FiniteAlphabetSequenceMemoizer sm;
+        sm = new FiniteAlphabetSequenceMemoizer();
+
+        BufferedInputStream bis = null;
+        File f, g;
+
+        //f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/pride_and_prejudice/pride_and_prejudice.txt");
+        f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/alice_in_wonderland/AliceInWonderland.txt");
+        //f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/nyt/lmdata-nyt.1-10000");
+        //f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/wikipedia/enwik8");
+        //f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/calgary_corpus/geo");
+
+        double logLik = 0.0;
+
+        try{
+            bis = new BufferedInputStream(new FileInputStream(f));
+
+            int b, ind;
+            ind = 0;
+            while((b = bis.read()) > -1 ) {
+                if(ind++ % 100000 == 0){
+                    System.out.println(ind++-1);
+                }
+                logLik += sm.continueSequence(b);
+            }
+        } finally {
+            if (bis != null){
+                bis.close();
+            }
+        }
+
+        System.out.println(-logLik / Math.log(2) / f.length());
+        System.out.println(FiniteAlphabetRestaurant.count);
     }
 }

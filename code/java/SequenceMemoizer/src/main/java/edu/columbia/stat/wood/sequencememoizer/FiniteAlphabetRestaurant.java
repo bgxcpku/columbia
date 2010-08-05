@@ -9,26 +9,23 @@ import java.util.HashSet;
 import java.util.TreeMap;
 
 /**
- * Tree node object used in the Chinese restaurant representation for HPYP models.
+ * Tree node object used in the Chinese restaurant representation for the Sequence Memoizer
  *
  * @author nicholasbartlett
  *
  */
-public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
+public class FiniteAlphabetRestaurant extends TreeMap<Integer, FiniteAlphabetRestaurant> {
 
     private TreeMap<Integer, int[]> tableConfig;
-    private SamplingRestaurant parent;
+    private FiniteAlphabetRestaurant parent;
     private int customers, tables;
     private Discounts discounts;
     private int edgeStart, edgeLength;
-
-    private static double MIN_SYMBOL_PROB = 5.01 / (double) (Integer.MAX_VALUE);
 
     /**
      * Count of instantiated restaurants.
      */
     public static int count = 0;
-
 
     /**
      * Initializes restaurant with given parameters.
@@ -38,14 +35,16 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
      * @param edgeLength edge length
      * @param discounts discounts for sequence memoizer
      */
-    public SamplingRestaurant(SamplingRestaurant parent, int edgeStart, int edgeLength, Discounts discounts) {
+    public FiniteAlphabetRestaurant(FiniteAlphabetRestaurant parent, int edgeStart, int edgeLength, Discounts discounts) {
         this.parent = parent;
         this.edgeStart = edgeStart;
         this.edgeLength = edgeLength;
         this.discounts = discounts;
+
         tableConfig = new TreeMap<Integer, int[]>();
         customers = 0;
         tables = 0;
+
         count++;
     }
 
@@ -104,7 +103,6 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
 
         currentConfig = tableConfig.get(type);
 
-        //update customers and tables if will be deleting a row by replacement
         if (currentConfig != null) {
             for (int cust : currentConfig) {
                 customers -= cust;
@@ -112,7 +110,6 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
             tables -= currentConfig.length;
         }
 
-        //update customers and tables
         for (int cust : config) {
             customers += cust;
         }
@@ -157,7 +154,7 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
                 tc += cust;
             }
 
-            r = SamplingSequenceMemoizer.RNG.nextDouble();
+            r = FiniteAlphabetSequenceMemoizer.RNG.nextDouble();
             tw = (double) tc - (double) tsa.length * discount + (double) tables * discount * pp;
 
             cuSum = 0.0;
@@ -228,7 +225,7 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
         }
 
         /*************do data structure stuff, this is recursive piece ********/
-        SamplingRestaurant child, newChild;
+        FiniteAlphabetRestaurant child, newChild;
         int overlap, el, es;
         boolean leafNode, seat;
 
@@ -250,10 +247,10 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
             if (child == null) {
                 if (depth == -1) {
                     el = index + 1;
-                    child = new SamplingRestaurant(this, 0, index + 1, discounts);
+                    child = new FiniteAlphabetRestaurant(this, 0, index + 1, discounts);
                 } else {
                     el = (depth - d < index + 1) ? depth - d : index + 1;
-                    child = new SamplingRestaurant(this, index - el + 1, el, discounts);
+                    child = new FiniteAlphabetRestaurant(this, index - el + 1, el, discounts);
                 }
                 put(context[index], child);
                 seat = child.seat(p, type, d + el, depth, context, index - el, returnP, discountMultFactor);
@@ -304,7 +301,7 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
                 seatInParent = true;
             } else {
 
-                r = SamplingSequenceMemoizer.RNG.nextDouble();
+                r = FiniteAlphabetSequenceMemoizer.RNG.nextDouble();
                 tw = (double) tc - (double) tt * discount + (double) tables * discount * pp;
 
                 cuSum = 0.0;
@@ -333,9 +330,9 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
     }
 
     /**
-     * Like recursive seat, only calculates the full predictive CDF prior to insertion of the type.
+     * Like recursive seat, only calculates the full predictive PDF prior to insertion of the type.
      *
-     * @param pArray predictive CDF in parent node
+     * @param pArray predictive PDF in parent node
      * @param type type to be inserted
      * @param d depth of current node
      * @param depth max depth of tree
@@ -345,7 +342,7 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
      * @return indicator that a customer must be seated in the parent restaurant
      */
 
-    public boolean seatCDF(double[] pArray, int type, int d, int depth, int[] context, int index, MutableDouble discountMultFactor) {
+    public boolean seatPDF(double[] pArray, int type, int d, int depth, int[] context, int index, MutableDouble discountMultFactor) {
         /***********update ppArray to reflect counts in this restaurant************/
         double pp, discount, multFactor;
         int[] tsa;
@@ -373,7 +370,7 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
         }
 
         /*************do data structure stuff, this is recursive piece ********/
-        SamplingRestaurant child, newChild;
+        FiniteAlphabetRestaurant child, newChild;
         int overlap, el, es;
         boolean leafNode, seat;
 
@@ -394,13 +391,13 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
             if (child == null) {
                 if (depth == -1) {
                     el = index + 1;
-                    child = new SamplingRestaurant(this, 0, index + 1, discounts);
+                    child = new FiniteAlphabetRestaurant(this, 0, index + 1, discounts);
                 } else {
                     el = (depth - d < index + 1) ? depth - d : index + 1;
-                    child = new SamplingRestaurant(this, index - el + 1, el, discounts);
+                    child = new FiniteAlphabetRestaurant(this, index - el + 1, el, discounts);
                 }
                 put(context[index], child);
-                seat = child.seatCDF(pArray, type, d + el, depth, context, index - el, discountMultFactor);
+                seat = child.seatPDF(pArray, type, d + el, depth, context, index - el, discountMultFactor);
             } else {
 
                 es = child.edgeStart();
@@ -414,7 +411,7 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
 
                 if (overlap == el) {
 
-                    seat = child.seatCDF(pArray, type, d + el, depth, context, index - el, discountMultFactor);
+                    seat = child.seatPDF(pArray, type, d + el, depth, context, index - el, discountMultFactor);
 
                 } else {
 
@@ -422,7 +419,7 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
                     put(context[index], newChild);
                     newChild.put(context[es + el - overlap - 1], child);
 
-                    seat = newChild.seatCDF(pArray, type, d + overlap, depth, context, index - overlap, discountMultFactor);
+                    seat = newChild.seatPDF(pArray, type, d + overlap, depth, context, index - overlap, discountMultFactor);
 
                 }
             }
@@ -459,7 +456,7 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
                 seatInParent = true;
             } else {
 
-                r = SamplingSequenceMemoizer.RNG.nextDouble();
+                r = FiniteAlphabetSequenceMemoizer.RNG.nextDouble();
                 tw = (double) tc - (double) tt * discount + (double) tables * discount * pp;
 
                 cuSum = 0.0;
@@ -488,7 +485,7 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
     }
 
     /**
-     * Like recursive seatCDF, but now only way to identify the type to seat is
+     * Like recursive seatPDF, but now only way to identify the type to seat is
      * a point on the predictive CDF.  The predictive CDF is calculated prior to insertion,
      * the correct type is identified, and the type is then inserted into the model.
      *
@@ -534,7 +531,7 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
         }
 
         /*************do data structure stuff, this is recursive piece ********/
-        SamplingRestaurant child, newChild;
+        FiniteAlphabetRestaurant child, newChild;
         int overlap, el, es;
         boolean leafNode, seat;
         double cuSum, eofAdjustment;
@@ -550,11 +547,11 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
         if (leafNode) {
             seat = true;
 
-            eofAdjustment = 1.0 + MIN_SYMBOL_PROB * (double) pArray.length ;
+            eofAdjustment = 1.0 + FiniteAlphabetSequenceMemoizer.MIN_SYMBOL_PROB * (double) pArray.length ;
             cuSum = 0.0;
             for(int t = 0; t < pArray.length; t++){
 
-                cuSum += (pArray[t] + MIN_SYMBOL_PROB) / eofAdjustment;
+                cuSum += (pArray[t] + FiniteAlphabetSequenceMemoizer.MIN_SYMBOL_PROB) / eofAdjustment;
                 if(cuSum > pointOnCdf){
                     type.set(t);
                     break;
@@ -567,10 +564,10 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
             if (child == null) {
                 if (depth == -1) {
                     el = index + 1;
-                    child = new SamplingRestaurant(this, 0, index + 1, discounts);
+                    child = new FiniteAlphabetRestaurant(this, 0, index + 1, discounts);
                 } else {
                     el = (depth - d < index + 1) ? depth - d : index + 1;
-                    child = new SamplingRestaurant(this, index - el + 1, el, discounts);
+                    child = new FiniteAlphabetRestaurant(this, index - el + 1, el, discounts);
                 }
                 put(context[index], child);
                 seat = child.seatPointOnCDF(pointOnCdf, pArray, type, d + el, depth, context, index - el, discountMultFactor);
@@ -636,7 +633,7 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
                 
             } else {
                 
-                r = SamplingSequenceMemoizer.RNG.nextDouble();
+                r = FiniteAlphabetSequenceMemoizer.RNG.nextDouble();
                 tw = (double) tc - (double) tt * discount + (double) tables * discount * pp[type.intVal()];
 
                 cuSum = 0.0;
@@ -677,15 +674,15 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
      * will not ultimately be inserted in the tree
      * @return restaurant either for insertion in the tree or for prediction
      */
-    public SamplingRestaurant fragment(SamplingRestaurant irParent, int irEdgeStart, int irEdgeLength, boolean forPrediction) {
+    public FiniteAlphabetRestaurant fragment(FiniteAlphabetRestaurant irParent, int irEdgeStart, int irEdgeLength, boolean forPrediction) {
         double discount, irDiscount, fragDiscount, fragConcentration, r, cuSum, totalWeight;
-        SamplingRestaurant intermediateRestaurant;
+        FiniteAlphabetRestaurant intermediateRestaurant;
         int[] tsa, irtsa, newtsa;
         int table;
         ArrayList<MutableInteger> fragmentedTable;
         ArrayList<MutableInteger> allTables;
 
-        intermediateRestaurant = new SamplingRestaurant(irParent, irEdgeStart, irEdgeLength, discounts);
+        intermediateRestaurant = new FiniteAlphabetRestaurant(irParent, irEdgeStart, irEdgeLength, discounts);
         irDiscount = intermediateRestaurant.discount();
         discount = discount();
         fragDiscount = discount / irDiscount;
@@ -710,7 +707,7 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
                 topFor:
                 for (int customer = 1; customer < tableSize; customer++) {
                     totalWeight++;
-                    r = SamplingSequenceMemoizer.RNG.nextDouble();
+                    r = FiniteAlphabetSequenceMemoizer.RNG.nextDouble();
                     cuSum = 0.0;
 
                     for (MutableInteger t : fragmentedTable) {
@@ -804,18 +801,18 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
     }
 
     /**
-     * Gets the predictive CDF at this node.  Predictive probabilities are for
+     * Gets the predictive PDF at this node.  Predictive probabilities are for
      * types [0,alphabetSize), in order.
      *
      * @return double[] of predictive probabilities
      */
-    public double[] predictiveProbability() {
+    public double[] predictivePDF() {
         double[] pp;
         int[] tsa;
         double multFactor, discount;
         int tc;
 
-        pp = parent.predictiveProbability();
+        pp = parent.predictivePDF();
         if (customers > 0) {
 
             discount = discount();
@@ -841,7 +838,7 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
     }
 
     /**
-     * Unseats a given type from the restaurant.  This method is used in sampling.
+     * Unseats a given type from the restaurant.
      *
      * @param type type to useat
      */
@@ -861,7 +858,7 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
             tables--;
             parent.unseat(type);
         } else {
-            r = SamplingSequenceMemoizer.RNG.nextDouble();
+            r = FiniteAlphabetSequenceMemoizer.RNG.nextDouble();
             cuSum = 0.0;
             for (int table = 0; table < tsa.length; table++) {
                 cuSum += (double) tsa[table] / (double) tc;
@@ -984,7 +981,7 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
             }
         }
 
-        r = SamplingSequenceMemoizer.RNG.nextDouble();
+        r = FiniteAlphabetSequenceMemoizer.RNG.nextDouble();
         cuSum = 0.0;
         pp = parent.predictiveProbability(type);
         totalWeight = (double) tc - (double) tt * discount + (double) tables * discount * pp;
@@ -1141,7 +1138,7 @@ public class SamplingRestaurant extends TreeMap<Integer, SamplingRestaurant> {
             randomOrder = new int[n];
             s = set.size();
             while(s > 0){
-                rand = SamplingSequenceMemoizer.RNG.nextDouble();
+                rand = FiniteAlphabetSequenceMemoizer.RNG.nextDouble();
                 cuSum = 0.0;
                 for(Integer i:set){
                     cuSum += 1.0 / (double) s;

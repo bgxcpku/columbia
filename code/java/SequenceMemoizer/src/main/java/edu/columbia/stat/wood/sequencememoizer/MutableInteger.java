@@ -5,7 +5,7 @@
 package edu.columbia.stat.wood.sequencememoizer;
 
 /**
- * Container object for integer.  Allows the underlying value of the object to
+ * Container object for an integer.  Allows the underlying value of the object to
  * be changed and manipulated within the same object instance.
  *
  * @author nicholasbartlett
@@ -15,7 +15,7 @@ public class MutableInteger {
     private int value;
 
     /**
-     * @param value value of instantiated MutableInteger
+     * @param value value of instantiated mutable integer
      */
     public MutableInteger(int value) {
         this.value = value;

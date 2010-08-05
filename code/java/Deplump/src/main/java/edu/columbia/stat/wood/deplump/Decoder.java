@@ -4,6 +4,7 @@
  */
 package edu.columbia.stat.wood.deplump;
 
+import edu.columbia.stat.wood.sequencememoizer.RangeAndDecode;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -19,7 +20,7 @@ public class Decoder {
     private long low = 0;
     private long range = long_max_value;
     private long code;
-    private double[] interval;
+    private RangeAndDecode rad;
     private BufferedBitInputStream bbis;
     private PredictiveModel pm;
 
@@ -34,7 +35,7 @@ public class Decoder {
         this.pm = pm;
         this.bbis = new BufferedBitInputStream(is);
         this.initializeCode();
-        interval = new double[2];
+        rad = new RangeAndDecode(0,0.0,0.0);
     }
 
     private void initializeCode() throws IOException {
@@ -55,18 +56,22 @@ public class Decoder {
      * @throws IOException
      */
     public int read() throws IOException {
-        double pointOnCDF;
+        double pointOnCDF, l, h;
         int decodedByte, b;
 
             pointOnCDF = (double) (code - low) / (double) range;
-            decodedByte = pm.inverseCDF(pointOnCDF, interval);
+            pm.continueSequenceRangeAndDecode(pointOnCDF, rad);
+            
+            decodedByte = rad.decode();
+            l = rad.low();
+            h = rad.high();
 
             if (decodedByte == 256) {
                 return -1;
             }
 
-            low += interval[0] * range;
-            range *= (interval[1] - interval[0]);
+            low += l * range;
+            range *= (h-l);
 
             while ((low ^ (low + range)) < first_bit_indicator) {
                 range = range << 1;
@@ -84,7 +89,6 @@ public class Decoder {
             }
 
             return decodedByte;
-        
     }
 
     private void emitRange() throws IOException {
