@@ -1,0 +1,33 @@
+Reviewer 1 notes that n-gram models outperform the PDIA for large enough n.  This improved performance comes at the cost of greater model complexity.  Given that emission distributions are not backed off for the PDIA (only transition distributions are) we were surprised to find that the PDIA is competitive with n-gram models while using so few states.  We were also surprised to find superior predictive performance compared to other PDFA induction algorithms, which may be of interest to the PDFA induction community.
+
+With regards to the interpretability of states, a state in a PDFA is not latent as it is in an HMM.  Instead, it is the PDFA itself which is latent.  We can look at the best PDFA (as defined in the paper) and see what prefixes lead to a particular state, which may provide some interpretability. 
+
+The restriction that a transition be deterministic given the state and symbol is meant to maintain an observable transition structure as in n-gram models.
+
+When we refer to improved computational efficiency for prediction, we mean the lower number of states relative to Markov models, and lower time for prediction (not training) relative to HMMs.  We will clarify this point.
+
+We initialized the parameters once for each HMM and looked at a wide enough range of model complexities that the cross-validated optimum was clear.
+
+One move of the sampler means a cycle through all entries of delta.
+
+It may be possible to integrate out mu in the finite case, however, no other references in the literature do so [7,15].
+
+With regards to whether we properly sample the posterior: while we wish to generate samples from (7) times (3), we propose from (7) and accept/reject according to (3), as given in (8), which gives an MH sampler for the posterior.
+
+Gamma(1,1) priors are used for all hyperparameters, which we will mention in the paper.  The choice of hyperparameter had negligible effect on performance.
+
+Reviewer 1 mentions connections between footnote 2 and mixtures of PDFAs.  It is true that a mixture of PDFAs with a unique start state could represent a PDFA with multiple start states, however our algorithm is unlikely to discover it except for small PDFAs.  We fix the number of start states for the same reason we enforce deterministic transitions, so the path through a PDFA is unique given an input string.
+
+We chose to index times from 0 because the state at time zero is always the initial state, which is conventionally indexed by 0.
+
+The tradeoff between model complexity, cost of prediction and perplexity is governed by the hyperparameter \gamma, which sets the probability of choosing a new state.
+
+Regarding smoothing over model structure and emission distributions: as it now works, emission distributions are approximated entirely by counts.  If counts could be shared between states in a principled way it might improve prediction.  n-gram models with backoff do this, but there is a natural hierarchy of states in that case.  Determining what is a good hierarchy for backing off the emission distributions is a natural direction for future research.
+
+Regarding Reviewer 2's concern about efficiency, prediction is more efficient in time with a PDIA than with an HMM.  Training was done in a matter of hours.  As for Markov models, as the second row of Table 1 shows, Markov models with equal predictive power had far more states than the PDIA, meaning the PDIA is more efficient in space.  After multiple training runs error bars were negligible, on the order of 0.01
+
+Reviewer 3 is right to point out the connection between PDFAs and HMMs.  As we explain in section 5, PDFAs are a strict subset of mixtures of PDFAs which are a strict subset of HMMs.  A draw from an iHMM is an HMM.  In that sense, our model is similar to an iHMM but with a different transition structure between states, which narrows the class of models considered.
+
+Reviewer 3 was uncertain what kind of smoothing was used in our experiments.  This information is on line 305-306.  We describe empirical benefits on line 57-64, namely, prediction with a trained model has improved time complexity than HMMs and improved space complexity than n-gram models with comparable perplexity.
+
+Figure 3 was provided for the PDFA learning community to suggest it may have some application to their domain as well.  Previous approaches [1,13] have similar accuracy to that shown in figure 3 on the same grammars with the same amount of data.  One direction for future work is comparing the efficiency of PDIA inference versus standard PDFA techniques.
