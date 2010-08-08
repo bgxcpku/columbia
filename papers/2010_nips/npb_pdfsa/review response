@@ -1,0 +1,38 @@
+Reviewer 1 notes that n-gram models outperform the PDIA for large enough n.  This improved performance comes at the cost of greater model complexity.  Given that emission distributions are not backed off for the PDIA (only transition distributions are) we were surprised to find that the PDIA is competitive with n-gram models while using so few states.  We were also surprised to find superior predictive performance compared to other PDFA induction algorithms, which may be of interest to the PDFA induction community.
+
+With regards to the interpretability of states, a state in a PDFA is not latent as it is in an HMM.  Instead, it is the PDFA itself which is latent.  We can look at the best PDFA (as defined in the paper) and see what prefixes lead to a particular state, which may provide some interpretability. 
+
+The restriction that a transition be deterministic given the state and symbol is meant to maintain an observable transition structure as in n-gram models.
+
+When we refer to improved computational efficiency for prediction, we mean the lower number of states relative to Markov models, and lower time for prediction (not training) relative to HMMs.  We will clarify this point.
+
+Reviewer 1 expressed concern about how we initialize the HMM, while Reviewer 2 was curious about error bars.
+Initial parameters were sampled once for each HMM with up to 200 hidden states.  Running 80 random restarts on AIW with 52 hidden states, the minimum perplexity was 7.66, the mean was 8.16 and the standard deviation was 0.22, close to the number quoted in the paper.  The log loss estimates from the n-gram models used typically vary on the order of 0.01.
+
+Concerning pruning the n-gram models: Bartlett, Pfau and Wood, ICML 2010 show that SM still performs well when pruned, but with far more states than those in the PDFAs.
+
+One move of the sampler means a cycle through all entries of delta.
+
+It may be possible to integrate out mu in the finite case, however, no other references in the literature do so [7,15].
+
+Reviewer 1 had many useful suggestions on the organization of 3.2 which we will incorporate.  The use of marginalization/ignoring/just-in-time sampling was seen as confusing.  Marginalization and ignoring are the same thing.  Sampling one transition has a closed form, but because changing one transition may lead to ignored transitions being visited, Gibbs sampling requires summing over all possible combinations of ignored transitions, which is intractable.  Just-in-time is necessary for MH sampling when ignoring: instead of summing over all possible ignored transitions, we sample transitions when necessary.
+
+With regards to sampling the posterior: while we wish to generate samples from (7)*(3), we propose from (7) and accept according to (8), which gives an MH sampler for the posterior.
+
+Gamma(1,1) priors are used for all hyperparameters, which we will mention in the paper.  The choice of hyperparameter had negligible effect on performance.
+
+Reviewer 1 mentions connections between footnote 2 and mixtures of PDFAs.  A PDFA with multiple start states can be expressed as a mixture of PDFAs with one start state, however our algorithm is unlikely to find it for large PDFA.  We have one start state for the same reason we have deterministic transitions, so the state path is unique given an input string.
+
+We index times from 0 because the state at time zero is the start state, which is conventionally indexed by 0.
+
+To bias inference towards larger or smaller models, we adjust \gamma, which sets the probability of choosing a new state.
+
+Regarding smoothing over emission distributions: currently, emission distributions are approximated entirely by counts in one state.  If counts could be shared between states in a principled way it might improve prediction.  N-gram models with backoff do this using a natural hierarchy.  Finding a good hierarchy for backing off the emission distributions in a PDFA is a direction for future research.
+
+Regarding concerns about efficiency and empirical benefits voiced by Reviewers 2 and 3, prediction is more efficient in time with a PDIA than with an HMM.  Training was done in a matter of hours.  For n-gram models, as the second row of Table 1 shows, models with equal predictive power had far more states than the PDIA: the PDIA is more efficient in space.
+
+Reviewer 3 is right to point out the connection between PDFAs and HMMs.  As we explain in section 5, PDFAs are a strict subset of mixtures of PDFAs which are a strict subset of HMMs.  A draw from an iHMM is an HMM.  In that sense, our model is similar to an iHMM but with a different transition structure between states, which narrows the class of models considered.
+
+Reviewer 3 was uncertain what kind of smoothing was used in our experiments.  This information is on line 305-306.
+
+Figure 3 was provided for the PDFA learning community to suggest it may have some application to their domain as well.  Previous approaches [1,13] have similar accuracy to that shown in figure 3 on the same grammars with the same amount of data.  One direction for future work is comparing the efficiency of PDIA inference versus standard PDFA techniques.
