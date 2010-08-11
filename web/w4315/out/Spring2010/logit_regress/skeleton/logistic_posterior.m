@@ -1,1 +1,0 @@
-function lik = logistic_posterior(X,y,beta,lambda)

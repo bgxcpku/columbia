@@ -1,1 +1,0 @@
-function log_prior = beta_prior(beta,lambda)
