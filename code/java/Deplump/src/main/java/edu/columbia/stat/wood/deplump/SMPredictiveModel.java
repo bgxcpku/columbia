@@ -12,7 +12,7 @@ import edu.columbia.stat.wood.sequencememoizer.FiniteAlphabetSequenceMemoizer;
  * 
  * @author nicholasbartlett
  */
-public class SMPredictiveModel extends FiniteAlphabetSequenceMemoizer implements PredictiveModel {
+public class SMPredictiveModel extends FiniteAlphabetSequenceMemoizer {
 
     /**
      * Initializes this as a Sequence Memoizer object with an alphabet size of
