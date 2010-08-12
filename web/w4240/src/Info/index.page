@@ -3,13 +3,40 @@ title: Info
 in_menu: true
 routed_title: Info
 ---
+Big Picture
+-----------
 
-_This is a master's / advanced undergraduate level course in data mining, pattern recognition, and statistical machine learning._
+W4240 is a master's / advanced undergraduate level course in data mining, pattern recognition, and statistical machine learning.
+
+Rough Course Outline
+--------------------
+
+This course will be divided into roughly six parts, five structured, the sixth, a grab bag which may include presentations from other faculty and students who specialize in particular techniques.  Each section except the last will be accompanied by a programming project.  The subject of the programming project is listed below the topic for each section.
+
+ 
+* Graphical Models
+  * Belief propagation on discrete Bayes nets
+* Sequential Data
+  * Kalman and particle filtering
+* Sampling
+  * Gaussian mixture models and clustering
+* Variational Inference
+  * Variational logistic regression
+* Regression
+  * Bayesian linear regression, Gaussian process regression
+* Miscellaneous Topics
+  * Neural nets
+  * Dimensionality reduction
+  * Bayesian nonparametrics
+  * Matrix factorization
+
+Miscellaneous Course Information
+--------------------------------
 
 * Text 
 	* _Pattern Recognition and Machine Learning_ Christopher M. Bishop.  Springer, 2006.
 
-* Prerequisite 
+* Prerequisites 
 	* Calculus; probability and statistics at the level of W4150, or W4105 and W4107 taken concurrently.
 	* Linear algebra.
 	* Introductory level programming (java, matlab, c)
@@ -17,9 +44,6 @@ _This is a master's / advanced undergraduate level course in data mining, patter
 * Grading 
 	* Grades will be assigned on a curve, using the following percentages: 75% Homework, 25% Final Project.  Active participation can move you up a half a grade.  No participation can move you down half a grade.  
 
-
-<strong>Final project:</strong> 
-The final project will be a small group project of your choice, selected just after the midterm examination.
 
 * Computing: 
 	* You will be required to use Matlab to complete your homework assignments.  Software of your choice may be used to complete the final project.  See the [ACIS page](http://www.columbia.edu/acis/) for information on software and computing labs.  

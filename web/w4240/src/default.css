@@ -13,7 +13,7 @@ background:#e8eaec;
 }
 
 a{
-color:#545454;
+color: rgb(97, 60, 46);
 font-weight:bold;
 text-decoration:none;
 background-color:inherit;
@@ -46,9 +46,9 @@ border:2px solid #a0a0a0;
 height:110px;
 width:758px;
 margin:0 1px 1px 1px;
-background:#545454;
+background: rgb(97, 60, 46);
 color:#ffffff;
-background:url(images/regression.jpg) top center ;
+background:url(images/header_background.jpg) top center ;
 }
 
 #header h1{
@@ -64,14 +64,14 @@ font-weight:normal;
 margin:10px 0 0 40px;
 font-size:1.4em;
 background-color:inherit;
-color:#343434;
+color: rgb(181, 123, 93);
 letter-spacing:-1px;
 font-weight:normal;
 }
 
 #header a {
 text-decoration:none;
-color: #545454;
+color: rgb(204, 169, 150);
 }
 
 #navigation{
@@ -79,7 +79,7 @@ height:2.2em;
 line-height:2.2em;
 width:758px;
 margin:0 1px;
-background:#545454;
+background: rgb(97, 60, 46);
 color:#ffffff;
 }
 
@@ -104,7 +104,7 @@ color: #ffffff;
 * html #navigation a {width:1%;}
 
 #navigation .webgen-menu-item-selected a, #navigation .webgen-menu-item-selected span, #navigation a:hover {
-background:#909090;
+background: rgb(204, 169, 150);
 color:#ffffff;
 text-decoration:none;
 }
@@ -113,7 +113,7 @@ text-decoration:none;
 
 #content{
 float:left;
-width:530px;
+width:510px;
 font-size:0.9em;
 padding:20px 0 0 20px;
 }
@@ -140,7 +140,7 @@ background-color:inherit;
 
 #subcontent{
 float:right;
-width:170px;
+width:190px;
 padding:20px 20px 10px 0;
 line-height:1.4em;
 }
@@ -197,7 +197,7 @@ padding:5px 0;
 margin:0 1px;
 font-size:0.9em;
 color:#f0f0f0;
-background:#545454;
+background: rgb(97, 60, 46);
 }
 
 #footer p{padding:0; margin:0; text-align:center;}
