@@ -43,12 +43,7 @@ task :auto_webgen do
   end
 end
 
-desc "Deploy the recent version of W4315"
-task :w4315 do
-  sh %{webgen; scp -r out/Teaching/w4315/Spring2010/* #{ENV['SSH_USER']}@stat.columbia.edu:~/public_html/Teaching/w4315/Spring2010/}
-end
-
 desc "Deploy the site"
 task :upload do
-  sh %{webgen; scp -r out/* #{ENV['SSH_USER']}@stat.columbia.edu:~/public_html/}
+  sh %{webgen; chmod -R 777 out/*; rsync -avz -e ssh out/* #{ENV['SSH_USER']}@www.stat.columbia.edu:~fwood/public_html/w4315}
 end

@@ -24,10 +24,10 @@ routed_title: Syllabus
 | 14 | [Variational GMM]() | 10.2
 | 15 | [Variational Linear Regression]() | 10.3
 | 16 | [Variational Logistic Regression]() | 10.6
-| 17 | [Gaussian Processes]() | 6.4
-| 18 |
-| 19 |
-| 20 |
+| 17 | [Bayesian Linear Regression]() | 
+| 18 | [Gaussian Processes]() | 6.4
+| 19 | [Neural Networks]()
+| 20 | Neural Networks
 | 21 |
 | 22 |
 | 23 |
