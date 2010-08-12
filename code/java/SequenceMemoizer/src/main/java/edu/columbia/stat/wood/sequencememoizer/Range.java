@@ -11,6 +11,7 @@ package edu.columbia.stat.wood.sequencememoizer;
  * @author nicholasbartlett
  */
 public class Range {
+
     private double low;
     private double high;
 

@@ -6,9 +6,7 @@
 package edu.columbia.stat.wood.sequencememoizer;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Random;
 import java.util.TreeMap;
 
 /**
@@ -423,7 +421,7 @@ public class OnlineRestaurant extends TreeMap<Integer, OnlineRestaurant>{
         maxp = Double.NEGATIVE_INFINITY;
 
         for(int i = 1; i <= p.length; i++){
-            p[i-1] = logSterlingNumber(d,c-i,t-1) + logBracket(1.0 - d, 1.0, i - 1) + logChoose(c,i);
+            p[i-1] = logSterlingNumber(d,c-i,t-1) + logBracket(1.0 - d, 1.0, i - 1) + logChoose(c - t + 1,i);
             maxp = (p[i-1] > maxp) ? p[i-1] : maxp;
         }
 

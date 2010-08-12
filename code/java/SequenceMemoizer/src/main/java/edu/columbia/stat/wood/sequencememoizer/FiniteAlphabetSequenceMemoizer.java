@@ -4,6 +4,7 @@
  */
 package edu.columbia.stat.wood.sequencememoizer;
 
+import edu.columbia.stat.wood.util.MersenneTwisterFast;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -104,9 +105,6 @@ public class FiniteAlphabetSequenceMemoizer extends BaseSequenceMemoizer {
         discounts.stepDiscounts(0.0001, p.doubleVal());
 
         return Math.log(p.doubleVal());
-
-        //sequence.add(observation);
-        //return get(emptyContextRestaurant, sequence.fullSeq(), sequence.length() - 2, false).seat(observation);
     }
 
     /**
@@ -439,20 +437,21 @@ public class FiniteAlphabetSequenceMemoizer extends BaseSequenceMemoizer {
 
     public static void main(String[] args) throws FileNotFoundException, IOException{
         FiniteAlphabetSequenceMemoizer sm;
-        sm = new FiniteAlphabetSequenceMemoizer();
+        sm = new FiniteAlphabetSequenceMemoizer(new FiniteAlphabetSequenceMemoizerParameters(257, 15, 1));
 
         BufferedInputStream bis = null;
         File f, g;
 
         //f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/pride_and_prejudice/pride_and_prejudice.txt");
-        f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/alice_in_wonderland/AliceInWonderland.txt");
+        //f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/alice_in_wonderland/AliceInWonderland.txt");
         //f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/nyt/lmdata-nyt.1-10000");
         //f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/wikipedia/enwik8");
-        //f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/calgary_corpus/geo");
+        f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/calgary_corpus/geo");
 
         double logLik = 0.0;
 
         try{
+            
             bis = new BufferedInputStream(new FileInputStream(f));
 
             int b, ind;
@@ -469,6 +468,8 @@ public class FiniteAlphabetSequenceMemoizer extends BaseSequenceMemoizer {
             }
         }
 
+        System.out.println();
+        
         System.out.println(-logLik / Math.log(2) / f.length());
         System.out.println(FiniteAlphabetRestaurant.count);
     }
