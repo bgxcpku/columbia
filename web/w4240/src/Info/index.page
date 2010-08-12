@@ -1,0 +1,25 @@
+---
+title: Info
+in_menu: true
+routed_title: Info
+---
+
+_This is a master's / advanced undergraduate level course in data mining, pattern recognition, and statistical machine learning._
+
+* Text 
+	* _Pattern Recognition and Machine Learning_ Christopher M. Bishop.  Springer, 2006.
+
+* Prerequisite 
+	* Calculus; probability and statistics at the level of W4150, or W4105 and W4107 taken concurrently.
+	* Linear algebra.
+	* Introductory level programming (java, matlab, c)
+
+* Grading 
+	* Grades will be assigned on a curve, using the following percentages: 75% Homework, 25% Final Project.  Active participation can move you up a half a grade.  No participation can move you down half a grade.  
+
+
+<strong>Final project:</strong> 
+The final project will be a small group project of your choice, selected just after the midterm examination.
+
+* Computing: 
+	* You will be required to use Matlab to complete your homework assignments.  Software of your choice may be used to complete the final project.  See the [ACIS page](http://www.columbia.edu/acis/) for information on software and computing labs.  
