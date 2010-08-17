@@ -1,0 +1,38 @@
+---
+title: Syllabus
+in_menu: true
+routed_title: Syllabus
+---
+
+|---
+| Lecture | Slides | Chapter | Extras |
+|:-:|:-|:-|:-|:-|
+| 00 | [Introduction]() |  |
+| 01 | [Bayes Nets]() | 8.1 |
+| 02 | [Conditional Independence & Markov Random Fields]() | 8.2-3 |  
+| 03 | [Inference in Graphical Models & Factor Graphs]() | 8.4 |
+| 04 | [Sum product Algorithm (Belief Propagation)]() 
+| 05 | [(Hidden) Markov Models]() | 13.1
+| 06 | [Forward backward, Viterbi, Sum product again]() | 13.2
+| 07 | [Linear dynamical systems, Kalman filter]() | 13.3
+| 08 | [Particle filtering]() 
+| 09 | [Basic sampling methods]() | 11.1
+| 10 | [Markov chain Monte Carlo]() | 11.2
+| 11 | [Gibbs sampling]() | 11.3
+| 12 | [Gaussian mixture models]() | 9.2
+| 13 | [Variational Inference]() | 10.1
+| 14 | [Variational GMM]() | 10.2
+| 15 | [Variational Linear Regression]() | 10.3
+| 16 | [Variational Logistic Regression]() | 10.6
+| 17 | [Bayesian Linear Regression]() | 
+| 18 | [Gaussian Processes]() | 6.4
+| 19 | [Neural Networks]()
+| 20 | Neural Networks
+| 21 |
+| 22 |
+| 23 |
+| 24 |
+| 25 |
+| 26 |
+| 27 |
+| 28 |

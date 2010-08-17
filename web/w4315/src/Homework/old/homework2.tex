@@ -1,0 +1,135 @@
+% Essential Formatting
+
+\documentclass[12pt]{article}
+\usepackage{verbatim}
+\usepackage{epsfig,amsmath,amsthm,amssymb}
+%\usepackage[questions, answersheet]{urmathtest}[2001/05/12]
+%\usepackage[answersheet]{urmathtest}[2001/05/12]
+\usepackage[answers]{urmathtest}[2001/05/12]
+
+
+% For use with pdflatex
+% \pdfpagewidth\paperwidth
+% \pdfpageheight\paperheight
+
+% Basic User Defs
+
+\def\ds{\displaystyle}
+
+\newcommand{\ansbox}[1]
+{\work{
+  \pos\hfill \framebox[#1][l]{ANSWER:\rule[-.3in]{0in}{.7in}}
+}{}}
+
+\newcommand{\ansrectangle}
+{\work{
+  \pos\hfill \framebox[6in][l]{ANSWER:\rule[-.3in]{0in}{.7in}}
+}{}}
+
+% Beginning of the Document
+
+\begin{document}
+\examtitle{LINEAR REGRESSION MODELS W4315}{HOMEWORK 2}{09/16/2009}
+ \begin{center}
+  Instructor: Frank Wood (10:35-11:50)
+ \end{center}
+%%\studentinfo
+\instructions{
+  %\textbf{Circle your Instructor's Name along with the Lecture Time:}
+
+
+
+  \begin{itemize}
+  \item
+    \textbf{Please show all your work.
+            You may use back pages if necessary.}
+  %\item
+   % \textbf{Please put your \underline{simplified}
+   %         final answers in the spaces provided.}
+  \end{itemize}
+}
+\finishfirstpage
+
+% Problems Start Here % ----------------------------------------------------- %
+
+
+\problem{25} { Problem 2.4 in the textbook on page 90}
+ { \vfill
+  \answer
+} {
+(a)\\
+Following the code from problem 3 in homework 1, below is the R code for this problem:\\
+%\begin{verbatim}
+$y.hat <- alpha.hat+beta.hat*x$\\
+$RSS <- sum((y-y.hat)^2)$\\
+$MSE <- RSS/(120-2)$\\
+$var.b1 <- MSE/SXX$\\
+$sd.b1 <- sqrt(var.b1)$\\
+%\end{verbatim}
+From the code, we have standard error of $\beta_1$ is 0.0128.\\
+Since t(.995,118)=2.618137, we have then the $\beta_1$'s .99 confidence interval is $.0.0388+/-2.618137*.0128$=(0.005287846,0.07231215).\\
+It doesn't include zero. The reason that the director cares about the coverage of zero of CI is that he wants to be very much sure of if there is a positive relation between ACT score and GPA score.\\
+(b)\\
+Use the formula (2.20) to calculate the corresponding t-value. All the components are already known from the code above, so after plugging in the values, we have
+$t^\ast=\frac{b_1-0}{sd(b_1)}=3.04$, and this value is greater than 2.618, so we reject the null hypothesis.\\
+(c)\\
+The P-value is $2P(t(118)>3.04)=.003$, which is smaller than .01, so we reject the null hypothesis. It's in sync with the result concluded from (b).
+}
+
+\problem{25} { Do problem 2.51 in the book.}
+ { \vfill
+  \answer
+}
+{
+From (2.21), we have the explicit formula of $b_0$, so plugging in every term's formula we have the followings:\\
+\begin{align*}
+Eb_0&=E(\bar{Y})-Eb_1*\bar{X}\\
+    &=\displaystyle\frac{1}{n}\sum_{i=1}^{n}EY_i-\frac{\bar{X}}{SXX}*E(SXY)\\
+\end{align*}
+where $EY_i=\beta_0+\beta_1*X_i$, and\\
+\begin{align*}
+E(SXY)&=E(\displaystyle\sum_{i=1}^{n}(X_i-\bar{X})Y_i)\\
+      &=\displaystyle\sum_{i=1}^{n}(X_i-\bar{X})(\beta_0+\beta_1*X_i)
+\end{align*}
+Then we have:\\
+\begin{align*}
+Eb_0&=\displaystyle\frac{1}{n}\sum_{i=1}^{n}EY_i-\frac{\bar{X}}{SXX}*E(SXY)\\
+    &=\displaystyle\frac{1}{n}\sum_{i=1}^{n}\beta_0+\beta_1*X_i-\displaystyle\sum_{i=1}^{n}(X_i-\bar{X})(\beta_0+\beta_1*X_i)\\
+    &=\beta_0+\sum\frac{1}{n}-\frac{\bar{X}(X_i-\bar{X})}{SXX}(\beta_0-\beta_1X_i)\\
+    &=\beta_0+\frac{nSXX-n\sum(X_i-\bar{X})X_i}{nSXX}\\
+    &=\beta_0
+\end{align*}
+Thus, we proved that $b_0$ is an unbiased estimator of $\beta_0$.
+}
+
+\problem{50} { Problem 2.52 in the textbook on page 97}
+ { \vfill
+  \answer
+}
+{
+(2.31) tells us that $\bar{Y}$ is independent of $b_1$. N.B. if 2 random variables X and Y and independent, then $Var(X+Y)=Var(X)+Var(Y)$.\\
+So given the above result, we have the followings:\\
+\begin{align*}
+Var(b_0)&=Var(\bar{Y}-b_1\bar{X})\\
+        &=Var(\bar{Y})+Var(b_1)*\bar{X}^2
+\end{align*}
+Since:\\
+\begin{align*}
+Var(\bar{Y})&=Var(\frac{1}{n}\sum Y_i)\\
+            &=\frac{1}{n^2}\sum Var(Y_i)\\
+            &=\frac{\sigma^2}{n}
+\end{align*}
+and $Var(b_1)=\frac{\sigma^2}{\sum(X_i-\bar{X})^2}$ by "Variance" on Page 43 of the textbook, so we have:\\
+\begin{center}
+$Var(b_0)=\sigma^2(\frac{1}{n}+\frac{\bar{X}^2}{\sum(X_i-\bar{X})^2})$
+\end{center}
+The above equation is a special case of (2.29b) in the sense that in (2.29b), if $X_h$ equals 0 or $2\bar{X}$ then it becomes (2.22b).
+}
+
+
+% Problems End Here % ------------------------------------------------------- %
+
+\problemsdone
+\end{document}
+
+% End of the Document

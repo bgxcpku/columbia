@@ -1,0 +1,13 @@
+\beamer@slide {gaussian_pdf.png}{3}
+\beamer@slide {gaussian_pdf_pca_axis.png}{4}
+\beamer@slide {gaussian_pdf_rotated.png}{5}
+\beamer@slide {2d_samples.png}{17}
+\beamer@slide {2d_samples_pca_axis.png}{18}
+\beamer@slide {2d_samples_rotated.png}{19}
+\beamer@slide {pc_projection.png}{20}
+\beamer@slide {pc_projected.png}{21}
+\beamer@slide {fig:2d_regression}{23}
+\beamer@slide {2d_regression_flat.png}{24}
+\beamer@slide {pca_conlinearity_removal.png}{26}
+\beamer@slide {beta_samples_pca_axis.png}{32}
+\beamer@slide {beta_samples_rotated.png}{33}
