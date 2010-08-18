@@ -5,6 +5,7 @@
 
 package edu.columbia.stat.wood.sequencememoizer;
 
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
@@ -12,7 +13,8 @@ import java.util.NoSuchElementException;
  *
  * @author nicholasbartlett
  */
-public class FiniteDiscretePDFIterator extends DiscretePDFIterator{
+
+public class FiniteDiscretePDFIterator implements Iterator<Pair<Integer, Double>>{
     private double[] pdf;
     private int index, l;
 
@@ -48,12 +50,7 @@ public class FiniteDiscretePDFIterator extends DiscretePDFIterator{
         return new Pair(index, pdf[index++]);
     }
 
-    /**
-     * Resets the iterator object to start over again at the beginning of the
-     * backing array.
-     */
-    public void reset(){
-        index = 0;
+    public void remove() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
-
 }

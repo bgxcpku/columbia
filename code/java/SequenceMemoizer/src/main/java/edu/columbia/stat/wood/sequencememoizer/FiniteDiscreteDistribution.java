@@ -39,27 +39,6 @@ public abstract class FiniteDiscreteDistribution implements DiscreteDistribution
     }
 
     /**
-     * Fills the provided container object with the PDF.
-     *
-     * @param pdf container object to be filled with PDF ordered by type
-     */
-    public void PDF(double[] pdf){
-        if(pdf.length != alphabetSize()){
-            throw new IllegalArgumentException("The provided pdf is of length "
-                    + pdf.length + " but needs to be of length " + alphabetSize() + ".");
-        }
-
-        int as;
-
-        as = alphabetSize();
-
-        pdf = new double[as];
-        for(int i = 0 ; i < as; i++){
-            pdf[i] = probability(i);
-        }
-    }
-
-    /**
      * Gets an iterator object which iterates over the set of type, probability pairs
      * which defines the PDF of this discrete distribution.
      *
@@ -68,4 +47,6 @@ public abstract class FiniteDiscreteDistribution implements DiscreteDistribution
     public FiniteDiscretePDFIterator iterator(){
         return new FiniteDiscretePDFIterator(PDF());
     }
+
+
 }

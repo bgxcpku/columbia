@@ -5,6 +5,8 @@
 
 package edu.columbia.stat.wood.sequencememoizer;
 
+import java.util.Iterator;
+
 /**
  * Interface for a discrete distribution.
  *
@@ -26,6 +28,5 @@ public interface DiscreteDistribution {
      *
      * @return iterator
      */
-    public DiscretePDFIterator iterator();
-
+    public Iterator<Pair<Object, Double>> iterator();
 }
