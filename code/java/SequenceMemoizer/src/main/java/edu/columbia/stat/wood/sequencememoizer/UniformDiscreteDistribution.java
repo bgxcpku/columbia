@@ -14,7 +14,7 @@ import java.util.Arrays;
  * @author nicholasbartlett
  */
 
-public class UniformDiscreteDistribution extends FiniteDiscreteDistribution {
+public class UniformDiscreteDistribution  {
 
     private int alphabetSize;
     private double p;
@@ -55,41 +55,11 @@ public class UniformDiscreteDistribution extends FiniteDiscreteDistribution {
     }
 
     /**
-     * Overides PDF() method to provide more efficient implementation.
-     *
-     * @return PDF ordered by type
-     */
-    @Override
-    public double[] PDF(){
-        double pdf[];
-
-        pdf = new double[alphabetSize];
-        Arrays.fill(pdf, p);
-
-        return pdf;
-    }
-
-    /**
-     * Overides PDF(double[] pdf) method to proved more efficient implementation.
-     *
-     * @param pdf container object for PDF, ordered by type
-     */
-    @Override
-    public void PDF(double[] pdf){
-        if(pdf.length != alphabetSize){
-            throw new IllegalArgumentException("The provided pdf is of length "
-                    + pdf.length + " but needs to be of length " + alphabetSize + ".");
-        }
-        Arrays.fill(pdf, p);
-    }
-
-    /**
      * Gets an iterator object which iterates over the set of type, probability pairs
      * which define the PDF of this discrete distribution.
      *
      * @return iterator object
      */
-    @Override
     public UniformFiniteDiscretePDFIterator iterator(){
         return new UniformFiniteDiscretePDFIterator(alphabetSize);
     }

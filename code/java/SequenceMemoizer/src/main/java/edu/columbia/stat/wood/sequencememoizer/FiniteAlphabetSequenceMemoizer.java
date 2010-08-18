@@ -17,7 +17,7 @@ import java.io.IOException;
  * @author nicholasbartlett 
  */
 
-public class FiniteAlphabetSequenceMemoizer extends BaseSequenceMemoizer {
+public class FiniteAlphabetSequenceMemoizer {
 
     /**
      * Random object used for random number generation throughout the model.

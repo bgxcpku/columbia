@@ -73,7 +73,7 @@ public class SequenceMemoizerParameters {
         this.infiniteDiscount = 0.5;
         this.depth = depth;
         this.seed = seed;
-        this.baseDistribution = new UniformDiscreteDistribution(alphabetSize);
+//        this.baseDistribution = new UniformDiscreteDistribution(alphabetSize);
     }
 
     /**
