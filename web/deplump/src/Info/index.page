@@ -1,0 +1,20 @@
+---
+title: Info
+in_menu: true
+routed_title: Info
+---
+
+The deplump family of compressors is currently under development in a number of academic institutions and laboratories around the world.  
+
+Please direct all enquiries (commercial and academic) to [fwood@stat.columbia.edu](mailto:fwood@stat.columbia.edu).
+
+For background information on how deplump was developed and the technology used therein, refer to the following papers
+
+- <span class="papertitle"> Forgetting counts : Constant Memory inference for a dependent hierarchical Pitman-Yor Process </span>. N. Bartlett, D. Pfau, and F. Wood, ICML, 2010  <a class="download" href="http://www.stat.columbia.edu/~fwood/Papers/Bartlett-ICML-2010.pdf">PDF</a>
+-  <span class="papertitle"> Lossless compression based on the Sequence Memoizer</span>. J. Gasthaus, F. Wood, and Y.W. Teh.  DCC, 2010. <a class="download" href="http://www.stat.columbia.edu/~fwood/Papers/Gasthaus-DCC-2010.pdf">PDF</a> 
+-  <span class="papertitle"> A Stochastic Memoizer for Sequence Data.</span> F. Wood, C. Archambeau, J. Gasthaus, L. James, and Y.W. Teh.  ICML, 2009. <a class="download" href="http://www.stat.columbia.edu/~fwood/Papers/Wood-ICML-2009.pdf">PDF</a>, <a href="http://www.stat.columbia.edu/~fwood/Talks/sequence_memoizer.pdf">Talk</a>, <a href="http://videolectures.net/icml09_wood_sms/">Video Lecture</a>
+
+
+
+
+

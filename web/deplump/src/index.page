@@ -1,0 +1,28 @@
+---
+title: Demo
+in_menu: true
+routed_title: Demo
+---
+## Welcome to the future of streaming lossless compression
+
+Don't wait, experience deplump&#0153; right now:  
+______________________
+To *deplump* (compress) a file use:
+
+<form action="DeplumpServlet" enctype="multipart/form-data" method="post">
+<input type="file" name="datafile" size="40"></input>
+<input type="submit" value="Deplump"></input>
+</form>
+
+<p></p>
+To *plump* (decompress) a previously deplumped file use:
+<form action="PlumpServlet" enctype="multipart/form-data" method="post">
+<input type="file" name="datafile" size="40"></input>
+<input type="submit" value="Plump"></input>
+</form>
+
+<p></p>
+
+###Important Disclaimer
+_____________________
+*Any data you send us using this form will be sent back and forth to our server in the clear and is therefore vulnerable to intercept.  Don't deplump sensitive data.  Absolutely do not discard your original data.  Deplump is alpha code undergoing constant development.  There is a very high chance that tomorrow's version of deplump will be incompatible with today's.  This means you might not ever be able to recover your original data if you were silly enough to discard it after this warning.  That would suck for all of us, so treat this as it is; an easy way to try out an awesome new lossless compressor.*
