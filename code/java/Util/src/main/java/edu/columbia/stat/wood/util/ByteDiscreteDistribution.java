@@ -12,9 +12,9 @@ import java.util.Iterator;
  * @author nicholasbartlett
  */
 
-public interface DiscreteDistribution {
+public interface ByteDiscreteDistribution {
     
-    public double probability(int type);
+    public double probability(byte type);
 
-    public Iterator<Pair<Integer, Double>> iterator();
+    public Iterator<Pair<Byte, Double>> iterator();
 }

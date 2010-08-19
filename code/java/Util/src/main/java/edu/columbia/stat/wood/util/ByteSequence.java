@@ -11,13 +11,13 @@ import java.util.HashMap;
  *
  * @author nicholasbartlett
  */
-public class ByteSequence2 extends HashMap<BigInt, byte[]> {
+public class ByteSequence extends HashMap<BigInt, byte[]> {
 
     private byte[] currentArray;
     private BigInt currentKey, earliestKey;
     private int index, arraySize;
 
-    public ByteSequence2(int arraySize){
+    public ByteSequence(int arraySize){
         currentArray = new byte[arraySize];
         currentKey = new BigInt();
         earliestKey = new BigInt();

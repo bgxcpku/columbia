@@ -10,7 +10,7 @@ package edu.columbia.stat.wood.util;
  * @author nicholasbartlett
  */
 
-public interface FiniteDiscreteDistribution extends DiscreteDistribution {
+public interface ByteFiniteDiscreteDistribution extends ByteDiscreteDistribution {
 
     public int alphabetSize();
     
