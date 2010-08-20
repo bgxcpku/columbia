@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+    <servlet>
+        <servlet-name>DeplumpServlet</servlet-name>
+        <servlet-class>edu.columbia.stat.wood.DeplumpServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PlumpServlet</servlet-name>
+        <servlet-class>edu.columbia.stat.wood.PlumpServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeplumpServlet</servlet-name>
+        <url-pattern>/DeplumpServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PlumpServlet</servlet-name>
+        <url-pattern>/PlumpServlet</url-pattern>
+    </servlet-mapping>
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+</web-app>
