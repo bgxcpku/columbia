@@ -16,7 +16,7 @@ public abstract class BytePredictiveModel {
 
     public ByteRange range;
 
-    public abstract void continueSequenceEncode(byte observation);
+    public abstract void continueSequenceEncode(byte type);
 
     public abstract void continueSequenceDecode(double pointOnCdf);
 

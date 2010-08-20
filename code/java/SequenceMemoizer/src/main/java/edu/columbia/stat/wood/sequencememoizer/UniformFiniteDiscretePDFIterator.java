@@ -13,7 +13,7 @@ import java.util.NoSuchElementException;
  *
  * @author nicholasbartlett
  */
-public class UniformFiniteDiscretePDFIterator extends FiniteDiscretePDFIterator {
+public class UniformFiniteDiscretePDFIterator {
     private int alphabetSize, index;
     private double p;
 
@@ -21,7 +21,7 @@ public class UniformFiniteDiscretePDFIterator extends FiniteDiscretePDFIterator 
      * @param alphabetSize finite size of alphabet
      */
     public UniformFiniteDiscretePDFIterator(int alphabetSize){
-        super(null);
+        //super(null);
         p = 1.0 / (double) alphabetSize;
     }
 
@@ -30,7 +30,7 @@ public class UniformFiniteDiscretePDFIterator extends FiniteDiscretePDFIterator 
      *
      * @return if there is an available element of the PDF true, else false
      */
-    @Override
+    //@Override
     public boolean hasNext() {
         return index < alphabetSize;
     }
@@ -41,7 +41,7 @@ public class UniformFiniteDiscretePDFIterator extends FiniteDiscretePDFIterator 
      *
      * @return an Integer, Double pair containing the type and the probability of that type
      */
-    @Override
+    //@Override
     public Pair<Integer, Double> next() {
         if(index >= alphabetSize){
             throw new NoSuchElementException();

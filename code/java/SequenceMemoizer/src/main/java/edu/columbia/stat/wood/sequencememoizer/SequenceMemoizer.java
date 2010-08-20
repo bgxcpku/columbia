@@ -15,7 +15,7 @@ public interface SequenceMemoizer {
      *
      * @param maxNumberRestaurants max allowable number of instantiated restaurants in the model
      */
-    public void limitMemory(long maxNumberRestaurants);
+    public void limitMemory(int maxNumberRestaurants);
 
     /**
      * Incorporates the observation in the model with the assumption that this observation
@@ -34,7 +34,7 @@ public interface SequenceMemoizer {
      * @param observation integer value of observation
      * @param range container object for values of CDF(observation-1) and CDF(observation)
      */
-    public void continueSequenceRange(int observation, Range range);
+    public void continueSequenceEncode(int observation);
 
     /**
      * Finds the observation on the predictive CDF such that CDF(observation) greater than pointOnCDF
@@ -45,7 +45,7 @@ public interface SequenceMemoizer {
      * @param pointOnCdf point on cdf, must be in [0.0,1.0)
      * @param rad container object for observation type, CDF(observation-1), and CDF(observation)
      */
-    public void continueSequenceRangeAndDecode(double pointOnCdf, RangeAndDecode rad);
+    public void continueSequenceDecode(double pointOnCdf);
 
     /**
      * Incorporates an array of observations into the model with the assumption that
@@ -83,7 +83,7 @@ public interface SequenceMemoizer {
      * @param context context
      * @return iterator object to return type, probability pairs of the predictive PDF
      */
-    public DiscretePDFIterator predictivePDF(Sequence context);
+    public DiscreteDistribution predictiveDistribution(Sequence context);
 
     /**
      * Gets the predictive probability of a  token in a given context.

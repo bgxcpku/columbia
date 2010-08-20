@@ -10,7 +10,7 @@ package edu.columbia.stat.wood.sequencememoizer;
  *
  * @author nicholasbartlett
  */
-public abstract class FiniteDiscreteDistribution implements DiscreteDistribution{
+public abstract class FiniteDiscreteDistribution {
 
     /**
      * Gets the finite alphabet size for this discrete distribution.
@@ -32,7 +32,7 @@ public abstract class FiniteDiscreteDistribution implements DiscreteDistribution
 
         pdf = new double[as];
         for(int i = 0 ; i < as; i++){
-            pdf[i] = probability(i);
+            //pdf[i] = probability(i);
         }
 
         return pdf;
@@ -46,6 +46,10 @@ public abstract class FiniteDiscreteDistribution implements DiscreteDistribution
      */
     public FiniteDiscretePDFIterator iterator(){
         return new FiniteDiscretePDFIterator(PDF());
+    }
+
+    double probability(int type) {
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
 

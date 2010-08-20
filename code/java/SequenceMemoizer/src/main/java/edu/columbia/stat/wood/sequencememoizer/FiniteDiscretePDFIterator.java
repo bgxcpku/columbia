@@ -53,4 +53,6 @@ public class FiniteDiscretePDFIterator implements Iterator<Pair<Integer, Double>
     public void remove() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    public void reset(){};
 }
