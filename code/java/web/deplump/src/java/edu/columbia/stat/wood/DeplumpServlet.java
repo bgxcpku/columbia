@@ -7,8 +7,11 @@ package edu.columbia.stat.wood;
 import edu.columbia.stat.wood.deplump.DeplumpStream;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -35,7 +38,7 @@ public class DeplumpServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         PrintWriter out = null;
-BufferedOutputStream bos = null;
+        BufferedOutputStream bos = null;
         try {
             // Check that we have a file upload request
             boolean isMultipart = ServletFileUpload.isMultipartContent(request);
@@ -91,22 +94,48 @@ BufferedOutputStream bos = null;
                             }
 
                             response.setContentType("application/deplump");
-                            response.setHeader("Content-Disposition", "attachment; filename="+filename+".dplmp");
-                            bos = new BufferedOutputStream(response.getOutputStream());
-                            DeplumpStream ds = new DeplumpStream(bos);
+                            response.setHeader("Content-Disposition", "attachment; filename="+filename+".dpl");
+                            CountingOutputStream cos = new CountingOutputStream(response.getOutputStream());
+                            DeplumpStream ds = new DeplumpStream(cos);
                             
-                            byte[] buffer = new byte[10000000];
-                            
-                            
+                            byte[] buffer = new byte[1000];
+
+                            Date date = new Date();
+                            long now = date.getTime();
+                            File tmpfilename = new File("/tmp/deplump/"+now);
+                            while(tmpfilename.exists()) {
+                                tmpfilename =  new File(tmpfilename.getName()+".1");
+                            }
+                            FileOutputStream tmpfile = new FileOutputStream(tmpfilename);
+                            BufferedOutputStream bfos = new BufferedOutputStream(tmpfile);
+
+                            int stream_length = 0;
                             int length_read =0;
                             while(( length_read = stream.read(buffer))!=-1) {
-                                for (int i=0;i<length_read;i++)
-                                    ds.write(buffer[i]+128);
-                                //ds.write(buffer,0,length_read);
+                                stream_length += length_read;
+                                //for (int i=0;i<length_read;i++)
+                                //    ds.write(buffer[i]+128);
+                                bfos.write(buffer,0,length_read);
+                                ds.write(buffer,0,length_read);
                                 
                             }
                             ds.flush();
                             ds.close();
+                            bfos.flush();
+                            bfos.close();
+
+                         /*   Runtime.getRuntime().exec("/bin/cp "+tmpfilename.getName()+" "+tmpfilename.getName()+".pregz");
+                            Runtime.getRuntime().exec("/bin/gzip "+tmpfilename.getName()+".pregz");
+                            Runtime.getRuntime().exec("/bin/bzip2 "+tmpfilename.getName());
+
+                            File gzippedfile = new File(tmpfilename.getName()+".pregz.gz");
+                            File bzip2edfile = new File(tmpfilename.getName()+".bz2");
+
+                            long gzippedfilelength = gzippedfile.length();
+                            long bzip2edfilelength = bzip2edfile.length();*/
+
+                            long deplumpedfilelength = cos.numBytesWritten;
+                            
 
                             return;
                             //System.out.println("File field " + name + " with file name "

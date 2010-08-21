@@ -7,8 +7,11 @@ package edu.columbia.stat.wood;
 import edu.columbia.stat.wood.deplump.PlumpStream;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -100,17 +103,18 @@ public class PlumpServlet extends HttpServlet {
                             bos = new BufferedOutputStream(response.getOutputStream());
 
 
-                            int b = 0;
-                            while ((b = stream.read()) != -1) {
-                                bos.write(b - 128);
-                            }
 
-
-                            //byte[] buffer = new byte[10000000];
-                            //int length_read =0;
-                            //while(( length_read = stream.read(buffer))!=-1) {
-                            //    bos.write(buffer,0,length_read);
+                            //int b = 0;
+                            //while ((b = stream.read()) != -1) {
+                            //    bos.write(b - 128);
                             //}
+
+
+                            byte[] buffer = new byte[1000];
+                            int length_read =0;
+                            while(( length_read = stream.read(buffer))!=-1) {
+                                bos.write(buffer,0,length_read);
+                            }
 
                             bos.flush();
                             bos.close();
