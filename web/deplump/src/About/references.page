@@ -1,0 +1,12 @@
+---
+title: References
+in_menu: true
+sort_info: 1000
+routed_title: References
+---
+
+For more technical information on how deplump and its predictive engine (the sequence memoizer) work, please read refer to the following papers
+
+- <span class="papertitle"> Forgetting counts : Constant Memory inference for a dependent hierarchical Pitman-Yor Process </span>. N. Bartlett, D. Pfau, and F. Wood, ICML, 2010  <a class="download" href="http://www.stat.columbia.edu/~fwood/Papers/Bartlett-ICML-2010.pdf">PDF</a>
+-  <span class="papertitle"> Lossless compression based on the Sequence Memoizer</span>. J. Gasthaus, F. Wood, and Y.W. Teh.  DCC, 2010. <a class="download" href="http://www.stat.columbia.edu/~fwood/Papers/Gasthaus-DCC-2010.pdf">PDF</a> 
+-  <span class="papertitle"> A Stochastic Memoizer for Sequence Data.</span> F. Wood, C. Archambeau, J. Gasthaus, L. James, and Y.W. Teh.  ICML, 2009. <a class="download" href="http://www.stat.columbia.edu/~fwood/Papers/Wood-ICML-2009.pdf">PDF</a>, <a href="http://www.stat.columbia.edu/~fwood/Talks/sequence_memoizer.pdf">Talk</a>, <a href="http://videolectures.net/icml09_wood_sms/">Video Lecture</a>}

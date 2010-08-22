@@ -1,0 +1,14 @@
+---
+title: Caveats
+in_menu: true
+sort_info: 30
+routed_title: Caveats
+---
+
+Deplump compression technology is a _general purpose_ lossless compressor.  It is not tailored to any particular datatype and is therefore likely to be outperformed by other non-general purpose compressors on specific data sources.
+
+Deplump compression technology is slower than gzip and its brethren.  The computational asymptotics are right (constant space, linear time compression of streams of unbounded length, etc.) but the constants are large.
+
+The current deplump reference implementation is in [Java](http://www.java.com/).  We are looking for partners to develop implementations in lower level languages as well as partners to help us develop hardware implementations of the algorithm.
+
+
