@@ -30,6 +30,6 @@ default_processing_pipeline:
 # website.lang: de
 
 ## Adding some extensions to the copy source handler.
-# patterns:
-#   Copy:
-#     add: [**/*.pdf, **/*.djvu]
+patterns:
+   Copy:
+     add: [**/*.pdf, **/*.djvu, **/*.pptx]
