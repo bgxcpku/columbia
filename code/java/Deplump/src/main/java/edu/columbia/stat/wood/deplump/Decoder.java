@@ -4,7 +4,7 @@
  */
 package edu.columbia.stat.wood.deplump;
 
-import edu.columbia.stat.wood.sequencememoizer.RangeAndDecode;
+import edu.columbia.stat.wood.sequencememoizer.BytePredictiveModel;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -20,9 +20,8 @@ public class Decoder {
     private long low = 0;
     private long range = long_max_value;
     private long code;
-    private RangeAndDecode rad;
     private BufferedBitInputStream bbis;
-    private PredictiveModel pm;
+    private BytePredictiveModel pm;
 
     /**
      * Initializes decoder with specified PredictiveModel and unerlying InputStream.
@@ -31,11 +30,10 @@ public class Decoder {
      * @param is underlying InputStream
      * @throws IOException
      */
-    public Decoder(PredictiveModel pm, InputStream is) throws IOException {
+    public Decoder(BytePredictiveModel pm, InputStream is) throws IOException {
         this.pm = pm;
         this.bbis = new BufferedBitInputStream(is);
-        this.initializeCode();
-        rad = new RangeAndDecode(0,0.0,0.0);
+        initializeCode();
     }
 
     private void initializeCode() throws IOException {
@@ -57,38 +55,37 @@ public class Decoder {
      */
     public int read() throws IOException {
         double pointOnCDF, l, h;
-        int decodedByte, b;
+        int b;
 
-            pointOnCDF = (double) (code - low) / (double) range;
-            pm.continueSequenceRangeAndDecode(pointOnCDF, rad);
-            
-            decodedByte = rad.decode();
-            l = rad.low();
-            h = rad.high();
+        pointOnCDF = (double) (code - low) / (double) range;
+        pm.continueSequenceDecode(pointOnCDF);
 
-            if (decodedByte == 256) {
-                return -1;
+        l = pm.low;
+        h = pm.high;
+
+        if (pm.decode == 256) {
+            return -1;
+        }
+
+        low += l * range;
+        range *= (h - l);
+
+        while ((low ^ (low + range)) < first_bit_indicator) {
+            range = range << 1;
+            low = low << 1 & long_max_value;
+            code = code << 1 & long_max_value;
+
+            b = bbis.read();
+            if (b == 1) {
+                code++;
             }
+        }
 
-            low += l * range;
-            range *= (h-l);
+        if (range < range_min_value) {
+            emitRange();
+        }
 
-            while ((low ^ (low + range)) < first_bit_indicator) {
-                range = range << 1;
-                low = low << 1 & long_max_value;
-                code = code << 1 & long_max_value;
-
-                b = bbis.read();
-                if (b == 1) {
-                    code++;
-                }
-            }
-
-            if (range < range_min_value) {
-                emitRange();
-            }
-
-            return decodedByte;
+        return pm.decode;
     }
 
     private void emitRange() throws IOException {
@@ -116,16 +113,5 @@ public class Decoder {
 
         low = 0;
         range = long_max_value;
-    }
-
-    /**
-     * Closes the buffered bit input stream used by this decoder.
-     * 
-     * @throws IOException
-     */
-    public void close() throws IOException {
-        if (bbis != null) {
-            bbis.close();
-        }
     }
 }

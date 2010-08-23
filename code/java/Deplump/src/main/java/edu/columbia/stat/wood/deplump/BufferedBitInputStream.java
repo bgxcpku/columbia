@@ -56,15 +56,4 @@ public class BufferedBitInputStream {
         currentByte = currentByte << 1 & chop;
         return returnBit;
     }
-    
-    /**
-     * Closes underlying InputStream
-     *
-     * @throws IOException
-     */
-    public void close() throws IOException{
-        if(is!=null){
-            is.close();
-        }
-    }
 }

@@ -1,0 +1,32 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package edu.columbia.stat.wood.util;
+
+/**
+ *
+ * @author nicholasbartlett
+ */
+public class LogAdd {
+
+    /**
+     * Method to get the log(A + B), but useful when given log(A) and log(B).
+     *
+     * @param logA log(A)
+     * @param logB log(B)
+     * @return log(A + B)
+     */
+    public static double logAdd(double logA, double logB){
+        if(Double.isInfinite(logA) && Double.isInfinite(logB) && logA < 0 && logB < 0){
+            return Double.NEGATIVE_INFINITY;
+        } else if(logA > logB){
+            logB -= logA;
+            return logA + Math.log(1.0 + Math.exp(logB));
+        } else {
+            logA -= logB;
+            return logB + Math.log(Math.exp(logA) + 1.0);
+        }
+    }
+}

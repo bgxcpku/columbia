@@ -5,6 +5,7 @@
 
 package edu.columbia.stat.wood.deplump;
 
+import edu.columbia.stat.wood.sequencememoizer.ByteSequenceMemoizer;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -17,54 +18,41 @@ import java.io.OutputStream;
 public class DeplumpStream extends OutputStream {
 
     private Encoder enc;
+    private OutputStream out;
 
-    /**
-     * @param out underlying OutputStream
-     * @throws IOException
-     */
     public DeplumpStream(OutputStream out) throws IOException {
-        enc =  new Encoder(new SMPredictiveModel(), out);
+        this.out = out;
+        enc = new Encoder(new ByteSequenceMemoizer(1023,1), out);
     }
 
     @Override
-    /**
-     * Ends stream and closes underlying OutputStream.
-     */
     public void close() throws IOException {
         enc.close();
+        out.close();
     }
 
     @Override
-    /**
-     * Flushes underlying OutputStream.
-     */
     public void flush() throws IOException {
-        enc.flush();
+        out.flush();
     }
 
     @Override
-    /**
-     * Unsuported.
-     */
     public void write(byte[] byteSequence) throws IOException {
-        throw new RuntimeException("unsuported");
+        for(byte b : byteSequence){
+            enc.encode(b);
+        }
     }
 
     @Override
-    /**
-     * Unsuported.
-     */
     public void write(byte[] byteSequence, int off, int len) throws IOException {
-        throw new RuntimeException("unsuported");
+        int upperIndex = off + len;
+        
+        for(int i = off; i < upperIndex; i++){
+            enc.encode(byteSequence[i]);
+        }
     }
-
-    /**
-     * Writes specified integer.
-     *
-     * @param i integer to write
-     * @throws IOException
-     */
+    
     public void write(int i) throws IOException {
-        enc.encode(i);
+        enc.encode((byte) i);
     }
 }

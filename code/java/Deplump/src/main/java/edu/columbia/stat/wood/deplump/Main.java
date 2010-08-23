@@ -20,26 +20,11 @@ public class Main {
     
     public static void main(String[] args) throws FileNotFoundException, IOException {
 
-        String path = "/Users/nicholasbartlett/Documents/np_bayes/data/alice_in_wonderland/";
-        String file = "AliceInWonderland.txt";
+        String file = "/Users/nicholasbartlett/Documents/np_bayes/data/alice_in_wonderland/AliceInWonderland.txt";
+        //String file = "/Users/nicholasbartlett/Documents/np_bayes/data/pride_and_prejudice/pride_and_prejudice.txt";
+        //String file = "/Users/nicholasbartlett/Documents/np_bayes/data/wikipedia/first2m.txt";
 
-        /*double p = 3.0 / (double) Integer.MAX_VALUE;
-
-        double pp = p / (double) 256;
-
-        double cuSum = 0.0;
-
-        for(int i =0 ; i < 256; i++){
-            cuSum += pp;
-        }
-
-        System.out.println(p);
-        System.out.println(pp);
-        System.out.println(cuSum);
-
-*/
-        
-        Deplump.Deplump(path + file);
-        //Plump.Plump(path + file + ".deplump");
+        Deplump.Deplump(file);
+        //Plump.Plump(file + ".deplump");
     }
 }
