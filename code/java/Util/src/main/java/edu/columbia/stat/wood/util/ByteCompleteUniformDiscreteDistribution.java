@@ -8,47 +8,32 @@ package edu.columbia.stat.wood.util;
 import java.util.Iterator;
 
 /**
- * Uniform distribution over the range [leftType, rightType)
+ *
  * @author nicholasbartlett
  */
-public class UniformByteDiscreteDistribution implements ByteFiniteDiscreteDistribution {
-    private int alphabetSize, leftType, rightType;
+public class ByteCompleteUniformDiscreteDistribution extends UniformByteDiscreteDistribution{
+    private final int alphabetSize, leftType, rightType;
     private final double p;
 
-    public UniformByteDiscreteDistribution(){
-        alphabetSize = 256;
-        p = 1.0 / (double) alphabetSize;
+    public ByteCompleteUniformDiscreteDistribution(){
+        this.alphabetSize = 256;
+        this.p = 1.0 / 256.0;
+
         leftType = -128;
         rightType = 128;
     }
 
-    public UniformByteDiscreteDistribution(int leftType, int rightType){
-        if(leftType < -128 || leftType > 128 || rightType < -128 || rightType >128){
-            throw new IllegalArgumentException("Left and right type must both be between between -128" +
-                    "and 128");
-        }
-        
-        alphabetSize = rightType - leftType;
-        p = 1.0 / (double) alphabetSize;
-        this.leftType = leftType;
-        this.rightType = rightType;
-    }
-
-    public int alphabetSize(){
+    @Override
+    public final int alphabetSize(){
         return alphabetSize;
     }
 
-    public double probability(byte type) {
-        int t;
-
-        t = (int) type;
-        if(t >= leftType && t < rightType){
-            return p;
-        } else {
-            return 0.0;
-        }
+    @Override
+    public final double probability(byte type) {
+        return p;
     }
 
+    @Override
     public Iterator<Pair<Byte, Double>> iterator() {
         return new UniformIterator();
     }

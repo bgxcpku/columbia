@@ -6,6 +6,7 @@ package edu.columbia.stat.wood.sequencememoizer;
 
 import edu.columbia.stat.wood.util.BigInt;
 import edu.columbia.stat.wood.util.ByteArrayFiniteDiscreteDistribution;
+import edu.columbia.stat.wood.util.ByteCompleteUniformDiscreteDistribution;
 import edu.columbia.stat.wood.util.ByteDiscreteDistribution;
 import edu.columbia.stat.wood.util.ByteSequence;
 import edu.columbia.stat.wood.util.ByteSequence.ByteSequenceBackwardIterator;
@@ -48,7 +49,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
         ds = new DoubleStack();
         sr = new SeatReturn();
         SeatingArranger.rng = RNG;
-        baseDistribution = new edu.columbia.stat.wood.util.UniformByteDiscreteDistribution();
+        baseDistribution = new ByteCompleteUniformDiscreteDistribution();
 
         adj = 1.0 + (double) (baseDistribution.alphabetSize() + 1) * minP;
     }
