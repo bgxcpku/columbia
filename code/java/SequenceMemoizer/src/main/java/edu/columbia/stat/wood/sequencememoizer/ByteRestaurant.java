@@ -4,7 +4,7 @@
  */
 package edu.columbia.stat.wood.sequencememoizer;
 
-import edu.columbia.stat.wood.sequencememoizer.ConstantSpaceSequenceMemoizer.SeatReturn;
+import edu.columbia.stat.wood.sequencememoizer.ByteSequenceMemoizer.SeatReturn;
 import edu.columbia.stat.wood.util.ArraySet;
 import edu.columbia.stat.wood.util.BigInt;
 import edu.columbia.stat.wood.util.ByteMap;
@@ -15,21 +15,19 @@ import edu.columbia.stat.wood.util.SeatingArranger;
  *
  * @author nicholasbartlett
  */
-public class ConstantSpaceRestaurant extends ByteMap<ConstantSpaceRestaurant> {
+public class ByteRestaurant extends ByteMap<ByteRestaurant> {
 
     public byte[] types;
     public int[] customersAndTables;
     public int customers, tables, edgeStart, edgeLength;
     public byte key;
     public BigInt edgeKey;
-    public ConstantSpaceRestaurant parent;
+    public ByteRestaurant parent;
     public static int count = 0;
 
-    public boolean added = false;
+    public static ArraySet<ByteRestaurant> restaurants;
 
-    public static ArraySet<ConstantSpaceRestaurant> restaurants;
-
-    public ConstantSpaceRestaurant(ConstantSpaceRestaurant parent, int edgeStart, int edgeLength, BigInt edgeKey, byte key) {
+    public ByteRestaurant(ByteRestaurant parent, int edgeStart, int edgeLength, BigInt edgeKey, byte key) {
         this.parent = parent;
         this.edgeStart = edgeStart;
         this.edgeLength = edgeLength;
@@ -48,7 +46,7 @@ public class ConstantSpaceRestaurant extends ByteMap<ConstantSpaceRestaurant> {
         byte[] childKeys = new byte[size()];
 
         int index = 0;
-        for(ConstantSpaceRestaurant child : values()){
+        for(ByteRestaurant child : values()){
             childKeys[index++] = child.key;
         }
 
@@ -71,12 +69,6 @@ public class ConstantSpaceRestaurant extends ByteMap<ConstantSpaceRestaurant> {
             }
             assert dup == 1;
         }
-/*
-        for(int i = 0; i< childKeys.length; i++){
-            System.out.print(childKeys[i] + ", ");
-        }
-        print();
-        System.out.println(); */
     }
 
     public void setTableConfig(byte[] types, int[] customersAndTables, int customers, int tables) {
@@ -148,7 +140,7 @@ public class ConstantSpaceRestaurant extends ByteMap<ConstantSpaceRestaurant> {
 
                 denominator = numerator + (double) tables * discount * p;
 
-                if (numerator / denominator > ConstantSpaceSequenceMemoizer.RNG.nextDouble()) {
+                if (numerator / denominator > ByteSequenceMemoizer.RNG.nextDouble()) {
                     sr.set(false, customersAndTables[tti], customers, tables);
 
                     customersAndTables[tci]++;
@@ -209,9 +201,9 @@ public class ConstantSpaceRestaurant extends ByteMap<ConstantSpaceRestaurant> {
         return l;
     }
 
-    public ConstantSpaceRestaurant fragmentForInsertion(ConstantSpaceRestaurant irParent, int irEdgeStart, int irEdgeLength, BigInt irEdgeKey, double discount, double irDiscount) {
+    public ByteRestaurant fragmentForInsertion(ByteRestaurant irParent, int irEdgeStart, int irEdgeLength, BigInt irEdgeKey, double discount, double irDiscount) {
         double fragDiscount, fragConcentration, numerator, denominator;
-        ConstantSpaceRestaurant intermediateRestaurant;
+        ByteRestaurant intermediateRestaurant;
         byte[] irTypes;
         int[] irCustomersAndTables, tsa;
         int l, tci, tti, fc, ft, tc, tt, irc, irt;
@@ -219,12 +211,14 @@ public class ConstantSpaceRestaurant extends ByteMap<ConstantSpaceRestaurant> {
         customers = 0;
         tables = 0;
 
-        intermediateRestaurant = new ConstantSpaceRestaurant(irParent, irEdgeStart, irEdgeLength, irEdgeKey, key);
+        intermediateRestaurant = new ByteRestaurant(irParent, irEdgeStart, irEdgeLength, irEdgeKey, key);
+
         if (types == null) {
             edgeLength -= irEdgeLength;
             parent = intermediateRestaurant;
             return intermediateRestaurant;
         }
+
         fragDiscount = discount / irDiscount;
         fragConcentration = -1 * discount;
 
@@ -253,7 +247,7 @@ public class ConstantSpaceRestaurant extends ByteMap<ConstantSpaceRestaurant> {
                 numerator = 1.0 - fragDiscount;
                 denominator = 1.0 + fragConcentration;
                 for (int customer = 1; customer < tableSize; customer++) {
-                    if (numerator / denominator > ConstantSpaceSequenceMemoizer.RNG.nextDouble()) {
+                    if (numerator / denominator > ByteSequenceMemoizer.RNG.nextDouble()) {
                         fc++;
                         numerator += 1.0;
                         denominator += 1.0;
@@ -286,9 +280,74 @@ public class ConstantSpaceRestaurant extends ByteMap<ConstantSpaceRestaurant> {
 
         return intermediateRestaurant;
     }
+    
+    public ByteRestaurant fragmentForPrediction(ByteRestaurant irParent, double discount, double irDiscount){
+        ByteRestaurant intermediateRestaurant;
+        double fragDiscount, fragConcentration, numerator, denominator;
+        byte[] irTypes;
+        int[] irCustomersAndTables, tsa;
+        int l, irc, irt, tci, tti, tc, tt, fc, ft;
+
+        intermediateRestaurant = new ByteRestaurant(irParent, 0, 0, null, (byte) 0);
+        count--;
+        
+        if(types != null){
+            fragDiscount = discount / irDiscount;
+            fragConcentration = -1 * discount;
+
+            l = types.length;
+            irTypes = new byte[l];
+            System.arraycopy(types, 0, irTypes, 0, l);
+            irCustomersAndTables = new int[2 * l];
+
+            irc = 0;
+            irt = 0;
+            for (int typeIndex = 0; typeIndex < l; typeIndex++) {
+                tci = 2 * typeIndex;
+                tti = tci + 1;
+                tc = customersAndTables[tci];
+                tt = customersAndTables[tti];
+
+                tsa = SeatingArranger.getSeatingArrangement(tc, tt, discount);
+
+                fc = 0;
+                ft = 0;
+                for (int tableSize : tsa) {
+                    fc++;
+                    ft++;
+
+                    numerator = 1.0 - fragDiscount;
+                    denominator = 1.0 + fragConcentration;
+                    for (int customer = 1; customer < tableSize; customer++) {
+                        if (numerator / denominator > ByteSequenceMemoizer.RNG.nextDouble()) {
+                            fc++;
+                            numerator += 1.0;
+                            denominator += 1.0;
+                        } else {
+                            fc++;
+                            ft++;
+                            numerator += 1.0 - fragDiscount;
+                            denominator += 1.0;
+                        }
+                    }
+                }
+
+                irc += ft;
+                irt += tt;
+
+                irCustomersAndTables[tci] = ft;
+                irCustomersAndTables[tti] = tt;
+            }
+
+            intermediateRestaurant.setTableConfig(irTypes, irCustomersAndTables, irc, irt);
+        }
+        return intermediateRestaurant;
+    }
+
+
 
     public static void removeRestaurants(int n){
-        ConstantSpaceRestaurant r;
+        ByteRestaurant r;
         int index;
         boolean remove;
 
@@ -298,7 +357,7 @@ public class ConstantSpaceRestaurant extends ByteMap<ConstantSpaceRestaurant> {
             remove = false;
 
             while (!remove) {
-                index = (int) (ConstantSpaceSequenceMemoizer.RNG.nextDouble() * (double) restaurants.maxIndex());
+                index = (int) (ByteSequenceMemoizer.RNG.nextDouble() * (double) restaurants.maxIndex());
                 r = restaurants.get(index);
                 remove = (r != null) && r.isEmpty();
             }

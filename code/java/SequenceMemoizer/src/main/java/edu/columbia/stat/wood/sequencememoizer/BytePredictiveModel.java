@@ -5,20 +5,20 @@
 
 package edu.columbia.stat.wood.sequencememoizer;
 
-import edu.columbia.stat.wood.sequencememoizer.ConstantSpaceSequenceMemoizer.ByteRange;
-
 /**
  *
  * @author nicholasbartlett
  */
 
 public abstract class BytePredictiveModel {
-
-    public ByteRange range;
+    
+    public double low, high;
+    public int decode;
 
     public abstract void continueSequenceEncode(byte type);
 
     public abstract void continueSequenceDecode(double pointOnCdf);
 
     public abstract void endOfStream();
+
 }

@@ -10,6 +10,7 @@ package edu.columbia.stat.wood.deplump;
  * @author nicholasbartlett
  */
 
+import edu.columbia.stat.wood.sequencememoizer.ByteSequenceMemoizer;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -17,70 +18,62 @@ public class PlumpStream extends InputStream {
 
     private Decoder dec;
     private boolean eos = false;
+    private InputStream is;
 
-    /**
-     * Creates a PlumpStream with a specified underlying InputStream.
-     *
-     * @param is underlying InputStream
-     * @throws IOException
-     */
     public PlumpStream(InputStream is) throws IOException {
-        dec = new Decoder(new SMPredictiveModel(), is);
+        dec = new Decoder(new ByteSequenceMemoizer(1023,1), is);
+        this.is = is;
     }
 
     @Override
-    /**
-     * Unsupported.
-     */
-    public int available() {
-        throw new RuntimeException("unsupported");
+    public int available() throws IOException {
+        throw new UnsupportedOperationException("Not supported.");
     }
 
     @Override
-    /**
-     * Mark is not supported.
-     */
+    public void mark(int readlimit){
+        throw new UnsupportedOperationException("Not supported.");
+    }
+
+    @Override
     public boolean markSupported() {
         return false;
     }
 
     @Override
-    /**
-     * Closes this input stream.
-     */
     public void close() throws IOException {
-        dec.close();
+        is.close();
     }
 
     @Override
-    /**
-     * Unsupported.
-     */
     public int read(byte[] bs) throws IOException {
-        throw new RuntimeException("unsupported");
+        return read(bs,0,bs.length);
     }
 
     @Override
-    /**
-     * Unsupported.
-     */
     public int read(byte[] bs, int off, int len) throws IOException {
-        throw new RuntimeException("unsupported");
-    }
-
-    /**
-     * Reads the next byte and returns it as an integer in [0, 256).  Returns -1
-     * if the end of the stream has been reached.
-     *
-     * @return next byte as integer in [0, 256) or -1 if end of stream
-     * @throws IOException
-     */
-    public int read() throws IOException {
-        int b;
+        int index, upperIndex, b;
 
         if(eos){
             return -1;
         } else {
+        
+            index = off;
+            upperIndex = off + len;
+            while(index < upperIndex && (b = read()) > -1){
+                bs[index++] = (byte) b;
+            }
+        
+            return index - off;
+        }
+    }
+
+    public int read() throws IOException {
+        if(eos){
+            return -1;
+        } else {
+            int b;
+
             b = dec.read();
             if(b == -1){
                 eos = true;
@@ -90,10 +83,12 @@ public class PlumpStream extends InputStream {
     }
 
     @Override
-    /**
-     * Unsupported.
-     */
-    public long skip(long n) throws IOException {
-        throw new RuntimeException("unsupported");
+    public long skip(long n) {
+        throw new UnsupportedOperationException("Not supported.");
+    }
+
+    @Override
+    public void reset() {
+        throw new UnsupportedOperationException("Not supported.");
     }
 }

@@ -5,11 +5,14 @@
 
 package edu.columbia.stat.wood.sequencememoizer;
 
+import edu.columbia.stat.wood.util.ByteDiscreteDistribution;
+
 /**
  *
  * @author nicholasbartlett
  */
-public interface ByteSequenceMemoizer {
+
+public interface ByteSequenceMemoizerInterface {
     
     public void limitMemory(long maxNumberRestaurants, long maxSequenceLength);
 
@@ -21,7 +24,7 @@ public interface ByteSequenceMemoizer {
 
     public byte[] generateSequence(byte[] context, int sequenceLength);
 
-    public DiscreteDistribution predictiveDistribution(byte[] context);
+    public ByteDiscreteDistribution predictiveDistribution(byte[] context);
 
     public double predictiveProbability(byte[] context, byte token);
 

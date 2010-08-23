@@ -4,7 +4,7 @@
  */
 package edu.columbia.stat.wood.deplump;
 
-import edu.columbia.stat.wood.sequencememoizer.Range;
+import edu.columbia.stat.wood.sequencememoizer.BytePredictiveModel;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -13,23 +13,17 @@ import java.io.OutputStream;
  *
  * @author nicholasbartlett
  */
-
 public class Encoder {
 
     private long first_bit_indicator = (long) 1 << 62;
     private long long_max_value = Long.MAX_VALUE;
-
     private long low = 0;
     private long range = long_max_value;
     private long range_min_value = Integer.MAX_VALUE;
-
     private OutputStream out;
-    private PredictiveModel pm;
-
+    private BytePredictiveModel pm;
     private int currentByte = 0;
     private int byteIndex = 0;
-
-    private Range r;
 
     /**
      * Creates the encoder using a specified predictive model and an underlying
@@ -38,10 +32,9 @@ public class Encoder {
      * @param pm predictive model
      * @param out underlying OutputStream
      */
-    public Encoder(PredictiveModel pm, OutputStream out) {
+    public Encoder(BytePredictiveModel pm, OutputStream out) {
         this.pm = pm;
         this.out = out;
-        r = new Range(0.0,0.0);
     }
 
     /**
@@ -50,33 +43,50 @@ public class Encoder {
      * @param observation integer observation
      * @throws IOException
      */
-    public void encode(int observation) throws IOException {
-        double l,h;
+    public void encode(byte observation) throws IOException {
+        double l, h;
 
-        pm.continueSequenceRange(observation, r);
-        l = r.low();
-        h = r.high();
-
+        pm.continueSequenceEncode(observation);
+        l = pm.low;
+        h = pm.high;
 
         low += l * range;
-        range *= (h-l);
+        range *= (h - l);
 
         while ((low ^ (low + range)) < first_bit_indicator) {
             write(low >> 62);
 
-            range = range << 1 ;
+            range = range << 1;
             low = low << 1 & long_max_value;
         }
 
-        if(range < range_min_value){
+        if (range < range_min_value) {
             emitRange();
         }
     }
 
-    private void emitRange() throws IOException{
+    private void encodeEOF() throws IOException {
+        double l, h;
+
+        pm.endOfStream();
+        l = pm.low;
+        h = pm.high;
+
+        low += l * range;
+        range *= (h - l);
+
+        while ((low ^ (low + range)) < first_bit_indicator) {
+            write(low >> 62);
+
+            range = range << 1;
+            low = low << 1 & long_max_value;
+        }
+    }
+
+    private void emitRange() throws IOException {
         long code, diff;
 
-        while(range < first_bit_indicator){
+        while (range < first_bit_indicator) {
             write((low + range) >> 62);
             range = range << 1 & long_max_value;
             low = low << 1 & long_max_value;
@@ -94,10 +104,10 @@ public class Encoder {
     }
 
     private void write(long bit) throws IOException {
-        if(bit == 1){
-            currentByte += 1<<(7-byteIndex);
+        if (bit == 1) {
+            currentByte += 1 << (7 - byteIndex);
         }
-        
+
         if (byteIndex == 7) {
             out.write(currentByte);
             byteIndex = -1;
@@ -108,24 +118,14 @@ public class Encoder {
     }
 
     /**
-     * Flushes underlying OutputStream.
-     *
-     * @throws IOException
-     */
-    public void flush() throws IOException{
-        out.flush();
-    }
-
-    /**
      * Transmits end of stream character, transmits current range and closes the
      * underlying OutputStream.
      * 
      * @throws IOException
      */
     public void close() throws IOException {
-        encode(256);
+        encodeEOF();
         emitRange();
         out.write(currentByte);
-        out.close();
     }
 }
