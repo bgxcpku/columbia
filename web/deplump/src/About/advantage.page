@@ -1,0 +1,12 @@
+---
+title: What's Different?
+in_menu: true
+sort_info: 20
+routed_title: What's Different?
+---
+
+The difference between probabilistic lossless compressors is in the prediction engine, encoding and decoding being ["solved"](http://en.wikipedia.org/wiki/Range_coding) optimally already.  
+
+Deplump compression technology is built on a probabilistic discrete sequence predictor called the [sequence memoizer](http://www.stat.columbia.edu/~fwood/Papers/Wood-ICML-2009.pdf).  The sequence memoizer has been demonstrated to be a very good predictor for discrete sequences.  The advantage deplump demonstrates in comparison to other general purpose lossless compressors is largely attributable to the better guesses made by the sequence memoizer.
+
+Deplump is algorithmically quite closely related to infinite context [prediction by partial matching (PPM)](http://en.wikipedia.org/wiki/PPMd) although it has differences and advantages which derive from being grounded on a coherent probabilistic predictive model.
