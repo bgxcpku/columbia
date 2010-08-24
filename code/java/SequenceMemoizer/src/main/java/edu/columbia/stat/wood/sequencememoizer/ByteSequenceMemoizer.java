@@ -4,6 +4,7 @@
  */
 package edu.columbia.stat.wood.sequencememoizer;
 
+import edu.columbia.stat.wood.util.ArraySet;
 import edu.columbia.stat.wood.util.BigInt;
 import edu.columbia.stat.wood.util.ByteArrayFiniteDiscreteDistribution;
 import edu.columbia.stat.wood.util.ByteCompleteUniformDiscreteDistribution;
@@ -55,8 +56,8 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
     }
 
     public void limitMemory(int maxNumberRestaurants) {
-        throw new UnsupportedOperationException("Not supported yet.");
-        //ByteRestaurant.restaurants = new ArraySet(maxNumberRestaurants);
+        //throw new UnsupportedOperationException("Not supported yet.");
+        ByteRestaurant.restaurants = new ArraySet(maxNumberRestaurants);
     }
 
     public int getRestaurantCount(ByteRestaurant r) {
@@ -577,7 +578,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
                 tti = 1;
 
                 for (int i = 0; i < types.length; i++) {
-                    mostOfPDF[(int) types[i] & 0xFF] += multFactor * ((double) cAndT[tci] - (double) cAndT[tti] * discount) / (double) customers;
+                    mostOfPDF[(int) types[i] & 0xFF] += multFactor * (cAndT[tci] - discount * cAndT[tti]) / customers;
 
                     tci += 2;
                     tti += 2;
@@ -695,14 +696,15 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
         double logLik;
 
         ByteSequenceMemoizer sm;
-        sm = new ByteSequenceMemoizer(1023, 3);
-        //sm.limitMemory(2000000);
+        sm = new ByteSequenceMemoizer(15, 3);
+        sm.limitMemory(2000000);
 
         //f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/alice_in_wonderland/AliceInWonderland.txt");
         //f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/pride_and_prejudice/pride_and_prejudice.txt");
         //f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/calgary_corpus/geo");
-        f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/wikipedia/first1m.txt");
+        f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/wikipedia/first8m.txt");
         //f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/wikipedia/enwik8");
+        //f = new File("/Users/nicholasbartlett/Downloads/test");
 
         bis = null;
 
@@ -717,6 +719,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
                     System.out.println("Bytes = " + index + " : Restaurants = " + ByteRestaurant.count);
                 }
                 logLik -= sm.continueSequence((byte) b);
+                //sm.continueSequenceEncode((byte) b );
             }
         } finally {
             if (bis != null) {
@@ -725,8 +728,10 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
         }
 
         System.out.println(logLik / Math.log(2.0) / f.length());
-        System.out.println(sm.score());
+        System.out.println(ByteRestaurant.count);
 
+        //System.out.println(sm.score());
+/*
         for(int i = 0; i < 1; i++){
             System.out.println(sm.sample(20));
             //sm.discounts.print();
@@ -758,6 +763,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
         System.out.println();
         System.out.println(ByteRestaurant.count);
         System.out.println(ll / Math.log(2.0) / f.length());
+ */
     }
 
     public class SeatReturn {
