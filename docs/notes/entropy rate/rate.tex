@@ -1,0 +1,39 @@
+\documentclass[11pt]{article}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{epstopdf}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\title{Notes on Entropy Rate}
+\author{David Pfau}
+%\date{}                                           % Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+%\section{}
+%\subsection{}
+
+These notes are essentially copied from Cover and Thomas (2006) chapter 4.  There are two equivalent ways of defining the entropy rate:
+\[ \lim_{n\to\infty} \frac{1}{n} H[X_1\ldots X_n] \]
+and
+\[ \lim_{n\to\infty} H[X_n|X_1\ldots X_{n-1}] \]
+
+To show the two are equivalent, note from the chain rule for joint entropy that
+
+\[ \frac{1}{n}H[X_1 \ldots X_n] = \frac{1}{n}\sum_{i=1}^{n} H[X_i | X_1 \ldots X_{i-1}] \]
+
+and then we must show that $\lim_{n\to\infty} a_n = a \Rightarrow \lim_{n\to\infty} \frac{1}{n}\sum_{i=1}^n a_n = a$.  To start, note that $\forall \epsilon > 0 \,\exists\, N(\epsilon) \in \mathbb{N}\,s.t.\,|a_n - a| < \epsilon\,\forall n > N(\epsilon)$.
+
+\begin{eqnarray*}
+\left|\frac{1}{n}\sum_{i=1}^n (a_i - a)\right| & \le & \frac{1}{n}\sum_{i=1}^n |a_i - a| \\
+& \le & \frac{1}{n}\sum_{i=1}^{N(\epsilon)} |a_i - a| + \frac{n-N(\epsilon)}{n}\epsilon \\
+& \le & \frac{1}{n}\sum_{i=1}^{N(\epsilon)}|a_i-a| + \epsilon
+\end{eqnarray*}
+
+The first term goes to 0 as $n$ goes to $\infty$, and thus the difference can be made arbitrarily small and the two limits are equal.
+
+\end{document}
