@@ -16,8 +16,8 @@ public class ByteCompleteUniformDiscreteDistribution extends UniformByteDiscrete
     private final double p;
 
     public ByteCompleteUniformDiscreteDistribution(){
-        this.alphabetSize = 256;
-        this.p = 1.0 / 256.0;
+        alphabetSize = 256;
+        p = 1.0 / 256.0;
 
         leftType = -128;
         rightType = 128;

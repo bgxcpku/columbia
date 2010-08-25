@@ -30,7 +30,9 @@ public interface ByteSequenceMemoizerInterface {
 
     public double sequenceProbability(byte[] context , byte[] sequence);
 
-    public double sample(int numSweeps);
+    public void sampleSeatingArrangements(int numSweeps);
+
+    public double sampleDiscounts(int numSweeps);
 
     public double score();
 

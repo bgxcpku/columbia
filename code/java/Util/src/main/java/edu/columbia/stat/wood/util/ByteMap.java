@@ -184,6 +184,10 @@ public class ByteMap<E>{
         return valueSet;
     }
 
+    public Object[] arrayValues(){
+        return values;
+    }
+
     public void set(byte[] keys, E[] values){
         assert checkSet(keys, values);
 
@@ -220,6 +224,19 @@ public class ByteMap<E>{
             System.out.print(", " + values[i]);
         }
         System.out.println("]");
+    }
+
+    public E getRandomValue(MersenneTwisterFast rng){
+        double r = rng.nextDouble(), cuSum = 0.0, l = keys.length;
+
+        for(E value : values){
+            cuSum += 1.0 / l;
+            if(cuSum > r){
+                return value;
+            }
+        }
+
+        throw new RuntimeException("Should not make it to this part of the method.");
     }
 
     public static void main(String[] args){

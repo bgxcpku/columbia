@@ -39,12 +39,15 @@ public class Deplump {
             bis = new BufferedInputStream(new FileInputStream(filename));
             dps = new DeplumpStream(new BufferedOutputStream(new FileOutputStream(filename + ".dpl")));
 
+            int streamLength = 0;
             int l;
             byte[] buffer;
             
-            buffer = new byte[10000];
+            buffer = new byte[1024 * 8];
             while((l = bis.read(buffer)) > -1){
                 dps.write(buffer,0,l);
+                streamLength += l;
+                System.out.println(streamLength);
             }
         } finally {
             if (bis != null) {
@@ -65,9 +68,12 @@ public class Deplump {
             bis = new BufferedInputStream(System.in);
             dps = new DeplumpStream(new BufferedOutputStream(System.out));
 
-            int b;
-            while((b = bis.read()) > -1){
-                dps.write(b);
+            int l;
+            byte[] buffer;
+
+            buffer = new byte[1024 * 8];
+            while((l = bis.read(buffer)) > -1){
+                dps.write(buffer,0,l);
             }
         } finally {
             if(bis != null){

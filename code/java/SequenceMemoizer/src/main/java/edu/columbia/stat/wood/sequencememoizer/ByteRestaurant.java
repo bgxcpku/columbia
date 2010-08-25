@@ -4,9 +4,8 @@
  */
 package edu.columbia.stat.wood.sequencememoizer;
 
+import edu.columbia.stat.wood.sequencememoizer.ByteSeq.ByteSeqNode;
 import edu.columbia.stat.wood.sequencememoizer.ByteSequenceMemoizer.SeatReturn;
-import edu.columbia.stat.wood.util.ArraySet;
-import edu.columbia.stat.wood.util.BigInt;
 import edu.columbia.stat.wood.util.ByteMap;
 import edu.columbia.stat.wood.util.SeatingArranger;
 
@@ -19,56 +18,25 @@ public class ByteRestaurant extends ByteMap<ByteRestaurant> {
 
     public byte[] types;
     public int[] customersAndTables;
-    public int customers, tables, edgeStart, edgeLength;
-    public byte key;
-    public BigInt edgeKey;
+    public int customers, tables, edgeStart, edgeLength, numLeafNodesAtOrBelow;
     public ByteRestaurant parent;
+    public ByteSeqNode edgeNode;
+
     public static int count = 0;
 
-    public static ArraySet<ByteRestaurant> restaurants;
-
-    public ByteRestaurant(ByteRestaurant parent, int edgeStart, int edgeLength, BigInt edgeKey, byte key) {
+    public ByteRestaurant(ByteRestaurant parent, int edgeStart, int edgeLength, ByteSeqNode edgeNode, int numLeafNodesAtOrBelow) {
         this.parent = parent;
         this.edgeStart = edgeStart;
         this.edgeLength = edgeLength;
-        this.edgeKey = edgeKey;
-        this.key = key;
+        this.edgeNode = edgeNode;
+        this.numLeafNodesAtOrBelow = numLeafNodesAtOrBelow;
+
+        if(edgeNode != null){
+            edgeNode.add(this);
+        }
         customers = 0;
         tables = 0;
         count++;
-
-        if(restaurants != null){
-            restaurants.add(this);
-        }
-    }
-
-    public void checkKeys(){
-        byte[] childKeys = new byte[size()];
-
-        int index = 0;
-        for(ByteRestaurant child : values()){
-            childKeys[index++] = child.key;
-        }
-
-        for(byte b1 : childKeys){
-            int dup = 0;
-            for(byte b2 : childKeys){
-                if(b1 == b2){
-                    dup++;
-                }
-            }
-            assert dup == 1;
-        }
-
-        for(byte b : childKeys){
-            int dup = 0;
-            for(byte k : keys()){
-                if(b == k){
-                    dup++;
-                }
-            }
-            assert dup == 1;
-        }
     }
 
     public void setTableConfig(byte[] types, int[] customersAndTables, int customers, int tables) {
@@ -201,7 +169,7 @@ public class ByteRestaurant extends ByteMap<ByteRestaurant> {
         return l;
     }
 
-    public ByteRestaurant fragmentForInsertion(ByteRestaurant irParent, int irEdgeStart, int irEdgeLength, BigInt irEdgeKey, double discount, double irDiscount) {
+    public ByteRestaurant fragmentForInsertion(ByteRestaurant irParent, int irEdgeStart, int irEdgeLength, ByteSeqNode irEdgeNode, double discount, double irDiscount) {
         double fragDiscount, fragConcentration, numerator, denominator;
         ByteRestaurant intermediateRestaurant;
         byte[] irTypes;
@@ -211,7 +179,7 @@ public class ByteRestaurant extends ByteMap<ByteRestaurant> {
         customers = 0;
         tables = 0;
 
-        intermediateRestaurant = new ByteRestaurant(irParent, irEdgeStart, irEdgeLength, irEdgeKey, key);
+        intermediateRestaurant = new ByteRestaurant(irParent, irEdgeStart, irEdgeLength, irEdgeNode, numLeafNodesAtOrBelow);
 
         if (types == null) {
             edgeLength -= irEdgeLength;
@@ -288,7 +256,7 @@ public class ByteRestaurant extends ByteMap<ByteRestaurant> {
         int[] irCustomersAndTables, tsa;
         int l, irc, irt, tci, tti, tc, tt, fc, ft;
 
-        intermediateRestaurant = new ByteRestaurant(irParent, 0, 0, null, (byte) 0);
+        intermediateRestaurant = new ByteRestaurant(irParent, 0, 0, null, 0);
         count--;
         
         if(types != null){
@@ -344,27 +312,30 @@ public class ByteRestaurant extends ByteMap<ByteRestaurant> {
         return intermediateRestaurant;
     }
 
-
-
-    public static void removeRestaurants(int n){
-        ByteRestaurant r;
-        int index;
-        boolean remove;
-
-        for (int i = 0; i < n; i++) {
-            r = null;
-            index = -1;
-            remove = false;
-
-            while (!remove) {
-                index = (int) (ByteSequenceMemoizer.RNG.nextDouble() * (double) restaurants.maxIndex());
-                r = restaurants.get(index);
-                remove = (r != null) && r.isEmpty();
-            }
-
-            r.parent.remove(r.key);
-            restaurants.remove(index);
-            count--;
+    public final void removeFromTree(){
+        parent.remove(edgeNode.byteChunk()[edgeStart]);
+        if(!parent.isEmpty()){
+            parent.decrementLeafNodeCount();
         }
+        count--;
+    }
+
+    public final void removeFromTreeAndEdgeNode(){
+        edgeNode.remove(this);
+        parent.remove(edgeNode.byteChunk()[edgeStart]);
+        if(!parent.isEmpty()){
+            parent.decrementLeafNodeCount();
+        }
+        count--;
+    }
+
+    public void incrementLeafNodeCount(){
+        numLeafNodesAtOrBelow++;
+        if(parent != null) parent.incrementLeafNodeCount();
+    }
+
+    public void decrementLeafNodeCount(){
+        numLeafNodesAtOrBelow--;
+        if(parent != null) parent.decrementLeafNodeCount();
     }
 }

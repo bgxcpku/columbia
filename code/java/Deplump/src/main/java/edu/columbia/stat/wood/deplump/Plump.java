@@ -40,9 +40,10 @@ public class Plump {
             file = file.substring(0, file.lastIndexOf('.'));
             bos = new BufferedOutputStream(new FileOutputStream(file));
 
-            int b;
-            while((b = ps.read()) > -1){
-                bos.write(b);
+            int l;
+            byte[] buffer = new byte[1024 * 8];
+            while((l = ps.read(buffer)) > -1){
+                bos.write(buffer, 0, l);
             }
         } finally {
             if (ps != null) {
@@ -63,9 +64,10 @@ public class Plump {
             ps = new PlumpStream(new BufferedInputStream(System.in));
             bos = new BufferedOutputStream(System.out);
 
-            int b;
-            while((b = ps.read()) > -1){
-                bos.write(b);
+            int l;
+            byte[] buffer = new byte[1024 * 8];
+            while((l = ps.read(buffer)) > -1){
+                bos.write(buffer, 0, l);
             }
         } finally {
             if (ps != null) {
