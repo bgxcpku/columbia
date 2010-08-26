@@ -51,4 +51,10 @@ Taking as an ansatz $\vec{w} = b\vec{\pi}$, the gradient is equal to 0 and this 
 
 Which seems completely wrong!  I must have made a mistake somewhere...
 
+OK, very simple case: two possibilities, with equal probability.  Others have bet \$10 on one result and \$1 on the other.  If you bet \$$x$ on one result, you lose \$$x$ half the time and win \$10$x/(1+x)$ half the time.  Your expected profit is 5$x/(1+x) - 1.5x$.  The derivative w.r.t $x$ is $5(-x/(1+x)^2 + 1/(1+x)) - 1.5$ which equals 0 for $x \approx 0.825742$, for expected gains of about \$1.02277.  Is there any advantage to hedging on the other outcome?  Puttting \$x on one and \$y on the other, the expected winnings are $0.5((10+y)x/(1+x) - y) + 0.5((1+x)y/(10+y) - x) - x - y$.  Running this through Matlab, it seems the answer is no.
+
+Slightly more general case: 1 on one outcome, $p < 1$ on the other, with equal probability.  In this case the extrema for positive x is at $\frac{1}{6}\sqrt{12p}-p$.  Then suppose we start with some very small $p$ and an infinite sequence of gamblers place optimal bets, the total bet placed on that outcome grows as $p_n = \frac{1}{6}\sqrt{12p_{n-1}}$.  In fact, this number is negative for $p > \frac{1}{3}$, which again seems wrong...shouldn't we be able to exploit any discrepancy from the true probability?  Say p = 0.5.  
+
+Wait, now I think I see.  I was counting the bet placed down as lost whether or not the bet was won.  If the bet is won, the $x/(x+p)$ returns are all profit, since you get the bet back too.  So instead, the expected profit is $0.5 x/(x+p) - 0.5x$ which has an extremum at $\sqrt{p}-p$, which *is* positive for all $p \in (0,1)$.  And a sequence of gamblers betting optimally will lead to $p_n = \sqrt{p_{n-1}}$ total being bet on that outcome, which converges to 1 as expected.
+
 \end{document}  
