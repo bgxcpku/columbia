@@ -8,7 +8,7 @@
 \usepackage{epstopdf}
 \DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
 
-\title{Notes on Parimutuel Betting}
+\title{Notes on Optimal Parimutuel Betting}
 \author{David Pfau}
 %\date{}                                           % Activate to display a given date or no date
 
@@ -17,44 +17,34 @@
 %\section{}
 %\subsection{}
 
-Suppose a gambler is betting on a discrete set of possible outcomes and knows the true probability vector $\vec{\pi}$ of the outcomes.  If others have bet a total amount of money $\vec{v}$ and the gambler distributes his\footnote{Totally gender normative and not ashamed.  How many women do you see at horse races?} money according to $\vec{w}$, the expected returns are equal to $\sum_i \pi_i \frac{w_i}{w_i + v_i} \sum_{j} v_j + w_j$.  Given a fixed total capital $W = \sum_i w_i$, what is the optimal distribution of bets $\vec{w}$?  The second sum in the expected returns does not change, so the optimization problem is to maximize $r(\vec{w}) =\sum_i \pi_i \left(1 + \frac{v_i}{w_i}\right)^{-1}$ given $\sum_i w_i = W$.
+Suppose a gambler is betting on a discrete set of $n$ possible outcomes and knows the true probability vector $\vec{\pi}$ of the outcomes.  If others have bet a total amount of money $\vec{v}$ and the gambler distributes his money according to $\vec{w}$, the expected returns are equal to 
 
-Taking the gradient of $r(\vec{w})$ gives
+\begin{equation}
+r(\vec{w}) = \sum_i \pi_i \frac{w_i}{w_i + v_i} \sum_{j} v_j + w_j - \sum_i w_i = \sum_i w_i \left( \frac{\pi_i \sum_j v_j + w_j}{v_i + w_i} - 1\right)
+\label{eq:returns}
+\end{equation}
 
-\[ \frac{\partial}{\partial w_i} r(\vec{w}) = \frac{\pi_i v_i}{(w_i + v_i)^2}\]
+Clearly, if we scale both $\vec{v}$ and $\vec{w}$ by a constant factor the expected returns are scaled by the same amount, and w.l.o.g. we can assume that $\sum_i v_i = 1$ and (\ref{eq:returns}) simplifies to 
 
-Meanwhile the gradient of the constraint is just $\vec{w}$.  So by the method of Lagrange multipliers we want:
+\begin{equation}
+\sum_i \pi_i \frac{w_i}{w_i + v_i} \sum_{j} v_j + w_j - \sum_i w_i = \sum_i w_i \left( \frac{\pi_i (1+ \sum_j w_j)}{v_i + w_i} - 1\right)
+\label{eq:normal_returns}
+\end{equation}
 
-\[ \frac{\pi_i v_i}{(w_i + v_i)^2} = -\lambda w_i \]
-\[ \pi_i v_i = -\lambda w_i (w_i^2 + 2w_i v_i + v_i^2) \]
-\[ \lambda w_i^3 + 2\lambda v_i w_i^2 + (\lambda v_i^2 + \pi_i v_i) = 0\]
+The partial derivatives of this are
 
-This is however assuming that it is optimal to use all the available capital.
+\begin{equation}
+\frac{\partial r}{\partial w_i}=\frac{\pi_i v_i}{(w_i + v_i)^2}\left(1+\sum_j w_j\right) + \sum_j \frac{\pi_j w_j}{v_j + w_j} - 1
+\label{eq:partials}
+\end{equation}
 
-What if the amount of capital is limitless?  Then we want to maximize expected profit: $s(\vec{w}) = \left(\sum_i \pi_i \left(1 + \frac{v_i}{w_i}\right)^{-1}\sum_j v_j + w_j \right) - \sum_i w_i$.  The partial derivatives are:
+The optimal bet is when, for all $i$, either $\partial r/\partial w_i = 0$ and $w_i > 0$ or $w_i = 0$.  Note that the $\sum_j$ terms in (\ref{eq:partials}) do not depend at all on $i$, and thus the condition that the partial derivative is 0 implies that $\pi_i v_i/(w_i+v_i)^2 = \pi_{i'} v_{i'}/(w_{i'} + v_{i'})^2$ for all $i$, $i'$ such that $w_i, w_{i'} \ne 0$.  Call this constant $k$.  We can rewrite the second $\sum_j$ term in (\ref{eq:partials}) as $k\sum_j w_j$, since either $w_j = 0$ and it is trivially true or the derivative w.r.t. $w_j$ equals $\pi_j v_j/(w_j + v_j)^2 = k$.  Then, solving for k, we find that
 
-\[ \frac{\partial}{\partial w_i} s(\vec{w}) = \frac{\pi_i v_i}{(w_i + v_i)^2} \sum_j (v_j + w_j) + \sum_j\pi_j \left(1 + \frac{v_j}{w_j}\right)^{-1} - 1 \]
+\begin{equation}
+\frac{\pi_i v_i}{(w_i + v_i)^2} = \frac{1}{1+2\sum_j w_j} \Rightarrow \sqrt{\pi_i v_i (1+ 2\sum_j w_j)} -v_i = w_i
+\label{eq:optimum}
+\end{equation}
 
-Say $\vec{v} + \vec{w} = k\vec{\pi}$, then the above simplifies to
-
-\[ -\frac{w_i}{k\pi_i} + \sum_j \frac{w_j}{k} \]
-
-And it is optimal to choose $w_i = \pi_i \sum_j w_j$, that is, $w_i \propto \pi_i$.  Let $\vec{v} = a\vec{\pi}$, $\vec{w} = b\vec{\pi}$, then the expected profit is exactly 0.
-
-Say $\vec{v} = a\vec{\pi}$, then the gradient simplifies to 
-
-\[ \frac{a\pi_i^2}{(w_i + a\pi_i)^2} \left(a + \sum_j w_j\right) + \sum_j \left(1+ \frac{a\pi_j}{w_j}\right)^{-1} - 1 \]
-
-Taking as an ansatz $\vec{w} = b\vec{\pi}$, the gradient is equal to 0 and this is the optimum.  Plugging in to the expected profit we get exactly 0: when the odds are correct there is no expected gain to betting.  What if $\vec{v}$ is not proportional to $\vec{\pi}$?  If we choose $\vec{w}$ such that $\vec{w} + \vec{v} = k\vec{\pi}$ then the gradient again reduces to 0.  Now, the expected profit is
-
-\[ \sum_i \pi_i \left(1 + \frac{v_i}{k\pi_i - v_i}\right)^{-1}k - \left(k - \sum_i v_i\right) = \sum_i  k\pi_i - v_i - k + \sum_i v_i = 0\]
-
-Which seems completely wrong!  I must have made a mistake somewhere...
-
-OK, very simple case: two possibilities, with equal probability.  Others have bet \$10 on one result and \$1 on the other.  If you bet \$$x$ on one result, you lose \$$x$ half the time and win \$10$x/(1+x)$ half the time.  Your expected profit is 5$x/(1+x) - 1.5x$.  The derivative w.r.t $x$ is $5(-x/(1+x)^2 + 1/(1+x)) - 1.5$ which equals 0 for $x \approx 0.825742$, for expected gains of about \$1.02277.  Is there any advantage to hedging on the other outcome?  Puttting \$x on one and \$y on the other, the expected winnings are $0.5((10+y)x/(1+x) - y) + 0.5((1+x)y/(10+y) - x) - x - y$.  Running this through Matlab, it seems the answer is no.
-
-Slightly more general case: 1 on one outcome, $p < 1$ on the other, with equal probability.  In this case the extrema for positive x is at $\frac{1}{6}\sqrt{12p}-p$.  Then suppose we start with some very small $p$ and an infinite sequence of gamblers place optimal bets, the total bet placed on that outcome grows as $p_n = \frac{1}{6}\sqrt{12p_{n-1}}$.  In fact, this number is negative for $p > \frac{1}{3}$, which again seems wrong...shouldn't we be able to exploit any discrepancy from the true probability?  Say p = 0.5.  
-
-Wait, now I think I see.  I was counting the bet placed down as lost whether or not the bet was won.  If the bet is won, the $x/(x+p)$ returns are all profit, since you get the bet back too.  So instead, the expected profit is $0.5 x/(x+p) - 0.5x$ which has an extremum at $\sqrt{p}-p$, which *is* positive for all $p \in (0,1)$.  And a sequence of gamblers betting optimally will lead to $p_n = \sqrt{p_{n-1}}$ total being bet on that outcome, which converges to 1 as expected.
+Which gives us a series of simultaneous quadratic equations.  In general it may not be possible to find a closed form solution to this.  While we could in practice iteratively assign bets out of some large pool of money and then iteratively update the total amount of money allocated, this does not have the satisfying universality of a closed solution.  We can however make some statements about optimal betting.  For example, since $\sum_j w_j \ge 0$, if $v_i > \pi_i$ then $\sqrt{\pi_i v_i (1 + 2\sum_j w_j)} < v_i$ and the intuition that one should not bet on an outcome with worse than true odds is upheld.  Interestingly, it may not be optimal to bet on something with better than true odds, if enough money is placed on other outcomes with even better odds.  Moreover, if $v_i = \pi_i$, then the solution is clearly 0 for all $w_i$, and there is no advantage to betting on perfect odds.
 
 \end{document}  
