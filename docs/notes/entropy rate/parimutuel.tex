@@ -5,6 +5,7 @@
 %\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
 \usepackage{graphicx}
 \usepackage{amssymb}
+\usepackage{amsmath}
 \usepackage{epstopdf}
 \DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
 
@@ -27,7 +28,7 @@ r(\vec{w}) = \sum_i \pi_i \frac{w_i}{w_i + v_i} \sum_{j} v_j + w_j - \sum_i w_i 
 Clearly, if we scale both $\vec{v}$ and $\vec{w}$ by a constant factor the expected returns are scaled by the same amount, and w.l.o.g. we can assume that $\sum_i v_i = 1$ and (\ref{eq:returns}) simplifies to 
 
 \begin{equation}
-\sum_i \pi_i \frac{w_i}{w_i + v_i} \sum_{j} v_j + w_j - \sum_i w_i = \sum_i w_i \left( \frac{\pi_i (1+ \sum_j w_j)}{v_i + w_i} - 1\right)
+ \sum_i w_i \left( \frac{\pi_i (1+ \sum_j w_j)}{v_i + w_i} - 1\right)
 \label{eq:normal_returns}
 \end{equation}
 
@@ -45,6 +46,21 @@ The optimal bet is when, for all $i$, either $\partial r/\partial w_i = 0$ and $
 \label{eq:optimum}
 \end{equation}
 
-Which gives us a series of simultaneous quadratic equations.  In general it may not be possible to find a closed form solution to this.  While we could in practice iteratively assign bets out of some large pool of money and then iteratively update the total amount of money allocated, this does not have the satisfying universality of a closed solution.  We can however make some statements about optimal betting.  For example, since $\sum_j w_j \ge 0$, if $v_i > \pi_i$ then $\sqrt{\pi_i v_i (1 + 2\sum_j w_j)} < v_i$ and the intuition that one should not bet on an outcome with worse than true odds is upheld.  Interestingly, it may not be optimal to bet on something with better than true odds, if enough money is placed on other outcomes with even better odds.  Moreover, if $v_i = \pi_i$, then the solution is clearly 0 for all $w_i$, and there is no advantage to betting on perfect odds.
+Which gives us a series of simultaneous quadratic equations.  In general it may not be possible to find a closed form solution to this.  While we could in practice iteratively assign bets out of some large pool of money and then update the total amount of money allocated, this does not have the satisfying universality of a closed solution.  We can however make some statements about optimal betting.  For example, since $\sum_j w_j \ge 0$, if $v_i > \pi_i$ then $\sqrt{\pi_i v_i (1 + 2\sum_j w_j)} < v_i$ and the intuition that one should not bet on an outcome with worse than true odds is upheld.  Interestingly, it may not be optimal to bet on something with better than true odds, if enough money is placed on other outcomes with even better odds.  Moreover, if $v_i = \pi_i$, then the solution is clearly 0 for all $w_i$, and there is no advantage to betting on perfect odds.
+
+We can bound the behavior of optimal gamblers by taking a simple lower bound to the bets placed by one gambler.  Ignore the $w_j$ terms on the right side of (\ref{eq:optimum}), then the suboptimal bet is simply $\sqrt{\pi_i v_i} - v_i < w_i$.  If we seed the pool and then have an infinite sequence of gamblers placing bets, renormalizing each time, the updates for the pool are
+
+\begin{equation}
+v'_i \leftarrow 
+\begin{cases}
+\sqrt{\pi_i v_i} & \text{if $v_i < \pi_i$} \\
+ v_i & \text{if $v_i \ge \pi_i$}
+\end{cases}
+\end{equation}
+\begin{equation}
+v_i \leftarrow \frac{v'_i}{\sum_j v'_j}
+\end{equation}
+
+Which clearly has fixed points $v_i = \pi_i$.  Since the lower bound on the optimal bets converges to the true distribution as more bets are placed, and $v_i = \pi_i$ is a fixed point for the optimal strategy, the proportion of bets on each outcome will converge to the true probability of those outcomes if an infinite number of optimal gamblers place bets sequentially.
 
 \end{document}  
