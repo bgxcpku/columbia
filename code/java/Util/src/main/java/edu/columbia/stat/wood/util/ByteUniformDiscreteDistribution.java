@@ -11,18 +11,18 @@ import java.util.Iterator;
  * Uniform distribution over the range [leftType, rightType)
  * @author nicholasbartlett
  */
-public class UniformByteDiscreteDistribution implements ByteFiniteDiscreteDistribution {
+public class ByteUniformDiscreteDistribution implements ByteFiniteDiscreteDistribution {
     private int alphabetSize, leftType, rightType;
     private final double p;
 
-    public UniformByteDiscreteDistribution(){
+    public ByteUniformDiscreteDistribution(){
         alphabetSize = 256;
         p = 1.0 / (double) alphabetSize;
         leftType = -128;
         rightType = 128;
     }
 
-    public UniformByteDiscreteDistribution(int leftType, int rightType){
+    public ByteUniformDiscreteDistribution(int leftType, int rightType){
         if(leftType < -128 || leftType > 128 || rightType < -128 || rightType >128){
             throw new IllegalArgumentException("Left and right type must both be between between -128" +
                     "and 128");
