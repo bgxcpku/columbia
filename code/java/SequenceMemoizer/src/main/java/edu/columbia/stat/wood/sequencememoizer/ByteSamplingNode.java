@@ -5,6 +5,7 @@
 package edu.columbia.stat.wood.sequencememoizer;
 
 import edu.columbia.stat.wood.util.ByteFiniteDiscreteDistribution;
+import edu.columbia.stat.wood.util.Pair;
 import edu.columbia.stat.wood.util.SampleWithoutReplacement;
 import java.util.HashMap;
 
