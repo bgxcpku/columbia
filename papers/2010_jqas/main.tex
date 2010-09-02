@@ -15,66 +15,137 @@
 \hoffset -10mm \voffset -20mm
 \pagestyle{empty} \parindent 0pt \parskip 8pt
 
+        
+        
 \begin{document}
 
-{\sc\today \hfill \Large Fitting Soccer Data\\[.2cm]}
+ \begin{center}
+ {\Large Estimating the evolution of scoring rates in soccer match: \\ Model selection and variable
+ selection  with ???-LASSO}\\[1cm]
+ {Mladen Laudanovic and Frank Wood}
+ \end{center}
+ 
 
-%\input{abstract.tex}
+% \input{abstract.tex}
 
 %\input{introduction.tex}
 
 %\input{todo.tex}
 
+\begin{equation*}
+\begin{split}
+\text{BASELINE MODEL 0:  }& y_{id}\mid X_{id}, \beta \sim \mathrm{Pois}\zag{\mu \alpha_{i}}\\
+\text{BASELINE MODEL 1:  }& y_{id}\mid X_{id}, \beta \sim \mathrm{Pois}\zag{\lambda_{id}}\\
+\text{BASELINE MODEL 2:  }& y_{id}\mid X_{id}, \beta \sim \mathrm{Pois}\zag{\alpha_{i}\lambda_{id}}\\
+\text{BASELINE MODEL 3:  }& y_{id}\mid X_{id}, \beta \sim \mathrm{Pois}\zag{\mu \alpha_{i}}\\
+\text{MODEL 1:  }& y_{id}\mid X_{id}, \beta \sim \mathrm{Pois}\zag{\lambda_{id}}\\
+\text{MODEL 1':  }& y_{id}\mid X_{id}, \beta \sim \mathrm{Pois}\zag{\mu\lambda_{id}}\\
+\text{MODEL 2:  }& y_{id}\mid X_{id}, \beta \sim \mathrm{Pois}\zag{\alpha_{i}\lambda_{id}}\\
+\text{MODEL 2':  }& y_{id}\mid X_{id}, \beta \sim \mathrm{Pois}\zag{\mu\alpha_{i}\lambda_{id}}\\
+\end{split}
+\end{equation*}
+
+where $\alpha_{i}$ are market intensities  and $\lambda_{id} = g(\beta^T X_{id})$ and also 
+$$\text{MODEL 3':  } y_{id}\mid X_{id}, \beta \sim \mathrm{Pois}\zag{\alpha_{i}\lambda_{id}}$$
+where $\alpha_{i}$ are unknown intensities. In this case likelihood is 
+$$ \prod_i \prod_d \alpha_{i}^{y_{id}}\lambda_{id}^{y_{id}} e^{-\alpha_{i}\lambda_{id}}/y_{id}! = 
+\prod_i \alpha_{i}^{\sum_d y_{id}} \prod_d \lambda_{id}^{y_{id}} e^{-\alpha_{i}\lambda_{id}}/y_{id}!$$ so $n_i = \sum_d y_{id}$ is sufficient statistic for $\alpha_i$, with the distribution $n_i \sim \mathrm{Pois}\zag{\alpha_{i}\sum_d\lambda_{id}}$. Likelihood for $n_i$ is  
+$$ \prod_i \alpha_{i}^{n_{i}}\zag{\sum_d\lambda_{id}}^{n_{i}} e^{-\alpha_{i}\sum_d\lambda_{id}}/n_{i}! $$ hence after conditioning we get:
+$$\text{MODEL 3:  } y_{i.}\mid \beta, n_i,  X_{i.}\sim \mathrm{M}
+    \zag{n_i, \zagv{\frac{\lambda_{id}}{\sum_{d^\star}\lambda_{id^\star}}}_{d=1}^D}$$
+ 
+
+   -- $d$ are minutes in a match (1-44, 46-89 for both teams; D = 176 per match)\\
+   -- $i$ are matches ($I=302$)\\
+   -- $g$ is a link function. There are three of them: $e^x, \log(1+e^x), \log(\frac{1}{1+e^{-x}})$\\
+ 
+ Three models with three different link functions were tested. There were two subsets of variables, each one having 100 of them (selected by "quality", one without other with market variables)
+ 
+   -- $K$ number of variables (K=100)
+
+\newpage
+MODEL1: $y_{id}\mid X_{id}, \beta \sim \mathrm{Pois}\zag{\lambda_{id}}$
+
+\includegraphics[width=6.5in]{basic.pdf}
+
+%\includegraphics[width=6.5in]{compareBNM.pdf}
+%\includegraphics[width=6.5in]{compareBWM.pdf}
+ 
+\newpage
+MODEL2: $y_{id}\mid X_{id}, \beta \sim \mathrm{Pois}\zag{\alpha_{i}\lambda_{id}}$
+
+\includegraphics[width=6.5in]{basicMKT.pdf}
+
+
+%\includegraphics[width=6.5in]{compareBMNM.pdf}
+%\includegraphics[width=6.5in]{compareBMWM.pdf}
+
+\newpage
+MODEL3: $y_{i.}\mid \beta, n_i,  X_{i.}\sim \mathrm{M}
+    \zag{n_i, \zagv{\frac{\lambda_{id}}{\sum_{d^\star}\lambda_{id^\star}}}_{d=1}^D}$
+
+\includegraphics[width=6.5in]{MULT.pdf}
+
+%\includegraphics[width=6.5in]{compareMNM.pdf}
+%\includegraphics[width=6.5in]{compareMWM.pdf}
+%\includegraphics[width=6.5in]{compareMM.pdf}
+
+\newpage
 
 {\LARGE INTRODUCTION: BASIC MODEL}
 
 $$y_{id}\mid X_{id}, \beta \sim \mathrm{Pois}\zag{g(\beta^T X_{id})}$$
 
-$$P(\mathrm{Data}\mid X, \beta) \propto P(\beta) \prod_i \prod_d 
+$$\mathrm{P}(\beta\mid X, \mathrm{Data}) \propto \mathrm{P}(\beta) \prod_i \prod_d
     g(\beta^T X_{id})^{y_{id}} e^{-g(\beta^T X_{id})}/y_{id}!$$
 
    -- $d$ are minutes in a match (1-44, 46-89 for both teams; D = 176 per match)\\
    -- $i$ are matches ($I=302$)\\
    -- $g$ is a link function ($\exp(x)$ is default)\\
-   -- $K$ number of variables
+   -- $K$ number of variables (length of beta)
 
-$$\ell(\beta) = \log(\mathrm{P(\beta)}) + \sum_{l=(i,d)} \zags{y_l\log\zag{g(\beta^T X_l)} - g(\beta^T X_l)}$$
+$$\ell(\beta) = \log(\mathrm{P(\beta)}) + \sum_{l=(i,d)} \zags{y_l\log\zag{g(\beta^T X_l)} - g(\beta^T X_l)} + \mathrm{const}$$
 
-In gradient descent algorithm in each step $k \in 1,\dots K$ we are maximizing $\ell$ as a function of one parameter $z=\beta_k$.
+is it convex with respect to beta and lambda???
+
+In coordinatewise gradient descent algorithm in each step $k \in 1,\dots K$ we are maximizing $\ell$ as a function of one parameter $z=\beta_k$. It is fine for convex functions.
 
 So goal is to minimize
 $$h(z) = \sum_l \zags{g(r_l + (z-\beta_k)x_{lk}) - y_l\log\zag{g(r_l + (z-\beta_k)x_{lk})}} + z^2/2\tau$$
 
 where $r_l = \beta^T X_l$ and $\tau$ is regularization parameter.
 
-One good way to find the maximum $\ell$ is that in each step we find maximum of 2nd degree Tailor polynomial of $h$, so suggested shift for $\beta_k$ will be $\Delta u_k = -h'(\beta_k)/h''(\beta_k)$ where
+One good way to find the maximum of $\ell$ [David's paper, at al.] is that in each step we find maximum of 2nd degree Tailor polynomial of $h$, so suggested shift for $\beta_k$ will be $\Delta u_k = -h'(\beta_k)/h''(\beta_k)$ where
 
-$$h'(\beta_k) = \sum_l \zags{g'(r_l)x_{lk} - y_l x_{lk} g'(r_l)/g(r_l)} + z/\tau$$
-$$h'(\beta_k) = \sum_l \zags{g''(r_l)x_{lk}^2 - y_l x_{lk}^2 \frac{g''(r_l)g(r_l) - g'(r_l)^2}{g(r_l)^2}} + 1/\tau$$
+$$h'(\beta_k) = \sum_l \zags{g'(r_l)x_{lk} - y_l x_{lk} g'(r_l)/g(r_l)} + \beta_k/\tau$$
+$$h''(\beta_k) = \sum_l \zags{g''(r_l)x_{lk}^2 - y_l x_{lk}^2 \frac{g''(r_l)g(r_l) - g'(r_l)^2}{g(r_l)^2}} + 1/\tau$$
 
 
 \newpage
 {\LARGE SHAWN'S MODEL}
 
+Pros and cons
+
+
 $$y_{id}\mid X_{id}, \beta \sim \mathrm{Pois}\zag{\alpha_i g(\beta^T X_{id})}$$
 
-$$P(\mathrm{Data}\mid X, \beta) \propto P(\beta) \prod_i \prod_d
+$$P(\beta\mid X, \mathrm{Data}) \propto P(\beta) \prod_i \prod_d
     \zag{\alpha_i g(\beta^T X_{id})}^{y_{id}} e^{-\alpha_i g(\beta^T X_{id})}/y_{id}!$$
 
 Since $n_i = \sum_d y_{id}$ is sufficient statistic for $\alpha_i$ we should maximize
 
-$$P(\mathrm{Data}\mid X, \beta, n) = P(\beta) \prod_i \prod_d
+$$P(\beta\mid X, \mathrm{Data}, n) = P(\beta) \prod_i \prod_d
     \zag{\frac{g(\beta^T X_{id})}{\sum_{d^\star}g(\beta^T X_{id^\star})}}^{y_{id}}$$
 
 
 $$\ell(\beta) = \log(\mathrm{P(\beta)}) + \sum_i \sum_d y_{id}\log{g(\beta^T X_{id})} -
-    \sum_i n_i \log {\TS\sum_{d^\star}{g(\beta^T X_{id^\star})}}$$
+    \sum_i n_i \log {\TS\sum_{d^\star}{g(\beta^T X_{id^\star})}} + \mathrm{const}$$
 
 $$h(z) = \sum_i n_i \log {\TS\sum_{d}{g(r_{id} + (z-\beta_k) x_{idk})}} -
     \sum_{i,d} y_{id}\log{g(r_{id} + (z-\beta_k) x_{idk})} + z^2/2\tau$$
 
 $$h'(\beta_k) = \sum_i n_i \frac{\sum_{d}g'(r_{id})x_{idk}}{\sum_{d} g(r_{id})} -
-    \sum_{i,d} y_{id}\frac{g'(r_{id})x_{idk}}{ g(r_{id})} + z/\tau$$
+    \sum_{i,d} y_{id}\frac{g'(r_{id})x_{idk}}{ g(r_{id})} + \beta_k/\tau$$
 
 \begin{equation*}
 \begin{split}
@@ -84,6 +155,10 @@ h''(\beta_k) = \sum_i n_i& \frac{\zag{\sum_{d}g''(r_{id})x_{idk}^2}\zag{\sum_{d}
 \end{equation*}
 
 \input{genetic.tex}
+
+
+\end{document}
+
 
 \newpage
 
@@ -157,7 +232,7 @@ time)
 2. Can we do better than market
 3. Get and plot results from J0 folder. Save into .Rdata
 4. for those 20000 fittings find the distributions of non-zero and of zero coefficients. Find (some) score for variables. Make a top list of variables for each tau. Is it different
-5. 
+5.
 
 
 Picture:
