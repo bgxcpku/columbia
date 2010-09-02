@@ -5,14 +5,16 @@
 
 package edu.columbia.stat.wood.util;
 
-import java.util.Collection;
-import java.util.HashSet;
+import java.io.Serializable;
 
 /**
  *
  * @author nicholasbartlett
  */
-public class ByteMap<E>{
+public class ByteMap<E> implements Serializable{
+
+    static final long serialVersionUID = 1;
+
     private byte[] keys;
     private E[] values;
 
@@ -165,26 +167,7 @@ public class ByteMap<E>{
         return keys;
     }
 
-    public Collection<E> values(){
-        HashSet<E> valueSet;
-
-        valueSet = new HashSet<E>();
-        if(values != null){
-            for(int i = 0; i < values.length; i++){
-                valueSet.add(values[i]);
-            }
-        }
-
-        if(values != null){
-            assert valueSet.size() == values.length;
-        } else {
-            assert valueSet.size() == 0;
-        }
-
-        return valueSet;
-    }
-
-    public Object[] arrayValues(){
+    public Object[] values(){
         return values;
     }
 
@@ -195,7 +178,7 @@ public class ByteMap<E>{
         this.values = values;
     }
 
-    public boolean checkSet(byte[] keys, E[] values){
+    private boolean checkSet(byte[] keys, E[] values){
 
         for(int i = 0; i < keys.length-1; i++){
             if(keys[i] >= keys[i + 1]){
@@ -224,36 +207,5 @@ public class ByteMap<E>{
             System.out.print(", " + values[i]);
         }
         System.out.println("]");
-    }
-
-    public E getRandomValue(MersenneTwisterFast rng){
-        double r = rng.nextDouble(), cuSum = 0.0, l = keys.length;
-
-        for(E value : values){
-            cuSum += 1.0 / l;
-            if(cuSum > r){
-                return value;
-            }
-        }
-
-        throw new RuntimeException("Should not make it to this part of the method.");
-    }
-
-    public static void main(String[] args){
-        ByteMap bm = new ByteMap();
-
-        for(int i = 0; i < 25; i++){
-            bm.put((byte) i, new Integer(i));
-        }
-
-        bm.print();
-        System.out.println(bm.size());
-
-        for(int i = 24; i> -1; i--){
-            bm.remove((byte) i);
-            bm.print();
-        }
-
-        System.out.println(bm.size());
     }
 }

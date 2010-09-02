@@ -5,13 +5,17 @@
 
 package edu.columbia.stat.wood.util;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 /**
  *
  * @author nicholasbartlett
  */
-public class ByteArrayFiniteDiscreteDistribution implements ByteFiniteDiscreteDistribution {
+public class ByteArrayFiniteDiscreteDistribution implements ByteDiscreteDistribution, Serializable {
+
+    static final long serialVersionUID = 1;
+
     private double[] pdf;
 
     public ByteArrayFiniteDiscreteDistribution(double[] pdf){

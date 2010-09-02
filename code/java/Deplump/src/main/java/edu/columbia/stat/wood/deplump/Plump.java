@@ -16,7 +16,7 @@ import java.io.IOException;
  */
 public class Plump {
 
-    public static void main(String[] args) throws FileNotFoundException, IOException {
+    public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         int numArgs;
 
         numArgs = args.length;
@@ -30,7 +30,7 @@ public class Plump {
         }
     }
 
-    public static void Plump(String file) throws FileNotFoundException, IOException {
+    public static void Plump(String file) throws FileNotFoundException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
 
         PlumpStream ps = null;
         BufferedOutputStream bos = null;
@@ -55,7 +55,7 @@ public class Plump {
         }
     }
 
-    public static void PlumpSTDIN() throws IOException{
+    public static void PlumpSTDIN() throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException{
 
         PlumpStream ps = null;
         BufferedOutputStream bos = null;

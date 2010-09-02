@@ -11,7 +11,7 @@ import java.util.Iterator;
  *
  * @author nicholasbartlett
  */
-public class ByteCompleteUniformDiscreteDistribution extends ByteUniformDiscreteDistribution{
+public class ByteCompleteUniformDiscreteDistribution extends ByteUniformDiscreteDistribution {
     private final int alphabetSize, leftType, rightType;
     private final double p;
 

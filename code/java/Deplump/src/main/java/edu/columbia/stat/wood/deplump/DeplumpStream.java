@@ -5,12 +5,13 @@
 
 package edu.columbia.stat.wood.deplump;
 
-import edu.columbia.stat.wood.sequencememoizer.ByteSequenceMemoizer;
+import edu.columbia.stat.wood.deplump.v1.Encoder;
+import edu.columbia.stat.wood.sequencememoizer.v1.ByteSequenceMemoizer;
 import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * Compression stream using Deplump predictie model.
+ * Compression stream using Deplump predictive model.
  *
  * @author nicholasbartlett
  */
@@ -21,8 +22,11 @@ public class DeplumpStream extends OutputStream {
     private OutputStream out;
 
     public DeplumpStream(OutputStream out) throws IOException {
+        //version
+        out.write(1);
+
         this.out = out;
-        enc = new Encoder(new ByteSequenceMemoizer(1023,1), out);
+        enc = new Encoder(new ByteSequenceMemoizer(), out, true);
     }
 
     @Override

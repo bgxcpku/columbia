@@ -20,6 +20,16 @@
         </repository>
     </repositories>
 
+    <dependencies>
+         <dependency>
+            <groupId>gnu</groupId>
+            <artifactId>trove</artifactId>
+            <version>1.0</version>
+             <type>jar</type>
+         </dependency>
+    </dependencies>
+
+
     <build>
         <plugins>
             <plugin>

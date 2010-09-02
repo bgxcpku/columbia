@@ -2,9 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.columbia.stat.wood.sequencememoizer;
+package edu.columbia.stat.wood.sequencememoizer.v1;
 
-import edu.columbia.stat.wood.util.ByteFiniteDiscreteDistribution;
+import edu.columbia.stat.wood.util.ByteDiscreteDistribution;
 import edu.columbia.stat.wood.util.Pair;
 import edu.columbia.stat.wood.util.SampleWithoutReplacement;
 import java.util.HashMap;
@@ -19,9 +19,9 @@ public class ByteSamplingNode {
     private ByteSamplingNode parent;
     private int tables, customers;
     private double discount;
-    private ByteFiniteDiscreteDistribution baseDistribution;
+    private ByteDiscreteDistribution baseDistribution;
 
-    public ByteSamplingNode(ByteSamplingNode parent, double discount, ByteFiniteDiscreteDistribution baseDistribution) {
+    public ByteSamplingNode(ByteSamplingNode parent, double discount, ByteDiscreteDistribution baseDistribution) {
         this.discount = discount;
         seatingArrangement = new HashMap<Byte, TypeSeatingArrangement>();
         tables = 0;

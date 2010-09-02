@@ -5,11 +5,17 @@
 
 package edu.columbia.stat.wood.util;
 
+import java.io.Serializable;
+
 /**
  *
  * @author nicholasbartlett
  */
-public class MutableInt {
+
+public class MutableInt implements Serializable{
+
+    static final long serialVersionUID = 1;
+
     private int i;
 
     public MutableInt(int value){
@@ -23,5 +29,4 @@ public class MutableInt {
     public int intValue(){
         return i;
     }
-
 }

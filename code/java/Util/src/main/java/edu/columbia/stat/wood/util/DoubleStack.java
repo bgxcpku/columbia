@@ -5,12 +5,17 @@
 
 package edu.columbia.stat.wood.util;
 
+import java.io.Serializable;
+
 /**
  * 
  * @author nicholasbartlett
  */
 
-public class DoubleStack {
+public class DoubleStack implements Serializable{
+
+    static final long serialVersionUID = 1;
+
     private double[] stack;
     private int index, l;
 

@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package edu.columbia.stat.wood.sequencememoizer;
+package edu.columbia.stat.wood.sequencememoizer.v1;
 
 import edu.columbia.stat.wood.util.ByteDiscreteDistribution;
 
@@ -13,8 +13,8 @@ import edu.columbia.stat.wood.util.ByteDiscreteDistribution;
  */
 
 public interface ByteSequenceMemoizerInterface {
-    
-    public void limitMemory(long maxNumberRestaurants, long maxSequenceLength);
+
+    public void newSequence();
 
     public double continueSequence(byte type);
 
@@ -36,5 +36,5 @@ public interface ByteSequenceMemoizerInterface {
 
     public double score();
 
-    public SequenceMemoizerParameters getParameters();
+    public ByteSequenceMemoizerParameters getParameters();
 }

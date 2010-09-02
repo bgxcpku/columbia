@@ -2,14 +2,14 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.columbia.stat.wood.sequencememoizer;
+package edu.columbia.stat.wood.sequencememoizer.v1;
 
-import edu.columbia.stat.wood.sequencememoizer.ByteSeq.BackwardsIterator;
-import edu.columbia.stat.wood.sequencememoizer.ByteSeq.ByteSeqNode;
+import edu.columbia.stat.wood.sequencememoizer.BytePredictiveModel;
+import edu.columbia.stat.wood.sequencememoizer.v1.ByteSequenceMemoizerInterface;
+import edu.columbia.stat.wood.sequencememoizer.v1.ByteSeq.BackwardsIterator;
+import edu.columbia.stat.wood.sequencememoizer.v1.ByteSeq.ByteSeqNode;
 import edu.columbia.stat.wood.util.ByteArrayFiniteDiscreteDistribution;
-import edu.columbia.stat.wood.util.ByteCompleteUniformDiscreteDistribution;
 import edu.columbia.stat.wood.util.ByteDiscreteDistribution;
-import edu.columbia.stat.wood.util.ByteFiniteDiscreteDistribution;
 import edu.columbia.stat.wood.util.DoubleStack;
 import edu.columbia.stat.wood.util.LogBracketFunction;
 import edu.columbia.stat.wood.util.LogGeneralizedSterlingNumbers;
@@ -19,58 +19,141 @@ import edu.columbia.stat.wood.util.SeatingArranger;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.Iterator;
 
 /**
  *
  * @author nicholasbartlett
  */
+public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSequenceMemoizerInterface, Serializable{
 
-public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSequenceMemoizerInterface {
+    static final long serialVersionUID = 1 ;
 
     public static MersenneTwisterFast RNG;
-    public double minP = 5.01 / (double) Integer.MAX_VALUE;
-    public double adj;
-    private int depth, rDepth;
+
+    public final double minP = 5.01 / (double) Integer.MAX_VALUE;
+    public final double adj = 1.0 + 257.0 * minP;
+
+    private int depth, rDepth, trueDepth;
     private ByteRestaurant ecr;
     public ByteSeq bs;
     private Discounts discounts;
     private DoubleStack ds;
     private double[] mostOfPDF;
     private SeatReturn sr;
-    private ByteFiniteDiscreteDistribution baseDistribution;
+    private ByteDiscreteDistribution baseDistribution;
     private MutableInt newKey = new MutableInt(-1);
-    private long maxNumberRestaurants = Long.MAX_VALUE, maxSequenceLength = Long.MAX_VALUE;
+    private long maxNumberRestaurants, maxSequenceLength, seed;
 
-    public ByteSequenceMemoizer(int depth, long seed) {
-        this.depth = depth;
-        RNG = new MersenneTwisterFast(seed);
-        ecr = new ByteRestaurant(null, 0, 0, null,1);
+    public ByteSequenceMemoizer(ByteSequenceMemoizerParameters parameters, long maxNumberRestaurants, long maxSequenceLength) {
+        RNG = new MersenneTwisterFast(parameters.seed);
+        trueDepth = parameters.depth;
+        depth = 0;
+        rDepth = 0;
+        ecr = new ByteRestaurant(null, 0, 0, null, 1);
         bs = new ByteSeq(1024);
-        discounts = new Discounts(new double[]{0.05, 0.7, 0.8, 0.82, 0.84, 0.88, 0.91, 0.92, 0.93, 0.94, 0.95}, 0.5);
+        discounts = new Discounts(parameters.discounts, parameters.infiniteDiscount);
         ds = new DoubleStack();
         sr = new SeatReturn();
-        SeatingArranger.rng = RNG;
-        baseDistribution = new ByteCompleteUniformDiscreteDistribution();
-
-        adj = 1.0 + (double) (baseDistribution.alphabetSize() + 1) * minP;
-    }
-
-    public int getRestaurantCount(ByteRestaurant r) {
-        int count;
-
-        count = 0;
-        for (ByteRestaurant child : r.values()) {
-            count += getRestaurantCount(child);
-        }
-
-        return ++count;
-    }
-
-    public void limitMemory(long maxNumberRestaurants, long maxSequenceLength) {
+        baseDistribution = parameters.baseDistribution;
         this.maxNumberRestaurants = maxNumberRestaurants;
         this.maxSequenceLength = maxSequenceLength;
+        seed = parameters.seed;
+
+        SeatingArranger.rng = RNG;
+    }
+
+    public ByteSequenceMemoizer(ByteSequenceMemoizerParameters parameters) {
+        this(parameters, Long.MAX_VALUE, Long.MAX_VALUE);
+    }
+
+    public ByteSequenceMemoizer() {
+        this(new ByteSequenceMemoizerParameters());
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException{
+        out.writeObject(RNG);
+        out.writeInt(depth);
+        out.writeInt(trueDepth);
+        out.writeObject(bs);
+        out.writeObject(discounts);
+        out.writeObject(baseDistribution);
+        out.writeLong(maxNumberRestaurants);
+        out.writeLong(maxSequenceLength);
+        out.writeLong(seed);
+        out.writeInt(ByteRestaurant.count);
+        out.writeObject(ecr);
+
+        writeEdgeNodeObjects(out);
+    }
+
+    private void writeEdgeNodeObjects(ObjectOutputStream out) throws IOException{
+        if(!ecr.isEmpty()){
+            for(Object c : ecr.values()){
+                writeEdgeNodeObjects((ByteRestaurant) c, out);
+            }
+        }
+    }
+
+    private void writeEdgeNodeObjects(ByteRestaurant r, ObjectOutputStream out) throws IOException{
+        if(!r.isEmpty()){
+            for(Object c : r.values()){
+                writeEdgeNodeObjects((ByteRestaurant) c, out);
+            }
+        }
+        
+        out.writeInt(r.edgeNode.getIndex());
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException{
+        RNG = (MersenneTwisterFast) in.readObject();
+        depth = in.readInt();
+        trueDepth = in.readInt();
+        bs = (ByteSeq) in.readObject();
+        discounts = (Discounts) in.readObject();
+        baseDistribution = (ByteDiscreteDistribution) in.readObject();
+        maxNumberRestaurants = in.readLong();
+        maxSequenceLength = in.readLong();
+        seed = in.readLong();
+        ByteRestaurant.count = in.readInt();
+
+        ecr = (ByteRestaurant) in.readObject();
+
+        readEdgeNodeObjects(in);
+        SeatingArranger.rng = RNG;
+
+        rDepth = 0;
+        ds = new DoubleStack();
+        sr = new SeatReturn();
+        newKey = new MutableInt(-1);
+    }
+
+    private void readEdgeNodeObjects(ObjectInputStream in) throws IOException{
+        if(!ecr.isEmpty()){
+            for(Object c : ecr.values()){
+                readEdgeNodeObjects((ByteRestaurant) c, in);
+            }
+        }
+    }
+
+    private void readEdgeNodeObjects(ByteRestaurant r, ObjectInputStream in) throws IOException{
+        if(!r.isEmpty()){
+            for(Object c : r.values()){
+                readEdgeNodeObjects((ByteRestaurant) c, in);
+            }
+        }
+
+        r.edgeNode = bs.get(in.readInt());
+    }
+
+    public void newSequence(){
+        depth = 0;
     }
 
     public double continueSequence(byte[] types) {
@@ -194,15 +277,15 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
     }
 
     public void sampleSeatingArrangements(int numSweeps) {
-        for(int i = 0; i < numSweeps; i++){
+        for (int i = 0; i < numSweeps; i++) {
             sampleSeatingArrangements(ecr, null, 0);
         }
     }
 
-    public double sampleDiscounts(int numSweeps){
-        if(numSweeps > 0){
+    public double sampleDiscounts(int numSweeps) {
+        if (numSweeps > 0) {
             double score = 0.0;
-            for(int i = 0; i < numSweeps; i++){
+            for (int i = 0; i < numSweeps; i++) {
                 score = sampleDiscounts(0.07);
             }
             return score;
@@ -231,33 +314,35 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
             tti += 2;
         }
 
-        for (ByteRestaurant child : r.values()) {
-            sampleSeatingArrangements(child, bsn, d + child.edgeLength);
+        if (!r.isEmpty()) {
+            for (Object child : r.values()) {
+                sampleSeatingArrangements((ByteRestaurant) child, bsn, d + ((ByteRestaurant) child).edgeLength);
+            }
         }
 
         bsn.sample();
         bsn.populateCustomersAndTables(r.types, r.customersAndTables);
     }
 
-     private double sampleDiscounts(double stdProposal){
+    private double sampleDiscounts(double stdProposal) {
         double logLik, pLogLik, currentValue, proposal;
         boolean accept;
 
         logLik = score();
 
-        for(int dIndex = 0; dIndex < discounts.length(); dIndex++){
+        for (int dIndex = 0; dIndex < discounts.length(); dIndex++) {
             currentValue = discounts.get(dIndex);
             proposal = currentValue + stdProposal * RNG.nextGaussian();
 
-            if(proposal > 0.0 && proposal < 1.0){
+            if (proposal > 0.0 && proposal < 1.0) {
                 discounts.set(dIndex, proposal);
                 pLogLik = score();
 
                 accept = RNG.nextDouble() < Math.exp(pLogLik - logLik);
-                if(accept){
+                if (accept) {
                     logLik = pLogLik;
                 } else {
-                    discounts.set(dIndex,currentValue);
+                    discounts.set(dIndex, currentValue);
                 }
             }
         }
@@ -265,12 +350,12 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
         currentValue = discounts.getdInfinity();
         proposal = currentValue + stdProposal * RNG.nextGaussian();
 
-        if(proposal > 0.0 && proposal < 1.0){
+        if (proposal > 0.0 && proposal < 1.0) {
             discounts.setDInfinity(proposal);
             pLogLik = score();
 
             accept = RNG.nextDouble() < Math.exp(pLogLik - logLik);
-            if(accept){
+            if (accept) {
                 logLik = pLogLik;
             } else {
                 discounts.setDInfinity(currentValue);
@@ -300,9 +385,9 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
         int tci, tti;
 
         logLik = 0.0;
-        if(!r.isEmpty()){
-            for(Object child : r.arrayValues()){
-                logLik += score((ByteRestaurant)child ,restaurantDepth + ((ByteRestaurant) child).edgeLength);
+        if (!r.isEmpty()) {
+            for (Object child : r.values()) {
+                logLik += score((ByteRestaurant) child, restaurantDepth + ((ByteRestaurant) child).edgeLength);
             }
         }
 
@@ -323,8 +408,13 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
         return logLik;
     }
 
-    public SequenceMemoizerParameters getParameters() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public ByteSequenceMemoizerParameters getParameters() {
+        double[] d = new double[discounts.length()];
+        for (int i = 0; i < discounts.length(); i++) {
+            d[i] = discounts.get(i);
+        }
+
+        return new ByteSequenceMemoizerParameters(baseDistribution, d, discounts.getdInfinity(), depth, seed, this.maxNumberRestaurants, this.maxSequenceLength);
     }
 
     public double continueSequence(byte b) {
@@ -332,11 +422,11 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
         int index;
         double p;
 
-        while(bs.length() > maxSequenceLength - 1){
+        while (bs.length() > maxSequenceLength - 1) {
             bs.shorten();
         }
 
-        while(ByteRestaurant.count > maxNumberRestaurants - 2){
+        while (ByteRestaurant.count > maxNumberRestaurants - 2) {
             deleteRandomRestaurant();
         }
 
@@ -350,6 +440,10 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
 
         bs.append(b);
 
+        if(depth < trueDepth){
+            depth++;
+        }
+
         return Math.log(p);
     }
 
@@ -358,11 +452,11 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
         double multFactor, l, h;
         int type, index;
 
-        while(bs.length() > maxSequenceLength - 1){
+        while (bs.length() > maxSequenceLength - 1) {
             bs.shorten();
         }
 
-        while(ByteRestaurant.count > maxNumberRestaurants - 2){
+        while (ByteRestaurant.count > maxNumberRestaurants - 2) {
             deleteRandomRestaurant();
         }
 
@@ -384,6 +478,10 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
         seatAndUpdateDiscount(b, r, (h - l) * adj - minP);
 
         bs.append(b);
+
+        if(depth < trueDepth){
+            depth++;
+        }
     }
 
     public void continueSequenceDecode(double pointOnCDF) {
@@ -391,11 +489,11 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
         int index, type;
         double multFactor, l, h;
 
-        while(bs.length() > maxSequenceLength - 1){
+        while (bs.length() > maxSequenceLength - 1) {
             bs.shorten();
         }
 
-        while(ByteRestaurant.count > maxNumberRestaurants - 2){
+        while (ByteRestaurant.count > maxNumberRestaurants - 2) {
             deleteRandomRestaurant();
         }
 
@@ -423,6 +521,54 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
             seatAndUpdateDiscount((byte) type, r, (h - l) * adj - minP);
 
             bs.append((byte) type);
+
+            if(depth < trueDepth){
+                depth++;
+            }
+        }
+    }
+
+    public void continueSequenceEncodeWithoutInsertion(byte b){
+        ByteRestaurant r = getWithoutInsertion();
+        double multFactor = fillMostOfPDF(r);
+
+        double h = 0.0;
+        int type = (int) b & 0xFF;
+        for (int i = 0; i <= type; i++) {
+            h += (multFactor * baseDistribution.probability((byte) i) + mostOfPDF[i] + minP) / adj;
+        }
+        double l = h - (multFactor * baseDistribution.probability(b) + mostOfPDF[type] + minP) / adj;
+
+        low = l;
+        high = h;
+
+        if(depth < trueDepth){
+            depth++;
+        }
+    }
+
+    public void continueSequenceDecodeWithoutInsertion(double pointOnCDF){
+        ByteRestaurant r = getWithoutInsertion();
+        double multFactor = fillMostOfPDF(r);
+        double h = 0.0;
+        int type = -1;
+        while (h <= pointOnCDF && type < 255) {
+            type++;
+            h += (multFactor * baseDistribution.probability((byte) type) + mostOfPDF[type] + minP) / adj;
+        }
+
+        if (h <= pointOnCDF) {
+            decode = 256;
+        } else {
+            double l = h - (multFactor * baseDistribution.probability((byte) type) + mostOfPDF[type] + minP) / adj;
+
+            low = l;
+            high = h;
+            decode = type;
+
+            if(depth < trueDepth){
+                depth++;
+            }
         }
     }
 
@@ -430,11 +576,11 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
         ByteRestaurant r;
         double multFactor, l;
 
-        while(bs.length() > maxSequenceLength - 1){
+        while (bs.length() > maxSequenceLength - 1) {
             bs.shorten();
         }
 
-        while(ByteRestaurant.count > maxNumberRestaurants - 2){
+        while (ByteRestaurant.count > maxNumberRestaurants - 2) {
             deleteRandomRestaurant();
         }
 
@@ -472,9 +618,9 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
             if (c == null) {
                 el = bi.available(depth - rDepth);
                 ds.push(discounts.get(rDepth, rDepth + el));
-                c = new ByteRestaurant(r, bi.ind, el, bi.node,1);
-                
-                if(!r.isEmpty()){
+                c = new ByteRestaurant(r, bi.ind, el, bi.node, 1);
+
+                if (!r.isEmpty()) {
                     r.incrementLeafNodeCount();
                 }
 
@@ -494,7 +640,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
                 if (overlap == c.edgeLength) {
                     ds.push(discounts.get(rDepth, rDepth + overlap));
                     rDepth += overlap;
-                    
+
                     c.edgeNode.remove(c);
                     c.edgeNode = currentNode;
                     c.edgeNode.add(c);
@@ -508,9 +654,9 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
                     rDepth += overlap;
 
                     r.put(key, nc);
-                    if(newKey.intValue() > -1){
+                    if (newKey.intValue() > -1) {
                         nc.put((byte) newKey.intValue(), c);
-                        if(c.edgeStart >= bs.blockSize()){
+                        if (c.edgeStart >= bs.blockSize()) {
                             c.edgeStart %= bs.blockSize();
                             c.edgeNode.remove(c);
                             c.edgeNode = c.edgeNode.previous();
@@ -519,10 +665,55 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
                     } else {
                         c.edgeNode.remove(c);
                     }
-         
+
                     r = nc;
                 }
-            }   
+            }
+        }
+
+        return r;
+    }
+
+    public ByteRestaurant getWithoutInsertion() {
+        double discount;
+        ByteRestaurant r, c;
+        byte key;
+        BackwardsIterator bi;
+
+        assert ds.index() == -1;
+
+        r = ecr;
+        rDepth = 0;
+        bi = bs.backwardsIterator();
+
+        ds.push(discounts.get(0));
+        while (rDepth < depth && bi.hasNext()) {
+            key = bi.peek();
+            c = r.get(key);
+
+            if (c == null) {
+                return r;
+            } else {
+                int overlap = bi.overlap(c.edgeNode, c.edgeStart, c.edgeLength, newKey);
+
+                assert overlap > 0;
+
+                if (overlap == c.edgeLength) {
+                    ds.push(discounts.get(rDepth, rDepth + overlap));
+                    rDepth += overlap;
+                    
+                    r = c;
+                } else {
+                    discount = discounts.get(rDepth, rDepth + overlap);
+                    ds.push(discount);
+
+                    c = c.fragmentForPrediction(r, discounts.get(rDepth, rDepth + c.edgeLength), discount);
+
+                    rDepth += overlap;
+
+                    return c;
+                }
+            }
         }
 
         return r;
@@ -561,14 +752,14 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
                 } else {
                     discount = discounts.get(rDepth, rDepth + overlap);
                     ds.push(discount);
-                    
+
                     c = c.fragmentForPrediction(r, discounts.get(rDepth, rDepth + c.edgeLength), discount);
 
                     rDepth += overlap;
 
                     return c;
                 }
-            }   
+            }
         }
 
         return r;
@@ -675,17 +866,17 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
         return p;
     }
 
-    public ByteRestaurant getRandomLeafNode(){
+    private ByteRestaurant getRandomLeafNode() {
         ByteRestaurant r = ecr;
         double totalWeight, cuSum, rand;
-        
-        while(!r.isEmpty()){
+
+        while (!r.isEmpty()) {
             totalWeight = r.numLeafNodesAtOrBelow;
             rand = RNG.nextDouble();
             cuSum = 0.0;
-            for(Object child : r.arrayValues()){
+            for (Object child : r.values()) {
                 cuSum += (double) ((ByteRestaurant) child).numLeafNodesAtOrBelow / totalWeight;
-                if(cuSum > rand){
+                if (cuSum > rand) {
                     r = (ByteRestaurant) child;
                     break;
                 }
@@ -695,43 +886,18 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
         return r;
     }
 
-    public void deleteRandomRestaurant(){
+    private void deleteRandomRestaurant() {
         getRandomLeafNode().removeFromTreeAndEdgeNode();
     }
 
-    public void check(ByteRestaurant r){
-        for(ByteRestaurant child : r.values()){
-            check(child);
-        }
-
-        if(r.edgeNode != null){
-            assert r.edgeNode.contains(r);
-        }
-    }
-
-    public int check1(ByteRestaurant r){
-        int childrenAtOrBelow = 0;
-        if(r.isEmpty()){
-            childrenAtOrBelow++;
-        } else {
-            for(ByteRestaurant child : r.values()){
-                childrenAtOrBelow += check1(child);
-            }
-        }
-
-        assert childrenAtOrBelow == r.numLeafNodesAtOrBelow : "Calculated as " + childrenAtOrBelow + " : but recorded as " +  r.numLeafNodesAtOrBelow;
-        return childrenAtOrBelow;
-    }
-
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
         File f;
-        BufferedInputStream bis;
+        BufferedInputStream bis = null;
         int b, index;
         double logLik;
 
-        ByteSequenceMemoizer sm;
-        sm = new ByteSequenceMemoizer(1023, 3);
-        //sm.limitMemory(Long.MAX_VALUE, 1000000000);
+        ByteSequenceMemoizer sm =null;
+        sm = new ByteSequenceMemoizer(new ByteSequenceMemoizerParameters(), 100000, Long.MAX_VALUE);
 
         //f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/alice_in_wonderland/AliceInWonderland.txt");
         f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/pride_and_prejudice/pride_and_prejudice.txt");
@@ -740,8 +906,6 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
         //f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/wikipedia/enwik8");
         //f = new File("/Users/nicholasbartlett/Downloads/test");
 
-        bis = null;
-
         try {
             bis = new BufferedInputStream(new FileInputStream(f));
 
@@ -749,7 +913,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
 
             index = 0;
             while ((b = bis.read()) > -1) {
-                if(index++ % 100000 == 0){
+                if (index++ % 100000 == 0) {
                     System.out.println("Bytes = " + index + " : Restaurants = " + ByteRestaurant.count);
                 }
                 logLik -= sm.continueSequence((byte) b);
@@ -761,19 +925,36 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
             }
         }
 
-        //sm.check(sm.ecr);
-        //sm.check1(sm.ecr);
+        System.out.println(sm.score());
+        sm.sampleSeatingArrangements(10);
+        System.out.println(sm.score());
 
-        //System.out.println(sm.ecr.numLeafNodesAtOrBelow);
-
-        //System.out.println(sm.bs.restaurantCount());
+        FileOutputStream fos = null;
+        ObjectOutputStream oos = null;
+        try {
+            fos = new FileOutputStream("/Users/nicholasbartlett/Documents/np_bayes/data/test/sm");
+            oos = new ObjectOutputStream(fos);
+            oos.writeObject(sm);
+        } finally {
+            if (fos != null) {
+                fos.close();
+            }
+        }
 
         System.out.println(logLik / Math.log(2.0) / f.length());
-        System.out.println(ByteRestaurant.count);
+        System.out.println(ByteRestaurant.count); 
 
-        System.out.println(sm.score());
-        sm.sampleSeatingArrangements(5);
-        System.out.println(sm.score());
+        ObjectInputStream ois = null;
+        try {
+            ois = new ObjectInputStream(new FileInputStream("/Users/nicholasbartlett/Documents/np_bayes/data/test/sm"));
+            sm = (ByteSequenceMemoizer) ois.readObject();
+        } finally {
+            if (ois != null) {
+                ois.close();
+            }
+        }
+
+        sm.newSequence();
 
         //f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/wikipedia/first8m.txt");
         f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/alice_in_wonderland/AliceInWonderland.txt");
@@ -801,10 +982,11 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
         System.out.println();
         System.out.println(ByteRestaurant.count);
         System.out.println(-ll / Math.log(2.0) / f.length());
- 
     }
 
-    public class SeatReturn {
+    public class SeatReturn implements Serializable{
+
+        static final long serialVersionUID = 1;
 
         public boolean seatInParent;
         public int typeTables, customers, tables;

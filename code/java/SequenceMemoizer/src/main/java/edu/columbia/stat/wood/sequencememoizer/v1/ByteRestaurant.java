@@ -2,19 +2,27 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.columbia.stat.wood.sequencememoizer;
+package edu.columbia.stat.wood.sequencememoizer.v1;
 
-import edu.columbia.stat.wood.sequencememoizer.ByteSeq.ByteSeqNode;
-import edu.columbia.stat.wood.sequencememoizer.ByteSequenceMemoizer.SeatReturn;
+
+import edu.columbia.stat.wood.sequencememoizer.v1.ByteSeq.ByteSeqNode;
+import edu.columbia.stat.wood.sequencememoizer.v1.ByteSequenceMemoizer.SeatReturn;
 import edu.columbia.stat.wood.util.ByteMap;
 import edu.columbia.stat.wood.util.SeatingArranger;
-
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 /**
  *
  * @author nicholasbartlett
  */
-public class ByteRestaurant extends ByteMap<ByteRestaurant> {
+public class ByteRestaurant extends ByteMap<ByteRestaurant> implements Serializable{
+
+    static final long serialVersionUID = 1;
 
     public byte[] types;
     public int[] customersAndTables;
@@ -37,6 +45,28 @@ public class ByteRestaurant extends ByteMap<ByteRestaurant> {
         customers = 0;
         tables = 0;
         count++;
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException{
+        out.writeObject(types);
+        out.writeObject(customersAndTables);
+        out.writeInt(customers);
+        out.writeInt(tables);
+        out.writeInt(edgeStart);
+        out.writeInt(edgeLength);
+        out.writeInt(numLeafNodesAtOrBelow);
+        out.writeObject(parent);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException{
+        types = (byte[]) in.readObject();
+        customersAndTables = (int[]) in.readObject();
+        customers = in.readInt();
+        tables = in.readInt();
+        edgeStart = in.readInt();
+        edgeLength = in.readInt();
+        numLeafNodesAtOrBelow = in.readInt();
+        parent = (ByteRestaurant) in.readObject();
     }
 
     public void setTableConfig(byte[] types, int[] customersAndTables, int customers, int tables) {
@@ -337,5 +367,41 @@ public class ByteRestaurant extends ByteMap<ByteRestaurant> {
     public void decrementLeafNodeCount(){
         numLeafNodesAtOrBelow--;
         if(parent != null) parent.decrementLeafNodeCount();
+    }
+
+    public static void main(String[] args) throws IOException {
+        ByteRestaurant r = new ByteRestaurant(null, 15, 17, null, 12);
+        ByteRestaurant c = new ByteRestaurant(r, 15, 17, null, 12);
+        c.customers++;
+
+        r.put((byte) 12, c);
+
+        ObjectOutputStream oos = null;
+        try{
+            oos = new ObjectOutputStream(new FileOutputStream("/Users/nicholasbartlett/Documents/np_bayes/data/test/sm_object"));
+            oos.writeObject(r);
+        } catch(Exception e){
+            e.printStackTrace();
+            oos.close();
+        }
+        
+        ObjectInputStream ois = null;
+        ByteRestaurant rr = null;
+        try{
+            ois = new ObjectInputStream(new FileInputStream("/Users/nicholasbartlett/Documents/np_bayes/data/test/sm_object"));
+            rr = (ByteRestaurant) ois.readObject();
+        } catch (Exception e){
+            e.printStackTrace();
+            ois.close();
+        }
+
+        rr.print();
+
+        System.out.println(r.customers);
+        c = rr.get((byte) 12);
+
+        System.out.println(c.customers);
+        System.out.println(c.parent);
+        
     }
 }

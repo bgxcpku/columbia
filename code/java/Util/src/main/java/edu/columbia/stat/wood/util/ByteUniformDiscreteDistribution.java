@@ -5,13 +5,17 @@
 
 package edu.columbia.stat.wood.util;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 /**
  * Uniform distribution over the range [leftType, rightType)
  * @author nicholasbartlett
  */
-public class ByteUniformDiscreteDistribution implements ByteFiniteDiscreteDistribution {
+public class ByteUniformDiscreteDistribution implements ByteDiscreteDistribution, Serializable {
+
+    static final long serialVersionUID = 1;
+
     private int alphabetSize, leftType, rightType;
     private final double p;
 

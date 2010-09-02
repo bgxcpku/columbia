@@ -16,5 +16,7 @@ public interface ByteDiscreteDistribution {
     
     public double probability(byte type);
 
+    public int alphabetSize();
+
     public Iterator<Pair<Byte, Double>> iterator();
 }
