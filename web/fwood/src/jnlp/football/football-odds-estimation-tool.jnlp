@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp spec="1.0+" codebase="http://www.stat.columbia.edu/~fwood/jnlp/football">
+    <information>
+        <title>Football Odds Estimation Tool</title>
+        <vendor>Frank Wood and Jonas Schwertfeger</vendor>
+        <homepage>http://www.stat.columbia.edu/~fwood/</homepage>
+    </information>
+    <offline-allowed/>
+    <security>
+        <all-permissions/>
+    </security>
+    <resources>
+        <j2se version="1.6+"/>
+        
+<jar href="football-odds-estimation-tool-1.0.jar" main="true"/>
+<jar href="swingx-0.9.4.jar"/>
+<jar href="appframework-1.0.3.jar"/>
+<jar href="swing-worker-1.1.jar"/>
+
+    </resources>
+    <application-desc main-class="net.amani.football.pricingtool.FootballPricingTool"/>
+</jnlp>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp spec="1.0+" codebase="http://www.stat.columbia.edu/~fwood/jnlp/tennis">
+    <information>
+        <title>Tennis Odds Estimation Tool</title>
+        <vendor>Frank Wood and Jonas Schwertfeger</vendor>
+        <homepage>http://www.stat.columbia.edu/~fwood/</homepage>
+        <icon width="64" height="64" href="resources/tennis_64x64.gif"/>
+        <icon width="32" height="32" href="resources/tennis_32x32.gif"/>
+    </information>
+    <offline-allowed/>
+    <security>
+        <all-permissions/>
+    </security>
+    <resources>
+        <j2se version="1.6+"/>
+        <jar href="tennis-pricing-tool-1.0.jar" main="true"/>
+        <jar href="tennis-model-1.0.jar"/>
+        <jar href="amani-common-1.0.jar"/>
+        <jar href="swingx-0.9.4.jar"/>
+        <jar href="appframework-1.0.3.jar"/>
+        <jar href="swing-worker-1.1.jar"/>
+    </resources>
+    <application-desc main-class="net.amani.tennis.pricingtool.TennisPricingTool"/>
+</jnlp>

@@ -1,0 +1,37 @@
+---
+title: Home
+in_menu: true
+routed_title: Home
+sort_info: 0
+---
+
+## Cool Stuff
+
+Check out [deplump.com](http://www.deplump.com/) a demonstration site for a new general purpose lossless compressor my group has been involved in developing.
+
+## Research Highlights 
+
+-   D. Pfau, N. Bartlett, F. Wood, [Probabilistic Deterministic Infinite Automata](Papers/Pfau-NIPS-2010.pdf), to appear, NIPS 2010.
+-  N. Bartlett, D. Pfau, and F. Wood, [Forgetting counts : Constant Memory inference for a dependent hierarchical Pitman-Yor Process](Papers/Bartlett-ICML-2010.pdf), ICML, 2010 
+-   J. Gasthaus, F. Wood, and Y.W. Teh, [Lossless compression based on the Sequence Memoizer](Papers/Gasthaus-DCC-2010.pdf).  DCC, 2010.
+-   F. Wood, C. Archambeau, J. Gasthaus, L. James, and Y.W. Teh, [A Stochastic Memoizer for Sequence Data](Papers/Wood-ICML-2009.pdf)   ICML, 2009., <a href="Talks/sequence_memoizer.pdf">Talk</a>, <a href="http://videolectures.net/icml09_wood_sms/">Video Lecture</a>
+-   F. Wood and Y.W. Teh [A hierarchical nonparametric Bayesian approach to statistical language model domain adaptation](Papers/Wood-AISTATS-2009.pdf), AISTATS 2009.  <em>Best Paper Award</em>
+
+##Philosophy 
+
+My research effort is directed towards contributing models and algorithms to the field of statistical machine learning. My current research focus is on the development and application of nonparametric Bayesian methods to problems in discrete sequence modeling and compression. 
+
+I believe that the conceptual symbiosis between neuroscience and computer science (particularly in machine learning) is still in its infancy. As a computer scientist I believe that the computational superiority exhibited by even the most simple biological organisms is a strong argument for doing research at the intersection of these two fields. 
+
+My style is to build machine learning algorithms that improve on the state of the art by drawing from scientific findings at all levels of scientific investigation (physics to psychology). I am particularly interested in pursuing the connections between specific features of Bayesian machine learning algorithms and the biological mechanisms they very much resemble. 
+--- name:sidebar
+<strong>Email: </strong> 
+fwood@stat.columbia.edu<br>
+<strong>Office:</strong><br> 
+Room 1017<br> School of Social Work<br>
+<strong>Address:</strong> <br>
+1255 Amsterdam Avenue <br>
+New York, NY 10027<br>
+<strong>Phone:</strong> 
+212.851.2150<br>
+<strong>Skype:</strong> <quote>frank_wood</quote>
