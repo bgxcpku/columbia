@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package edu.columbia.stat.wood.deplump;
+package edu.columbia.stat.wood.deplump.v1;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

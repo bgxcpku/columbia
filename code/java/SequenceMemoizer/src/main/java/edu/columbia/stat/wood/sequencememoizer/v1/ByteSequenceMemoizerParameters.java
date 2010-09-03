@@ -3,9 +3,10 @@
  * and open the template in the editor.
  */
 
-package edu.columbia.stat.wood.sequencememoizer;
+package edu.columbia.stat.wood.sequencememoizer.v1;
 
-import edu.columbia.stat.wood.util.ByteFiniteDiscreteDistribution;
+import edu.columbia.stat.wood.util.ByteCompleteUniformDiscreteDistribution;
+import edu.columbia.stat.wood.util.ByteDiscreteDistribution;
 
 /**
  *
@@ -13,15 +14,25 @@ import edu.columbia.stat.wood.util.ByteFiniteDiscreteDistribution;
  */
 public class ByteSequenceMemoizerParameters extends SequenceMemoizerParameters{
 
-    /**
-     * Base distribution of the model.  Since only 256 bytes available it is not
-     * a restriction to require this to be finite.
-     */
-    public ByteFiniteDiscreteDistribution baseDistribution;
+    public ByteDiscreteDistribution baseDistribution;
 
-    
+    public ByteSequenceMemoizerParameters(ByteDiscreteDistribution baseDistribution, double[] discounts, double infiniteDiscount, int depth, long seed, long maxNumberRestaurants, long maxSequenceLength) {
+        super(discounts, infiniteDiscount, depth, seed, maxNumberRestaurants, maxSequenceLength);
+        this.baseDistribution = baseDistribution;
+    }
 
-    
+    public ByteSequenceMemoizerParameters(int depth, long maxNumberRestaurants, long maxSequenceLength){
+        super(depth, maxNumberRestaurants, maxSequenceLength);
+        baseDistribution = new ByteCompleteUniformDiscreteDistribution();
+    }
 
-
+    public ByteSequenceMemoizerParameters(int depth){
+        super(depth, -1, -1);
+        baseDistribution = new ByteCompleteUniformDiscreteDistribution();
+    }
+   
+    public ByteSequenceMemoizerParameters() {
+        super();
+        baseDistribution = new ByteCompleteUniformDiscreteDistribution();
+    }
 }

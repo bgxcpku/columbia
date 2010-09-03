@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>Sequence Memoizer</name>
-    <description></description>
+    <description>Stochastic Memoizer for Discrete Sequence Data</description>
 
     <repositories>
         <repository>
@@ -33,6 +33,12 @@
             <version>4.4</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>gnu</groupId>
+            <artifactId>trove</artifactId>
+            <version>1.0</version>
+             <type>jar</type>
+         </dependency>
     </dependencies>
 
     <build>

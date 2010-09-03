@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.columbia.stat.wood.sequencememoizer;
+package edu.columbia.stat.wood.sequencememoizer.v1;
 
 /**
  * A container object for the parameters of a sequence memoizer. For depths >= discounts.length, the discount is
@@ -37,6 +37,10 @@ public class SequenceMemoizerParameters {
      */
     public long seed;
 
+    public long maxNumberRestaurants;
+
+    public long maxSequenceLength;
+
     /**
      * Constructor allowing all of the fields to be specified as arguments.
      * @param discounts 
@@ -44,25 +48,38 @@ public class SequenceMemoizerParameters {
      * @param depth 
      * @param seed
      */
-    public SequenceMemoizerParameters(double[] discounts, double infiniteDiscount, int depth, long seed) {
+    public SequenceMemoizerParameters(double[] discounts, double infiniteDiscount, int depth, long seed, long maxNumberRestaurants, long maxSequenceLength) {
         this.discounts = discounts;
         this.infiniteDiscount = infiniteDiscount;
         this.depth = depth;
         this.seed = seed;
+        this.maxNumberRestaurants = maxNumberRestaurants;
+        this.maxSequenceLength = maxSequenceLength;
+    }
+
+    public SequenceMemoizerParameters(int depth, long maxNumberRestaurants, long maxSequenceLength){
+        this.discounts = new double[]{0.5, 0.7, 0.8, 0.82, 0.84, 0.88, 0.91, 0.92, 0.93, 0.94, 0.95};
+        this.infiniteDiscount = 0.5;
+        this.depth = depth;
+        this.seed = 3;
+        this.maxNumberRestaurants = maxNumberRestaurants;
+        this.maxSequenceLength = maxSequenceLength;
     }
 
     /**
      * Constructor allowing for some of the parameters to be specified.
      * Default values are discounts = {0.5, 0.7, 0.8, 0.82, 0.84, 0.88, 0.91, 0.92, 0.93, 0.94, 0.95},
-     * infiniteDiscount = 0.5, depth = 1023, seed = 3.
+     * infiniteDiscount = 0.5, depth = 1023, seed = 3, maxNumberRestaurants = -1,
+     * maxSequenceLength = -1.
      * @param depth
      * @param seed
      */
-    public SequenceMemoizerParameters(int depth, long seed){
-        this.discounts = new double[]{0.5, 0.7, 0.8, 0.82, 0.84, 0.88, 0.91, 0.92, 0.93, 0.94, 0.95};
-        this.infiniteDiscount = 0.5;
-        this.depth = depth;
-        this.seed = seed;
+    public SequenceMemoizerParameters(int depth){
+        this(depth, Long.MAX_VALUE, Long.MAX_VALUE);
+    }
+
+    public SequenceMemoizerParameters(long maxNumberRestaurants, long maxSequenceLength){
+        this(1023,maxNumberRestaurants, maxSequenceLength);
     }
 
     /**
@@ -70,6 +87,6 @@ public class SequenceMemoizerParameters {
      * infiniteDiscount = 0.5, depth = 1023, seed = 3.
      */
     public SequenceMemoizerParameters() {
-        this(1023, 3);
+        this(1023);
     }
 }

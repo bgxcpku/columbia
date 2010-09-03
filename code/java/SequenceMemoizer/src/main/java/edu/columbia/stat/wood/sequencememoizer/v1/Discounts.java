@@ -3,14 +3,19 @@
  * and open the template in the editor.
  */
 
-package edu.columbia.stat.wood.sequencememoizer;
+package edu.columbia.stat.wood.sequencememoizer.v1;
+
+import java.io.Serializable;
 
 /**
  * Discount parameter wrapper for sequence memoizer.
  * 
  * @author nicholasbartlett
  */
-public class Discounts {
+public class Discounts implements Serializable{
+
+    static final long serialVersionUID = 1;
+
     private double[] discounts, logDiscounts, discountGradient;
     private double alpha, alphaGradient;
 

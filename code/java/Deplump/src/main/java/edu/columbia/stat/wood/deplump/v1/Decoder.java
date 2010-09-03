@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.columbia.stat.wood.deplump;
+package edu.columbia.stat.wood.deplump.v1;
 
 import edu.columbia.stat.wood.sequencememoizer.BytePredictiveModel;
 import java.io.IOException;
@@ -12,7 +12,7 @@ import java.io.InputStream;
  * Class which implements range decoder.
  * @author nicholasbartlett
  */
-public class Decoder {
+public class Decoder extends edu.columbia.stat.wood.deplump.Decoder{
 
     private long first_bit_indicator = (long) 1 << 62;
     private long long_max_value = Long.MAX_VALUE;
@@ -22,17 +22,22 @@ public class Decoder {
     private long code;
     private BufferedBitInputStream bbis;
     private BytePredictiveModel pm;
+    private boolean insert;
 
-    /**
-     * Initializes decoder with specified PredictiveModel and unerlying InputStream.
-     *
-     * @param pm PredictiveModel used for copmressing
-     * @param is underlying InputStream
-     * @throws IOException
-     */
-    public Decoder(BytePredictiveModel pm, InputStream is) throws IOException {
+
+    public Decoder(){};
+
+    public Decoder(BytePredictiveModel pm, InputStream is, boolean insert) throws IOException {
         this.pm = pm;
         this.bbis = new BufferedBitInputStream(is);
+        this.insert = insert;
+        initializeCode();
+    }
+
+    public void set(BytePredictiveModel pm, InputStream is, boolean insert) throws IOException {
+        this.pm = pm;
+        this.bbis = new BufferedBitInputStream(is);
+        this.insert = insert;
         initializeCode();
     }
 
@@ -58,7 +63,11 @@ public class Decoder {
         int b;
 
         pointOnCDF = (double) (code - low) / (double) range;
-        pm.continueSequenceDecode(pointOnCDF);
+        if(insert){
+            pm.continueSequenceDecode(pointOnCDF);
+        } else {
+            pm.continueSequenceDecodeWithoutInsertion(pointOnCDF);
+        }
 
         l = pm.low;
         h = pm.high;

@@ -4,8 +4,10 @@
  */
 package edu.columbia.stat.wood.deplump;
 
+import edu.columbia.stat.wood.deplump.CommandLineOptions.ParseReturn;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -17,70 +19,49 @@ import java.io.IOException;
 public class Deplump {
 
     public static void main(String[] args) throws FileNotFoundException, IOException {
-        int numArgs;
+        ParseReturn parseReturn = CommandLineOptions.parse(args);
 
-        numArgs = args.length;
+        BufferedInputStream bis = null;
+        DeplumpStream dps = null;
 
-        if (numArgs == 0) {
-            Deplump.DeplumpSTDIN();
+        if (parseReturn.files != null) {
+            for (File f : parseReturn.files) {
+                try {
+                    bis = new BufferedInputStream(new FileInputStream(f));
+                    File outFile = new File(f.getAbsolutePath() + ".dpl");
+                    dps = new DeplumpStream(new BufferedOutputStream(new FileOutputStream(outFile)), parseReturn.depth, parseReturn.maxNumberRestaurants, parseReturn.maxSequenceLength, parseReturn.insert, parseReturn.url);
+
+                    int l;
+                    byte[] buffer;
+
+                    buffer = new byte[1024 * 16];
+                    while ((l = bis.read(buffer)) > -1) {
+                        dps.write(buffer, 0, l);
+                    }
+                } finally {
+                    bis.close();
+                    dps.close();
+                }
+            }
         } else {
-            for (int i = 0; i < numArgs; i++) {
-                Deplump.Deplump(args[i]);
-            }
-        }
-    }
+            try {
+                bis = new BufferedInputStream(System.in);
+                dps = new DeplumpStream(new BufferedOutputStream(System.out), parseReturn.depth, parseReturn.maxNumberRestaurants, parseReturn.maxSequenceLength, parseReturn.insert, parseReturn.url);
 
-    public static void Deplump(String filename) throws FileNotFoundException, IOException {
+                int l;
+                byte[] buffer;
 
-        BufferedInputStream bis = null;
-        DeplumpStream dps = null;
-
-        try {
-            bis = new BufferedInputStream(new FileInputStream(filename));
-            dps = new DeplumpStream(new BufferedOutputStream(new FileOutputStream(filename + ".dpl")));
-
-            int streamLength = 0;
-            int l;
-            byte[] buffer;
-            
-            buffer = new byte[1024 * 8];
-            while((l = bis.read(buffer)) > -1){
-                dps.write(buffer,0,l);
-                streamLength += l;
-                System.out.println(streamLength);
-            }
-        } finally {
-            if (bis != null) {
-                bis.close();
-            }
-            if (dps != null) {
-                dps.close();
-            }
-        }
-    }
-
-    public static void DeplumpSTDIN() throws IOException{
-
-        BufferedInputStream bis = null;
-        DeplumpStream dps = null;
-
-        try{
-            bis = new BufferedInputStream(System.in);
-            dps = new DeplumpStream(new BufferedOutputStream(System.out));
-
-            int l;
-            byte[] buffer;
-
-            buffer = new byte[1024 * 8];
-            while((l = bis.read(buffer)) > -1){
-                dps.write(buffer,0,l);
-            }
-        } finally {
-            if(bis != null){
-                bis.close();
-            }
-            if(dps != null){
-                dps.close();
+                buffer = new byte[1024 * 16];
+                while ((l = bis.read(buffer)) > -1) {
+                    dps.write(buffer, 0, l);
+                }
+            } finally {
+                if (bis != null) {
+                    bis.close();
+                }
+                if (dps != null) {
+                    dps.close();
+                }
             }
         }
     }

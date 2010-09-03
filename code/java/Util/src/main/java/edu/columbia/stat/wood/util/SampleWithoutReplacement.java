@@ -7,11 +7,17 @@ package edu.columbia.stat.wood.util;
 import java.util.HashSet;
 
 /**
- *
+ * Class to provide static method to return a random ordering of the integers 1 - n.
  * @author nicholasbartlett
  */
 public class SampleWithoutReplacement {
 
+    /**
+     * Method to return a random ordering of the itegers 1 - n.
+     * @param n
+     * @param rng random number generator to be used
+     * @return array of length n with the integers 1 - n in random order
+     */
     public static int[] SampleWithoutReplacement(int n, MersenneTwisterFast rng) {
         HashSet<Integer> set;
         int[] randomOrder;

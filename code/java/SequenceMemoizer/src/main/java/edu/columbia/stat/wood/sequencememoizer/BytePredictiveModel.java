@@ -17,7 +17,11 @@ public abstract class BytePredictiveModel {
 
     public abstract void continueSequenceEncode(byte type);
 
-    public abstract void continueSequenceDecode(double pointOnCdf);
+    public abstract void continueSequenceDecode(double pointOnCDF);
+
+    public abstract void continueSequenceEncodeWithoutInsertion(byte type);
+
+    public abstract void continueSequenceDecodeWithoutInsertion(double pointOnCDF);
 
     public abstract void endOfStream();
 

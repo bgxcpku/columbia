@@ -2,9 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.columbia.stat.wood.sequencememoizer;
+package edu.columbia.stat.wood.sequencememoizer.v1;
 
-import edu.columbia.stat.wood.util.ByteFiniteDiscreteDistribution;
+import edu.columbia.stat.wood.util.ByteDiscreteDistribution;
 import edu.columbia.stat.wood.util.Pair;
 import edu.columbia.stat.wood.util.SampleWithoutReplacement;
 import java.util.HashMap;
@@ -19,9 +19,10 @@ public class ByteSamplingNode {
     private ByteSamplingNode parent;
     private int tables, customers;
     private double discount;
-    private ByteFiniteDiscreteDistribution baseDistribution;
+    private ByteDiscreteDistribution baseDistribution;
 
-    public ByteSamplingNode(ByteSamplingNode parent, double discount, ByteFiniteDiscreteDistribution baseDistribution) {
+    public ByteSamplingNode(ByteSamplingNode parent, double discount, ByteDiscreteDistribution baseDistribution) {
+        this.parent = parent;
         this.discount = discount;
         seatingArrangement = new HashMap<Byte, TypeSeatingArrangement>();
         tables = 0;
@@ -45,11 +46,11 @@ public class ByteSamplingNode {
         }
 
         if (customers > 0) {
-            TypeSeatingArrangement tsa;
-
+            
             p *= (double) tables * discount / (double) customers;
-
-            tsa = seatingArrangement.get(type);
+            
+            TypeSeatingArrangement tsa = seatingArrangement.get(type);
+            
             if (tsa != null) {
                 p += ((double) tsa.typeCustomers - (double) tsa.typeTables * discount) / (double) customers;
             }
@@ -60,41 +61,37 @@ public class ByteSamplingNode {
 
     public void seat(byte type) {
         double pp;
-        TypeSeatingArrangement tsa;
-
-        pp = parent.predictiveProbability(type);
-
-        tsa = seatingArrangement.get(type);
-
-        assert tsa != null : "Should not be null since I'm not removing types during sampling";
+        if(parent == null){
+            pp = baseDistribution.probability(type);
+        } else {
+            pp = parent.predictiveProbability(type);
+        }
+        
+        TypeSeatingArrangement tsa = seatingArrangement.get(type);
 
         if (tsa.seat(pp)) {
-            customers++;
             tables++;
             if (parent != null) {
                 parent.seat(type);
             }
-        } else {
-            customers++;
         }
+        
+        customers++;
     }
 
     public void unseat(byte type) {
-        TypeSeatingArrangement tsa;
-
-        tsa = seatingArrangement.get(type);
+        TypeSeatingArrangement tsa = seatingArrangement.get(type);
 
         assert tsa != null : "Should not be null since I'm not removing types during sampling";
 
         if (tsa.unseat()) {
-            customers--;
             tables--;
             if (parent != null) {
                 parent.unseat(type);
             }
-        } else {
-            customers--;
         }
+
+        customers--;
     }
 
     public void sample(){
@@ -182,7 +179,13 @@ public class ByteSamplingNode {
         }
     }
 
-    public void populateCustomersAndTables(byte[] types, int[] customersAndTables) {
+    public void fillRestaurant(ByteRestaurant r){
+        populateCustomersAndTables(r.types, r.customersAndTables);
+        r.customers = customers;
+        r.tables = tables;
+    }
+
+    private void populateCustomersAndTables(byte[] types, int[] customersAndTables) {
         assert customersAndTables.length == 2 * types.length;
         int tci, tti;
         TypeSeatingArrangement tsa;
@@ -197,6 +200,21 @@ public class ByteSamplingNode {
             tci += 2;
             tti += 2;
         }
+
+        assert check(types.length, customersAndTables);
+    }
+
+    private boolean check(int l, int[] customersAndTables) {
+        int c = 0, t = 0, tci = 0, tti = 1;
+        for(int i = 0; i < l; i++){
+            c += customersAndTables[tci];
+            t += customersAndTables[tti];
+
+            tci += 2;
+            tti += 2;
+        }
+
+        return c == customers && t == tables;
     }
 
     private Pair<byte[], int[]> randomCustomersToSample() {
@@ -260,9 +278,6 @@ public class ByteSamplingNode {
         }
 
         public boolean seat(double pp) {
-            int[] newsa;
-            double r, cuSum, tw;
-
             if (typeCustomers == 0) {
                 typeCustomers = 1;
                 typeTables = 1;
@@ -270,9 +285,12 @@ public class ByteSamplingNode {
                 return true;
             }
 
-            tw = (double) typeCustomers - (double) typeTables * discount + (double) tables * discount * pp;
-            r = ByteSequenceMemoizer.RNG.nextDouble();
-            cuSum = 0.0;
+            double tw = (double) typeCustomers - (double) typeTables * discount + (double) tables * discount * pp;
+            double r = ByteSequenceMemoizer.RNG.nextDouble();
+            double cuSum = 0.0;
+
+            assert typeTables == sa.length;
+
             for (int i = 0; i < typeTables; i++) {
                 cuSum += ((double) sa[i] - discount) / tw;
                 if (cuSum > r) {
@@ -282,9 +300,9 @@ public class ByteSamplingNode {
                 }
             }
 
-            newsa = new int[sa.length + 1];
-            System.arraycopy(sa, 0, newsa, 0, sa.length);
-            newsa[sa.length] = 1;
+            int[] newsa = new int[sa.length + 1];
+            System.arraycopy(sa, 0, newsa, 0, typeTables);
+            newsa[typeTables] = 1;
 
             sa = newsa;
             typeCustomers++;
@@ -294,8 +312,6 @@ public class ByteSamplingNode {
         }
 
         public boolean unseat() {
-            double r, cuSum;
-
             if (typeCustomers <= 0) {
                 throw new RuntimeException("unseating in an empty seating arrangment");
             } else if (typeCustomers == 1) {
@@ -305,10 +321,10 @@ public class ByteSamplingNode {
                 return true;
             }
 
-            r = ByteSequenceMemoizer.RNG.nextDouble();
-            cuSum = 0.0;
+            double r = ByteSequenceMemoizer.RNG.nextDouble();
+            double cuSum = 0.0;
             for (int i = 0; i < typeTables; i++) {
-                cuSum += (double) sa[i] / (double) typeCustomers;
+                cuSum += ((double) sa[i]) / (double) typeCustomers;
                 if (cuSum > r) {
                     typeCustomers--;
                     if (sa[i] == 1) {
@@ -316,7 +332,7 @@ public class ByteSamplingNode {
 
                         newsa = new int[sa.length - 1];
                         System.arraycopy(sa, 0, newsa, 0, i);
-                        System.arraycopy(sa, i + 1, newsa, 0, sa.length - 1 - i);
+                        System.arraycopy(sa, i + 1, newsa, i, sa.length - 1 - i);
 
                         sa = newsa;
                         typeTables--;

@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.columbia.stat.wood.deplump;
+package edu.columbia.stat.wood.deplump.v1;
 
 import edu.columbia.stat.wood.sequencememoizer.BytePredictiveModel;
 import java.io.IOException;
@@ -24,17 +24,20 @@ public class Encoder {
     private BytePredictiveModel pm;
     private int currentByte = 0;
     private int byteIndex = 0;
+    private boolean insert;
 
-    /**
-     * Creates the encoder using a specified predictive model and an underlying
-     * OuputStream.
-     *
-     * @param pm predictive model
-     * @param out underlying OutputStream
-     */
-    public Encoder(BytePredictiveModel pm, OutputStream out) {
+    public Encoder(){}
+
+    public Encoder(BytePredictiveModel pm, OutputStream out, boolean insert) {
         this.pm = pm;
         this.out = out;
+        this.insert = insert;
+    }
+
+    public void set(BytePredictiveModel pm, OutputStream out, boolean insert) {
+        this.pm = pm;
+        this.out = out;
+        this.insert = insert;
     }
 
     /**
@@ -46,7 +49,12 @@ public class Encoder {
     public void encode(byte observation) throws IOException {
         double l, h;
 
-        pm.continueSequenceEncode(observation);
+        if(insert){
+            pm.continueSequenceEncode(observation);
+        } else {
+            pm.continueSequenceEncodeWithoutInsertion(observation);
+        }
+        
         l = pm.low;
         h = pm.high;
 

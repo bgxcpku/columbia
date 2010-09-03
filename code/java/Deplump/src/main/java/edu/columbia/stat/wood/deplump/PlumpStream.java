@@ -10,18 +10,28 @@ package edu.columbia.stat.wood.deplump;
  * @author nicholasbartlett
  */
 
-import edu.columbia.stat.wood.sequencememoizer.ByteSequenceMemoizer;
+import edu.columbia.stat.wood.sequencememoizer.BytePredictiveModelFactory;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
 
 public class PlumpStream extends InputStream {
 
     private Decoder dec;
     private boolean eos = false;
     private InputStream is;
+    
+    public PlumpStream(InputStream is, int depth, long maxNumberRestaurants, long maxSequenceLength, boolean insert, URL serializedModel) throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException {
+        //get version
+        int version = is.read();
+        
+        ClassLoader cl = ClassLoader.getSystemClassLoader();
 
-    public PlumpStream(InputStream is) throws IOException {
-        dec = new Decoder(new ByteSequenceMemoizer(1023,1), is);
+        dec = (Decoder) cl.loadClass("edu.columbia.stat.wood.deplump.v" + version + ".Decoder" ).newInstance();
+        BytePredictiveModelFactory factory = (BytePredictiveModelFactory) cl.loadClass("edu.columbia.stat.wood.sequencememoizer.v" + version + ".BytePredictiveModelFactory").newInstance();
+
+        dec.set(factory.get(depth, maxNumberRestaurants, maxSequenceLength, serializedModel), is, insert);
         this.is = is;
     }
 

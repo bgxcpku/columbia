@@ -6,7 +6,7 @@
 package edu.columbia.stat.wood.util;
 
 /**
- *
+ * Container class for two objects.
  * @author nicholasbartlett
  */
 public class Pair<F,S> {
@@ -32,7 +32,7 @@ public class Pair<F,S> {
     }
 
     /**
-     * Gets the seond object.
+     * Gets the second object.
      *
      * @return second object
      */
@@ -40,6 +40,11 @@ public class Pair<F,S> {
         return second;
     }
 
+    /**
+     * Overrides the equals method to be true if both objects match.
+     * @param o comparison object
+     * @return true if equal, else false
+     */
     @Override
     public boolean equals(Object o){
         if(o == null){
@@ -53,6 +58,10 @@ public class Pair<F,S> {
         }
     }
 
+    /**
+     * Overrides hashcode method to make both objects utilized in the hashcode creation
+     * @return hashcode
+     */
     @Override
     public int hashCode() {
         int hash = 5;
