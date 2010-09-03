@@ -10,34 +10,28 @@ package edu.columbia.stat.wood.deplump;
  * @author nicholasbartlett
  */
 
-import edu.columbia.stat.wood.sequencememoizer.BytePredictiveModel;
+import edu.columbia.stat.wood.sequencememoizer.BytePredictiveModelFactory;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
 
 public class PlumpStream extends InputStream {
 
     private Decoder dec;
     private boolean eos = false;
     private InputStream is;
-
-    public PlumpStream(InputStream is) throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException {
+    
+    public PlumpStream(InputStream is, int depth, long maxNumberRestaurants, long maxSequenceLength, boolean insert, URL serializedModel) throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException {
         //get version
         int version = is.read();
         
         ClassLoader cl = ClassLoader.getSystemClassLoader();
 
         dec = (Decoder) cl.loadClass("edu.columbia.stat.wood.deplump.v" + version + ".Decoder" ).newInstance();
-        Constructor ct = cl.loadClass("edu.columbia.stat.wood.sequencememoizer.v" + version + ".ByteSequenceMemoizer" ).getConstructor();
+        BytePredictiveModelFactory factory = (BytePredictiveModelFactory) cl.loadClass("edu.columbia.stat.wood.sequencememoizer.v" + version + ".BytePredictiveModelFactory").newInstance();
 
-        Object[] argList = new Object[0];
-        BytePredictiveModel bm = (BytePredictiveModel) ct.newInstance(argList);
-
-        //BytePredictiveModel bm = (BytePredictiveModel) cl.loadClass("edu.columbia.stat.wood.sequencememoizer.v" + version + ".ByteSequenceMemoizer" ).newInstance();
-
-        dec.set(bm, is, true);
-
+        dec.set(factory.get(depth, maxNumberRestaurants, maxSequenceLength, serializedModel), is, insert);
         this.is = is;
     }
 

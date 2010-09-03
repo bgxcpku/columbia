@@ -8,7 +8,8 @@ package edu.columbia.stat.wood.util;
 import java.io.Serializable;
 
 /**
- *
+ * Implementation of a map from byte to E.  This implementation is array based
+ * and uses a binary search algorithm.
  * @author nicholasbartlett
  */
 public class ByteMap<E> implements Serializable{
@@ -18,10 +19,18 @@ public class ByteMap<E> implements Serializable{
     private byte[] keys;
     private E[] values;
 
+    /**
+     * Indicates if this map is empty.
+     * @return true if empty, else false
+     */
     public boolean isEmpty(){
         return keys == null;
     }
 
+    /**
+     * Returns the number of mapped keys in the map.
+     * @return size of map
+     */
     public int size(){
         if(keys != null){
             return keys.length;
@@ -30,6 +39,11 @@ public class ByteMap<E> implements Serializable{
         }
     }
 
+    /**
+     * Gets the value associated with the key.
+     * @param key
+     * @return value associated with key, null if no value is found.
+     */
     public E get(byte key){
         if(keys == null || key > keys[keys.length-1]){
             return null;
@@ -46,6 +60,12 @@ public class ByteMap<E> implements Serializable{
         }
     }
 
+    /**
+     * Associates a value to a key in the map.
+     * @param key
+     * @param value
+     * @return Object previously assigned to key or null if no value was previously assigned.
+     */
     public E put(byte key, E value){
         if(keys == null){
             keys = new byte[]{key};
@@ -105,6 +125,10 @@ public class ByteMap<E> implements Serializable{
         }
     }
 
+    /**
+     * Removes a key and its associated value from the map.
+     * @param key key to remove
+     */
     public void remove(byte key){
         if(keys == null){
             throw new IllegalArgumentException("Key to remove is not in map");
@@ -163,14 +187,28 @@ public class ByteMap<E> implements Serializable{
         return l;
     }
 
+    /**
+     * Gets mapped keys.
+     * @return byte array of keys
+     */
     public byte[] keys(){
         return keys;
     }
 
+    /**
+     * Gets values mapped to.
+     * @return Object array of values.
+     */
     public Object[] values(){
         return values;
     }
 
+    /**
+     * Allows the underlying arrays to be set.  The key array is assumed (not checked)
+     * to be sorted lowest to highest and the value array should be in corresponding order.
+     * @param keys keys to use
+     * @param values values to use
+     */
     public void set(byte[] keys, E[] values){
         assert checkSet(keys, values);
 
@@ -189,6 +227,9 @@ public class ByteMap<E> implements Serializable{
         return keys.length == values.length;
     }
 
+    /**
+     * Utility method to print the underlying arrays.
+     */
     public void print(){
         if(values == null){
             System.out.println("Keys : " + keys);

@@ -5,13 +5,14 @@
 
 package edu.columbia.stat.wood.sequencememoizer;
 
+import java.net.URL;
+
 /**
  *
  * @author nicholasbartlett
  */
 public abstract class BytePredictiveModelFactory {
 
-    public abstract BytePredictiveModel get();
-
-    public abstract BytePredictiveModel get(String serializedModelKey);
+    public abstract BytePredictiveModel get(int depth, long maxNumberRestaurants, long maxSequenceLength, URL url);
+    
 }

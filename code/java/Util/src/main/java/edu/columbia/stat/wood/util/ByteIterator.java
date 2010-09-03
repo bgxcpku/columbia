@@ -6,13 +6,19 @@
 package edu.columbia.stat.wood.util;
 
 /**
- *
+ * Very simple byte iterator interface.
  * @author nicholasbartlett
  */
 public interface ByteIterator {
 
+    /**
+     * @return true if there is a next element, else false
+     */
     public boolean hasNext();
 
+    /**
+     * @return next byte
+     */
     public byte next();
 
 }

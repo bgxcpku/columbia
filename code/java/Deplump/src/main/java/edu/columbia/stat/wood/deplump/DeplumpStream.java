@@ -6,9 +6,10 @@
 package edu.columbia.stat.wood.deplump;
 
 import edu.columbia.stat.wood.deplump.v1.Encoder;
-import edu.columbia.stat.wood.sequencememoizer.v1.ByteSequenceMemoizer;
+import edu.columbia.stat.wood.sequencememoizer.v1.BytePredictiveModelFactory;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URL;
 
 /**
  * Compression stream using Deplump predictive model.
@@ -21,12 +22,14 @@ public class DeplumpStream extends OutputStream {
     private Encoder enc;
     private OutputStream out;
 
-    public DeplumpStream(OutputStream out) throws IOException {
+    public DeplumpStream(OutputStream out, int depth, long maxNumberRestaurants, long maxSequenceLength, boolean insert, URL serializedModel) throws IOException {
         //version
         out.write(1);
 
+        BytePredictiveModelFactory factory = new BytePredictiveModelFactory();
+
         this.out = out;
-        enc = new Encoder(new ByteSequenceMemoizer(), out, true);
+        enc = new Encoder(factory.get(depth, maxNumberRestaurants, maxSequenceLength, serializedModel),out,insert);
     }
 
     @Override

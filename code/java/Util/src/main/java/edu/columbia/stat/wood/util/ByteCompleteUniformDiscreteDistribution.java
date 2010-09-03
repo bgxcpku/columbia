@@ -8,13 +8,16 @@ package edu.columbia.stat.wood.util;
 import java.util.Iterator;
 
 /**
- *
+ * Class to implement uniform distribution over all bytes.
  * @author nicholasbartlett
  */
 public class ByteCompleteUniformDiscreteDistribution extends ByteUniformDiscreteDistribution {
     private final int alphabetSize, leftType, rightType;
     private final double p;
 
+    /**
+     * Creates uniform distribution over all 256 bytes.
+     */
     public ByteCompleteUniformDiscreteDistribution(){
         alphabetSize = 256;
         p = 1.0 / 256.0;
@@ -23,16 +26,29 @@ public class ByteCompleteUniformDiscreteDistribution extends ByteUniformDiscrete
         rightType = 128;
     }
 
+    /**
+     * Gets alphabet size.
+     * @return 256
+     */
     @Override
     public final int alphabetSize(){
         return alphabetSize;
     }
 
+    /**
+     * Gets probability of type
+     * @param type
+     * @return 1.0 / 256.0
+     */
     @Override
     public final double probability(byte type) {
         return p;
     }
 
+    /**
+     * Iterator over Byte Double pairs for this distribution.
+     * @return iterator
+     */
     @Override
     public Iterator<Pair<Byte, Double>> iterator() {
         return new UniformIterator();

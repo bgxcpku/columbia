@@ -5,6 +5,9 @@
 package edu.columbia.stat.wood.util;
 
 /**
+ * Class to provide static method to get a seating arrangement sampled according to
+ * the Chinese restaurant process, conditioned on the number of customers, number of tables
+ * and discount parameter.
  *
  * @author nicholasbartlett
  */
@@ -12,8 +15,21 @@ public class SeatingArranger {
 
     private static double d;
     
+    /**
+     * Random number generator used in the stochastic operations of this class.
+     */
     public static MersenneTwisterFast rng;
 
+    /**
+     * Static method to return a seating arrangement sampled from the Chinese restaurant
+     * process.  The seating arrangement is represented as an int[] where each element
+     * denotes the number of customers sitting at a unique table.  The number of tables
+     * will be equal to the length of the returned array.
+     * @param c number of customers
+     * @param t number of tables
+     * @param d discount
+     * @return seating arrangement
+     */
     public static final int[] getSeatingArrangement(int c, int t, double d) {
         int[] tsa;
         ZState state;

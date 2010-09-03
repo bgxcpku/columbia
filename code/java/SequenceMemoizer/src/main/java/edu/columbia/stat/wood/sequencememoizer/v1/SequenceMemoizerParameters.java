@@ -75,7 +75,7 @@ public class SequenceMemoizerParameters {
      * @param seed
      */
     public SequenceMemoizerParameters(int depth){
-        this(depth, -1, -1);
+        this(depth, Long.MAX_VALUE, Long.MAX_VALUE);
     }
 
     public SequenceMemoizerParameters(long maxNumberRestaurants, long maxSequenceLength){
@@ -87,6 +87,6 @@ public class SequenceMemoizerParameters {
      * infiniteDiscount = 0.5, depth = 1023, seed = 3.
      */
     public SequenceMemoizerParameters() {
-        this(1023, 3);
+        this(1023);
     }
 }

@@ -47,6 +47,19 @@ public class ByteRestaurant extends ByteMap<ByteRestaurant> implements Serializa
         count++;
     }
 
+    public void check(){
+        int c = 0, t = 0, tci = 0, tti = 1;
+        for(int i = 0; i < types.length; i++){
+            c += customersAndTables[tci];
+            t += customersAndTables[tti];
+            tci += 2;
+            tti += 2;
+        }
+
+        assert c == customers : "c = " + c + " : customers = " + customers;
+        assert t == tables : "t = " + t + " : tables = " + tables;
+    }
+
     private void writeObject(ObjectOutputStream out) throws IOException{
         out.writeObject(types);
         out.writeObject(customersAndTables);
