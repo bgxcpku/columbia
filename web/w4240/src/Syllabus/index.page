@@ -7,32 +7,32 @@ routed_title: Syllabus
 |---
 | Lecture | Slides | Chapter | Extras |
 |:-:|:-|:-|:-|:-|
-| 00 | [Introduction]() |  |
+| 00 | [Introduction](../Lectures/introduction/main.pdf) | | [Intro to Matlab](http://www.stat.columbia.edu/~fwood/w4315/Code/introduction_to_matlab/general_matlab_demo.m)<br>[my_regress.m](http://www.stat.columbia.edu/~fwood/w4315/Code/introduction_to_matlab/my_regress.m)<br>[CH01PR19.txt](http://www.stat.columbia.edu/~fwood/w4315/Code/introduction_to_matlab/CH01PR19.txt)<br>[plot_gpa_fit.m](http://www.stat.columbia.edu/~fwood/w4315/Code/introduction_to_matlab/plot_gpa_fit.m) |
 | 01 | [Bayes Nets]() | 8.1 |
 | 02 | [Conditional Independence & Markov Random Fields]() | 8.2-3 |  
 | 03 | [Inference in Graphical Models & Factor Graphs]() | 8.4 |
 | 04 | [Sum product Algorithm (Belief Propagation)]() 
-| 05 | [(Hidden) Markov Models]() | 13.1
-| 06 | [Forward backward, Viterbi, Sum product again]() | 13.2
-| 07 | [Linear dynamical systems, Kalman filter]() | 13.3
-| 08 | [Particle filtering]() 
-| 09 | [Basic sampling methods]() | 11.1
-| 10 | [Markov chain Monte Carlo]() | 11.2
-| 11 | [Gibbs sampling]() | 11.3
-| 12 | [Gaussian mixture models]() | 9.2
-| 13 | [Variational Inference]() | 10.1
-| 14 | [Variational GMM]() | 10.2
-| 15 | [Variational Linear Regression]() | 10.3
-| 16 | [Variational Logistic Regression]() | 10.6
-| 17 | [Bayesian Linear Regression]() | 
-| 18 | [Gaussian Processes]() | 6.4
-| 19 | [Neural Networks]()
-| 20 | Neural Networks
-| 21 |
-| 22 |
-| 23 |
-| 24 |
-| 25 |
-| 26 |
-| 27 |
-| 28 |
+| 05 | [K-means clustering and Gaussian Mixture Models]() | 9.1 |
+| 06 | [Expectation Maximization for GMM's]() |9.2|
+| 07 | [Generalized EM and EM for linear regression]()|9.4|
+| 08 | [Variational Inference]() | 10.1
+| 09 | [Variational GMM]() | 10.2
+| 10 | [Variational Linear Regression]() | 10.3
+| 11 | [Variational Logistic Regression]() | 10.6
+| 12 | [Basic sampling methods]() | 11.1
+| 13 | [Markov chain Monte Carlo]() | 11.2
+| 14 | [Gibbs sampling]() | 11.3
+| 15 | [Bayesian Linear Regression]() | 
+| 16 | [PCA]() | 12.1
+| 17 | [(Hidden) Markov Models]() | 13.1
+| 18 | [Forward backward, Viterbi, Sum product again]() | 13.2
+| 19 | [Linear dynamical systems, Kalman filter]() | 13.3
+| 20 | [Particle filtering]() 
+| 21 | [Gaussian Processes]() | 6.4
+| 22 | [Neural Networks]()
+| 23 | [Neural Networks Cont.]()
+| 24 | Guest Lecture, Application Talk, TBA
+| 25 | Guest Lecture, Application Talk, TBA
+| 26 | Guest Lecture, Application Talk, TBA
+| 27 | Guest Lecture, Application Talk, TBA
+| 28 | Guest Lecture, Application Talk, TBA
