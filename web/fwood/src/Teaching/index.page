@@ -1,0 +1,31 @@
+---
+in_menu: true
+sort_info: 21
+---
+## Courses
+
+[W4240 Data Mining] Data mining is the process of searching for patterns in data.  Given large amounts of data, _automated_ tools from the pattern recognition and machine learning are needed.  This course will is a project-based, computationally intensive course that will cover both computational methods for gathering and processing large amounts of data (briefly, prior programming experience required) and the theory and practice of developing and adapting machine learning and statistical models and techniques to datasets of interest to you.
+
+[W4315 Linear Regression Models] Theory and practice of regression analysis, Simple and multiple regression, including testing, estimation, and confidence procedures, modeling, regression diagnostics and plots, polynomial regression, colinearity and confounding, model selection, geometry of least squares. Extensive use of the computer to analyse data. 
+
+[W4315 Linear Regression Models]: http://www.stat.columbia.edu/~fwood/w4315/index.html
+[W4240 Data Mining]: http://www.stat.columbia.edu/~fwood/w4240/index.html
+
+--- name:sidebar
+<strong>Term:</strong>
+Fall 2010 <br>
+<strong>Course:</strong>
+W4315 <br>
+<strong>Day/Time:</strong>
+Tues and Thur 10:35am to 11:50am <br>
+<strong>Location:</strong> 
+TBA
+<br></br>
+<strong>Course:</strong>
+W4240 <br></br>
+<strong>Day/Time:</strong>
+Tues and Thur 6:10pm to 7:25pm <br></br>
+<strong>Location:</strong> 
+TBA
+
+
