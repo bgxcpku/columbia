@@ -2,9 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package edu.columbia.stat.wood.sequencememoizer.v1;
 
-import edu.columbia.stat.wood.util.MutableInt;
+import edu.columbia.stat.wood.sequencememoizer.v1.IntSequenceMemoizer.NewKey;
 import gnu.trove.set.hash.THashSet;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -13,47 +14,68 @@ import java.io.Serializable;
 import java.util.Collection;
 
 /**
- *
+ * Class which implements an int sequence as a linked list to facilitate easy
+ * deletion of the start of the sequence.
  * @author nicholasbartlett
  */
-public class ByteSeq implements Serializable {
+public class IntSequence implements Serializable {
 
     static final long serialVersionUID = 1;
-    
-    private int nodeSize, index, length;
-    private ByteSeqNode first, last;
 
-    public ByteSeq(int nodeSize) {
+    private int nodeSize, index, length;
+    private IntSeqNode first, last;
+
+    /**
+     * Constructor specifying the size of the int[] housed in each node of the linked list.
+     * @param nodeSize
+     */
+    public IntSequence(int nodeSize) {
         this.nodeSize = nodeSize;
 
-        first = new ByteSeqNode(null, null, nodeSize);
+        first = new IntSeqNode(null, null, nodeSize);
         last = first;
         index = nodeSize - 1;
         length = 0;
     }
 
+    /**
+     * Gets the node size.
+     * @return size of int[] in each node
+     */
     public int blockSize() {
         return nodeSize;
     }
 
-    public void append(byte b) {
+    /**
+     * Appends the int i to the sequence.
+     * @param i int to append
+     */
+    public void append(int i) {
 
         if (index < 0) {
-            last.next = new ByteSeqNode(last, null, nodeSize);
+            last.next = new IntSeqNode(last, null, nodeSize);
             last = last.next;
             index = nodeSize - 1;
         }
 
         length++;
-        last.byteChunk[index--] = b;
+        last.intChunk[index--] = i;
     }
 
+    /**
+     * Get total length of the sequence.
+     * @return length
+     */
     public int length() {
         return length;
     }
 
+    /**
+     * Shorten the sequence by deleting the earliest node and all the restaurant
+     * nodes in the model which point to it.
+     */
     public void shorten() {
-        for (ByteRestaurant r : first) {
+        for (IntRestaurant r : first) {
             r.removeFromTree();
         }
 
@@ -62,13 +84,27 @@ public class ByteSeq implements Serializable {
         first.previous = null;
     }
 
+    /**
+     * Get an iterator object to traverse the sequence backwards.
+     * @return iterator
+     */
     public BackwardsIterator backwardsIterator() {
         return new BackwardsIterator();
     }
 
-    public int overlap(ByteSeqNode edgeNode, int edgeIndex, int edgeLength, byte[] context, int index) {
+    /**
+     * Get the overlap between a context, starting at a specified index, and the
+     * sequence, starting at a specified index and node.
+     * @param edgeNode node
+     * @param edgeIndex index within node
+     * @param edgeLength length of edge in model, overlap must be less than or equal to this number
+     * @param context context we are comparing to
+     * @param index index into context pointing to current context location
+     * @return number of overlapping context elements
+     */
+    public int overlap(IntSeqNode edgeNode, int edgeIndex, int edgeLength, int[] context, int index) {
         int overlap = 0;
-        while (edgeNode != null && overlap < edgeLength && index > -1 && edgeNode.byteChunk[edgeIndex] == context[index]) {
+        while (edgeNode != null && overlap < edgeLength && index > -1 && edgeNode.intChunk[edgeIndex] == context[index]) {
             overlap++;
             index--;
             edgeIndex++;
@@ -85,8 +121,13 @@ public class ByteSeq implements Serializable {
         return overlap;
     }
 
-    public ByteSeqNode get(int ind){
-        ByteSeqNode node = first;
+    /**
+     * Gets a node object given its index.
+     * @param ind index
+     * @return the node object
+     */
+    public IntSeqNode get(int ind){
+        IntSeqNode node = first;
         for(int i = 0; i < ind; i++){
             node = node.next;
         }
@@ -95,7 +136,7 @@ public class ByteSeq implements Serializable {
 
     private void writeObject(ObjectOutputStream out) throws IOException {
         int nodes = 0;
-        ByteSeqNode node = first;
+        IntSeqNode node = first;
         while (node != null) {
             nodes++;
             node = node.next;
@@ -108,9 +149,9 @@ public class ByteSeq implements Serializable {
 
         node = first;
         while (node != null) {
-            THashSet<ByteRestaurant> s = new THashSet<ByteRestaurant>(node);
+            THashSet<IntRestaurant> s = new THashSet<IntRestaurant>(node);
             out.writeObject(s);
-            out.writeObject(node.byteChunk);
+            out.writeObject(node.intChunk);
 
             node = node.next;
         }
@@ -122,19 +163,19 @@ public class ByteSeq implements Serializable {
         index = in.readInt();
         length = in.readInt();
 
-        THashSet<ByteRestaurant> s = (THashSet<ByteRestaurant>) in.readObject();
+        THashSet<IntRestaurant> s = (THashSet<IntRestaurant>) in.readObject();
 
-        ByteSeqNode nextNode;
-        ByteSeqNode node = new ByteSeqNode(s);
-        node.byteChunk = (byte[]) in.readObject();
+        IntSeqNode nextNode;
+        IntSeqNode node = new IntSeqNode(s);
+        node.intChunk = (int[]) in.readObject();
         first = node;
         nodes--;
         while (nodes > 0) {
-            s = (THashSet<ByteRestaurant>) in.readObject();
-            nextNode = new ByteSeqNode(s);
+            s = (THashSet<IntRestaurant>) in.readObject();
+            nextNode = new IntSeqNode(s);
             node.next = nextNode;
             nextNode.previous = node;
-            nextNode.byteChunk = (byte[]) in.readObject();
+            nextNode.intChunk = (int[]) in.readObject();
 
             node = nextNode;
             nodes--;
@@ -142,33 +183,33 @@ public class ByteSeq implements Serializable {
         last = node;
     }
 
-    public class ByteSeqNode extends THashSet<ByteRestaurant> {
+    public class IntSeqNode extends THashSet<IntRestaurant> {
 
-        private byte[] byteChunk;
-        private ByteSeqNode previous, next;
+        private int[] intChunk;
+        private IntSeqNode previous, next;
 
-        public ByteSeqNode(ByteSeqNode previous, ByteSeqNode next, int nodeSize) {
+        public IntSeqNode(IntSeqNode previous, IntSeqNode next, int nodeSize) {
             this.previous = previous;
             this.next = next;
 
-            byteChunk = new byte[nodeSize];
+            intChunk = new int[nodeSize];
         }
 
-        public ByteSeqNode(Collection<ByteRestaurant> collection){
+        public IntSeqNode(Collection<IntRestaurant> collection){
             super(collection);
         }
 
-        public ByteSeqNode previous() {
+        public IntSeqNode previous() {
             return previous;
         }
 
-        public byte[] byteChunk() {
-            return byteChunk;
+        public int[] intChunk() {
+            return intChunk;
         }
 
         public int getIndex(){
             int ind = -1;
-            ByteSeqNode node = this;
+            IntSeqNode node = this;
             while(node != null){
                 ind++;
                 node = node.previous;
@@ -179,7 +220,7 @@ public class ByteSeq implements Serializable {
 
     public class BackwardsIterator {
 
-        public ByteSeqNode node;
+        public IntSeqNode node;
         public int ind;
 
         public BackwardsIterator() {
@@ -187,20 +228,20 @@ public class ByteSeq implements Serializable {
             ind = index + 1;
         }
 
-        public byte peek() {
+        public int peek() {
             if (ind >= nodeSize) {
                 node = node.previous;
                 ind = 0;
             }
-            return node.byteChunk[ind];
+            return node.intChunk[ind];
         }
 
-        public byte next() {
+        public int next() {
             if (ind >= nodeSize) {
                 node = node.previous;
                 ind = 0;
             }
-            return node.byteChunk[ind++];
+            return node.intChunk[ind++];
         }
 
         public boolean hasNext() {
@@ -212,15 +253,15 @@ public class ByteSeq implements Serializable {
             return node != null;
         }
 
-        public int overlap(ByteSeqNode edgeNode, int edgeIndex, int edgeLength, MutableInt newKey) {
-            ByteSeqNode ln;
+        public int overlap(IntSeqNode edgeNode, int edgeIndex, int edgeLength, NewKey newKey) {
+            IntSeqNode ln;
             int overlap, li;
 
             ln = edgeNode;
             li = edgeIndex;
 
             overlap = 0;
-            while (ln.byteChunk[li] == node.byteChunk[ind] && overlap < edgeLength) {
+            while (ln.intChunk[li] == node.intChunk[ind] && overlap < edgeLength) {
                 li++;
                 ind++;
                 overlap++;
@@ -240,9 +281,9 @@ public class ByteSeq implements Serializable {
             }
 
             if (ln != null) {
-                newKey.set((int) ln.byteChunk[li] & 0xFF);
+                newKey.set(ln.intChunk[li]);
             } else {
-                newKey.set(-1);
+                newKey.setNull();
             }
 
             return overlap;
@@ -254,7 +295,7 @@ public class ByteSeq implements Serializable {
             if (available > l) {
                 return l;
             } else {
-                ByteSeqNode n = node.previous;
+                IntSeqNode n = node.previous;
                 while (n != null) {
                     available += nodeSize;
                     if (available > l) {

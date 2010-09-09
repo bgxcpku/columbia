@@ -2,42 +2,61 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package edu.columbia.stat.wood.sequencememoizer.v1;
 
-import edu.columbia.stat.wood.util.ByteDiscreteDistribution;
+import edu.columbia.stat.wood.util.IntDiscreteDistribution;
 import edu.columbia.stat.wood.util.Pair;
 import edu.columbia.stat.wood.util.SampleWithoutReplacement;
-import gnu.trove.iterator.TByteObjectIterator;
-import gnu.trove.map.hash.TByteObjectHashMap;
+import gnu.trove.iterator.TIntObjectIterator;
+import gnu.trove.map.hash.TIntObjectHashMap;
 
 /**
- *
+ * Node used for sampling of the model.
  * @author nicholasbartlett
  */
-public class ByteSamplingNode {
-    
-    private TByteObjectHashMap<TypeSeatingArrangement> seatingArrangement;
-    private ByteSamplingNode parent;
+public class IntSamplingNode {
+
+    private TIntObjectHashMap<TypeSeatingArrangement> seatingArrangement;
+    private IntSamplingNode parent;
     private int tables, customers;
     private double discount;
-    private ByteDiscreteDistribution baseDistribution;
+    private IntDiscreteDistribution baseDistribution;
 
-    public ByteSamplingNode(ByteSamplingNode parent, double discount, ByteDiscreteDistribution baseDistribution) {
+    /**
+     * Creates an empty sampling node.
+     * @param parent parent sampling node
+     * @param discount discount
+     * @param baseDistribution sequence memoizer base distribution
+     */
+    public IntSamplingNode(IntSamplingNode parent, double discount, IntDiscreteDistribution baseDistribution) {
         this.parent = parent;
         this.discount = discount;
-        seatingArrangement = new TByteObjectHashMap<TypeSeatingArrangement>();
+        seatingArrangement = new TIntObjectHashMap<TypeSeatingArrangement>();
         tables = 0;
         customers = 0;
         this.baseDistribution = baseDistribution;
     }
 
-    public void setTypeSeatingArrangement(byte type, int[] seatingArrangement, int typeCustomers, int typeTables) {
+    /**
+     * Sets the values in the seating arrangement map.
+     * @param type
+     * @param seatingArrangement
+     * @param typeCustomers number of customers of this type
+     * @param typeTables number of tables of this type
+     */
+    public void setTypeSeatingArrangement(int type, int[] seatingArrangement, int typeCustomers, int typeTables) {
         this.seatingArrangement.put(type, new TypeSeatingArrangement(seatingArrangement, typeCustomers, typeTables));
         customers += typeCustomers;
         tables += typeTables;
     }
 
-    public double predictiveProbability(byte type) {
+    /**
+     * Gets the predictive probability of the type.
+     * @param type
+     * @return predictive probability of type
+     */
+    public double predictiveProbability(int type) {
         double p;
 
         if (parent == null) {
@@ -47,11 +66,11 @@ public class ByteSamplingNode {
         }
 
         if (customers > 0) {
-            
+
             p *= (double) tables * discount / (double) customers;
-            
+
             TypeSeatingArrangement tsa = seatingArrangement.get(type);
-            
+
             if (tsa != null) {
                 p += ((double) tsa.typeCustomers - (double) tsa.typeTables * discount) / (double) customers;
             }
@@ -60,14 +79,18 @@ public class ByteSamplingNode {
         return p;
     }
 
-    public void seat(byte type) {
+    /**
+     * Seats a customer in the sampling node.
+     * @param type customer type
+     */
+    public void seat(int type) {
         double pp;
         if(parent == null){
             pp = baseDistribution.probability(type);
         } else {
             pp = parent.predictiveProbability(type);
         }
-        
+
         TypeSeatingArrangement tsa = seatingArrangement.get(type);
 
         if (tsa.seat(pp)) {
@@ -76,11 +99,15 @@ public class ByteSamplingNode {
                 parent.seat(type);
             }
         }
-        
+
         customers++;
     }
 
-    public void unseat(byte type) {
+    /**
+     * Unseats a customer in the sampling node.
+     * @param type customer type
+     */
+    public void unseat(int type) {
         TypeSeatingArrangement tsa = seatingArrangement.get(type);
 
         assert tsa != null : "Should not be null since I'm not removing types during sampling";
@@ -95,9 +122,12 @@ public class ByteSamplingNode {
         customers--;
     }
 
+    /**
+     * Gibbs samples the seating arrangement in this sampling node.
+     */
     public void sample(){
-        Pair<byte[], int[]> randomCustomers;
-        byte[] types;
+        Pair<int[], int[]> randomCustomers;
+        int[] types;
         int[] tables;
 
         assert check();
@@ -113,7 +143,12 @@ public class ByteSamplingNode {
         assert check();
     }
 
-    public void sampleCustomer(byte type, int table){
+    /**
+     * Samples a customer from the specified table.
+     * @param type customer type
+     * @param table index of table customer is sitting at
+     */
+    public void sampleCustomer(int type, int table){
         TypeSeatingArrangement tsa;
         double tw, r, cuSum;
         int zeroIndex;
@@ -141,7 +176,7 @@ public class ByteSamplingNode {
             tw = (double) tsa.typeCustomers - (double) tsa.typeTables * discount + (double) tables * discount * baseDistribution.probability(type);
         }
 
-        r = ByteSequenceMemoizer.RNG.nextDouble();
+        r = IntSequenceMemoizer.RNG.nextDouble();
         cuSum = 0.0;
         zeroIndex = -1;
         for(int i = 0; i < tsa.sa.length; i++){
@@ -180,20 +215,24 @@ public class ByteSamplingNode {
         }
     }
 
-    public void fillRestaurant(ByteRestaurant r){
+    /**
+     * Populates a restaurant given the state of this sampling node.
+     * @param r restaurant
+     */
+    public void fillRestaurant(IntRestaurant r){
         populateCustomersAndTables(r.types, r.customersAndTables);
         r.customers = customers;
         r.tables = tables;
     }
 
-    private void populateCustomersAndTables(byte[] types, int[] customersAndTables) {
+    private void populateCustomersAndTables(int[] types, int[] customersAndTables) {
         assert customersAndTables.length == 2 * types.length;
         int tci, tti;
         TypeSeatingArrangement tsa;
 
         tci = 0;
         tti = 1;
-        for (byte type : types) {
+        for (int type : types) {
             tsa = seatingArrangement.get(type);
             customersAndTables[tci] = tsa.typeCustomers;
             customersAndTables[tti] = tsa.typeTables;
@@ -218,15 +257,15 @@ public class ByteSamplingNode {
         return c == customers && t == tables;
     }
 
-    private Pair<byte[], int[]> randomCustomersToSample() {
+    private Pair<int[], int[]> randomCustomersToSample() {
         int n, index;
-        byte[] types;
+        int[] types;
         int[] tables, randomOrder;
         TypeSeatingArrangement ts;
-        byte type;
+        int type;
 
         n = 0;
-        TByteObjectIterator<TypeSeatingArrangement> iterator = seatingArrangement.iterator();
+        TIntObjectIterator<TypeSeatingArrangement> iterator = seatingArrangement.iterator();
         while(iterator.hasNext()){
             iterator.advance();
             if(iterator.value().typeCustomers != 1){
@@ -234,9 +273,9 @@ public class ByteSamplingNode {
             }
         }
 
-        types = new byte[n];
+        types = new int[n];
         tables = new int[n];
-        randomOrder = SampleWithoutReplacement.sampleWithoutReplacement(n, ByteSequenceMemoizer.RNG);
+        randomOrder = SampleWithoutReplacement.sampleWithoutReplacement(n, IntSequenceMemoizer.RNG);
 
         n = 0;
         iterator = seatingArrangement.iterator();
@@ -258,12 +297,16 @@ public class ByteSamplingNode {
         return new Pair(types, tables);
     }
 
+    /**
+     * Debugging method.
+     * @return true.
+     */
     public boolean check() {
         int t, c;
         t = 0;
         c = 0;
 
-        TByteObjectIterator<TypeSeatingArrangement> iterator = seatingArrangement.iterator();
+        TIntObjectIterator<TypeSeatingArrangement> iterator = seatingArrangement.iterator();
         while(iterator.hasNext()){
             iterator.advance();
 
@@ -276,6 +319,7 @@ public class ByteSamplingNode {
         assert t == tables;
         return true;
     }
+
 
     private class TypeSeatingArrangement {
 
@@ -297,7 +341,7 @@ public class ByteSamplingNode {
             }
 
             double tw = (double) typeCustomers - (double) typeTables * discount + (double) tables * discount * pp;
-            double r = ByteSequenceMemoizer.RNG.nextDouble();
+            double r = IntSequenceMemoizer.RNG.nextDouble();
             double cuSum = 0.0;
 
             assert typeTables == sa.length;
@@ -332,7 +376,7 @@ public class ByteSamplingNode {
                 return true;
             }
 
-            double r = ByteSequenceMemoizer.RNG.nextDouble();
+            double r = IntSequenceMemoizer.RNG.nextDouble();
             double cuSum = 0.0;
             for (int i = 0; i < typeTables; i++) {
                 cuSum += ((double) sa[i]) / (double) typeCustomers;

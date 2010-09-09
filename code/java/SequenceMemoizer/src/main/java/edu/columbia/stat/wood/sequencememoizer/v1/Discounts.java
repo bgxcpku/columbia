@@ -54,7 +54,7 @@ public class Discounts implements Serializable{
     /**
      * Sets discount for a given index.  Index must be in [0, length()).
      * @param index index of desired discount
-     * @param value value to set chosed discount
+     * @param value value to set chosen discount
      */
     public void set(int index, double value){
         if(index >= discounts.length){
@@ -82,7 +82,7 @@ public class Discounts implements Serializable{
     }
 
     /**
-     * Gets discount given a the specified parent and current depth.
+     * Gets discount given the specified parent and current depth.
      *
      * @param parentDepth parent depth
      * @param depth current depth
@@ -124,6 +124,9 @@ public class Discounts implements Serializable{
         return discounts.length;
     }
 
+    /**
+     * Sets all the values of the discount gradient vector to 0.0.
+     */
     public void clearGradient(){
         for(int i = 0; i < discountGradient.length; i++){
             discountGradient[i] = 0.0;
@@ -225,7 +228,7 @@ public class Discounts implements Serializable{
     }
 
     /**
-     * Conveneince method for printing discount values.
+     * Method for printing discount values.
      */
     public void print(){
         System.out.print("[" + discounts[0]);

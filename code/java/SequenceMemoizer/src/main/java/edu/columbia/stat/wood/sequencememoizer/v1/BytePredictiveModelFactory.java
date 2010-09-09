@@ -11,14 +11,16 @@ import java.io.ObjectInputStream;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.zip.GZIPInputStream;
 
 /**
- *
+ * Implements the predictive byte model factory.
  * @author nicholasbartlett
  */
 public class BytePredictiveModelFactory extends edu.columbia.stat.wood.sequencememoizer.BytePredictiveModelFactory {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BytePredictiveModel get(int depth, long maxNumberRestaurants, long maxSequenceLength, URL url) {
         if (url == null) {

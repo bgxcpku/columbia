@@ -2,12 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package edu.columbia.stat.wood.sequencememoizer.v1;
 
-
-import edu.columbia.stat.wood.sequencememoizer.v1.ByteSeq.ByteSeqNode;
-import edu.columbia.stat.wood.sequencememoizer.v1.ByteSequenceMemoizer.SeatReturn;
-import edu.columbia.stat.wood.util.ByteMap;
+import edu.columbia.stat.wood.sequencememoizer.v1.IntSequence.IntSeqNode;
+import edu.columbia.stat.wood.sequencememoizer.v1.IntSequenceMemoizer.SeatReturn;
+import edu.columbia.stat.wood.util.IntMap;
 import edu.columbia.stat.wood.util.SeatingArranger;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -15,22 +15,65 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 /**
- *
+ * Node object used in int sequence memoizer.
  * @author nicholasbartlett
  */
-public class ByteRestaurant extends ByteMap<ByteRestaurant> implements Serializable{
+public class IntRestaurant extends IntMap<IntRestaurant> implements Serializable{
 
     static final long serialVersionUID = 1;
 
-    public byte[] types;
-    public int[] customersAndTables;
-    public int customers, tables, edgeStart, edgeLength, numLeafNodesAtOrBelow;
-    public ByteRestaurant parent;
-    public ByteSeqNode edgeNode;
+    /**
+     * Types observed this node.
+     */
+    public int[] types;
 
+    /**
+     * Counts of number of types and the number of tables (using the Chinese Restaurant metaphor)
+     * at which they are sitting.
+     */
+    public int[] customersAndTables;
+
+    /**
+     * Total number of observations seen in this node.
+     */
+    public int customers;
+    
+    /**
+     * Total number of tables in this node.
+     */
+    public int tables;
+
+    /**
+     * Offset between edge node start and the start of the edge label.
+     */
+    public int edgeStart;
+
+    /**
+     * Length of the edge.
+     */
+    public int edgeLength;
+
+    /**
+     * Number of leaf nodes below and including this node.
+     */
+    public int numLeafNodesAtOrBelow;
+
+    /**
+     * Parent node.
+     */
+    public IntRestaurant parent;
+
+    /**
+     * Node of linked list where this edge starts.
+     */
+    public IntSeqNode edgeNode;
+
+    /**
+     * Static count of total instantiated restaurants.
+     */
     public static int count = 0;
 
-    public ByteRestaurant(ByteRestaurant parent, int edgeStart, int edgeLength, ByteSeqNode edgeNode, int numLeafNodesAtOrBelow) {
+    public IntRestaurant(IntRestaurant parent, int edgeStart,  int edgeLength, IntSeqNode edgeNode,  int numLeafNodesAtOrBelow) {
         this.parent = parent;
         this.edgeStart = edgeStart;
         this.edgeLength = edgeLength;
@@ -45,14 +88,14 @@ public class ByteRestaurant extends ByteMap<ByteRestaurant> implements Serializa
         count++;
     }
 
-    public void setTableConfig(byte[] types, int[] customersAndTables, int customers, int tables) {
+    public void setTableConfig(int[] types, int[] customersAndTables, int customers, int tables) {
         this.types = types;
         this.customersAndTables = customersAndTables;
         this.customers = customers;
         this.tables = tables;
     }
 
-    public double getPP(byte type, double p, double discount, SeatReturn sr) {
+    public double getPP(int type, double p, double discount, SeatReturn sr) {
         int index, tc, tt, tci, tti;
 
         index = getIndex(type);
@@ -70,12 +113,12 @@ public class ByteRestaurant extends ByteMap<ByteRestaurant> implements Serializa
 
         return p * (double) customers / ((double) tables * discount);
     }
-
-    public double seat(byte type, double p, double discount, SeatReturn sr) {
+    
+    public double seat(int type, double p, double discount, SeatReturn sr) {
         if (customers == 0) {
             sr.set(true, 0, customers, tables);
 
-            types = new byte[]{type};
+            types = new int[]{type};
             customersAndTables = new int[]{1, 1};
             customers++;
             tables++;
@@ -114,7 +157,7 @@ public class ByteRestaurant extends ByteMap<ByteRestaurant> implements Serializa
 
                 denominator = numerator + (double) tables * discount * p;
 
-                if (numerator / denominator > ByteSequenceMemoizer.RNG.nextDouble()) {
+                if (numerator / denominator > IntSequenceMemoizer.RNG.nextDouble()) {
                     sr.set(false, customersAndTables[tti], customers, tables);
 
                     customersAndTables[tci]++;
@@ -133,13 +176,13 @@ public class ByteRestaurant extends ByteMap<ByteRestaurant> implements Serializa
         return p;
     }
 
-    private void insertNewType(byte type, int index) {
-        byte[] newTypes;
+    private void insertNewType(int type, int index) {
+        int[] newTypes;
         int[] newCustomersAndTables;
         int l;
 
         l = types.length;
-        newTypes = new byte[l + 1];
+        newTypes = new int[l + 1];
         newCustomersAndTables = new int[2 * l + 2];
 
         System.arraycopy(types, 0, newTypes, 0, index);
@@ -156,36 +199,17 @@ public class ByteRestaurant extends ByteMap<ByteRestaurant> implements Serializa
         customersAndTables = newCustomersAndTables;
     }
 
-    public int getIndex(byte type) {
-        int l, r, midPoint;
-
-        assert type <= types[types.length - 1];
-
-        l = 0;
-        r = types.length - 1;
-
-        while (l < r) {
-            midPoint = (l + r) / 2;
-            if (type > types[midPoint]) {
-                l = midPoint + 1;
-            } else {
-                r = midPoint;
-            }
-        }
-        return l;
-    }
-
-    public ByteRestaurant fragmentForInsertion(ByteRestaurant irParent, int irEdgeStart, int irEdgeLength, ByteSeqNode irEdgeNode, double discount, double irDiscount) {
+    public IntRestaurant fragmentForInsertion(IntRestaurant irParent, int irEdgeStart, int irEdgeLength, IntSeqNode irEdgeNode, double discount, double irDiscount) {
         double fragDiscount, fragConcentration, numerator, denominator;
-        ByteRestaurant intermediateRestaurant;
-        byte[] irTypes;
+        IntRestaurant intermediateRestaurant;
+        int[] irTypes;
         int[] irCustomersAndTables, tsa;
         int l, tci, tti, fc, ft, tc, tt, irc, irt;
 
         customers = 0;
         tables = 0;
 
-        intermediateRestaurant = new ByteRestaurant(irParent, irEdgeStart, irEdgeLength, irEdgeNode, numLeafNodesAtOrBelow);
+        intermediateRestaurant = new IntRestaurant(irParent, irEdgeStart, irEdgeLength, irEdgeNode, numLeafNodesAtOrBelow);
 
         if (types == null) {
             edgeLength -= irEdgeLength;
@@ -197,7 +221,7 @@ public class ByteRestaurant extends ByteMap<ByteRestaurant> implements Serializa
         fragConcentration = -1 * discount;
 
         l = types.length;
-        irTypes = new byte[l];
+        irTypes = new int[l];
         System.arraycopy(types, 0, irTypes, 0, l);
         irCustomersAndTables = new int[2 * l];
 
@@ -221,7 +245,7 @@ public class ByteRestaurant extends ByteMap<ByteRestaurant> implements Serializa
                 numerator = 1.0 - fragDiscount;
                 denominator = 1.0 + fragConcentration;
                 for (int customer = 1; customer < tableSize; customer++) {
-                    if (numerator / denominator > ByteSequenceMemoizer.RNG.nextDouble()) {
+                    if (numerator / denominator > IntSequenceMemoizer.RNG.nextDouble()) {
                         fc++;
                         numerator += 1.0;
                         denominator += 1.0;
@@ -254,23 +278,23 @@ public class ByteRestaurant extends ByteMap<ByteRestaurant> implements Serializa
 
         return intermediateRestaurant;
     }
-    
-    public ByteRestaurant fragmentForPrediction(ByteRestaurant irParent, double discount, double irDiscount){
-        ByteRestaurant intermediateRestaurant;
+
+    public IntRestaurant fragmentForPrediction(IntRestaurant irParent, double discount, double irDiscount){
+        IntRestaurant intermediateRestaurant;
         double fragDiscount, fragConcentration, numerator, denominator;
-        byte[] irTypes;
+        int[] irTypes;
         int[] irCustomersAndTables, tsa;
         int l, irc, irt, tci, tti, tc, tt, fc, ft;
 
-        intermediateRestaurant = new ByteRestaurant(irParent, 0, 0, null, 0);
+        intermediateRestaurant = new IntRestaurant(irParent, 0, 0, null, 0);
         count--;
-        
+
         if(types != null){
             fragDiscount = discount / irDiscount;
             fragConcentration = -1 * discount;
 
             l = types.length;
-            irTypes = new byte[l];
+            irTypes = new int[l];
             System.arraycopy(types, 0, irTypes, 0, l);
             irCustomersAndTables = new int[2 * l];
 
@@ -293,7 +317,7 @@ public class ByteRestaurant extends ByteMap<ByteRestaurant> implements Serializa
                     numerator = 1.0 - fragDiscount;
                     denominator = 1.0 + fragConcentration;
                     for (int customer = 1; customer < tableSize; customer++) {
-                        if (numerator / denominator > ByteSequenceMemoizer.RNG.nextDouble()) {
+                        if (numerator / denominator > IntSequenceMemoizer.RNG.nextDouble()) {
                             fc++;
                             numerator += 1.0;
                             denominator += 1.0;
@@ -318,8 +342,27 @@ public class ByteRestaurant extends ByteMap<ByteRestaurant> implements Serializa
         return intermediateRestaurant;
     }
 
+    public int getIndex(int type) {
+        int l, r, midPoint;
+
+        assert type <= types[types.length - 1];
+
+        l = 0;
+        r = types.length - 1;
+
+        while (l < r) {
+            midPoint = (l + r) / 2;
+            if (type > types[midPoint]) {
+                l = midPoint + 1;
+            } else {
+                r = midPoint;
+            }
+        }
+        return l;
+    }
+
     public final void removeFromTree(){
-        parent.remove(edgeNode.byteChunk()[edgeStart]);
+        parent.remove(edgeNode.intChunk()[edgeStart]);
         if(!parent.isEmpty()){
             parent.decrementLeafNodeCount();
         }
@@ -328,7 +371,7 @@ public class ByteRestaurant extends ByteMap<ByteRestaurant> implements Serializa
 
     public final void removeFromTreeAndEdgeNode(){
         edgeNode.remove(this);
-        parent.remove(edgeNode.byteChunk()[edgeStart]);
+        parent.remove(edgeNode.intChunk()[edgeStart]);
         if(!parent.isEmpty()){
             parent.decrementLeafNodeCount();
         }
@@ -357,13 +400,13 @@ public class ByteRestaurant extends ByteMap<ByteRestaurant> implements Serializa
     }
 
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException{
-        types = (byte[]) in.readObject();
+        types = (int[]) in.readObject();
         customersAndTables = (int[]) in.readObject();
         customers = in.readInt();
         tables = in.readInt();
         edgeStart = in.readInt();
         edgeLength = in.readInt();
         numLeafNodesAtOrBelow = in.readInt();
-        parent = (ByteRestaurant) in.readObject();
+        parent = (IntRestaurant) in.readObject();
     }
 }
