@@ -22,15 +22,9 @@ public interface ByteDiscreteDistribution {
     public double probability(byte type);
 
     /**
-     * Gets the alphabet size.  Since bytes only take values from -128 - 127, this is
-     * not a restriction.
-     * @return alphabet size
-     */
-    //public int alphabetSize();
-
-    /**
      * Gets an iterator over Byte Double pairs such that the Double value is the
-     * probability of the Byte value in the distribution.
+     * probability of the Byte value in the distribution.  Should iterate over all
+     * Byte values which have probability mass assigned to them in this distribution.
      * @return iterator
      */
     public Iterator<Pair<Byte, Double>> iterator();

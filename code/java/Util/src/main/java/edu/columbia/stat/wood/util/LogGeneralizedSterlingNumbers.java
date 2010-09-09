@@ -8,7 +8,9 @@ package edu.columbia.stat.wood.util;
 import java.util.HashMap;
 
 /**
- * Class to provide method to get the log of a generalized sterling number.
+ * Class to provide method to get the log of a generalized sterling number.  The
+ * methods are not static because the function is memoized and therefore a unique
+ * object must be created for different discount values.
  * @author nicholasbartlett
  */
 public class LogGeneralizedSterlingNumbers {
@@ -48,6 +50,7 @@ public class LogGeneralizedSterlingNumbers {
                 answer = LogAdd.logAdd(get(c-1,t-1), Math.log(c - 1 - d * t) + get(c-1, t));
                 lookup.put(key,answer);
             }
+            
             return answer;
         }
     }

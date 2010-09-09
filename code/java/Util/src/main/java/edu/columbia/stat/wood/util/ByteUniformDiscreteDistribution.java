@@ -7,6 +7,7 @@ package edu.columbia.stat.wood.util;
 
 import java.io.Serializable;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * Uniform distribution over the range [leftType, rightType)
@@ -60,10 +61,7 @@ public class ByteUniformDiscreteDistribution implements ByteDiscreteDistribution
      * @return probability of type
      */
     public double probability(byte type) {
-        int t;
-
-        t = (int) type;
-        if(t >= leftType && t < rightType){
+        if(type >= leftType && type < rightType){
             return p;
         } else {
             return 0.0;
@@ -93,7 +91,7 @@ public class ByteUniformDiscreteDistribution implements ByteDiscreteDistribution
                 index++;
                 return pr;
             } else {
-                throw new RuntimeException("No next element, you have reached the end");
+                throw new NoSuchElementException("No next element, you have reached the end");
             }
         }
 

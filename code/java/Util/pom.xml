@@ -24,7 +24,7 @@
          <dependency>
             <groupId>gnu</groupId>
             <artifactId>trove</artifactId>
-            <version>1.0</version>
+            <version>3.0.0a3</version>
              <type>jar</type>
          </dependency>
     </dependencies>

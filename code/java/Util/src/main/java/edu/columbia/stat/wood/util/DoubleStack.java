@@ -39,7 +39,7 @@ public class DoubleStack implements Serializable{
 
     /**
      * Gets the next element but leaves it on the stack.  This operation will
-     * fail if .hasNext() = false.
+     * fail if !hasNext().
      * @return next double
      */
     public double peak(){
@@ -72,8 +72,8 @@ public class DoubleStack implements Serializable{
     }
 
     /**
-     * Gets the index of the underlying object.  This is the index of the double
-     * that would be returned by calling .pop() or .peak();
+     * Gets the index for the underlying array of the top of the stack. This is the index of the double
+     * that would be returned by calling pop() or peak();
      * @return index
      */
     public int index(){
@@ -81,9 +81,9 @@ public class DoubleStack implements Serializable{
     }
 
     /**
-     * Allows you to arbitrarily set the index.  Since .pop() does not actually
-     * remove elements from the stack, this is useful if you want to traverse the
-     * stack multiple times.
+     * Allows you to arbitrarily set the index.  Since pop() does not actually
+     * remove elements from the stack, it only changes the index, this is useful
+     * if you want to traverse the stack multiple times.
      * @param index value to set underlying index to
      */
     public void setIndex(int index){

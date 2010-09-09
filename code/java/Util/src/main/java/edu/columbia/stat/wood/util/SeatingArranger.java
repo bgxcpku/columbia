@@ -30,6 +30,7 @@ public class SeatingArranger {
      * @param d discount
      * @return seating arrangement
      */
+    @SuppressWarnings("FinalStaticMethod")
     public static final int[] getSeatingArrangement(int c, int t, double d) {
         int[] tsa;
         ZState state;
@@ -81,7 +82,7 @@ public class SeatingArranger {
         state = new ZState(min, max);
 
         for (int i = min; i <= max; i++) {
-            state.set(logAdd(parentState.get(i) + Math.log(((double) level - d * (double) i)), parentState.get(i + 1)), i);
+            state.set(LogAdd.logAdd(parentState.get(i) + Math.log(((double) level - d * (double) i)), parentState.get(i + 1)), i);
         }
 
         previousZ = getSeatingArrangement(tsa, level - 1, min, max, state);
@@ -103,24 +104,6 @@ public class SeatingArranger {
             }
         }
         return z;
-    }
-
-    //assumes what you have is a = log x and b = log y and what you want is log (x + y) = log(c(x/c + y/c)) = log c + log(x/c + y/c)
-    private static double logAdd(double a, double b) {
-        double max, logAdd;
-
-        if (Double.isInfinite(-1.0 * a) && Double.isInfinite(-1.0 * b)) {
-            return Double.NEGATIVE_INFINITY;
-        }
-
-        max = (a > b) ? a : b;
-
-        a -= max;
-        b -= max;
-
-        logAdd = max + Math.log(Math.exp(a) + Math.exp(b));
-
-        return logAdd;
     }
 
     private static class ZState {
@@ -181,18 +164,6 @@ public class SeatingArranger {
                 } else {
                     return min + ind + 1;
                 }
-            }
-        }
-
-        void normalize() {
-            double sum;
-
-            sum = 0.0;
-            for (double pp : p) {
-                sum += pp;
-            }
-            for (int i = 0; i < l; i++) {
-                p[i] /= sum;
             }
         }
     }

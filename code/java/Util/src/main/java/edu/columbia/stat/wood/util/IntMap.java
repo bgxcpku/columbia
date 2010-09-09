@@ -8,7 +8,7 @@ package edu.columbia.stat.wood.util;
 import java.io.Serializable;
 
 /**
- *
+ * Array based map for native int keys.
  * @author nicholasbartlett
  */
 public class IntMap<E> implements Serializable{
@@ -41,7 +41,7 @@ public class IntMap<E> implements Serializable{
     /**
      * Gets the value associated with the key.
      * @param key
-     * @return value associated with key, null if no value is found.
+     * @return value associated with key, null if no value is found
      */
     public E get(int key){
         if(keys == null || key > keys[keys.length - 1]){
@@ -63,7 +63,7 @@ public class IntMap<E> implements Serializable{
      * Associates a value to a key in the map.
      * @param key
      * @param value
-     * @return Object previously assigned to key or null if no value was previously assigned.
+     * @return Object previously assigned to key or null if no value was previously assigned
      */
     public E put(int key, E value){
         if(keys == null){
@@ -128,7 +128,7 @@ public class IntMap<E> implements Serializable{
      * Removes a key and its associated value from the map.
      * @param key key to remove
      */
-    public void remove(byte key){
+    public void remove(int key){
         if(keys == null){
             throw new IllegalArgumentException("Key to remove is not in map");
         } else if (keys.length == 1){
@@ -195,7 +195,7 @@ public class IntMap<E> implements Serializable{
     }
 
     /**
-     * Gets values mapped to.
+     * Gets values in the map.
      * @return Object array of values.
      */
     public Object[] values(){

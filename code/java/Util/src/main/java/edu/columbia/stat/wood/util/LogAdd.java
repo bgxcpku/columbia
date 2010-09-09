@@ -13,12 +13,13 @@ package edu.columbia.stat.wood.util;
 public class LogAdd {
 
     /**
-     * Method to get the log(A + B) which is useful when given log(A) and log(B).
+     * Method to get the log(A + B) when provided log(A) and log(B).
      *
      * @param logA log(A)
      * @param logB log(B)
      * @return log(A + B)
      */
+    @SuppressWarnings("FinalStaticMethod")
     public final static double logAdd(double logA, double logB){
         if(Double.isInfinite(logA) && Double.isInfinite(logB) && logA < 0 && logB < 0){
             return Double.NEGATIVE_INFINITY;

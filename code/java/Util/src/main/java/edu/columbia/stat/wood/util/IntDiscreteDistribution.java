@@ -8,7 +8,7 @@ package edu.columbia.stat.wood.util;
 import java.util.Iterator;
 
 /**
- *
+ * Int discrete distribution interface.
  * @author nicholasbartlett
  */
 public interface IntDiscreteDistribution {
@@ -21,10 +21,12 @@ public interface IntDiscreteDistribution {
     public double probability(int type);
 
     /**
-     * Gets an iterator over Byte Double pairs such that the Double value is the
-     * probability of the Byte value in the distribution.
+     * Gets an iterator over Integer Double pairs such that the Double value is the
+     * probability of the Integer value in the distribution.  The assumption is that
+     * the iterator will iterate over the unique types in this distribution which
+     * are given probability mass.  If we sum the Double values over all the elements
+     * in the iterator the result should be 1.0.
      * @return iterator
      */
     public Iterator<Pair<Integer, Double>> iterator();
-    
 }

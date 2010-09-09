@@ -6,6 +6,7 @@
 package edu.columbia.stat.wood.util;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * Class to implement uniform distribution over all bytes.
@@ -69,7 +70,7 @@ public class ByteCompleteUniformDiscreteDistribution extends ByteUniformDiscrete
                 index++;
                 return pr;
             } else {
-                throw new RuntimeException("No next element, you have reached the end");
+                throw new NoSuchElementException("No next element, you have reached the end");
             }
         }
 

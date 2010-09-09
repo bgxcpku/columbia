@@ -64,7 +64,7 @@ public class ByteMap<E> implements Serializable{
      * Associates a value to a key in the map.
      * @param key
      * @param value
-     * @return Object previously assigned to key or null if no value was previously assigned.
+     * @return E previously assigned to key or null if no value was previously assigned.
      */
     public E put(byte key, E value){
         if(keys == null){
@@ -196,7 +196,7 @@ public class ByteMap<E> implements Serializable{
     }
 
     /**
-     * Gets values mapped to.
+     * Gets values in this map.
      * @return Object array of values.
      */
     public Object[] values(){

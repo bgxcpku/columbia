@@ -24,7 +24,6 @@ public class Pair<F,S> {
 
     /**
      * Gets the first object.
-     *
      * @return first object
      */
     public F first(){
@@ -33,7 +32,6 @@ public class Pair<F,S> {
 
     /**
      * Gets the second object.
-     *
      * @return second object
      */
     public S second(){
@@ -59,7 +57,7 @@ public class Pair<F,S> {
     }
 
     /**
-     * Overrides hashcode method to make both objects utilized in the hashcode creation
+     * Overrides hashcode method to make both objects utilized in the hashcode creation.
      * @return hashcode
      */
     @Override

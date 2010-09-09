@@ -37,7 +37,50 @@ public class MutableInt implements Serializable{
      * Gets the int value of this object.
      * @return int value of this object
      */
-    public int intValue(){
+    public int value(){
         return i;
+    }
+
+    /**
+     * Increments the underlying value by 1.
+     */
+    public void increment(){
+        i++;
+    }
+
+    /**
+     * Decrements the underlying value by 1.
+     */
+    public void decrement(){
+        i--;
+    }
+
+    /**
+     * Overrides hash code to only reflect underlying int value.
+     * @return hash code
+     */
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 23 * hash + this.i;
+        return hash;
+    }
+
+    /**
+     * Overrides the equals() method to only reflect the underlying int value.
+     * @param o object to compare to
+     * @return true if equal, else false
+     */
+    @Override
+    public boolean equals(Object o){
+        if(o == null){
+            return false;
+        } else if(o.getClass() != this.getClass()){
+            return false;
+        } else if(((MutableInt) o).value() == i){
+            return true;
+        } else {
+            return false;
+        }
     }
 }
