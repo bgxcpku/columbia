@@ -1,4 +1,4 @@
-function [loc_pot_minus_1, loc_pot_plus_1] = local_potential(clean_img, noisy_img, row, column, h, beta, eta)
+function [choice loc_pot_minus_1, loc_pot_plus_1] = local_potential(clean_img, noisy_img, row, column, h, beta, eta)
 
 loc_energy_minus_1 = h * (-1) - eta * (-1) * noisy_img(row,column);
 loc_energy_plus_1 = h - eta * noisy_img(row, column);
@@ -25,3 +25,10 @@ end
 
 loc_pot_minus_1 = exp(-loc_energy_minus_1);
 loc_pot_plus_1 = exp(-loc_energy_plus_1);
+
+if loc_pot_minus_1 > loc_pot_plus_1
+    choice = -1;
+else 
+    choice = 1;
+end
+    

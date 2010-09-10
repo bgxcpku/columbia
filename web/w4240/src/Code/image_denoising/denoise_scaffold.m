@@ -6,9 +6,7 @@ imagesc(img)
 figure(2)
 imagesc(noisy_img)
 
-h = ?;
-beta = ?;
-eta = ?;
+[h beta eta] = get_parameters_student();
 
 clean_img = noisy_img;
 
