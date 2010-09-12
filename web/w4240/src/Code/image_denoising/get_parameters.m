@@ -10,4 +10,4 @@ function[h, beta, eta] = get_parameters()
 
 h = 0.2;
 beta = 1;
-eta = 1;
+eta = 1.5;

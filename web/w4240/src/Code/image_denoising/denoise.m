@@ -25,4 +25,6 @@ for l = 1:loops
     drawnow
 end
 
+disp(['the energy is ' num2str(total_energy(clean_img, noisy_img, h, beta, eta))])
+
 n_pixels_wrong = num_pixels_wrong(img, clean_img);

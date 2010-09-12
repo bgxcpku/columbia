@@ -1,4 +1,10 @@
-% image denoising scaffold code for homework, Iterated Conditional Means
+function[n_pixels_wrong] = denoise_student()
+%Function which you can run to test your code. To execute this code you
+%will first need to fill out the functions get_parameters_student and
+%local_potential_student.  It will be necessary for you to undersand this
+%code in order to know how to fill out those functions.
+%
+% @return n_pixels_wrong : the number of wrongly classified pixels
 
 load data.mat
 figure(1)
@@ -12,18 +18,12 @@ clean_img = noisy_img;
 
 figure(3)
 
-max_loops = 10;
+loops = 5;
 
-for l = 1:max_loops
-    for r = 2:(size(noisy_img,1) -1)
-        for c = 2:(size(noisy_img,2) -1)
-            [loc_pot_minus_1, loc_pot_plus_1] = local_potential_student(clean_img, noisy_img,row,col,h,beta,eta);
-            
-            if loc_pot_minus_1 >= loc_pot_plus_1
-                clean_img(r,c) = ?;
-            else
-                clean_img(r,c) = ?;
-            end
+for l = 1:loops
+    for row = 1 : size(noisy_img,1)
+        for col = 1 : size(noisy_img,2)
+            clean_img(row, col) = local_potential_student(clean_img, noisy_img,row,col,h,beta,eta);    
         end
     end
     disp(['loop = ' num2str(l)]);
@@ -31,4 +31,4 @@ for l = 1:max_loops
     drawnow
 end
 
-disp([ 'Restoration: pixels wrong : ' num2str(num_pixels_wrong(img, clean_img)) '/' num2str(prod(size(img)))]);
+n_pixels_wrong = num_pixels_wrong(img, clean_img);
