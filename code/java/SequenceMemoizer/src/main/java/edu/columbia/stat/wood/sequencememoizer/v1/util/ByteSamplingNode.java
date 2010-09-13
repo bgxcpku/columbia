@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.columbia.stat.wood.sequencememoizer.v1;
+package edu.columbia.stat.wood.sequencememoizer.v1.util;
 
+import edu.columbia.stat.wood.sequencememoizer.v1.ByteSequenceMemoizer;
 import edu.columbia.stat.wood.util.ByteDiscreteDistribution;
 import edu.columbia.stat.wood.util.Pair;
 import edu.columbia.stat.wood.util.SampleWithoutReplacement;

@@ -3,9 +3,10 @@
  * and open the template in the editor.
  */
 
-package edu.columbia.stat.wood.sequencememoizer.v1;
+package edu.columbia.stat.wood.sequencememoizer.v1.util;
 
-import edu.columbia.stat.wood.sequencememoizer.v1.IntSequence.IntSeqNode;
+import edu.columbia.stat.wood.sequencememoizer.v1.IntSequenceMemoizer;
+import edu.columbia.stat.wood.sequencememoizer.v1.util.IntSequence.IntSeqNode;
 import edu.columbia.stat.wood.sequencememoizer.v1.IntSequenceMemoizer.SeatReturn;
 import edu.columbia.stat.wood.util.IntMap;
 import edu.columbia.stat.wood.util.SeatingArranger;

@@ -5,8 +5,12 @@
 
 package edu.columbia.stat.wood.sequencememoizer.v1;
 
-import edu.columbia.stat.wood.sequencememoizer.v1.IntSequence.BackwardsIterator;
-import edu.columbia.stat.wood.sequencememoizer.v1.IntSequence.IntSeqNode;
+import edu.columbia.stat.wood.sequencememoizer.v1.util.Discounts;
+import edu.columbia.stat.wood.sequencememoizer.v1.util.IntRestaurant;
+import edu.columbia.stat.wood.sequencememoizer.v1.util.IntSamplingNode;
+import edu.columbia.stat.wood.sequencememoizer.v1.util.IntSequence;
+import edu.columbia.stat.wood.sequencememoizer.v1.util.IntSequence.BackwardsIterator;
+import edu.columbia.stat.wood.sequencememoizer.v1.util.IntSequence.IntSeqNode;
 import edu.columbia.stat.wood.util.BrownCorpusReader;
 import edu.columbia.stat.wood.util.BrownDictionaryReader;
 import edu.columbia.stat.wood.util.DoubleStack;

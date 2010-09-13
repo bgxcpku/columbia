@@ -5,8 +5,12 @@
 package edu.columbia.stat.wood.sequencememoizer.v1;
 
 import edu.columbia.stat.wood.sequencememoizer.BytePredictiveModel;
-import edu.columbia.stat.wood.sequencememoizer.v1.ByteSeq.BackwardsIterator;
-import edu.columbia.stat.wood.sequencememoizer.v1.ByteSeq.ByteSeqNode;
+import edu.columbia.stat.wood.sequencememoizer.v1.util.ByteRestaurant;
+import edu.columbia.stat.wood.sequencememoizer.v1.util.ByteSamplingNode;
+import edu.columbia.stat.wood.sequencememoizer.v1.util.ByteSeq;
+import edu.columbia.stat.wood.sequencememoizer.v1.util.ByteSeq.BackwardsIterator;
+import edu.columbia.stat.wood.sequencememoizer.v1.util.ByteSeq.ByteSeqNode;
+import edu.columbia.stat.wood.sequencememoizer.v1.util.Discounts;
 import edu.columbia.stat.wood.util.ByteArrayFiniteDiscreteDistribution;
 import edu.columbia.stat.wood.util.ByteDiscreteDistribution;
 import edu.columbia.stat.wood.util.DoubleStack;
@@ -16,10 +20,6 @@ import edu.columbia.stat.wood.util.MersenneTwisterFast;
 import edu.columbia.stat.wood.util.MutableInt;
 import edu.columbia.stat.wood.util.Pair;
 import edu.columbia.stat.wood.util.SeatingArranger;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;

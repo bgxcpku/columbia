@@ -3,8 +3,9 @@
  * and open the template in the editor.
  */
 
-package edu.columbia.stat.wood.sequencememoizer.v1;
+package edu.columbia.stat.wood.sequencememoizer.v1.util;
 
+import edu.columbia.stat.wood.sequencememoizer.v1.IntSequenceMemoizer;
 import edu.columbia.stat.wood.util.IntDiscreteDistribution;
 import edu.columbia.stat.wood.util.Pair;
 import edu.columbia.stat.wood.util.SampleWithoutReplacement;

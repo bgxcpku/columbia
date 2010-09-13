@@ -36,13 +36,20 @@
         <dependency>
             <groupId>gnu</groupId>
             <artifactId>trove</artifactId>
-            <version>1.0</version>
+            <version>3.0.0a3</version>
              <type>jar</type>
          </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <configuration>
+                    <excludePackageNames>edu.columbia.stat.wood.sequencememoizer.v1.util</excludePackageNames>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

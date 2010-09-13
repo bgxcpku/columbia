@@ -2,10 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.columbia.stat.wood.sequencememoizer.v1;
+package edu.columbia.stat.wood.sequencememoizer.v1.util;
 
 
-import edu.columbia.stat.wood.sequencememoizer.v1.ByteSeq.ByteSeqNode;
+import edu.columbia.stat.wood.sequencememoizer.v1.ByteSequenceMemoizer;
+import edu.columbia.stat.wood.sequencememoizer.v1.util.ByteSeq.ByteSeqNode;
 import edu.columbia.stat.wood.sequencememoizer.v1.ByteSequenceMemoizer.SeatReturn;
 import edu.columbia.stat.wood.util.ByteMap;
 import edu.columbia.stat.wood.util.SeatingArranger;

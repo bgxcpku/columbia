@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package edu.columbia.stat.wood.sequencememoizer.v1;
+package edu.columbia.stat.wood.sequencememoizer.v1.util;
 
 import edu.columbia.stat.wood.sequencememoizer.v1.IntSequenceMemoizer.NewKey;
 import gnu.trove.set.hash.THashSet;
