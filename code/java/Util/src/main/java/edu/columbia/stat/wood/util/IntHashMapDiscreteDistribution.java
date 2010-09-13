@@ -7,6 +7,7 @@ package edu.columbia.stat.wood.util;
 
 import gnu.trove.iterator.TIntObjectIterator;
 import gnu.trove.map.hash.TIntObjectHashMap;
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -14,7 +15,9 @@ import java.util.NoSuchElementException;
  * Implementation of a discrete distribution over an integer valued state space.
  * @author nicholasbartlett
  */
-public class IntHashMapDiscreteDistribution implements IntDiscreteDistribution {
+public class IntHashMapDiscreteDistribution implements IntDiscreteDistribution, Serializable {
+
+    static final long serialVersionUID = 1;
 
     private TIntObjectHashMap<MutableDouble> mostOfPDF;
     private IntDiscreteDistribution baseDistribution;
