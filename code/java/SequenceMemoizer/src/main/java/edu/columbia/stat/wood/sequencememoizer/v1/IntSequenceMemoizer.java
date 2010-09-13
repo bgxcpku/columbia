@@ -23,8 +23,11 @@ import edu.columbia.stat.wood.util.MutableDouble;
 import edu.columbia.stat.wood.util.Pair;
 import edu.columbia.stat.wood.util.SeatingArranger;
 import gnu.trove.map.hash.TIntObjectHashMap;
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -782,55 +785,5 @@ public class IntSequenceMemoizer implements IntSequenceMemoizerInterface, Serial
         }
 
         r.edgeNode = is.get(in.readInt());
-    }
-
-    public static void main(String[] args) throws FileNotFoundException, IOException{
-        File g = new File("/Users/nicholasbartlett/Documents/np_bayes/data/alice_in_wonderland/AliceInWonderland.txt");
-        File f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/pride_and_prejudice/pride_and_prejudice.txt");
-        IntSequenceMemoizer sm = new IntSequenceMemoizer(new IntSequenceMemoizerParameters(1023,10000000,10000000,52576));
-
-        BrownCorpusReader bcr = null;
-
-        try{
-            bcr = new BrownCorpusReader();
-            
-            double logLik = 0.0;
-            while(bcr.hasNext()){
-                logLik -= sm.continueSequence(bcr.next());
-
-                if(bcr.returned() % 100000 == 0){
-                    System.out.println(".returned = " + bcr.returned());
-                    System.out.println("log lik = " + logLik);
-                    System.out.println("rest count = " + IntRestaurant.count);
-                    System.out.println();
-
-                }
-            }
-
-            System.out.println(logLik / Math.log(2) / bcr.returned());
-
-        } finally {
-        }
-
-
-        System.out.println(sm.score());
-        sm.sample(1);
-        System.out.println(sm.score());
-
-        int[] seq = sm.generateSequence(null, 1000);
-
-        BrownDictionaryReader bdr = new BrownDictionaryReader();
-        
-        int index = 0;
-        for(int i = 0; i < 1000; i++){
-            if(seq[index] == 0){
-                System.out.println();
-            } else {
-                System.out.print(bdr.dictionary.get(seq[index]));
-                System.out.print(" ");
-            }
-
-            index++;
-        }
     }
 }
