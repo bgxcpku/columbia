@@ -1,0 +1,15 @@
+---
+title: Sequence Memoizer
+in_menu: true
+routed_title: Home
+sort_info: 0
+---
+## Welcome to SequenceMemoizer.com
+
+One reason for the establishment of this website is to provide source code for the nonparameteric Bayesian model known as the Sequence Memoizer.  The model is useful for discrete sequence prediction in tasks such as Natural Language Processing and [compression]. 
+
+Another major motivation for us in hosting this website is to provide a platform for discussion of this and other nonparameteric Bayesian methods.  If you are doing research related to the Sequence Memoizer or just want to be informed regarding the ongoing discussion, please sign up for the the google group.
+
+[compression]: http://deplump.com/
+
+
