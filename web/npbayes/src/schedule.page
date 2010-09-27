@@ -8,28 +8,38 @@ The tentative schedule is
 <TABLE CELLSPACING="0" CELLPADDING="10" border="1">
 	<TR>
 		<TH width = "15%">Date</TH>
-		<TH width = "60%">Topic</TH>
+		<TH width = "30%">Topic</TH>
+		<TH width = "30%">Reading</TH>
 		<TH>Group Leader</TH>
 	</TR>
 
 	<TR>
 		<TD>Sep 17</TD>		
 		<TD>Variational Bayes Tutorial: Part I</TD>
+		<TD></TD>
 		<TD>Matt Hoffman</TD>
 	</TR>
 	
 	<TR>
 		<TD>Sep 24</TD>
 		<TD>Variational Bayes Tutorial: Part II</TD>
+		<TD><a href="http://research.microsoft.com/en-us/um/people/cmbishop/prml/">PRML</a>: Chapter 10</TD>
 		<TD>Matt Hoffman</TD>
 	</TR>
 
 	<TR>
 		<TD>Oct 1</TD>
 		<TD>Variational Bayes Tutorial: Part III</TD>
+		<TD><a href="http://www.cs.princeton.edu/~blei/papers/BleiNgJordan2003.pdf">Blei, Ng and Jordan (2003)</a></TD>
 		<TD>Matt Hoffman</TD>
 	</TR>
-
+	
+	<TR>
+		<TD>Oct 8</TD>
+		<TD>Clustering for Genetic Data</TD>
+		<TD>??</TD>
+		<TD>Gustavo Lacerda</TD>
+	</TR>
 </TABLE>
 
 The schedule is tentative and likely to change as the reading group evolves. Each session will have a group leader assigned, but this person is not responsible for creating a polished presentation of the reading material, only to help lead the group and provoke discussion.
