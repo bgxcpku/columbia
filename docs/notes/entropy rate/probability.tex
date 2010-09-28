@@ -1,0 +1,22 @@
+\documentclass[11pt]{article}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{epstopdf}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\title{A Sequential Gambling Scheme to Elicit True Probabilities}
+\author{David Pfau}
+%\date{}                                           % Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+%\section{}
+%\subsection{}
+
+Bets can be placed on $n$ discrete possibilities.  Bets can only be placed in discrete units.  This makes it so that only a certain amount can be bet at favorable odds, and the odds adjust after that bet to reflect the new pool.  Initialize the pool with a single unit on each outcome.  The odds on every outcome (the payout on a winning bet of one unit) is then $n$ to 1 for every outcome.  In general, if an amount $r_k$ is placed on outcome $k,\,k=1 \ldots n$, the odds on outcome $k$ are $\sum_{i=1}^n r_i / r_k$.  Thus if the fraction of the pool on outcome $k$ is less than the true probability $p_k$ of that outcome, it is always to the advantage of the gambler to bet on it.  When betting more than one unit, the odds are the same as if the bet were placed one unit at a time, and the odds on a bet of $s$ units on $k$ is $\frac{1}{s}\sum_{i=1}^s \frac{\sum_{j=1}^n r_j + i - 1}{r_k + i - 1}$.  It's always advantageous to bet one more unit until $r_k/\sum_{i=1}^n r_i > p_k$.  There will be some small inaccuracy in the estimate of $p_k$ due to the discreteness of the units bets are placed in, but as long as enough people participate the effect of discreteness should be small, probably much smaller than the variance due to unpredictable human behavior.  Since odds are based entirely on the pool {\em before} a bet is placed (at least, unit by unit), there are no confusing effects due to the effects of one's own bet or expected bets that come later, and the undesirable uncertainties associated with parimutuel betting do not affect this betting scheme.
+
+\end{document}  
