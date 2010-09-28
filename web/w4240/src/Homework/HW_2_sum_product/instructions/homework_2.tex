@@ -56,10 +56,11 @@ I expect this HW to be quit a difficult task due to the programming component.  
 
 	The first part of the homework consists of implementing key parts of the sum-product algorithm for inference in discrete graphical models.  Only one type of object is used in this code base, namely the {\bf node} object.  The node class file does not need to be edited, but you should look at it to understand its properties and methods.  The code is at explicit\_algorithm/@node/node.m.  \\
 
-	Every variable is binary and so when passing messages the first element of the column vector should be proportional to the probability of TRUE and the second number proportional to the probability of FALSE.  The network you are implementing and the appropriate probability tables can be found in Figure~\ref{bnexample}. The functions you are responsible for filling out are :
+	Every variable is binary and so when passing messages the first element of the column vector should be proportional to the probability of TRUE and the second number proportional to the probability of FALSE.  The network you are implementing and the appropriate probability tables can be found in Figure~\ref{bnexample}. The files you are responsible for filling out are :
 
 	\begin{enumerate}
-		\item explicit\_algorithm/get\_marginal\_distrubtion.m
+		\item explicit\_algorithm/main\_alarm\_network.m
+		\item explicit\_algorithm/get\_marginal\_distribution.m
 		\item explicit\_algorithm/get\_message\_fn\_aj.m 
 		\item explicit\_algorithm/get\_message\_fn\_am.m 
 		\item explicit\_algorithm/get\_message\_fn\_b.m 
@@ -68,7 +69,7 @@ I expect this HW to be quit a difficult task due to the programming component.  
 		\item explicit\_algorithm/get\_message\_vn.m
 	 \end{enumerate}
 	 
-	 The graphical structure is set up in main\_alarm\_network.m.  At the bottom of that file you can see an example of inference in the model after setting the values of vn\_e and vn\_b to one.  Finally, since the model is so small, please make sure that you are calculating the correct conditional distributions by explicitly calculating the probability of every configuration of the variables and then summing out the appropriate variables.\\
+	 The graphical structure is set up in main\_alarm\_network.m.  At the bottom of that file you can see an example of inference in the model with no values set. {\bf Please edit this file to calculate the probability there was a burglary given that John called}. Finally, since the model is so small, please make sure that you are calculating the correct conditional distributions by explicitly calculating the probability of every configuration of the variables and then summing out the appropriate variables.\\
 	 \begin{figure*}
 		\begin{center}
 			\scalebox{.6}{\includegraphics{alarm_bn_params.png} }% [clip=true, viewport= 1in 1in 9in 9in]
@@ -83,7 +84,7 @@ I expect this HW to be quit a difficult task due to the programming component.  
 \problem{35}{
 	The second part of the homework consists of implementing the key parts of the message passing algorithm in a more scalable object oriented setting.  The graph is set up for the large ALARM network in Figure~\ref{ALARM} .   The ALARM network is a network for monitoring patients in intensive care \footnote{http://compbio.cs.huji.ac.il/Repository/Datasets/alarm/alarm.htm}.  The graph is set up for you in the m-file object\_oriented\_algorithm/main\_big\_alarm\_net.m.  This code base makes extensive use of objects.  An object called node is defined in the folder @node and two specific nodes are then refined, namely @factor\_node and @variable\_node.  The refined objects inherit properties and methods from the general @node object unless they are specifically overwritten.  You will need to familiarize yourself will all three objects to be able to do the project.  There is also one other object called factor for this project.  A factor object is an object to hold the factor matrix, basically the probability tables.  Finally, you are provided a utility function called multilinear\_product.m which you may find useful.  You should read the comments at the top of the function which describe its functionality.  The last thing you need to know is that if $f$ is the factor matrix inside the factor object fn\_a\_b\_c then $f(1,3,2)$ is the factor value of f(a = 1, b = 3, c = 2).  Inside each factor node object, the list of neighboring objects is listed in exactly the same way for all factor nodes.  That is,  for fn\_a\_b\_c the neighboring nodes list will be $\{$vn\_a, vn\_b, vn\_c$\}$.\\
 	
-	The first task in this section of the HW will be to understand the code.  Then, you will need to implement the method {\bf getMessage(obj, to\_unid)} in both the factor\_node and variable\_node objects.  This will take some creativity and may require you to use a recursive function of make use of the eval function in MATLAB. Finally, you need to implement the method {\bf getMarginalDistribution(obj)} in the variable\_node class definition. \\
+	The first task in this section of the HW will be to understand the code.  Then, you will need to implement the method {\bf getMessage(obj, to\_unid)} in both the factor\_node and variable\_node objects.  This will take some creativity and may require you to use a recursive function of make use of the eval function in MATLAB. You also need to implement the method {\bf getMarginalDistribution(obj)} in the variable\_node class definition. Finally, set up the main file to calculate the probability of KinkedTube given SaO2 is set to 1, BP is set to 1, ArtCO2 is set to 1, Press is set to 2, and ExpCO2 is set to 1.
 	
 	Because the network is actually loopy, we have to perform loopy inference here, but it is not critical that you understand how this is implemented.  At the bottom of the file object\_oriented\_algorithm/main\_big\_alarm\_net.m you can see an example of inference in the model after setting some specific values.\\
 	
@@ -104,13 +105,15 @@ You must complete this HW assignment on your own, you are not permitted to work 
 	\item Send an email to w4240.fall2010.stat.columbia.edu@gmail.com
 	\item {Attach your updated MATLAB files 
 		\begin{enumerate}
-			\item explicit\_algorithm/get\_marginal\_distrubtion.m
+			\item explicit\_algorithm/main\_alarm\_network.m
+			\item explicit\_algorithm/get\_marginal\_distribution.m
 			\item explicit\_algorithm/get\_message\_fn\_aj.m 
 			\item explicit\_algorithm/get\_message\_fn\_am.m 
 			\item explicit\_algorithm/get\_message\_fn\_b.m 
 			\item explicit\_algorithm/get\_message\_fn\_bea.m
 			\item explicit\_algorithm/get\_message\_fn\_e.m
 			\item explicit\_algorithm/get\_message\_vn.m
+			\item object\_oriented\_algorithm/main\_big\_alarm\_net.m
 			\item object\_oriented\_algorithm/@factor\_node/factor\_node.m
 			\item object\_oriented\_algorithm/@variable\_node/variable\_node.m
 		\end{enumerate} It is imperative that the names be exactly as described here. There should be no folders attached, only raw .m files.  You may not attach other MATLAB code files. }
