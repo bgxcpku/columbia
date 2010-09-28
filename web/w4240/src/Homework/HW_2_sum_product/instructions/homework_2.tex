@@ -68,7 +68,7 @@ I expect this HW to be quit a difficult task due to the programming component.  
 		\item explicit\_algorithm/get\_message\_vn.m
 	 \end{enumerate}
 	 
-	 The graphical structure is set up in main\_alarm\_network.m.  At the bottom of that file you can see an example of inference in the model after setting the values of vn\_e and vn\_b to one.  \\
+	 The graphical structure is set up in main\_alarm\_network.m.  At the bottom of that file you can see an example of inference in the model after setting the values of vn\_e and vn\_b to one.  Finally, since the model is so small, please make sure that you are calculating the correct conditional distributions by explicitly calculating the probability of every configuration of the variables and then summing out the appropriate variables.\\
 	 \begin{figure*}
 		\begin{center}
 			\scalebox{.6}{\includegraphics{alarm_bn_params.png} }% [clip=true, viewport= 1in 1in 9in 9in]
