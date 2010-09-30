@@ -8,27 +8,10 @@ routed_title: Download
 
 You can downlaod the java code as a jar file.  Two versions are available, compiled with different versions of the JDK, [1.6] and [1.5]. The jar contains the [gnu.trove] package as well as the [edu.columbia.stat.wood.pub.sequencememoizer] and [edu.columbia.stat.wood.pub.util] packages.  There are no interesting main methods implemented in .jar, so all use of this code should be used either through MATLAB, instructions below, or as a java library accessed by your own project.
 
-## Using the Sequence Memoizer with [MATLAB]
 
-You can also use the jar file through MATLAB.  To do this you will need to first open MATLAB.  If you type
-
-<b>version -java<br/></b>
-
-into the command line it will display the JVM version MATLAB is using.  If the JVM is 1.4 or lower you'll need to [upgrade to at least 1.5] in order to use this code.  If the JVM version is 1.5 you should download the jar file compiled with version 1.5 otherwise download the jar file compiled with version 1.6.  In the MATLAB command line type
-
-<b>edit classpath.txt<br/></b>
-
-In the text editor, add to the bottom the path to the downloaded sequence memoizer jar.  Close and re-open MATLAB.  To now use the java classes defined in the jar you need to enter into the command line
-
-<b>import edu.columbia.stat.wood.pub.sequencememoizer.* <br/> </b>
-
-Now, all of the classes in the package are avaialable and can be used.  Instructions on how to use java classes in the MATLAB environment can be found [here].
 
 [1.5]: jars/v1.5/sequencememoizer-1.0-jar-with-dependencies.jar
 [1.6]: jars/v1.6/sequencememoizer-1.0-jar-with-dependencies.jar
 [gnu.trove]: http://trove4j.sourceforge.net/
 [edu.columbia.stat.wood.pub.sequencememoizer]: ../documentation/sequencememoizer/index.html
 [edu.columbia.stat.wood.pub.util]: ../documentation/util/index.html
-[MATLAB]: http://www.mathworks.com/
-[upgrade to at least 1.5]: http://www.mathworks.com/support/solutions/en/data/1-1812J/
-[here]: http://www.mathworks.com/help/techdoc/matlab_external/f44062.html

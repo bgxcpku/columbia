@@ -1,0 +1,13 @@
+---
+title: Papers
+in_menu: true
+routed_title: Papers
+sort_info: 1
+---
+##Current List of Related Papers
+
+###If you know of other papers relating the Sequence Memoizer please let us know through the discussion group.
+
+* N. Bartlett, D. Pfau, and F. Wood <span class="papertitle"> Forgetting counts : Constant Memory inference for a Dependent hierarchical Pitman-Yor Process </span> In Proceedings of the 17th International Conference on Machine Learning, 2010  <a class="download" href="Bartlett-ICML-2010.pdf">PDF</a> 
+* J. Gasthaus, F. Wood, and Y.W. Teh.  <span class="papertitle"> Lossless compression based on the Sequence Memoizer</span> Data Compression Conference, 2010. <a class="download" href="Gasthaus-DCC-2010.pdf">PDF</a> 
+* F. Wood, C. Archambeau, J. Gasthaus, L. James, and Y.W. Teh.  <span class="papertitle"> A Stochastic Memoizer for Sequence Data.</span> In Proceedings of the 26th International Conference on Machine Learning, 1129-1136, 2009. <a class="download" href="Wood-ICML-2009.pdf">PDF</a>
