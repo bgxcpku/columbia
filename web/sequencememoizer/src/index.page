@@ -9,8 +9,10 @@ sort_info: 0
 
 Download latest version
 
-*[version 1.0](jar_file/jars/v1.6/sequencememoizer-1.0-jar-with-dependencies.jar)
-*[docs](documentation/sequencememoizer/index.html)
+|---
+|:-:
+|[version 1.0](jar_file/jars/v1.6/sequencememoizer-1.0-jar-with-dependencies.jar)|
+|[javadocs](documentation/sequencememoizer/index.html)|
 
 The [Sequence Memoizer](papers/index.html) is a nonparametric Bayesian model for discrete sequence modeling.  Sequence modeling is useful for tasks such as Natural Language Processing and [compression](http://deplump.com/).  This website has been established to distribute source code for the model and encourage further development.
 
