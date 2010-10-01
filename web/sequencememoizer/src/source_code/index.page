@@ -6,7 +6,7 @@ routed_title: Source Code
 
 ## Git Repository
 
-The source code is available in a public Git repository. To access the repository you will need to do some have [Git installed] on your computer.  After you have installed Git you need to [set up an SSH key pair and added it to your GitHub account].
+The source code is available in a public Git repository. To access the repository you will need to have [Git installed] on your computer.  After you have installed Git you need to [set up an SSH key pair and added it to your GitHub account].
 
 Once Git has been installed and you have a SSH key pair, you will need to register a username with Git.  You can do this by calling the following from the terminal (once you add /usr/local/git/bin to your path)
 

@@ -1,16 +1,17 @@
 ---
-title: Sequence Memoizer
+title: Home
 in_menu: true
 routed_title: Home
 sort_info: 0
 ---
+
 ## Welcome to SequenceMemoizer.com
 
-The [Sequence Memoizer] is a nonparametric Bayesian model for discrete sequence modeling.  Sequence modeling is useful for tasks such as Natural Language Processing and [compression].  This website has been established to distribute source code for the model and encourage further development.
+Download latest version
 
-Another major motivation for us in hosting this website is to provide a platform for discussion of this and other nonparameteric Bayesian methods.  If you are doing research related to the Sequence Memoizer or just want to be informed regarding the ongoing discussion, please sign up for the the google group.
+*[version 1.0](jar_file/jars/v1.6/sequencememoizer-1.0-jar-with-dependencies.jar)
+*[docs](documentation/sequencememoizer/index.html)
 
-[compression]: http://deplump.com/
-[Sequence Memoizer]: papers/index.html
+The [Sequence Memoizer](papers/index.html) is a nonparametric Bayesian model for discrete sequence modeling.  Sequence modeling is useful for tasks such as Natural Language Processing and [compression](http://deplump.com/).  This website has been established to distribute source code for the model and encourage further development.
 
-
+Another motivating factor for us in hosting this website is to provide a platform for discussion of this and other nonparameteric Bayesian methods.  If you are doing research related to the Sequence Memoizer or just want to be informed regarding the ongoing discussion, please sign up for the the google group.
