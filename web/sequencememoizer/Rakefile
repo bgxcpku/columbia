@@ -67,3 +67,8 @@ task :auto_webgen do
     sleep 2
   end
 end
+  
+desc "Deploy the site"
+	task :upload do
+  	sh %{cp -r out/* ../sequencememoizer.com/web/}
+end

@@ -2,23 +2,20 @@
 title: Download
 in_menu: true
 routed_title: Download
+sort_order: 2
 ---
 
-
+###Downloads
 
 |---
 |:-:|:-:|:-:|:-:|:-:|:-:|
 | Language | Author | Version | Documentation | License | Download
-| Java 1.5 | [Nicholas Bartlett] | 1.0 | [javadocs](../documentation/sequencememoizer/index.html) | [License](../licensing/README.txt) | [jar](jars/v1.5/sequencememoizer-1.0-jar-with-dependencies.jar)
-| Java 1.6 | [Nicholas Bartlett] | 1.0 | [javadocs](../documentation/sequencememoizer/index.html) | [License](../licensing/README.txt) | [jar](jars/v1.6/sequencememoizer-1.0-jar-with-dependencies.jar)
+| Java 1.5 | [Nicholas Bartlett] | 1.0 | [javadocs](../documentation/sequencememoizer/index.html)| [License](../licensing/README.txt) | [jar](jars/v1.5/sequencememoizer-1.0-jar-with-dependencies.jar)
+| Java 1.6 | [Nicholas Bartlett] | 1.0 | [javadocs](../documentation/sequencememoizer/index.html)| [License](../licensing/README.txt) | [jar](jars/v1.6/sequencememoizer-1.0-jar-with-dependencies.jar)
 
+###Notes
+*The two version authored by Nicholas Bartlett are compiled with different versions of the JDK. The jars contain the [gnu.trove] package as well as the [edu.columbia.stat.wood.pub.sequencememoizer] and [edu.columbia.stat.wood.pub.util] packages.  There are no main methods implemented in Java, so all use of this code should be used either through MATLAB or as a Java library accessed by your own project.
 
-You can downlaod the java code as a jar file.  Two versions are available, compiled with different versions of the JDK, [1.6] and [1.5]. The jar contains the [gnu.trove] package as well as the [edu.columbia.stat.wood.pub.sequencememoizer] and [edu.columbia.stat.wood.pub.util] packages.  There are no interesting main methods implemented in .jar, so all use of this code should be used either through MATLAB, instructions below, or as a java library accessed by your own project.
-
-
-
-[1.5]: jars/v1.5/sequencememoizer-1.0-jar-with-dependencies.jar
-[1.6]: jars/v1.6/sequencememoizer-1.0-jar-with-dependencies.jar
 [gnu.trove]: http://trove4j.sourceforge.net/
 [edu.columbia.stat.wood.pub.sequencememoizer]: ../documentation/sequencememoizer/index.html
 [edu.columbia.stat.wood.pub.util]: ../documentation/util/index.html

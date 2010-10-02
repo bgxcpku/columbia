@@ -2,13 +2,12 @@
 title: Getting the Source Code
 in_menu: true
 routed_title: Source Code
+sort_order: 5
 ---
 
-## Git Repository
+## Read Only Git Repository
 
-The source code is available in a public Git repository. To access the repository you will need to have [Git installed] on your computer.  After you have installed Git you need to [set up an SSH key pair and added it to your GitHub account].
-
-Once Git has been installed and you have a SSH key pair, you will need to register a username with Git.  You can do this by calling the following from the terminal (once you add /usr/local/git/bin to your path)
+The source code is available in a public Git repository. To access the repository you will need to have [Git installed] on your computer. Once Git has been installed you will need to register a username with Git.  You can do this by calling the following from the terminal (once you add /usr/local/git/bin to your path)
 
 <b>git config --global user.name "Your Name"<br/>
 git config --global user.email your.email@whatever.com</b>
@@ -21,14 +20,8 @@ or some other name you prefer. Then call
 
 <b>cd public_sequence_memoizer<br/>
 git init<br/>
-git remote add origin git@github.com:nbartlett/Sequence-Memoizer.git<br/>
+git remote add origin git://github.com/nbartlett/Sequence-Memoizer.git<br/>
 git pull origin master</b>
-
-If you make changes to source files which you wish to push back to the repository then call 
-
-<b>git add files_you_changed<br/>
-git commit -m 'a short message about what you changed'<br/>
-git push</b>
 
 If changes are made by other people you can update your local repository by calling
 
@@ -50,12 +43,31 @@ Now that you have the code on your machine and Maven ready to go you need to add
 -Dpackaging=jar<br/> 
 -DgeneratePom=true</b>
 
-all on one line.  Finally, you are ready to actually use and compile the source code.  You can open the projects <b>Public Sequence Memoizer</b> and <b>Public Util</b> through an IDE such as [Netbeans].  You can also compile the code using the terminal by navigating to the <b>Public Util</b> project root and entering
+all on one line.  Finally, you are ready to actually compile and use the source code.  You can open the projects <b>Public Sequence Memoizer</b> and <b>Public Util</b> through an IDE such as [Netbeans].  You can also compile the code using the terminal by navigating to the <b>Public Util</b> project root and entering
 
  <b> mvn install</b>
  
  After which you should move to the  <b>Public Sequence Memoizer</b> and type the same thing.  Compiling the code must be done in sequence because of the dependencies among the projects.  When you compile the code two jars get generated, one with only the source code from the project and one with the source code from the project and all the projects on which it depends.
 
+
+##Contribute to the Repository
+
+If you woud like to make contributions to the public repository you will need the repository administrator to add you to the list of contributors.  Please contact [Nicholas Bartlett] and ask to be added.  Once you are added you will need to [set up an SSH key pair and added it to your GitHub account].  Then, instead of adding the remote origin specified above you should enter into the terminal window
+
+<b>cd public_sequence_memoizer<br/>
+git init<br/>
+git remote add origin git@github.com:nbartlett/Sequence-Memoizer.git<br/>
+git pull origin master</b>
+
+If you make changes to source files which you wish to push back to the repository then call 
+
+<b>git add files_you_changed<br/>
+git commit -m 'a short message about what you changed'<br/>
+git push</b>
+
+If you are a contributor make sure you are not overwriting other peoples hard work by being careful and not forcing any merges.  People accessing the repository expect the code to work so lets make sure that it does!
+
+[Nicholas Bartlett]: http://stat.columbia.edu/~bartlett
 [Git installed]: http://help.github.com/
 [set up an SSH key pair and added it to your GitHub account]: http://help.github.com/mac-key-setup/
 [Netbeans]: http://netbeans.org/

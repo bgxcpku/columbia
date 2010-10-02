@@ -2,6 +2,7 @@
 title: Matlab
 in_menu: true
 routed_title: Matlab
+sort_order: 3
 ---
 
 ## Using the Sequence Memoizer with [MATLAB]
