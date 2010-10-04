@@ -44,7 +44,7 @@ loc_energy_plus_1 = loc_energy_plus_1 - beta * s;
 
 %zeta part
 s = markov_blanket(1,1) + markov_blanket(1,3) + markov_blanket(3,1) + markov_blanket(3,3);
-zeta = .1;
+zeta = 0;
 loc_energy_minus_1 = loc_energy_minus_1 + zeta * s;
 loc_energy_plus_1 = loc_energy_plus_1 - zeta * s;
 
