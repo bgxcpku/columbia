@@ -33,14 +33,14 @@ Since the code was developed by combining multiple projects, we use Maven to com
 
 ## Code
 
-Now that you have the code on your machine and Maven ready to go you need to add the trove jar to the Maven repository.  You can do this by navigating into the Trove project folder inside the publc Git repository and typing in the termail window
+Now that you have the code on your machine and Maven ready to go you need to add the trove jar to the Maven repository.  You can do this by navigating into the Trove project folder inside the public Git repository and issuing the command
 
-<b>mvn install:install-file<br/>
--Dfile=trove-3.0.0a3.jar<br/>
--DgroupId=gnu<br/> 
--DartifactId=trove<br/> 
--Dversion = 3.0.0a3<br/> 
--Dpackaging=jar<br/> 
+<b>mvn install:install-file
+-Dfile=trove-3.0.0a3.jar
+-DgroupId=gnu
+-DartifactId=trove
+-Dversion=3.0.0a3
+-Dpackaging=jar
 -DgeneratePom=true</b>
 
 all on one line.  Finally, you are ready to actually compile and use the source code.  You can open the projects <b>Public Sequence Memoizer</b> and <b>Public Util</b> through an IDE such as [Netbeans].  You can also compile the code using the terminal by navigating to the <b>Public Util</b> project root and entering

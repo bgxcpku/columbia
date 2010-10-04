@@ -21,6 +21,12 @@ In the text editor, add to the bottom the path to the downloaded sequence memoiz
 
 Now, all of the classes in the package are avaialable and can be used.  Instructions on how to use java classes in the MATLAB environment can be found [here].
 
+<b>examples<br/> </b>
+
+Hint: to understand how to call sequence memoizer functionality, consult the [javadoc documentation](../documentation/sequencememoizer/index.html) for the sequence memoizer.
+
+[example\_1.m](example_1.m)
+
 [here]: http://www.mathworks.com/help/techdoc/matlab_external/f44062.html
 [MATLAB]: http://www.mathworks.com/
 [upgrade to at least 1.5]: http://www.mathworks.com/support/solutions/en/data/1-1812J/

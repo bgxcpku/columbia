@@ -70,5 +70,5 @@ end
   
 desc "Deploy the site"
 	task :upload do
-  	sh %{cp -r out/* ../sequencememoizer.com/web/}
+  	sh %{rake; cp -r out/* ../sequencememoizer.com/web/}
 end
