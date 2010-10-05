@@ -35,4 +35,4 @@ default_processing_pipeline:
 #     add: [**/*.pdf, **/*.djvu]
 patterns:
    Copy:
-     add: [**/*.pdf, **/*.avi, **/*.m, **/*.tar.gz, **/*.zip, **/*.txt, **/*.ppt, **/*.jar, **/*.html,**/*-list , **/*.gif, **/*.css]
+     add: [**/*.pdf, **/*.avi, **/*.m, **/*.tar.gz, **/*.zip, **/*.txt, **/*.ppt, **/*.jar, **/*.html,**/*-list , **/*.gif, **/*.css, **/*.R]
