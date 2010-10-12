@@ -30,7 +30,7 @@ public class IntUniformDiscreteDistribution implements IntDiscreteDistribution, 
     }
 
     /**
-     * Creates a uniform discrete distribution over the integers [leftType, rightType).
+     * Creates a uniform discrete distribution over the integers [leftType, rightType].
      * @param leftType
      * @param rightType
      */
