@@ -1,0 +1,80 @@
+% Essential Formatting
+
+\documentclass[12pt]{article}
+\usepackage{epsfig,amsmath,amsthm,amssymb,textcomp}
+\usepackage[questions, answersheet]{../../urmathtest}[2001/05/12]
+%\usepackage[answersheet]{urmathtest}[2001/05/12]
+%\usepackage[answers]{urmathtest}[2001/05/12]
+
+
+% For use with pdflatex
+% \pdfpagewidth\paperwidth
+% \pdfpageheight\paperheight
+
+% Basic User Defs
+
+\def\ds{\displaystyle}
+
+\newcommand{\ansbox}[1]
+{\work{
+  \pos\hfill \framebox[#1][l]{ANSWER:\rule[-.3in]{0in}{.7in}}
+}{}}
+
+\newcommand{\ansrectangle}
+{\work{
+  \pos\hfill \framebox[6in][l]{ANSWER:\rule[-.3in]{0in}{.7in}}
+}{}}
+
+
+% Beginning of the Document
+
+\begin{document}
+\examtitle{DATA MINING W4240}{HOMEWORK 3}{09/14/2010}
+
+\begin{center}
+	Professor: Frank Wood
+\end{center}
+
+% Problems Start Here % ----------------------------------------------------- %
+
+{\bf Preliminary Instructions}
+
+\begin{enumerate}
+	\item Download the skeleton code for the assignment at \\  http://www.stat.columbia.edu/$\sim$fwood/w4240/Homework/index.html
+	\item Unzip the downloaded material in an appropriate folder, something like w4240/hw3/
+	\item Open MATLAB and navigate to the folder containing the downloaded material
+\end{enumerate}
+
+In this home work you will need to implement the expectation and maximization steps of the EM algorithm for a Bayesian linear regression and a classical gaussian mixture model.\\
+
+
+\problem{50}{Implement the the functions {\bf e\_step\_linear\_regression} and {\bf m\_step\_linear\_regression} to implement the EM algorithm for Bayesian linear regression.  You will need to consult the book and the programs provided to understand the function signatures.  Make sure the functions will run on any dimensional design matrix with a real valued output.  I recommend you test your functions by writing a wrapper for the functions and testing them on synthetic data.\\}
+
+
+
+\problem{50}{Implement the functions {\bf e\_step\_gaussian\_mixture}, {\bf m\_step\_gaussian\_mixture}, and {\bf log\_likelihood\_gaussian\_mixture} to implement the EM algorithm for a gaussian mixture model.  Make sure the functions will run on any dimensional real vector valued data with any chosen number of components.  I recommend you test your functions by writing a wrapper for the functions and testing them on synthetic data.\\}
+
+{\bf Submitting your HW}
+
+You must complete this HW assignment on your own, you are not permitted to work with any one else on the completion of this task.  Your grade will reflect your ability to implement a working version of the procedure.  Submitted code must run on my machine in less than 3 minutes.  Grading will be automated and the submitted files will be run, therefore to submit the HW you will need to follow the following directions exactly.
+
+\begin{enumerate}
+	\item Send an email to w4240.fall2010.stat.columbia.edu@gmail.com
+	\item {Attach your updated MATLAB files 
+		\begin{enumerate}
+			\item e\_step\_linear\_regression.m
+			\item m\_step\_linear\_regression.m
+			\item e\_step\_gaussian\_mixture.m
+			\item m\_step\_gaussian\_mixture.m
+			\item  log\_likelihood\_gaussian\_mixture.m
+		\end{enumerate} It is imperative that the names be exactly as described here. There should be no folders attached, only raw .m files.  You may not attach other MATLAB code files. }
+	\item The subject will be exactly your Columbia UNI followed by a colon followed by hw3.  For example, if the TA were submitting this homework the subject would read {\bf nsb2130:hw3}
+	\item If you submit hw more than once, later files will overwrite earlier files.
+\end{enumerate}
+
+% Problems End Here % ------------------------------------------------------- %
+
+\problemsdone
+\end{document}
+
+% End of the Document
