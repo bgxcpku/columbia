@@ -2,7 +2,7 @@ universe = java
 executable = ../../code/java/DCC_2010/target/dcc2010-1.0-jar-with-dependencies.jar 
 jar_files = ../../code/java/DCC_2010/target/dcc2010-1.0-jar-with-dependencies.jar 
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 1000 1
 output = _0.out 
@@ -10,7 +10,7 @@ error = _0.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 1000 1
 output = _1.out 
@@ -18,7 +18,7 @@ error = _1.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 1000 1
 output = _2.out 
@@ -26,7 +26,7 @@ error = _2.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 1000 1
 output = _3.out 
@@ -34,7 +34,7 @@ error = _3.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 1000 1
 output = _4.out 
@@ -50,7 +50,7 @@ error = _5.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 1000 1
 output = _6.out 
@@ -58,7 +58,7 @@ error = _6.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 1000 1
 output = _7.out 
@@ -66,7 +66,7 @@ error = _7.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 1000 1
 output = _8.out 
@@ -74,7 +74,7 @@ error = _8.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 1000 1
 output = _9.out 
@@ -82,7 +82,7 @@ error = _9.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 1000 1
 output = _10.out 
@@ -98,7 +98,7 @@ error = _11.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 1000 1
 output = _12.out 
@@ -106,7 +106,7 @@ error = _12.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 1000 1
 output = _13.out 
@@ -114,7 +114,7 @@ error = _13.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 1000 1
 output = _14.out 
@@ -122,7 +122,7 @@ error = _14.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 1000 1
 output = _15.out 
@@ -130,7 +130,7 @@ error = _15.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 1000 1
 output = _16.out 
@@ -146,7 +146,7 @@ error = _17.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 1000 1
 output = _18.out 
@@ -154,7 +154,7 @@ error = _18.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 1000 1
 output = _19.out 
@@ -162,7 +162,7 @@ error = _19.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 1000 1
 output = _20.out 
@@ -170,7 +170,7 @@ error = _20.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 1000 1
 output = _21.out 
@@ -178,7 +178,7 @@ error = _21.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 1000 1
 output = _22.out 
@@ -194,7 +194,7 @@ error = _23.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 10000 1
 output = _24.out 
@@ -202,7 +202,7 @@ error = _24.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 10000 1
 output = _25.out 
@@ -210,7 +210,7 @@ error = _25.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 10000 1
 output = _26.out 
@@ -218,7 +218,7 @@ error = _26.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 10000 1
 output = _27.out 
@@ -226,7 +226,7 @@ error = _27.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 10000 1
 output = _28.out 
@@ -242,7 +242,7 @@ error = _29.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 10000 1
 output = _30.out 
@@ -250,7 +250,7 @@ error = _30.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 10000 1
 output = _31.out 
@@ -258,7 +258,7 @@ error = _31.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 10000 1
 output = _32.out 
@@ -266,7 +266,7 @@ error = _32.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 10000 1
 output = _33.out 
@@ -274,7 +274,7 @@ error = _33.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 10000 1
 output = _34.out 
@@ -290,7 +290,7 @@ error = _35.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 10000 1
 output = _36.out 
@@ -298,7 +298,7 @@ error = _36.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 10000 1
 output = _37.out 
@@ -306,7 +306,7 @@ error = _37.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 10000 1
 output = _38.out 
@@ -314,7 +314,7 @@ error = _38.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 10000 1
 output = _39.out 
@@ -322,7 +322,7 @@ error = _39.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 10000 1
 output = _40.out 
@@ -338,7 +338,7 @@ error = _41.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 10000 1
 output = _42.out 
@@ -346,7 +346,7 @@ error = _42.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 10000 1
 output = _43.out 
@@ -354,7 +354,7 @@ error = _43.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 10000 1
 output = _44.out 
@@ -362,7 +362,7 @@ error = _44.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 10000 1
 output = _45.out 
@@ -370,7 +370,7 @@ error = _45.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 10000 1
 output = _46.out 
@@ -386,7 +386,7 @@ error = _47.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 100000 1
 output = _48.out 
@@ -394,7 +394,7 @@ error = _48.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 100000 1
 output = _49.out 
@@ -402,7 +402,7 @@ error = _49.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 100000 1
 output = _50.out 
@@ -410,7 +410,7 @@ error = _50.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 100000 1
 output = _51.out 
@@ -418,7 +418,7 @@ error = _51.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 100000 1
 output = _52.out 
@@ -434,7 +434,7 @@ error = _53.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 100000 1
 output = _54.out 
@@ -442,7 +442,7 @@ error = _54.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 100000 1
 output = _55.out 
@@ -450,7 +450,7 @@ error = _55.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 100000 1
 output = _56.out 
@@ -458,7 +458,7 @@ error = _56.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 100000 1
 output = _57.out 
@@ -466,7 +466,7 @@ error = _57.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 100000 1
 output = _58.out 
@@ -482,7 +482,7 @@ error = _59.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 100000 1
 output = _60.out 
@@ -490,7 +490,7 @@ error = _60.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 100000 1
 output = _61.out 
@@ -498,7 +498,7 @@ error = _61.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 100000 1
 output = _62.out 
@@ -506,7 +506,7 @@ error = _62.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 100000 1
 output = _63.out 
@@ -514,7 +514,7 @@ error = _63.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 100000 1
 output = _64.out 
@@ -530,7 +530,7 @@ error = _65.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 100000 1
 output = _66.out 
@@ -538,7 +538,7 @@ error = _66.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 100000 1
 output = _67.out 
@@ -546,7 +546,7 @@ error = _67.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 100000 1
 output = _68.out 
@@ -554,7 +554,7 @@ error = _68.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 100000 1
 output = _69.out 
@@ -562,7 +562,7 @@ error = _69.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 100000 1
 output = _70.out 
@@ -578,7 +578,7 @@ error = _71.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 1000000 1
 output = _72.out 
@@ -586,7 +586,7 @@ error = _72.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 1000000 1
 output = _73.out 
@@ -594,7 +594,7 @@ error = _73.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 1000000 1
 output = _74.out 
@@ -602,7 +602,7 @@ error = _74.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 1000000 1
 output = _75.out 
@@ -610,7 +610,7 @@ error = _75.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 1000000 1
 output = _76.out 
@@ -626,7 +626,7 @@ error = _77.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 1000000 1
 output = _78.out 
@@ -634,7 +634,7 @@ error = _78.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 1000000 1
 output = _79.out 
@@ -642,7 +642,7 @@ error = _79.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 1000000 1
 output = _80.out 
@@ -650,7 +650,7 @@ error = _80.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 1000000 1
 output = _81.out 
@@ -658,7 +658,7 @@ error = _81.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 1000000 1
 output = _82.out 
@@ -674,7 +674,7 @@ error = _83.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 1000000 1
 output = _84.out 
@@ -682,7 +682,7 @@ error = _84.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 1000000 1
 output = _85.out 
@@ -690,7 +690,7 @@ error = _85.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 1000000 1
 output = _86.out 
@@ -698,7 +698,7 @@ error = _86.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 1000000 1
 output = _87.out 
@@ -706,7 +706,7 @@ error = _87.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 1000000 1
 output = _88.out 
@@ -722,7 +722,7 @@ error = _89.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 1000000 1
 output = _90.out 
@@ -730,7 +730,7 @@ error = _90.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 1000000 1
 output = _91.out 
@@ -738,7 +738,7 @@ error = _91.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 1000000 1
 output = _92.out 
@@ -746,7 +746,7 @@ error = _92.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 1000000 1
 output = _93.out 
@@ -754,7 +754,7 @@ error = _93.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 1000000 1
 output = _94.out 
@@ -770,7 +770,7 @@ error = _95.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 10000000 1
 output = _96.out 
@@ -778,7 +778,7 @@ error = _96.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 10000000 1
 output = _97.out 
@@ -786,7 +786,7 @@ error = _97.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 10000000 1
 output = _98.out 
@@ -794,7 +794,7 @@ error = _98.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 10000000 1
 output = _99.out 
@@ -802,7 +802,7 @@ error = _99.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 10000000 1
 output = _100.out 
@@ -818,7 +818,7 @@ error = _101.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 10000000 1
 output = _102.out 
@@ -826,7 +826,7 @@ error = _102.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 10000000 1
 output = _103.out 
@@ -834,7 +834,7 @@ error = _103.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 10000000 1
 output = _104.out 
@@ -842,7 +842,7 @@ error = _104.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 10000000 1
 output = _105.out 
@@ -850,7 +850,7 @@ error = _105.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 10000000 1
 output = _106.out 
@@ -866,7 +866,7 @@ error = _107.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 10000000 1
 output = _108.out 
@@ -874,7 +874,7 @@ error = _108.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 10000000 1
 output = _109.out 
@@ -882,7 +882,7 @@ error = _109.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 10000000 1
 output = _110.out 
@@ -890,7 +890,7 @@ error = _110.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 10000000 1
 output = _111.out 
@@ -898,7 +898,7 @@ error = _111.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 10000000 1
 output = _112.out 
@@ -914,7 +914,7 @@ error = _113.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 10000000 1
 output = _114.out 
@@ -922,7 +922,7 @@ error = _114.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 10000000 1
 output = _115.out 
@@ -930,7 +930,7 @@ error = _115.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 10000000 1
 output = _116.out 
@@ -938,7 +938,7 @@ error = _116.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 10000000 1
 output = _117.out 
@@ -946,7 +946,7 @@ error = _117.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 10000000 1
 output = _118.out 
@@ -962,7 +962,7 @@ error = _119.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 100000000 1
 output = _120.out 
@@ -970,7 +970,7 @@ error = _120.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 100000000 1
 output = _121.out 
@@ -978,7 +978,7 @@ error = _121.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 100000000 1
 output = _122.out 
@@ -986,7 +986,7 @@ error = _122.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 100000000 1
 output = _123.out 
@@ -994,7 +994,7 @@ error = _123.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 100000000 1
 output = _124.out 
@@ -1010,7 +1010,7 @@ error = _125.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 100000000 1
 output = _126.out 
@@ -1018,7 +1018,7 @@ error = _126.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 100000000 1
 output = _127.out 
@@ -1026,7 +1026,7 @@ error = _127.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 100000000 1
 output = _128.out 
@@ -1034,7 +1034,7 @@ error = _128.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 100000000 1
 output = _129.out 
@@ -1042,7 +1042,7 @@ error = _129.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 100000000 1
 output = _130.out 
@@ -1058,7 +1058,7 @@ error = _131.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 100000000 1
 output = _132.out 
@@ -1066,7 +1066,7 @@ error = _132.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 100000000 1
 output = _133.out 
@@ -1074,7 +1074,7 @@ error = _133.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 100000000 1
 output = _134.out 
@@ -1082,7 +1082,7 @@ error = _134.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 100000000 1
 output = _135.out 
@@ -1090,7 +1090,7 @@ error = _135.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 100000000 1
 output = _136.out 
@@ -1106,7 +1106,7 @@ error = _137.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 100000000 1
 output = _138.out 
@@ -1114,7 +1114,7 @@ error = _138.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 100000000 1
 output = _139.out 
@@ -1122,7 +1122,7 @@ error = _139.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 100000000 1
 output = _140.out 
@@ -1130,7 +1130,7 @@ error = _140.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 100000000 1
 output = _141.out 
@@ -1138,7 +1138,7 @@ error = _141.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 100000000 1
 output = _142.out 
@@ -1154,7 +1154,7 @@ error = _143.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 1000000000 1
 output = _144.out 
@@ -1162,7 +1162,7 @@ error = _144.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 1000000000 1
 output = _145.out 
@@ -1170,7 +1170,7 @@ error = _145.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 1000000000 1
 output = _146.out 
@@ -1178,7 +1178,7 @@ error = _146.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 1000000000 1
 output = _147.out 
@@ -1186,7 +1186,7 @@ error = _147.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 1000000000 1
 output = _148.out 
@@ -1202,7 +1202,7 @@ error = _149.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 1000000000 1
 output = _150.out 
@@ -1210,7 +1210,7 @@ error = _150.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 1000000000 1
 output = _151.out 
@@ -1218,7 +1218,7 @@ error = _151.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 1000000000 1
 output = _152.out 
@@ -1226,7 +1226,7 @@ error = _152.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 1000000000 1
 output = _153.out 
@@ -1234,7 +1234,7 @@ error = _153.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 1000000000 1
 output = _154.out 
@@ -1250,7 +1250,7 @@ error = _155.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 1000000000 1
 output = _156.out 
@@ -1258,7 +1258,7 @@ error = _156.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 1000000000 1
 output = _157.out 
@@ -1266,7 +1266,7 @@ error = _157.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 1000000000 1
 output = _158.out 
@@ -1274,7 +1274,7 @@ error = _158.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 1000000000 1
 output = _159.out 
@@ -1282,7 +1282,7 @@ error = _159.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 1000000000 1
 output = _160.out 
@@ -1298,7 +1298,7 @@ error = _161.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 1000000000 1
 output = _162.out 
@@ -1306,7 +1306,7 @@ error = _162.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 1000000000 1
 output = _163.out 
@@ -1314,7 +1314,7 @@ error = _163.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 1000000000 1
 output = _164.out 
@@ -1322,7 +1322,7 @@ error = _164.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 1000000000 1
 output = _165.out 
@@ -1330,7 +1330,7 @@ error = _165.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 1000000000 1
 output = _166.out 
@@ -1346,7 +1346,7 @@ error = _167.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 10000000000 1
 output = _168.out 
@@ -1354,7 +1354,7 @@ error = _168.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 10000000000 1
 output = _169.out 
@@ -1362,7 +1362,7 @@ error = _169.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 10000000000 1
 output = _170.out 
@@ -1370,7 +1370,7 @@ error = _170.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 10000000000 1
 output = _171.out 
@@ -1378,7 +1378,7 @@ error = _171.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 10000000000 1
 output = _172.out 
@@ -1394,7 +1394,7 @@ error = _173.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 10000000000 1
 output = _174.out 
@@ -1402,7 +1402,7 @@ error = _174.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 10000000000 1
 output = _175.out 
@@ -1410,7 +1410,7 @@ error = _175.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 10000000000 1
 output = _176.out 
@@ -1418,7 +1418,7 @@ error = _176.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 10000000000 1
 output = _177.out 
@@ -1426,7 +1426,7 @@ error = _177.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 10000000000 1
 output = _178.out 
@@ -1442,7 +1442,7 @@ error = _179.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 10000000000 1
 output = _180.out 
@@ -1450,7 +1450,7 @@ error = _180.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 10000000000 1
 output = _181.out 
@@ -1458,7 +1458,7 @@ error = _181.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 10000000000 1
 output = _182.out 
@@ -1466,7 +1466,7 @@ error = _182.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 10000000000 1
 output = _183.out 
@@ -1474,7 +1474,7 @@ error = _183.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 10000000000 1
 output = _184.out 
@@ -1490,7 +1490,7 @@ error = _185.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 10000000000 1
 output = _186.out 
@@ -1498,7 +1498,7 @@ error = _186.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 10000000000 1
 output = _187.out 
@@ -1506,7 +1506,7 @@ error = _187.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 10000000000 1
 output = _188.out 
@@ -1514,7 +1514,7 @@ error = _188.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 10000000000 1
 output = _189.out 
@@ -1522,7 +1522,7 @@ error = _189.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 10000000000 1
 output = _190.out 
@@ -1538,7 +1538,7 @@ error = _191.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 100000000000 1
 output = _192.out 
@@ -1546,7 +1546,7 @@ error = _192.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 100000000000 1
 output = _193.out 
@@ -1554,7 +1554,7 @@ error = _193.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 100000000000 1
 output = _194.out 
@@ -1562,7 +1562,7 @@ error = _194.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 100000000000 1
 output = _195.out 
@@ -1570,7 +1570,7 @@ error = _195.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 100000000000 1
 output = _196.out 
@@ -1586,7 +1586,7 @@ error = _197.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 100000000000 1
 output = _198.out 
@@ -1594,7 +1594,7 @@ error = _198.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 100000000000 1
 output = _199.out 
@@ -1602,7 +1602,7 @@ error = _199.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 100000000000 1
 output = _200.out 
@@ -1610,7 +1610,7 @@ error = _200.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 100000000000 1
 output = _201.out 
@@ -1618,7 +1618,7 @@ error = _201.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 100000000000 1
 output = _202.out 
@@ -1634,7 +1634,7 @@ error = _203.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 100000000000 1
 output = _204.out 
@@ -1642,7 +1642,7 @@ error = _204.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 100000000000 1
 output = _205.out 
@@ -1650,7 +1650,7 @@ error = _205.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 100000000000 1
 output = _206.out 
@@ -1658,7 +1658,7 @@ error = _206.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 100000000000 1
 output = _207.out 
@@ -1666,7 +1666,7 @@ error = _207.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 100000000000 1
 output = _208.out 
@@ -1682,7 +1682,7 @@ error = _209.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 100000000000 1
 output = _210.out 
@@ -1690,7 +1690,7 @@ error = _210.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 100000000000 1
 output = _211.out 
@@ -1698,7 +1698,7 @@ error = _211.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 100000000000 1
 output = _212.out 
@@ -1706,7 +1706,7 @@ error = _212.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 100000000000 1
 output = _213.out 
@@ -1714,7 +1714,7 @@ error = _213.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 100000000000 1
 output = _214.out 
@@ -1730,7 +1730,7 @@ error = _215.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 1000 2
 output = _216.out 
@@ -1738,7 +1738,7 @@ error = _216.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 1000 2
 output = _217.out 
@@ -1746,7 +1746,7 @@ error = _217.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 1000 2
 output = _218.out 
@@ -1754,7 +1754,7 @@ error = _218.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 1000 2
 output = _219.out 
@@ -1762,7 +1762,7 @@ error = _219.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 1000 2
 output = _220.out 
@@ -1778,7 +1778,7 @@ error = _221.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 1000 2
 output = _222.out 
@@ -1786,7 +1786,7 @@ error = _222.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 1000 2
 output = _223.out 
@@ -1794,7 +1794,7 @@ error = _223.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 1000 2
 output = _224.out 
@@ -1802,7 +1802,7 @@ error = _224.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 1000 2
 output = _225.out 
@@ -1810,7 +1810,7 @@ error = _225.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 1000 2
 output = _226.out 
@@ -1826,7 +1826,7 @@ error = _227.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 1000 2
 output = _228.out 
@@ -1834,7 +1834,7 @@ error = _228.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 1000 2
 output = _229.out 
@@ -1842,7 +1842,7 @@ error = _229.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 1000 2
 output = _230.out 
@@ -1850,7 +1850,7 @@ error = _230.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 1000 2
 output = _231.out 
@@ -1858,7 +1858,7 @@ error = _231.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 1000 2
 output = _232.out 
@@ -1874,7 +1874,7 @@ error = _233.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 1000 2
 output = _234.out 
@@ -1882,7 +1882,7 @@ error = _234.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 1000 2
 output = _235.out 
@@ -1890,7 +1890,7 @@ error = _235.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 1000 2
 output = _236.out 
@@ -1898,7 +1898,7 @@ error = _236.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 1000 2
 output = _237.out 
@@ -1906,7 +1906,7 @@ error = _237.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 1000 2
 output = _238.out 
@@ -1922,7 +1922,7 @@ error = _239.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 10000 2
 output = _240.out 
@@ -1930,7 +1930,7 @@ error = _240.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 10000 2
 output = _241.out 
@@ -1938,7 +1938,7 @@ error = _241.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 10000 2
 output = _242.out 
@@ -1946,7 +1946,7 @@ error = _242.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 10000 2
 output = _243.out 
@@ -1954,7 +1954,7 @@ error = _243.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 10000 2
 output = _244.out 
@@ -1970,7 +1970,7 @@ error = _245.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 10000 2
 output = _246.out 
@@ -1978,7 +1978,7 @@ error = _246.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 10000 2
 output = _247.out 
@@ -1986,7 +1986,7 @@ error = _247.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 10000 2
 output = _248.out 
@@ -1994,7 +1994,7 @@ error = _248.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 10000 2
 output = _249.out 
@@ -2002,7 +2002,7 @@ error = _249.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 10000 2
 output = _250.out 
@@ -2018,7 +2018,7 @@ error = _251.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 10000 2
 output = _252.out 
@@ -2026,7 +2026,7 @@ error = _252.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 10000 2
 output = _253.out 
@@ -2034,7 +2034,7 @@ error = _253.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 10000 2
 output = _254.out 
@@ -2042,7 +2042,7 @@ error = _254.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 10000 2
 output = _255.out 
@@ -2050,7 +2050,7 @@ error = _255.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 10000 2
 output = _256.out 
@@ -2066,7 +2066,7 @@ error = _257.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 10000 2
 output = _258.out 
@@ -2074,7 +2074,7 @@ error = _258.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 10000 2
 output = _259.out 
@@ -2082,7 +2082,7 @@ error = _259.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 10000 2
 output = _260.out 
@@ -2090,7 +2090,7 @@ error = _260.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 10000 2
 output = _261.out 
@@ -2098,7 +2098,7 @@ error = _261.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 10000 2
 output = _262.out 
@@ -2114,7 +2114,7 @@ error = _263.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 100000 2
 output = _264.out 
@@ -2122,7 +2122,7 @@ error = _264.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 100000 2
 output = _265.out 
@@ -2130,7 +2130,7 @@ error = _265.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 100000 2
 output = _266.out 
@@ -2138,7 +2138,7 @@ error = _266.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 100000 2
 output = _267.out 
@@ -2146,7 +2146,7 @@ error = _267.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 100000 2
 output = _268.out 
@@ -2162,7 +2162,7 @@ error = _269.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 100000 2
 output = _270.out 
@@ -2170,7 +2170,7 @@ error = _270.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 100000 2
 output = _271.out 
@@ -2178,7 +2178,7 @@ error = _271.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 100000 2
 output = _272.out 
@@ -2186,7 +2186,7 @@ error = _272.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 100000 2
 output = _273.out 
@@ -2194,7 +2194,7 @@ error = _273.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 100000 2
 output = _274.out 
@@ -2210,7 +2210,7 @@ error = _275.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 100000 2
 output = _276.out 
@@ -2218,7 +2218,7 @@ error = _276.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 100000 2
 output = _277.out 
@@ -2226,7 +2226,7 @@ error = _277.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 100000 2
 output = _278.out 
@@ -2234,7 +2234,7 @@ error = _278.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 100000 2
 output = _279.out 
@@ -2242,7 +2242,7 @@ error = _279.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 100000 2
 output = _280.out 
@@ -2258,7 +2258,7 @@ error = _281.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 100000 2
 output = _282.out 
@@ -2266,7 +2266,7 @@ error = _282.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 100000 2
 output = _283.out 
@@ -2274,7 +2274,7 @@ error = _283.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 100000 2
 output = _284.out 
@@ -2282,7 +2282,7 @@ error = _284.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 100000 2
 output = _285.out 
@@ -2290,7 +2290,7 @@ error = _285.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 100000 2
 output = _286.out 
@@ -2306,7 +2306,7 @@ error = _287.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 1000000 2
 output = _288.out 
@@ -2314,7 +2314,7 @@ error = _288.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 1000000 2
 output = _289.out 
@@ -2322,7 +2322,7 @@ error = _289.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 1000000 2
 output = _290.out 
@@ -2330,7 +2330,7 @@ error = _290.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 1000000 2
 output = _291.out 
@@ -2338,7 +2338,7 @@ error = _291.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 1000000 2
 output = _292.out 
@@ -2354,7 +2354,7 @@ error = _293.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 1000000 2
 output = _294.out 
@@ -2362,7 +2362,7 @@ error = _294.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 1000000 2
 output = _295.out 
@@ -2370,7 +2370,7 @@ error = _295.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 1000000 2
 output = _296.out 
@@ -2378,7 +2378,7 @@ error = _296.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 1000000 2
 output = _297.out 
@@ -2386,7 +2386,7 @@ error = _297.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 1000000 2
 output = _298.out 
@@ -2402,7 +2402,7 @@ error = _299.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 1000000 2
 output = _300.out 
@@ -2410,7 +2410,7 @@ error = _300.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 1000000 2
 output = _301.out 
@@ -2418,7 +2418,7 @@ error = _301.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 1000000 2
 output = _302.out 
@@ -2426,7 +2426,7 @@ error = _302.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 1000000 2
 output = _303.out 
@@ -2434,7 +2434,7 @@ error = _303.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 1000000 2
 output = _304.out 
@@ -2450,7 +2450,7 @@ error = _305.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 1000000 2
 output = _306.out 
@@ -2458,7 +2458,7 @@ error = _306.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 1000000 2
 output = _307.out 
@@ -2466,7 +2466,7 @@ error = _307.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 1000000 2
 output = _308.out 
@@ -2474,7 +2474,7 @@ error = _308.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 1000000 2
 output = _309.out 
@@ -2482,7 +2482,7 @@ error = _309.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 1000000 2
 output = _310.out 
@@ -2498,7 +2498,7 @@ error = _311.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 10000000 2
 output = _312.out 
@@ -2506,7 +2506,7 @@ error = _312.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 10000000 2
 output = _313.out 
@@ -2514,7 +2514,7 @@ error = _313.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 10000000 2
 output = _314.out 
@@ -2522,7 +2522,7 @@ error = _314.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 10000000 2
 output = _315.out 
@@ -2530,7 +2530,7 @@ error = _315.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 10000000 2
 output = _316.out 
@@ -2546,7 +2546,7 @@ error = _317.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 10000000 2
 output = _318.out 
@@ -2554,7 +2554,7 @@ error = _318.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 10000000 2
 output = _319.out 
@@ -2562,7 +2562,7 @@ error = _319.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 10000000 2
 output = _320.out 
@@ -2570,7 +2570,7 @@ error = _320.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 10000000 2
 output = _321.out 
@@ -2578,7 +2578,7 @@ error = _321.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 10000000 2
 output = _322.out 
@@ -2594,7 +2594,7 @@ error = _323.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 10000000 2
 output = _324.out 
@@ -2602,7 +2602,7 @@ error = _324.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 10000000 2
 output = _325.out 
@@ -2610,7 +2610,7 @@ error = _325.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 10000000 2
 output = _326.out 
@@ -2618,7 +2618,7 @@ error = _326.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 10000000 2
 output = _327.out 
@@ -2626,7 +2626,7 @@ error = _327.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 10000000 2
 output = _328.out 
@@ -2642,7 +2642,7 @@ error = _329.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 10000000 2
 output = _330.out 
@@ -2650,7 +2650,7 @@ error = _330.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 10000000 2
 output = _331.out 
@@ -2658,7 +2658,7 @@ error = _331.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 10000000 2
 output = _332.out 
@@ -2666,7 +2666,7 @@ error = _332.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 10000000 2
 output = _333.out 
@@ -2674,7 +2674,7 @@ error = _333.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 10000000 2
 output = _334.out 
@@ -2690,7 +2690,7 @@ error = _335.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 100000000 2
 output = _336.out 
@@ -2698,7 +2698,7 @@ error = _336.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 100000000 2
 output = _337.out 
@@ -2706,7 +2706,7 @@ error = _337.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 100000000 2
 output = _338.out 
@@ -2714,7 +2714,7 @@ error = _338.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 100000000 2
 output = _339.out 
@@ -2722,7 +2722,7 @@ error = _339.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 100000000 2
 output = _340.out 
@@ -2738,7 +2738,7 @@ error = _341.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 100000000 2
 output = _342.out 
@@ -2746,7 +2746,7 @@ error = _342.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 100000000 2
 output = _343.out 
@@ -2754,7 +2754,7 @@ error = _343.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 100000000 2
 output = _344.out 
@@ -2762,7 +2762,7 @@ error = _344.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 100000000 2
 output = _345.out 
@@ -2770,7 +2770,7 @@ error = _345.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 100000000 2
 output = _346.out 
@@ -2786,7 +2786,7 @@ error = _347.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 100000000 2
 output = _348.out 
@@ -2794,7 +2794,7 @@ error = _348.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 100000000 2
 output = _349.out 
@@ -2802,7 +2802,7 @@ error = _349.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 100000000 2
 output = _350.out 
@@ -2810,7 +2810,7 @@ error = _350.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 100000000 2
 output = _351.out 
@@ -2818,7 +2818,7 @@ error = _351.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 100000000 2
 output = _352.out 
@@ -2834,7 +2834,7 @@ error = _353.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 100000000 2
 output = _354.out 
@@ -2842,7 +2842,7 @@ error = _354.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 100000000 2
 output = _355.out 
@@ -2850,7 +2850,7 @@ error = _355.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 100000000 2
 output = _356.out 
@@ -2858,7 +2858,7 @@ error = _356.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 100000000 2
 output = _357.out 
@@ -2866,7 +2866,7 @@ error = _357.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 100000000 2
 output = _358.out 
@@ -2882,7 +2882,7 @@ error = _359.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 1000000000 2
 output = _360.out 
@@ -2890,7 +2890,7 @@ error = _360.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 1000000000 2
 output = _361.out 
@@ -2898,7 +2898,7 @@ error = _361.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 1000000000 2
 output = _362.out 
@@ -2906,7 +2906,7 @@ error = _362.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 1000000000 2
 output = _363.out 
@@ -2914,7 +2914,7 @@ error = _363.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 1000000000 2
 output = _364.out 
@@ -2930,7 +2930,7 @@ error = _365.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 1000000000 2
 output = _366.out 
@@ -2938,7 +2938,7 @@ error = _366.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 1000000000 2
 output = _367.out 
@@ -2946,7 +2946,7 @@ error = _367.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 1000000000 2
 output = _368.out 
@@ -2954,7 +2954,7 @@ error = _368.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 1000000000 2
 output = _369.out 
@@ -2962,7 +2962,7 @@ error = _369.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 1000000000 2
 output = _370.out 
@@ -2978,7 +2978,7 @@ error = _371.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 1000000000 2
 output = _372.out 
@@ -2986,7 +2986,7 @@ error = _372.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 1000000000 2
 output = _373.out 
@@ -2994,7 +2994,7 @@ error = _373.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 1000000000 2
 output = _374.out 
@@ -3002,7 +3002,7 @@ error = _374.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 1000000000 2
 output = _375.out 
@@ -3010,7 +3010,7 @@ error = _375.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 1000000000 2
 output = _376.out 
@@ -3026,7 +3026,7 @@ error = _377.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 1000000000 2
 output = _378.out 
@@ -3034,7 +3034,7 @@ error = _378.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 1000000000 2
 output = _379.out 
@@ -3042,7 +3042,7 @@ error = _379.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 1000000000 2
 output = _380.out 
@@ -3050,7 +3050,7 @@ error = _380.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 1000000000 2
 output = _381.out 
@@ -3058,7 +3058,7 @@ error = _381.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 1000000000 2
 output = _382.out 
@@ -3074,7 +3074,7 @@ error = _383.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 10000000000 2
 output = _384.out 
@@ -3082,7 +3082,7 @@ error = _384.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 10000000000 2
 output = _385.out 
@@ -3090,7 +3090,7 @@ error = _385.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 10000000000 2
 output = _386.out 
@@ -3098,7 +3098,7 @@ error = _386.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 10000000000 2
 output = _387.out 
@@ -3106,7 +3106,7 @@ error = _387.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 10000000000 2
 output = _388.out 
@@ -3122,7 +3122,7 @@ error = _389.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 10000000000 2
 output = _390.out 
@@ -3130,7 +3130,7 @@ error = _390.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 10000000000 2
 output = _391.out 
@@ -3138,7 +3138,7 @@ error = _391.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 10000000000 2
 output = _392.out 
@@ -3146,7 +3146,7 @@ error = _392.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 10000000000 2
 output = _393.out 
@@ -3154,7 +3154,7 @@ error = _393.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 10000000000 2
 output = _394.out 
@@ -3170,7 +3170,7 @@ error = _395.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 10000000000 2
 output = _396.out 
@@ -3178,7 +3178,7 @@ error = _396.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 10000000000 2
 output = _397.out 
@@ -3186,7 +3186,7 @@ error = _397.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 10000000000 2
 output = _398.out 
@@ -3194,7 +3194,7 @@ error = _398.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 10000000000 2
 output = _399.out 
@@ -3202,7 +3202,7 @@ error = _399.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 10000000000 2
 output = _400.out 
@@ -3218,7 +3218,7 @@ error = _401.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 10000000000 2
 output = _402.out 
@@ -3226,7 +3226,7 @@ error = _402.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 10000000000 2
 output = _403.out 
@@ -3234,7 +3234,7 @@ error = _403.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 10000000000 2
 output = _404.out 
@@ -3242,7 +3242,7 @@ error = _404.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 10000000000 2
 output = _405.out 
@@ -3250,7 +3250,7 @@ error = _405.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 10000000000 2
 output = _406.out 
@@ -3266,7 +3266,7 @@ error = _407.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 100000000000 2
 output = _408.out 
@@ -3274,7 +3274,7 @@ error = _408.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 100000000000 2
 output = _409.out 
@@ -3282,7 +3282,7 @@ error = _409.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 100000000000 2
 output = _410.out 
@@ -3290,7 +3290,7 @@ error = _410.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 100000000000 2
 output = _411.out 
@@ -3298,7 +3298,7 @@ error = _411.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 100000000000 2
 output = _412.out 
@@ -3314,7 +3314,7 @@ error = _413.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 100000000000 2
 output = _414.out 
@@ -3322,7 +3322,7 @@ error = _414.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 100000000000 2
 output = _415.out 
@@ -3330,7 +3330,7 @@ error = _415.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 100000000000 2
 output = _416.out 
@@ -3338,7 +3338,7 @@ error = _416.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 100000000000 2
 output = _417.out 
@@ -3346,7 +3346,7 @@ error = _417.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 100000000000 2
 output = _418.out 
@@ -3362,7 +3362,7 @@ error = _419.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 100000000000 2
 output = _420.out 
@@ -3370,7 +3370,7 @@ error = _420.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 100000000000 2
 output = _421.out 
@@ -3378,7 +3378,7 @@ error = _421.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 100000000000 2
 output = _422.out 
@@ -3386,7 +3386,7 @@ error = _422.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 100000000000 2
 output = _423.out 
@@ -3394,7 +3394,7 @@ error = _423.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 100000000000 2
 output = _424.out 
@@ -3410,7 +3410,7 @@ error = _425.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 100000000000 2
 output = _426.out 
@@ -3418,7 +3418,7 @@ error = _426.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 100000000000 2
 output = _427.out 
@@ -3426,7 +3426,7 @@ error = _427.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 100000000000 2
 output = _428.out 
@@ -3434,7 +3434,7 @@ error = _428.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 100000000000 2
 output = _429.out 
@@ -3442,7 +3442,7 @@ error = _429.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 100000000000 2
 output = _430.out 
@@ -3458,7 +3458,7 @@ error = _431.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 1000 4
 output = _432.out 
@@ -3466,7 +3466,7 @@ error = _432.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 1000 4
 output = _433.out 
@@ -3474,7 +3474,7 @@ error = _433.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 1000 4
 output = _434.out 
@@ -3482,7 +3482,7 @@ error = _434.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 1000 4
 output = _435.out 
@@ -3490,7 +3490,7 @@ error = _435.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 1000 4
 output = _436.out 
@@ -3506,7 +3506,7 @@ error = _437.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 1000 4
 output = _438.out 
@@ -3514,7 +3514,7 @@ error = _438.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 1000 4
 output = _439.out 
@@ -3522,7 +3522,7 @@ error = _439.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 1000 4
 output = _440.out 
@@ -3530,7 +3530,7 @@ error = _440.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 1000 4
 output = _441.out 
@@ -3538,7 +3538,7 @@ error = _441.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 1000 4
 output = _442.out 
@@ -3554,7 +3554,7 @@ error = _443.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 1000 4
 output = _444.out 
@@ -3562,7 +3562,7 @@ error = _444.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 1000 4
 output = _445.out 
@@ -3570,7 +3570,7 @@ error = _445.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 1000 4
 output = _446.out 
@@ -3578,7 +3578,7 @@ error = _446.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 1000 4
 output = _447.out 
@@ -3586,7 +3586,7 @@ error = _447.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 1000 4
 output = _448.out 
@@ -3602,7 +3602,7 @@ error = _449.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 1000 4
 output = _450.out 
@@ -3610,7 +3610,7 @@ error = _450.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 1000 4
 output = _451.out 
@@ -3618,7 +3618,7 @@ error = _451.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 1000 4
 output = _452.out 
@@ -3626,7 +3626,7 @@ error = _452.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 1000 4
 output = _453.out 
@@ -3634,7 +3634,7 @@ error = _453.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 1000 4
 output = _454.out 
@@ -3650,7 +3650,7 @@ error = _455.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 10000 4
 output = _456.out 
@@ -3658,7 +3658,7 @@ error = _456.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 10000 4
 output = _457.out 
@@ -3666,7 +3666,7 @@ error = _457.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 10000 4
 output = _458.out 
@@ -3674,7 +3674,7 @@ error = _458.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 10000 4
 output = _459.out 
@@ -3682,7 +3682,7 @@ error = _459.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 10000 4
 output = _460.out 
@@ -3698,7 +3698,7 @@ error = _461.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 10000 4
 output = _462.out 
@@ -3706,7 +3706,7 @@ error = _462.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 10000 4
 output = _463.out 
@@ -3714,7 +3714,7 @@ error = _463.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 10000 4
 output = _464.out 
@@ -3722,7 +3722,7 @@ error = _464.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 10000 4
 output = _465.out 
@@ -3730,7 +3730,7 @@ error = _465.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 10000 4
 output = _466.out 
@@ -3746,7 +3746,7 @@ error = _467.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 10000 4
 output = _468.out 
@@ -3754,7 +3754,7 @@ error = _468.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 10000 4
 output = _469.out 
@@ -3762,7 +3762,7 @@ error = _469.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 10000 4
 output = _470.out 
@@ -3770,7 +3770,7 @@ error = _470.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 10000 4
 output = _471.out 
@@ -3778,7 +3778,7 @@ error = _471.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 10000 4
 output = _472.out 
@@ -3794,7 +3794,7 @@ error = _473.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 10000 4
 output = _474.out 
@@ -3802,7 +3802,7 @@ error = _474.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 10000 4
 output = _475.out 
@@ -3810,7 +3810,7 @@ error = _475.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 10000 4
 output = _476.out 
@@ -3818,7 +3818,7 @@ error = _476.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 10000 4
 output = _477.out 
@@ -3826,7 +3826,7 @@ error = _477.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 10000 4
 output = _478.out 
@@ -3842,7 +3842,7 @@ error = _479.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 100000 4
 output = _480.out 
@@ -3850,7 +3850,7 @@ error = _480.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 100000 4
 output = _481.out 
@@ -3858,7 +3858,7 @@ error = _481.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 100000 4
 output = _482.out 
@@ -3866,7 +3866,7 @@ error = _482.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 100000 4
 output = _483.out 
@@ -3874,7 +3874,7 @@ error = _483.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 100000 4
 output = _484.out 
@@ -3890,7 +3890,7 @@ error = _485.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 100000 4
 output = _486.out 
@@ -3898,7 +3898,7 @@ error = _486.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 100000 4
 output = _487.out 
@@ -3906,7 +3906,7 @@ error = _487.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 100000 4
 output = _488.out 
@@ -3914,7 +3914,7 @@ error = _488.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 100000 4
 output = _489.out 
@@ -3922,7 +3922,7 @@ error = _489.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 100000 4
 output = _490.out 
@@ -3938,7 +3938,7 @@ error = _491.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 100000 4
 output = _492.out 
@@ -3946,7 +3946,7 @@ error = _492.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 100000 4
 output = _493.out 
@@ -3954,7 +3954,7 @@ error = _493.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 100000 4
 output = _494.out 
@@ -3962,7 +3962,7 @@ error = _494.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 100000 4
 output = _495.out 
@@ -3970,7 +3970,7 @@ error = _495.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 100000 4
 output = _496.out 
@@ -3986,7 +3986,7 @@ error = _497.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 100000 4
 output = _498.out 
@@ -3994,7 +3994,7 @@ error = _498.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 100000 4
 output = _499.out 
@@ -4002,7 +4002,7 @@ error = _499.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 100000 4
 output = _500.out 
@@ -4010,7 +4010,7 @@ error = _500.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 100000 4
 output = _501.out 
@@ -4018,7 +4018,7 @@ error = _501.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 100000 4
 output = _502.out 
@@ -4034,7 +4034,7 @@ error = _503.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 1000000 4
 output = _504.out 
@@ -4042,7 +4042,7 @@ error = _504.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 1000000 4
 output = _505.out 
@@ -4050,7 +4050,7 @@ error = _505.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 1000000 4
 output = _506.out 
@@ -4058,7 +4058,7 @@ error = _506.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 1000000 4
 output = _507.out 
@@ -4066,7 +4066,7 @@ error = _507.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 1000000 4
 output = _508.out 
@@ -4082,7 +4082,7 @@ error = _509.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 1000000 4
 output = _510.out 
@@ -4090,7 +4090,7 @@ error = _510.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 1000000 4
 output = _511.out 
@@ -4098,7 +4098,7 @@ error = _511.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 1000000 4
 output = _512.out 
@@ -4106,7 +4106,7 @@ error = _512.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 1000000 4
 output = _513.out 
@@ -4114,7 +4114,7 @@ error = _513.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 1000000 4
 output = _514.out 
@@ -4130,7 +4130,7 @@ error = _515.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 1000000 4
 output = _516.out 
@@ -4138,7 +4138,7 @@ error = _516.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 1000000 4
 output = _517.out 
@@ -4146,7 +4146,7 @@ error = _517.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 1000000 4
 output = _518.out 
@@ -4154,7 +4154,7 @@ error = _518.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 1000000 4
 output = _519.out 
@@ -4162,7 +4162,7 @@ error = _519.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 1000000 4
 output = _520.out 
@@ -4178,7 +4178,7 @@ error = _521.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 1000000 4
 output = _522.out 
@@ -4186,7 +4186,7 @@ error = _522.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 1000000 4
 output = _523.out 
@@ -4194,7 +4194,7 @@ error = _523.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 1000000 4
 output = _524.out 
@@ -4202,7 +4202,7 @@ error = _524.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 1000000 4
 output = _525.out 
@@ -4210,7 +4210,7 @@ error = _525.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 1000000 4
 output = _526.out 
@@ -4226,7 +4226,7 @@ error = _527.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 10000000 4
 output = _528.out 
@@ -4234,7 +4234,7 @@ error = _528.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 10000000 4
 output = _529.out 
@@ -4242,7 +4242,7 @@ error = _529.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 10000000 4
 output = _530.out 
@@ -4250,7 +4250,7 @@ error = _530.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 10000000 4
 output = _531.out 
@@ -4258,7 +4258,7 @@ error = _531.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 10000000 4
 output = _532.out 
@@ -4274,7 +4274,7 @@ error = _533.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 10000000 4
 output = _534.out 
@@ -4282,7 +4282,7 @@ error = _534.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 10000000 4
 output = _535.out 
@@ -4290,7 +4290,7 @@ error = _535.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 10000000 4
 output = _536.out 
@@ -4298,7 +4298,7 @@ error = _536.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 10000000 4
 output = _537.out 
@@ -4306,7 +4306,7 @@ error = _537.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 10000000 4
 output = _538.out 
@@ -4322,7 +4322,7 @@ error = _539.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 10000000 4
 output = _540.out 
@@ -4330,7 +4330,7 @@ error = _540.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 10000000 4
 output = _541.out 
@@ -4338,7 +4338,7 @@ error = _541.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 10000000 4
 output = _542.out 
@@ -4346,7 +4346,7 @@ error = _542.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 10000000 4
 output = _543.out 
@@ -4354,7 +4354,7 @@ error = _543.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 10000000 4
 output = _544.out 
@@ -4370,7 +4370,7 @@ error = _545.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 10000000 4
 output = _546.out 
@@ -4378,7 +4378,7 @@ error = _546.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 10000000 4
 output = _547.out 
@@ -4386,7 +4386,7 @@ error = _547.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 10000000 4
 output = _548.out 
@@ -4394,7 +4394,7 @@ error = _548.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 10000000 4
 output = _549.out 
@@ -4402,7 +4402,7 @@ error = _549.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 10000000 4
 output = _550.out 
@@ -4418,7 +4418,7 @@ error = _551.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 100000000 4
 output = _552.out 
@@ -4426,7 +4426,7 @@ error = _552.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 100000000 4
 output = _553.out 
@@ -4434,7 +4434,7 @@ error = _553.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 100000000 4
 output = _554.out 
@@ -4442,7 +4442,7 @@ error = _554.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 100000000 4
 output = _555.out 
@@ -4450,7 +4450,7 @@ error = _555.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 100000000 4
 output = _556.out 
@@ -4466,7 +4466,7 @@ error = _557.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 100000000 4
 output = _558.out 
@@ -4474,7 +4474,7 @@ error = _558.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 100000000 4
 output = _559.out 
@@ -4482,7 +4482,7 @@ error = _559.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 100000000 4
 output = _560.out 
@@ -4490,7 +4490,7 @@ error = _560.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 100000000 4
 output = _561.out 
@@ -4498,7 +4498,7 @@ error = _561.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 100000000 4
 output = _562.out 
@@ -4514,7 +4514,7 @@ error = _563.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 100000000 4
 output = _564.out 
@@ -4522,7 +4522,7 @@ error = _564.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 100000000 4
 output = _565.out 
@@ -4530,7 +4530,7 @@ error = _565.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 100000000 4
 output = _566.out 
@@ -4538,7 +4538,7 @@ error = _566.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 100000000 4
 output = _567.out 
@@ -4546,7 +4546,7 @@ error = _567.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 100000000 4
 output = _568.out 
@@ -4562,7 +4562,7 @@ error = _569.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 100000000 4
 output = _570.out 
@@ -4570,7 +4570,7 @@ error = _570.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 100000000 4
 output = _571.out 
@@ -4578,7 +4578,7 @@ error = _571.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 100000000 4
 output = _572.out 
@@ -4586,7 +4586,7 @@ error = _572.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 100000000 4
 output = _573.out 
@@ -4594,7 +4594,7 @@ error = _573.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 100000000 4
 output = _574.out 
@@ -4610,7 +4610,7 @@ error = _575.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 1000000000 4
 output = _576.out 
@@ -4618,7 +4618,7 @@ error = _576.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 1000000000 4
 output = _577.out 
@@ -4626,7 +4626,7 @@ error = _577.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 1000000000 4
 output = _578.out 
@@ -4634,7 +4634,7 @@ error = _578.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 1000000000 4
 output = _579.out 
@@ -4642,7 +4642,7 @@ error = _579.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 1000000000 4
 output = _580.out 
@@ -4658,7 +4658,7 @@ error = _581.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 1000000000 4
 output = _582.out 
@@ -4666,7 +4666,7 @@ error = _582.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 1000000000 4
 output = _583.out 
@@ -4674,7 +4674,7 @@ error = _583.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 1000000000 4
 output = _584.out 
@@ -4682,7 +4682,7 @@ error = _584.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 1000000000 4
 output = _585.out 
@@ -4690,7 +4690,7 @@ error = _585.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 1000000000 4
 output = _586.out 
@@ -4706,7 +4706,7 @@ error = _587.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 1000000000 4
 output = _588.out 
@@ -4714,7 +4714,7 @@ error = _588.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 1000000000 4
 output = _589.out 
@@ -4722,7 +4722,7 @@ error = _589.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 1000000000 4
 output = _590.out 
@@ -4730,7 +4730,7 @@ error = _590.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 1000000000 4
 output = _591.out 
@@ -4738,7 +4738,7 @@ error = _591.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 1000000000 4
 output = _592.out 
@@ -4754,7 +4754,7 @@ error = _593.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 1000000000 4
 output = _594.out 
@@ -4762,7 +4762,7 @@ error = _594.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 1000000000 4
 output = _595.out 
@@ -4770,7 +4770,7 @@ error = _595.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 1000000000 4
 output = _596.out 
@@ -4778,7 +4778,7 @@ error = _596.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 1000000000 4
 output = _597.out 
@@ -4786,7 +4786,7 @@ error = _597.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 1000000000 4
 output = _598.out 
@@ -4802,7 +4802,7 @@ error = _599.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 10000000000 4
 output = _600.out 
@@ -4810,7 +4810,7 @@ error = _600.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 10000000000 4
 output = _601.out 
@@ -4818,7 +4818,7 @@ error = _601.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 10000000000 4
 output = _602.out 
@@ -4826,7 +4826,7 @@ error = _602.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 10000000000 4
 output = _603.out 
@@ -4834,7 +4834,7 @@ error = _603.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 10000000000 4
 output = _604.out 
@@ -4850,7 +4850,7 @@ error = _605.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 10000000000 4
 output = _606.out 
@@ -4858,7 +4858,7 @@ error = _606.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 10000000000 4
 output = _607.out 
@@ -4866,7 +4866,7 @@ error = _607.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 10000000000 4
 output = _608.out 
@@ -4874,7 +4874,7 @@ error = _608.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 10000000000 4
 output = _609.out 
@@ -4882,7 +4882,7 @@ error = _609.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 10000000000 4
 output = _610.out 
@@ -4898,7 +4898,7 @@ error = _611.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 10000000000 4
 output = _612.out 
@@ -4906,7 +4906,7 @@ error = _612.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 10000000000 4
 output = _613.out 
@@ -4914,7 +4914,7 @@ error = _613.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 10000000000 4
 output = _614.out 
@@ -4922,7 +4922,7 @@ error = _614.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 10000000000 4
 output = _615.out 
@@ -4930,7 +4930,7 @@ error = _615.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 10000000000 4
 output = _616.out 
@@ -4946,7 +4946,7 @@ error = _617.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 10000000000 4
 output = _618.out 
@@ -4954,7 +4954,7 @@ error = _618.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 10000000000 4
 output = _619.out 
@@ -4962,7 +4962,7 @@ error = _619.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 10000000000 4
 output = _620.out 
@@ -4970,7 +4970,7 @@ error = _620.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 10000000000 4
 output = _621.out 
@@ -4978,7 +4978,7 @@ error = _621.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 10000000000 4
 output = _622.out 
@@ -4994,7 +4994,7 @@ error = _623.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 100000000000 4
 output = _624.out 
@@ -5002,7 +5002,7 @@ error = _624.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 100000000000 4
 output = _625.out 
@@ -5010,7 +5010,7 @@ error = _625.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 100000000000 4
 output = _626.out 
@@ -5018,7 +5018,7 @@ error = _626.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 100000000000 4
 output = _627.out 
@@ -5026,7 +5026,7 @@ error = _627.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 100000000000 4
 output = _628.out 
@@ -5042,7 +5042,7 @@ error = _629.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 100000000000 4
 output = _630.out 
@@ -5050,7 +5050,7 @@ error = _630.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 100000000000 4
 output = _631.out 
@@ -5058,7 +5058,7 @@ error = _631.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 100000000000 4
 output = _632.out 
@@ -5066,7 +5066,7 @@ error = _632.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 100000000000 4
 output = _633.out 
@@ -5074,7 +5074,7 @@ error = _633.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 100000000000 4
 output = _634.out 
@@ -5090,7 +5090,7 @@ error = _635.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 100000000000 4
 output = _636.out 
@@ -5098,7 +5098,7 @@ error = _636.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 100000000000 4
 output = _637.out 
@@ -5106,7 +5106,7 @@ error = _637.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 100000000000 4
 output = _638.out 
@@ -5114,7 +5114,7 @@ error = _638.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 100000000000 4
 output = _639.out 
@@ -5122,7 +5122,7 @@ error = _639.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 100000000000 4
 output = _640.out 
@@ -5138,7 +5138,7 @@ error = _641.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 100000000000 4
 output = _642.out 
@@ -5146,7 +5146,7 @@ error = _642.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 100000000000 4
 output = _643.out 
@@ -5154,7 +5154,7 @@ error = _643.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 100000000000 4
 output = _644.out 
@@ -5162,7 +5162,7 @@ error = _644.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 100000000000 4
 output = _645.out 
@@ -5170,7 +5170,7 @@ error = _645.err
 queue 
  
 Requirements =  
-java_vm_args = -Xms4044m -Xmx4044m 
+java_vm_args = -Xms3584m -Xmx3584m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 100000000000 4
 output = _646.out 
