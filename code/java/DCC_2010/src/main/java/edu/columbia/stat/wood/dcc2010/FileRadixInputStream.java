@@ -21,18 +21,10 @@ public class FileRadixInputStream extends InputStream {
     private GZIPInputStream is = null;
     public static long bytesRead = 0;
     private int radix;
-    private long streamLength = Long.MAX_VALUE;
 
     public FileRadixInputStream(File f, int radix) throws FileNotFoundException, IOException{
         is = new GZIPInputStream(new FileInputStream(f));
         this.radix = radix;
-    }
-
-    public FileRadixInputStream(File f, int radix, long streamLength) throws FileNotFoundException, IOException{
-        this(f,radix);
-        if(streamLength > -1){
-            this.streamLength = streamLength;
-        }
     }
 
     public long readLong() throws IOException {

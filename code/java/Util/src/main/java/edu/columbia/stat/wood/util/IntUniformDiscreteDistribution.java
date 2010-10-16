@@ -37,7 +37,7 @@ public class IntUniformDiscreteDistribution implements IntDiscreteDistribution, 
     public IntUniformDiscreteDistribution(int leftType, int rightType){
         this.leftType = leftType;
         this.rightType = rightType;
-        p = 1.0 / (double) (rightType - leftType + 1);
+        p = 1.0 / (double) ((long) rightType - (long) leftType + (long) 1);
     }
 
     /**
