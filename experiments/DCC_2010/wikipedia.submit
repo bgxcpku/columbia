@@ -1,10 +1,2076 @@
-universe = java
-executable = ../../code/java/DCC_2010/target/dcc2010-1.0-jar-with-dependencies.jar
-jar_files = ../../code/java/DCC_2010/target/dcc2010-1.0-jar-with-dependencies.jar
-java_vm_args = -Xms3.9g -Xmx3.9g
-
+universe = java 
+executable = ../../code/java/DCC_2010/target/dcc2010-1.0-jar-with-dependencies.jar 
+jar_files = ../../code/java/DCC_2010/target/dcc2010-1.0-jar-with-dependencies.jar 
+java_vm_args = -Xms3.9g -Xmx3.9g 
+ 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 1000 1
+output = _0.out 
+error = _0.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 1000 1
+output = _1.out 
+error = _1.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 1000 1
+output = _2.out 
+error = _2.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 1000 1
+output = _3.out 
+error = _3.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 1000 1
+output = _4.out 
+error = _4.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 16 1000 1
+output = _5.out 
+error = _5.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 1000 1
+output = _6.out 
+error = _6.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 1000 1
+output = _7.out 
+error = _7.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 1000 1
+output = _8.out 
+error = _8.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 1000 1
+output = _9.out 
+error = _9.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 1000 1
+output = _10.out 
+error = _10.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1024 1000 1
+output = _11.out 
+error = _11.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 1000 1
+output = _12.out 
+error = _12.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 1000 1
+output = _13.out 
+error = _13.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 1000 1
+output = _14.out 
+error = _14.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 1000 1
+output = _15.out 
+error = _15.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 1000 1
+output = _16.out 
+error = _16.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1048576 1000 1
+output = _17.out 
+error = _17.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 1000 1
+output = _18.out 
+error = _18.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 1000 1
+output = _19.out 
+error = _19.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 1000 1
+output = _20.out 
+error = _20.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 1000 1
+output = _21.out 
+error = _21.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 1000 1
+output = _22.out 
+error = _22.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1073741824 1000 1
+output = _23.out 
+error = _23.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 10000 1
+output = _24.out 
+error = _24.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 10000 1
+output = _25.out 
+error = _25.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 10000 1
+output = _26.out 
+error = _26.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 10000 1
+output = _27.out 
+error = _27.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 10000 1
+output = _28.out 
+error = _28.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 16 10000 1
+output = _29.out 
+error = _29.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 10000 1
+output = _30.out 
+error = _30.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 10000 1
+output = _31.out 
+error = _31.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 10000 1
+output = _32.out 
+error = _32.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 10000 1
+output = _33.out 
+error = _33.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 10000 1
+output = _34.out 
+error = _34.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1024 10000 1
+output = _35.out 
+error = _35.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 10000 1
+output = _36.out 
+error = _36.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 10000 1
+output = _37.out 
+error = _37.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 10000 1
+output = _38.out 
+error = _38.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 10000 1
+output = _39.out 
+error = _39.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 10000 1
+output = _40.out 
+error = _40.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1048576 10000 1
+output = _41.out 
+error = _41.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 10000 1
+output = _42.out 
+error = _42.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 10000 1
+output = _43.out 
+error = _43.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 10000 1
+output = _44.out 
+error = _44.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 10000 1
+output = _45.out 
+error = _45.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 10000 1
+output = _46.out 
+error = _46.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1073741824 10000 1
+output = _47.out 
+error = _47.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 100000 1
+output = _48.out 
+error = _48.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 100000 1
+output = _49.out 
+error = _49.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 100000 1
+output = _50.out 
+error = _50.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 100000 1
+output = _51.out 
+error = _51.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 100000 1
+output = _52.out 
+error = _52.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 16 100000 1
+output = _53.out 
+error = _53.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 100000 1
+output = _54.out 
+error = _54.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 100000 1
+output = _55.out 
+error = _55.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 100000 1
+output = _56.out 
+error = _56.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 100000 1
+output = _57.out 
+error = _57.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 100000 1
+output = _58.out 
+error = _58.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1024 100000 1
+output = _59.out 
+error = _59.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 100000 1
+output = _60.out 
+error = _60.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 100000 1
+output = _61.out 
+error = _61.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 100000 1
+output = _62.out 
+error = _62.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 100000 1
+output = _63.out 
+error = _63.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 100000 1
+output = _64.out 
+error = _64.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1048576 100000 1
+output = _65.out 
+error = _65.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 100000 1
+output = _66.out 
+error = _66.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 100000 1
+output = _67.out 
+error = _67.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 100000 1
+output = _68.out 
+error = _68.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 100000 1
+output = _69.out 
+error = _69.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 100000 1
+output = _70.out 
+error = _70.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1073741824 100000 1
+output = _71.out 
+error = _71.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 1000000 1
+output = _72.out 
+error = _72.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 1000000 1
+output = _73.out 
+error = _73.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 1000000 1
+output = _74.out 
+error = _74.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 1000000 1
+output = _75.out 
+error = _75.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 1000000 1
+output = _76.out 
+error = _76.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 16 1000000 1
+output = _77.out 
+error = _77.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 1000000 1
+output = _78.out 
+error = _78.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 1000000 1
+output = _79.out 
+error = _79.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 1000000 1
+output = _80.out 
+error = _80.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 1000000 1
+output = _81.out 
+error = _81.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 1000000 1
+output = _82.out 
+error = _82.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1024 1000000 1
+output = _83.out 
+error = _83.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 1000000 1
+output = _84.out 
+error = _84.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 1000000 1
+output = _85.out 
+error = _85.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 1000000 1
+output = _86.out 
+error = _86.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 1000000 1
+output = _87.out 
+error = _87.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 1000000 1
+output = _88.out 
+error = _88.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1048576 1000000 1
+output = _89.out 
+error = _89.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 1000000 1
+output = _90.out 
+error = _90.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 1000000 1
+output = _91.out 
+error = _91.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 1000000 1
+output = _92.out 
+error = _92.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 1000000 1
+output = _93.out 
+error = _93.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 1000000 1
+output = _94.out 
+error = _94.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1073741824 1000000 1
+output = _95.out 
+error = _95.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 10000000 1
+output = _96.out 
+error = _96.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 10000000 1
+output = _97.out 
+error = _97.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 10000000 1
+output = _98.out 
+error = _98.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 10000000 1
+output = _99.out 
+error = _99.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 10000000 1
+output = _100.out 
+error = _100.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 16 10000000 1
+output = _101.out 
+error = _101.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 10000000 1
+output = _102.out 
+error = _102.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 10000000 1
+output = _103.out 
+error = _103.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 10000000 1
+output = _104.out 
+error = _104.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 10000000 1
+output = _105.out 
+error = _105.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 10000000 1
+output = _106.out 
+error = _106.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1024 10000000 1
+output = _107.out 
+error = _107.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 10000000 1
+output = _108.out 
+error = _108.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 10000000 1
+output = _109.out 
+error = _109.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 10000000 1
+output = _110.out 
+error = _110.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 10000000 1
+output = _111.out 
+error = _111.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 10000000 1
+output = _112.out 
+error = _112.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1048576 10000000 1
+output = _113.out 
+error = _113.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 10000000 1
+output = _114.out 
+error = _114.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 10000000 1
+output = _115.out 
+error = _115.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 10000000 1
+output = _116.out 
+error = _116.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 10000000 1
+output = _117.out 
+error = _117.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 10000000 1
+output = _118.out 
+error = _118.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1073741824 10000000 1
+output = _119.out 
+error = _119.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 100000000 1
+output = _120.out 
+error = _120.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 100000000 1
+output = _121.out 
+error = _121.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 100000000 1
+output = _122.out 
+error = _122.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 100000000 1
+output = _123.out 
+error = _123.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 100000000 1
+output = _124.out 
+error = _124.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 16 100000000 1
+output = _125.out 
+error = _125.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 100000000 1
+output = _126.out 
+error = _126.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 100000000 1
+output = _127.out 
+error = _127.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 100000000 1
+output = _128.out 
+error = _128.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 100000000 1
+output = _129.out 
+error = _129.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 100000000 1
+output = _130.out 
+error = _130.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1024 100000000 1
+output = _131.out 
+error = _131.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 100000000 1
+output = _132.out 
+error = _132.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 100000000 1
+output = _133.out 
+error = _133.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 100000000 1
+output = _134.out 
+error = _134.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 100000000 1
+output = _135.out 
+error = _135.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 100000000 1
+output = _136.out 
+error = _136.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1048576 100000000 1
+output = _137.out 
+error = _137.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 100000000 1
+output = _138.out 
+error = _138.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 100000000 1
+output = _139.out 
+error = _139.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 100000000 1
+output = _140.out 
+error = _140.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 100000000 1
+output = _141.out 
+error = _141.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 100000000 1
+output = _142.out 
+error = _142.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1073741824 100000000 1
+output = _143.out 
+error = _143.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 1000000000 1
+output = _144.out 
+error = _144.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 1000000000 1
+output = _145.out 
+error = _145.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 1000000000 1
+output = _146.out 
+error = _146.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 1000000000 1
+output = _147.out 
+error = _147.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 1000000000 1
+output = _148.out 
+error = _148.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 16 1000000000 1
+output = _149.out 
+error = _149.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 1000000000 1
+output = _150.out 
+error = _150.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 1000000000 1
+output = _151.out 
+error = _151.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 1000000000 1
+output = _152.out 
+error = _152.err 
+queue 
+ 
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 1000000000 1
-output = _1.out
-error = _1.err
-queue
-
+output = _153.out 
+error = _153.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 1000000000 1
+output = _154.out 
+error = _154.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1024 1000000000 1
+output = _155.out 
+error = _155.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 1000000000 1
+output = _156.out 
+error = _156.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 1000000000 1
+output = _157.out 
+error = _157.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 1000000000 1
+output = _158.out 
+error = _158.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 1000000000 1
+output = _159.out 
+error = _159.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 1000000000 1
+output = _160.out 
+error = _160.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1048576 1000000000 1
+output = _161.out 
+error = _161.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 1000000000 1
+output = _162.out 
+error = _162.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 1000000000 1
+output = _163.out 
+error = _163.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 1000000000 1
+output = _164.out 
+error = _164.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 1000000000 1
+output = _165.out 
+error = _165.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 1000000000 1
+output = _166.out 
+error = _166.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1073741824 1000000000 1
+output = _167.out 
+error = _167.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 10000000000 1
+output = _168.out 
+error = _168.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 10000000000 1
+output = _169.out 
+error = _169.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 10000000000 1
+output = _170.out 
+error = _170.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 10000000000 1
+output = _171.out 
+error = _171.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 10000000000 1
+output = _172.out 
+error = _172.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 16 10000000000 1
+output = _173.out 
+error = _173.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 10000000000 1
+output = _174.out 
+error = _174.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 10000000000 1
+output = _175.out 
+error = _175.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 10000000000 1
+output = _176.out 
+error = _176.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 10000000000 1
+output = _177.out 
+error = _177.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 10000000000 1
+output = _178.out 
+error = _178.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1024 10000000000 1
+output = _179.out 
+error = _179.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 10000000000 1
+output = _180.out 
+error = _180.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 10000000000 1
+output = _181.out 
+error = _181.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 10000000000 1
+output = _182.out 
+error = _182.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 10000000000 1
+output = _183.out 
+error = _183.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 10000000000 1
+output = _184.out 
+error = _184.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1048576 10000000000 1
+output = _185.out 
+error = _185.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 10000000000 1
+output = _186.out 
+error = _186.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 10000000000 1
+output = _187.out 
+error = _187.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 10000000000 1
+output = _188.out 
+error = _188.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 10000000000 1
+output = _189.out 
+error = _189.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 10000000000 1
+output = _190.out 
+error = _190.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1073741824 10000000000 1
+output = _191.out 
+error = _191.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 100000000000 1
+output = _192.out 
+error = _192.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 100000000000 1
+output = _193.out 
+error = _193.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 100000000000 1
+output = _194.out 
+error = _194.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 100000000000 1
+output = _195.out 
+error = _195.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 100000000000 1
+output = _196.out 
+error = _196.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 16 100000000000 1
+output = _197.out 
+error = _197.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 100000000000 1
+output = _198.out 
+error = _198.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 100000000000 1
+output = _199.out 
+error = _199.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 100000000000 1
+output = _200.out 
+error = _200.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 100000000000 1
+output = _201.out 
+error = _201.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 100000000000 1
+output = _202.out 
+error = _202.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1024 100000000000 1
+output = _203.out 
+error = _203.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 100000000000 1
+output = _204.out 
+error = _204.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 100000000000 1
+output = _205.out 
+error = _205.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 100000000000 1
+output = _206.out 
+error = _206.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 100000000000 1
+output = _207.out 
+error = _207.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 100000000000 1
+output = _208.out 
+error = _208.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1048576 100000000000 1
+output = _209.out 
+error = _209.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 100000000000 1
+output = _210.out 
+error = _210.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 100000000000 1
+output = _211.out 
+error = _211.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 100000000000 1
+output = _212.out 
+error = _212.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 100000000000 1
+output = _213.out 
+error = _213.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 100000000000 1
+output = _214.out 
+error = _214.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1073741824 100000000000 1
+output = _215.out 
+error = _215.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 1000 2
+output = _216.out 
+error = _216.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 1000 2
+output = _217.out 
+error = _217.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 1000 2
+output = _218.out 
+error = _218.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 1000 2
+output = _219.out 
+error = _219.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 1000 2
+output = _220.out 
+error = _220.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 16 1000 2
+output = _221.out 
+error = _221.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 1000 2
+output = _222.out 
+error = _222.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 1000 2
+output = _223.out 
+error = _223.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 1000 2
+output = _224.out 
+error = _224.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 1000 2
+output = _225.out 
+error = _225.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 1000 2
+output = _226.out 
+error = _226.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1024 1000 2
+output = _227.out 
+error = _227.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 1000 2
+output = _228.out 
+error = _228.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 1000 2
+output = _229.out 
+error = _229.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 1000 2
+output = _230.out 
+error = _230.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 1000 2
+output = _231.out 
+error = _231.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 1000 2
+output = _232.out 
+error = _232.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1048576 1000 2
+output = _233.out 
+error = _233.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 1000 2
+output = _234.out 
+error = _234.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 1000 2
+output = _235.out 
+error = _235.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 1000 2
+output = _236.out 
+error = _236.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 1000 2
+output = _237.out 
+error = _237.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 1000 2
+output = _238.out 
+error = _238.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1073741824 1000 2
+output = _239.out 
+error = _239.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 10000 2
+output = _240.out 
+error = _240.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 10000 2
+output = _241.out 
+error = _241.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 10000 2
+output = _242.out 
+error = _242.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 10000 2
+output = _243.out 
+error = _243.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 10000 2
+output = _244.out 
+error = _244.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 16 10000 2
+output = _245.out 
+error = _245.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 10000 2
+output = _246.out 
+error = _246.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 10000 2
+output = _247.out 
+error = _247.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 10000 2
+output = _248.out 
+error = _248.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 10000 2
+output = _249.out 
+error = _249.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 10000 2
+output = _250.out 
+error = _250.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1024 10000 2
+output = _251.out 
+error = _251.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 10000 2
+output = _252.out 
+error = _252.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 10000 2
+output = _253.out 
+error = _253.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 10000 2
+output = _254.out 
+error = _254.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 10000 2
+output = _255.out 
+error = _255.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 10000 2
+output = _256.out 
+error = _256.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1048576 10000 2
+output = _257.out 
+error = _257.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 10000 2
+output = _258.out 
+error = _258.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 10000 2
+output = _259.out 
+error = _259.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 10000 2
+output = _260.out 
+error = _260.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 10000 2
+output = _261.out 
+error = _261.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 10000 2
+output = _262.out 
+error = _262.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1073741824 10000 2
+output = _263.out 
+error = _263.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 100000 2
+output = _264.out 
+error = _264.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 100000 2
+output = _265.out 
+error = _265.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 100000 2
+output = _266.out 
+error = _266.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 100000 2
+output = _267.out 
+error = _267.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 100000 2
+output = _268.out 
+error = _268.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 16 100000 2
+output = _269.out 
+error = _269.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 100000 2
+output = _270.out 
+error = _270.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 100000 2
+output = _271.out 
+error = _271.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 100000 2
+output = _272.out 
+error = _272.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 100000 2
+output = _273.out 
+error = _273.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 100000 2
+output = _274.out 
+error = _274.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1024 100000 2
+output = _275.out 
+error = _275.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 100000 2
+output = _276.out 
+error = _276.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 100000 2
+output = _277.out 
+error = _277.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 100000 2
+output = _278.out 
+error = _278.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 100000 2
+output = _279.out 
+error = _279.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 100000 2
+output = _280.out 
+error = _280.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1048576 100000 2
+output = _281.out 
+error = _281.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 100000 2
+output = _282.out 
+error = _282.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 100000 2
+output = _283.out 
+error = _283.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 100000 2
+output = _284.out 
+error = _284.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 100000 2
+output = _285.out 
+error = _285.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 100000 2
+output = _286.out 
+error = _286.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1073741824 100000 2
+output = _287.out 
+error = _287.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 1000000 2
+output = _288.out 
+error = _288.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 1000000 2
+output = _289.out 
+error = _289.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 1000000 2
+output = _290.out 
+error = _290.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 1000000 2
+output = _291.out 
+error = _291.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 1000000 2
+output = _292.out 
+error = _292.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 16 1000000 2
+output = _293.out 
+error = _293.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 1000000 2
+output = _294.out 
+error = _294.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 1000000 2
+output = _295.out 
+error = _295.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 1000000 2
+output = _296.out 
+error = _296.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 1000000 2
+output = _297.out 
+error = _297.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 1000000 2
+output = _298.out 
+error = _298.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1024 1000000 2
+output = _299.out 
+error = _299.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 1000000 2
+output = _300.out 
+error = _300.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 1000000 2
+output = _301.out 
+error = _301.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 1000000 2
+output = _302.out 
+error = _302.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 1000000 2
+output = _303.out 
+error = _303.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 1000000 2
+output = _304.out 
+error = _304.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1048576 1000000 2
+output = _305.out 
+error = _305.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 1000000 2
+output = _306.out 
+error = _306.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 1000000 2
+output = _307.out 
+error = _307.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 1000000 2
+output = _308.out 
+error = _308.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 1000000 2
+output = _309.out 
+error = _309.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 1000000 2
+output = _310.out 
+error = _310.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1073741824 1000000 2
+output = _311.out 
+error = _311.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 10000000 2
+output = _312.out 
+error = _312.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 10000000 2
+output = _313.out 
+error = _313.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 10000000 2
+output = _314.out 
+error = _314.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 10000000 2
+output = _315.out 
+error = _315.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 10000000 2
+output = _316.out 
+error = _316.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 16 10000000 2
+output = _317.out 
+error = _317.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 10000000 2
+output = _318.out 
+error = _318.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 10000000 2
+output = _319.out 
+error = _319.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 10000000 2
+output = _320.out 
+error = _320.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 10000000 2
+output = _321.out 
+error = _321.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 10000000 2
+output = _322.out 
+error = _322.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1024 10000000 2
+output = _323.out 
+error = _323.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 10000000 2
+output = _324.out 
+error = _324.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 10000000 2
+output = _325.out 
+error = _325.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 10000000 2
+output = _326.out 
+error = _326.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 10000000 2
+output = _327.out 
+error = _327.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 10000000 2
+output = _328.out 
+error = _328.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1048576 10000000 2
+output = _329.out 
+error = _329.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 10000000 2
+output = _330.out 
+error = _330.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 10000000 2
+output = _331.out 
+error = _331.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 10000000 2
+output = _332.out 
+error = _332.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 10000000 2
+output = _333.out 
+error = _333.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 10000000 2
+output = _334.out 
+error = _334.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1073741824 10000000 2
+output = _335.out 
+error = _335.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 100000000 2
+output = _336.out 
+error = _336.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 100000000 2
+output = _337.out 
+error = _337.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 100000000 2
+output = _338.out 
+error = _338.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 100000000 2
+output = _339.out 
+error = _339.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 100000000 2
+output = _340.out 
+error = _340.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 16 100000000 2
+output = _341.out 
+error = _341.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 100000000 2
+output = _342.out 
+error = _342.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 100000000 2
+output = _343.out 
+error = _343.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 100000000 2
+output = _344.out 
+error = _344.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 100000000 2
+output = _345.out 
+error = _345.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 100000000 2
+output = _346.out 
+error = _346.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1024 100000000 2
+output = _347.out 
+error = _347.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 100000000 2
+output = _348.out 
+error = _348.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 100000000 2
+output = _349.out 
+error = _349.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 100000000 2
+output = _350.out 
+error = _350.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 100000000 2
+output = _351.out 
+error = _351.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 100000000 2
+output = _352.out 
+error = _352.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1048576 100000000 2
+output = _353.out 
+error = _353.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 100000000 2
+output = _354.out 
+error = _354.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 100000000 2
+output = _355.out 
+error = _355.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 100000000 2
+output = _356.out 
+error = _356.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 100000000 2
+output = _357.out 
+error = _357.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 100000000 2
+output = _358.out 
+error = _358.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1073741824 100000000 2
+output = _359.out 
+error = _359.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 1000000000 2
+output = _360.out 
+error = _360.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 1000000000 2
+output = _361.out 
+error = _361.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 1000000000 2
+output = _362.out 
+error = _362.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 1000000000 2
+output = _363.out 
+error = _363.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 1000000000 2
+output = _364.out 
+error = _364.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 16 1000000000 2
+output = _365.out 
+error = _365.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 1000000000 2
+output = _366.out 
+error = _366.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 1000000000 2
+output = _367.out 
+error = _367.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 1000000000 2
+output = _368.out 
+error = _368.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 1000000000 2
+output = _369.out 
+error = _369.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 1000000000 2
+output = _370.out 
+error = _370.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1024 1000000000 2
+output = _371.out 
+error = _371.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 1000000000 2
+output = _372.out 
+error = _372.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 1000000000 2
+output = _373.out 
+error = _373.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 1000000000 2
+output = _374.out 
+error = _374.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 1000000000 2
+output = _375.out 
+error = _375.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 1000000000 2
+output = _376.out 
+error = _376.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1048576 1000000000 2
+output = _377.out 
+error = _377.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 1000000000 2
+output = _378.out 
+error = _378.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 1000000000 2
+output = _379.out 
+error = _379.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 1000000000 2
+output = _380.out 
+error = _380.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 1000000000 2
+output = _381.out 
+error = _381.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 1000000000 2
+output = _382.out 
+error = _382.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1073741824 1000000000 2
+output = _383.out 
+error = _383.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 10000000000 2
+output = _384.out 
+error = _384.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 10000000000 2
+output = _385.out 
+error = _385.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 10000000000 2
+output = _386.out 
+error = _386.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 10000000000 2
+output = _387.out 
+error = _387.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 10000000000 2
+output = _388.out 
+error = _388.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 16 10000000000 2
+output = _389.out 
+error = _389.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1024 10000000000 2
+output = _390.out 
+error = _390.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1024 10000000000 2
+output = _391.out 
+error = _391.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1024 10000000000 2
+output = _392.out 
+error = _392.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 10000000000 2
+output = _393.out 
+error = _393.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 10000000000 2
+output = _394.out 
+error = _394.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1024 10000000000 2
+output = _395.out 
+error = _395.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1048576 10000000000 2
+output = _396.out 
+error = _396.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1048576 10000000000 2
+output = _397.out 
+error = _397.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1048576 10000000000 2
+output = _398.out 
+error = _398.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1048576 10000000000 2
+output = _399.out 
+error = _399.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 10000000000 2
+output = _400.out 
+error = _400.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1048576 10000000000 2
+output = _401.out 
+error = _401.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 1073741824 10000000000 2
+output = _402.out 
+error = _402.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 1073741824 10000000000 2
+output = _403.out 
+error = _403.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 1073741824 10000000000 2
+output = _404.out 
+error = _404.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1073741824 10000000000 2
+output = _405.out 
+error = _405.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 10000000000 2
+output = _406.out 
+error = _406.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 1073741824 10000000000 2
+output = _407.out 
+error = _407.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000 16 100000000000 2
+output = _408.out 
+error = _408.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000 16 100000000000 2
+output = _409.out 
+error = _409.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 100000 16 100000000000 2
+output = _410.out 
+error = _410.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 16 100000000000 2
+output = _411.out 
+error = _411.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 100000000000 2
+output = _412.out 
+error = _412.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 20000000 16 100000000000 2
+output = _413.out 
+error = _413.err 
+queue 
+ 
