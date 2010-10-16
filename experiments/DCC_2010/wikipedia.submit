@@ -1,0 +1,10 @@
+universe = java
+executable = ../../code/java/DCC_2010/target/dcc2010-1.0-jar-with-dependencies.jar
+jar_files = ../../code/java/DCC_2010/target/dcc2010-1.0-jar-with-dependencies.jar
+java_vm_args = -Xms3.9g -Xmx3.9g
+
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 1000000 1024 1000000000 1
+output = _1.out
+error = _1.err
+queue
+
