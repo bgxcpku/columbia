@@ -725,10 +725,17 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
                     if (newKey.value() > -1) {
                         nc.put((byte) newKey.value(), c);
                         if (c.edgeStart >= bs.blockSize()) {
-                            c.edgeStart %= bs.blockSize();
+                            c.edgeNode.remove(c);
+                            while(c.edgeStart >= bs.blockSize()){
+                                c.edgeStart -= bs.blockSize();
+                                c.edgeNode = c.edgeNode.previous();
+                            }
+                            c.edgeNode.add(c);
+
+                            /*c.edgeStart %= bs.blockSize();
                             c.edgeNode.remove(c);
                             c.edgeNode = c.edgeNode.previous();
-                            c.edgeNode.add(c);
+                            c.edgeNode.add(c);*/
                             assert (byte) newKey.value() == c.edgeNode.byteChunk()[c.edgeStart];
                         }
                     } else {
