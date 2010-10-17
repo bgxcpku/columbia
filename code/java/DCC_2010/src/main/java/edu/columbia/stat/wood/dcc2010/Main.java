@@ -65,7 +65,7 @@ public class Main {
 
         double logLik = 0.0;
         if(radix == 1){
-            ByteSequenceMemoizer sm = new ByteSequenceMemoizer(new ByteSequenceMemoizerParameters(depth,sizeOfTree, 1 * sizeOfTree));
+            ByteSequenceMemoizer sm = new ByteSequenceMemoizer(new ByteSequenceMemoizerParameters(depth,sizeOfTree, 100 * sizeOfTree));
 
             int bytesLogLik = 0;
             long l;
@@ -77,7 +77,7 @@ public class Main {
                     bytesLogLik = 0;
                     logLik = 0.0;
                     ByteRestaurant.count = 0;
-                    sm = new ByteSequenceMemoizer(new ByteSequenceMemoizerParameters(depth,sizeOfTree, 1 * sizeOfTree));
+                    sm = new ByteSequenceMemoizer(new ByteSequenceMemoizerParameters(depth,sizeOfTree, 100 * sizeOfTree));
                 }
 
                 logLik += sm.continueSequence((byte) l);
