@@ -673,7 +673,6 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
 
         assert ds.index() == -1;
 
-        newKey.set(-1);
         r = ecr;
         rDepth = 0;
         bi = bs.backwardsIterator();
@@ -701,6 +700,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
                 int currentEdgeStart = bi.ind;
                 ByteSeqNode currentNode = bi.node;
 
+                newKey.set(-1);
                 int overlap = bi.overlap(c.edgeNode, c.edgeStart, c.edgeLength, newKey);
 
                 assert overlap > 0;
@@ -729,6 +729,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
                             c.edgeNode.remove(c);
                             c.edgeNode = c.edgeNode.previous();
                             c.edgeNode.add(c);
+                            assert (byte) newKey.value() == c.edgeNode.byteChunk()[c.edgeStart];
                         }
                     } else {
                         c.edgeNode.remove(c);
@@ -738,8 +739,23 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
                 }
             }
         }
-
         return r;
+    }
+
+    public void checkKeys(){
+        checkKeys(ecr);
+    }
+
+    public void checkKeys(ByteRestaurant r){
+        if(!r.isEmpty()){
+            for(Object c : r.values()){
+                checkKeys((ByteRestaurant) c);
+            }
+        }
+
+        if(r.parent != null){
+            assert r.parent.get(r.edgeNode.byteChunk()[r.edgeStart]).equals(r);
+        }
     }
 
     private ByteRestaurant getWithoutInsertion(byte[] context) {
