@@ -673,6 +673,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
 
         assert ds.index() == -1;
 
+        newKey.set(-1);
         r = ecr;
         rDepth = 0;
         bi = bs.backwardsIterator();
