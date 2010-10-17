@@ -36,10 +36,10 @@ public class Main {
         //defaults
         File f;
         String corpus = "/Users/nicholasbartlett/Documents/np_bayes/data/pride_and_prejudice/pap.gz";
-        int sizeOfTree = 1000000;
-        int depth = 10;
-        long streamLength = Long.MAX_VALUE;
-        int radix = 4;
+        int sizeOfTree = 10000;
+        int depth = 1024;
+        long streamLength = 100000;
+        int radix = 1;
 
         if(nargs > 0){
             corpus = args[0];
@@ -65,7 +65,7 @@ public class Main {
 
         double logLik = 0.0;
         if(radix == 1){
-            ByteSequenceMemoizer sm = new ByteSequenceMemoizer(new ByteSequenceMemoizerParameters(depth,sizeOfTree, 100 * sizeOfTree));
+            ByteSequenceMemoizer sm = new ByteSequenceMemoizer(new ByteSequenceMemoizerParameters(depth,sizeOfTree, 1 * sizeOfTree));
 
             int bytesLogLik = 0;
             long l;
@@ -76,8 +76,8 @@ public class Main {
                     is.bytesRead = radix;
                     bytesLogLik = 0;
                     logLik = 0.0;
-                    sm = new ByteSequenceMemoizer(new ByteSequenceMemoizerParameters(depth,sizeOfTree, 100 * sizeOfTree));
                     ByteRestaurant.count = 0;
+                    sm = new ByteSequenceMemoizer(new ByteSequenceMemoizerParameters(depth,sizeOfTree, 1 * sizeOfTree));
                 }
 
                 logLik += sm.continueSequence((byte) l);
@@ -116,16 +116,15 @@ public class Main {
                     bytesLogLik = 0;
                     logLik = 0.0;
 
+                    IntRestaurant.count = 0;
                     if(radix == 2){
                         sm = new IntSequenceMemoizer(new IntSequenceMemoizerParameters(depth,sizeOfTree, 100 * sizeOfTree, 1 << 16));
-                        IntRestaurant.count = 0;
                     } else if (radix == 4){
                         IntDiscreteDistribution baseDistribution = new IntUniformDiscreteDistribution(Integer.MIN_VALUE, Integer.MAX_VALUE);
                         double[] discounts = new double[]{0.5, 0.7, 0.8, 0.82, 0.84, 0.88, 0.91, 0.92, 0.93, 0.94, 0.95};
                         IntSequenceMemoizerParameters smp = new IntSequenceMemoizerParameters(baseDistribution, discounts, 0.5, depth, 3, sizeOfTree, sizeOfTree * 100);
                         
                         sm = new IntSequenceMemoizer(smp);
-                        IntRestaurant.count = 0;
                     }
                 }
 

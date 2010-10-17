@@ -4,7 +4,7 @@ radix = [1 2 4];
 stream_length = 10.^(3:11);
 depth = [16 1024 1048576 1073741824];
 size_of_tree = 10.^(3:7);
-size_of_tree = [size_of_tree 50000000];
+size_of_tree = [size_of_tree 30000000];
 
 fid = fopen('wikipedia.submit','w');
 
@@ -18,12 +18,15 @@ for r = radix
     for sl = stream_length
         for d = depth
             for sot = size_of_tree
-                if sot > 15000000
+                if r > 1 && sot > 9000000 && sl > 1000000
+                    fprintf(fid,'Requirements = BigMem == TRUE \n');
+                    fprintf(fid,'java_vm_args = -Xms7680m -Xmx7680m \n \n');
+                elseif sot > 10000000 && sl > 1000000
                     fprintf(fid,'Requirements = BigMem == TRUE \n');
                     fprintf(fid,'java_vm_args = -Xms7680m -Xmx7680m \n \n');
                 else 
                     fprintf(fid,'Requirements =  \n');
-                    fprintf(fid,'java_vm_args = -Xms3584m -Xmx3584m \n \n');
+                    fprintf(fid,'java_vm_args = -Xms2500m -Xmx2500m \n \n');
                 end
                     
                 

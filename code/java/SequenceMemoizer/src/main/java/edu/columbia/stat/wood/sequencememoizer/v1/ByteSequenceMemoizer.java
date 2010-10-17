@@ -731,11 +731,6 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
                                 c.edgeNode = c.edgeNode.previous();
                             }
                             c.edgeNode.add(c);
-
-                            /*c.edgeStart %= bs.blockSize();
-                            c.edgeNode.remove(c);
-                            c.edgeNode = c.edgeNode.previous();
-                            c.edgeNode.add(c);*/
                             assert (byte) newKey.value() == c.edgeNode.byteChunk()[c.edgeStart];
                         }
                     } else {

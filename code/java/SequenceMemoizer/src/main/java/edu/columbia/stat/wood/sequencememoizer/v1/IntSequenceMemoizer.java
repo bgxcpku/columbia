@@ -448,6 +448,7 @@ public class IntSequenceMemoizer implements IntSequenceMemoizerInterface, Serial
                 int currentEdgeStart = bi.ind;
                 IntSeqNode currentNode = bi.node;
 
+                newKey.setNull();
                 int overlap = bi.overlap(c.edgeNode, c.edgeStart, c.edgeLength, newKey);
 
                 assert overlap > 0;
@@ -472,10 +473,13 @@ public class IntSequenceMemoizer implements IntSequenceMemoizerInterface, Serial
                     if (!newKey.isNull()) {
                         nc.put(newKey.value(), c);
                         if (c.edgeStart >= is.blockSize()) {
-                            c.edgeStart %= is.blockSize();
                             c.edgeNode.remove(c);
-                            c.edgeNode = c.edgeNode.previous();
+                            while(c.edgeStart >= is.blockSize()){
+                                c.edgeStart -= is.blockSize();
+                                c.edgeNode = c.edgeNode.previous();
+                            }
                             c.edgeNode.add(c);
+                            assert (byte) newKey.value() == c.edgeNode.intChunk()[c.edgeStart];
                         }
                     } else {
                         c.edgeNode.remove(c);

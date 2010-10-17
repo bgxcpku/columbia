@@ -41,10 +41,10 @@ output = _4.out
 error = _4.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 16 1000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 16 1000 1
 output = _5.out 
 error = _5.err 
 queue 
@@ -89,10 +89,10 @@ output = _10.out
 error = _10.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1024 1000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1024 1000 1
 output = _11.out 
 error = _11.err 
 queue 
@@ -137,10 +137,10 @@ output = _16.out
 error = _16.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1048576 1000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1048576 1000 1
 output = _17.out 
 error = _17.err 
 queue 
@@ -185,10 +185,10 @@ output = _22.out
 error = _22.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1073741824 1000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1073741824 1000 1
 output = _23.out 
 error = _23.err 
 queue 
@@ -233,10 +233,10 @@ output = _28.out
 error = _28.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 16 10000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 16 10000 1
 output = _29.out 
 error = _29.err 
 queue 
@@ -281,10 +281,10 @@ output = _34.out
 error = _34.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1024 10000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1024 10000 1
 output = _35.out 
 error = _35.err 
 queue 
@@ -329,10 +329,10 @@ output = _40.out
 error = _40.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1048576 10000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1048576 10000 1
 output = _41.out 
 error = _41.err 
 queue 
@@ -377,10 +377,10 @@ output = _46.out
 error = _46.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1073741824 10000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1073741824 10000 1
 output = _47.out 
 error = _47.err 
 queue 
@@ -425,10 +425,10 @@ output = _52.out
 error = _52.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 16 100000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 16 100000 1
 output = _53.out 
 error = _53.err 
 queue 
@@ -473,10 +473,10 @@ output = _58.out
 error = _58.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1024 100000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1024 100000 1
 output = _59.out 
 error = _59.err 
 queue 
@@ -521,10 +521,10 @@ output = _64.out
 error = _64.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1048576 100000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1048576 100000 1
 output = _65.out 
 error = _65.err 
 queue 
@@ -569,10 +569,10 @@ output = _70.out
 error = _70.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1073741824 100000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1073741824 100000 1
 output = _71.out 
 error = _71.err 
 queue 
@@ -617,10 +617,10 @@ output = _76.out
 error = _76.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 16 1000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 16 1000000 1
 output = _77.out 
 error = _77.err 
 queue 
@@ -665,10 +665,10 @@ output = _82.out
 error = _82.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1024 1000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1024 1000000 1
 output = _83.out 
 error = _83.err 
 queue 
@@ -713,10 +713,10 @@ output = _88.out
 error = _88.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1048576 1000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1048576 1000000 1
 output = _89.out 
 error = _89.err 
 queue 
@@ -761,10 +761,10 @@ output = _94.out
 error = _94.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1073741824 1000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1073741824 1000000 1
 output = _95.out 
 error = _95.err 
 queue 
@@ -812,7 +812,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 16 10000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 16 10000000 1
 output = _101.out 
 error = _101.err 
 queue 
@@ -860,7 +860,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1024 10000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1024 10000000 1
 output = _107.out 
 error = _107.err 
 queue 
@@ -908,7 +908,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1048576 10000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1048576 10000000 1
 output = _113.out 
 error = _113.err 
 queue 
@@ -956,7 +956,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1073741824 10000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1073741824 10000000 1
 output = _119.out 
 error = _119.err 
 queue 
@@ -1004,7 +1004,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 16 100000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 16 100000000 1
 output = _125.out 
 error = _125.err 
 queue 
@@ -1052,7 +1052,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1024 100000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1024 100000000 1
 output = _131.out 
 error = _131.err 
 queue 
@@ -1100,7 +1100,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1048576 100000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1048576 100000000 1
 output = _137.out 
 error = _137.err 
 queue 
@@ -1148,7 +1148,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1073741824 100000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1073741824 100000000 1
 output = _143.out 
 error = _143.err 
 queue 
@@ -1196,7 +1196,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 16 1000000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 16 1000000000 1
 output = _149.out 
 error = _149.err 
 queue 
@@ -1244,7 +1244,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1024 1000000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1024 1000000000 1
 output = _155.out 
 error = _155.err 
 queue 
@@ -1292,7 +1292,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1048576 1000000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1048576 1000000000 1
 output = _161.out 
 error = _161.err 
 queue 
@@ -1340,7 +1340,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1073741824 1000000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1073741824 1000000000 1
 output = _167.out 
 error = _167.err 
 queue 
@@ -1388,7 +1388,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 16 10000000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 16 10000000000 1
 output = _173.out 
 error = _173.err 
 queue 
@@ -1436,7 +1436,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1024 10000000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1024 10000000000 1
 output = _179.out 
 error = _179.err 
 queue 
@@ -1484,7 +1484,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1048576 10000000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1048576 10000000000 1
 output = _185.out 
 error = _185.err 
 queue 
@@ -1532,7 +1532,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1073741824 10000000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1073741824 10000000000 1
 output = _191.out 
 error = _191.err 
 queue 
@@ -1580,7 +1580,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 16 100000000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 16 100000000000 1
 output = _197.out 
 error = _197.err 
 queue 
@@ -1628,7 +1628,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1024 100000000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1024 100000000000 1
 output = _203.out 
 error = _203.err 
 queue 
@@ -1676,7 +1676,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1048576 100000000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1048576 100000000000 1
 output = _209.out 
 error = _209.err 
 queue 
@@ -1724,7 +1724,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1073741824 100000000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1073741824 100000000000 1
 output = _215.out 
 error = _215.err 
 queue 
@@ -1769,10 +1769,10 @@ output = _220.out
 error = _220.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 16 1000 2
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 16 1000 2
 output = _221.out 
 error = _221.err 
 queue 
@@ -1817,10 +1817,10 @@ output = _226.out
 error = _226.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1024 1000 2
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1024 1000 2
 output = _227.out 
 error = _227.err 
 queue 
@@ -1865,10 +1865,10 @@ output = _232.out
 error = _232.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1048576 1000 2
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1048576 1000 2
 output = _233.out 
 error = _233.err 
 queue 
@@ -1913,10 +1913,10 @@ output = _238.out
 error = _238.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1073741824 1000 2
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1073741824 1000 2
 output = _239.out 
 error = _239.err 
 queue 
@@ -1961,10 +1961,10 @@ output = _244.out
 error = _244.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 16 10000 2
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 16 10000 2
 output = _245.out 
 error = _245.err 
 queue 
@@ -2009,10 +2009,10 @@ output = _250.out
 error = _250.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1024 10000 2
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1024 10000 2
 output = _251.out 
 error = _251.err 
 queue 
@@ -2057,10 +2057,10 @@ output = _256.out
 error = _256.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1048576 10000 2
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1048576 10000 2
 output = _257.out 
 error = _257.err 
 queue 
@@ -2105,10 +2105,10 @@ output = _262.out
 error = _262.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1073741824 10000 2
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1073741824 10000 2
 output = _263.out 
 error = _263.err 
 queue 
@@ -2153,10 +2153,10 @@ output = _268.out
 error = _268.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 16 100000 2
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 16 100000 2
 output = _269.out 
 error = _269.err 
 queue 
@@ -2201,10 +2201,10 @@ output = _274.out
 error = _274.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1024 100000 2
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1024 100000 2
 output = _275.out 
 error = _275.err 
 queue 
@@ -2249,10 +2249,10 @@ output = _280.out
 error = _280.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1048576 100000 2
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1048576 100000 2
 output = _281.out 
 error = _281.err 
 queue 
@@ -2297,10 +2297,10 @@ output = _286.out
 error = _286.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1073741824 100000 2
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1073741824 100000 2
 output = _287.out 
 error = _287.err 
 queue 
@@ -2345,10 +2345,10 @@ output = _292.out
 error = _292.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 16 1000000 2
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 16 1000000 2
 output = _293.out 
 error = _293.err 
 queue 
@@ -2393,10 +2393,10 @@ output = _298.out
 error = _298.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1024 1000000 2
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1024 1000000 2
 output = _299.out 
 error = _299.err 
 queue 
@@ -2441,10 +2441,10 @@ output = _304.out
 error = _304.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1048576 1000000 2
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1048576 1000000 2
 output = _305.out 
 error = _305.err 
 queue 
@@ -2489,10 +2489,10 @@ output = _310.out
 error = _310.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1073741824 1000000 2
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1073741824 1000000 2
 output = _311.out 
 error = _311.err 
 queue 
@@ -2529,8 +2529,8 @@ output = _315.out
 error = _315.err 
 queue 
  
-Requirements =  
-java_vm_args = -Xms2500m -Xmx2500m 
+Requirements = BigMem == TRUE 
+java_vm_args = -Xms7680m -Xmx7680m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 10000000 2
 output = _316.out 
@@ -2540,7 +2540,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 16 10000000 2
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 16 10000000 2
 output = _317.out 
 error = _317.err 
 queue 
@@ -2577,8 +2577,8 @@ output = _321.out
 error = _321.err 
 queue 
  
-Requirements =  
-java_vm_args = -Xms2500m -Xmx2500m 
+Requirements = BigMem == TRUE 
+java_vm_args = -Xms7680m -Xmx7680m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 10000000 2
 output = _322.out 
@@ -2588,7 +2588,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1024 10000000 2
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1024 10000000 2
 output = _323.out 
 error = _323.err 
 queue 
@@ -2625,8 +2625,8 @@ output = _327.out
 error = _327.err 
 queue 
  
-Requirements =  
-java_vm_args = -Xms2500m -Xmx2500m 
+Requirements = BigMem == TRUE 
+java_vm_args = -Xms7680m -Xmx7680m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 10000000 2
 output = _328.out 
@@ -2636,7 +2636,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1048576 10000000 2
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1048576 10000000 2
 output = _329.out 
 error = _329.err 
 queue 
@@ -2673,8 +2673,8 @@ output = _333.out
 error = _333.err 
 queue 
  
-Requirements =  
-java_vm_args = -Xms2500m -Xmx2500m 
+Requirements = BigMem == TRUE 
+java_vm_args = -Xms7680m -Xmx7680m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 10000000 2
 output = _334.out 
@@ -2684,7 +2684,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1073741824 10000000 2
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1073741824 10000000 2
 output = _335.out 
 error = _335.err 
 queue 
@@ -2721,8 +2721,8 @@ output = _339.out
 error = _339.err 
 queue 
  
-Requirements =  
-java_vm_args = -Xms2500m -Xmx2500m 
+Requirements = BigMem == TRUE 
+java_vm_args = -Xms7680m -Xmx7680m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 100000000 2
 output = _340.out 
@@ -2732,7 +2732,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 16 100000000 2
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 16 100000000 2
 output = _341.out 
 error = _341.err 
 queue 
@@ -2769,8 +2769,8 @@ output = _345.out
 error = _345.err 
 queue 
  
-Requirements =  
-java_vm_args = -Xms2500m -Xmx2500m 
+Requirements = BigMem == TRUE 
+java_vm_args = -Xms7680m -Xmx7680m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 100000000 2
 output = _346.out 
@@ -2780,7 +2780,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1024 100000000 2
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1024 100000000 2
 output = _347.out 
 error = _347.err 
 queue 
@@ -2817,8 +2817,8 @@ output = _351.out
 error = _351.err 
 queue 
  
-Requirements =  
-java_vm_args = -Xms2500m -Xmx2500m 
+Requirements = BigMem == TRUE 
+java_vm_args = -Xms7680m -Xmx7680m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 100000000 2
 output = _352.out 
@@ -2828,7 +2828,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1048576 100000000 2
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1048576 100000000 2
 output = _353.out 
 error = _353.err 
 queue 
@@ -2865,8 +2865,8 @@ output = _357.out
 error = _357.err 
 queue 
  
-Requirements =  
-java_vm_args = -Xms2500m -Xmx2500m 
+Requirements = BigMem == TRUE 
+java_vm_args = -Xms7680m -Xmx7680m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 100000000 2
 output = _358.out 
@@ -2876,7 +2876,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1073741824 100000000 2
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1073741824 100000000 2
 output = _359.out 
 error = _359.err 
 queue 
@@ -2913,8 +2913,8 @@ output = _363.out
 error = _363.err 
 queue 
  
-Requirements =  
-java_vm_args = -Xms2500m -Xmx2500m 
+Requirements = BigMem == TRUE 
+java_vm_args = -Xms7680m -Xmx7680m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 1000000000 2
 output = _364.out 
@@ -2924,7 +2924,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 16 1000000000 2
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 16 1000000000 2
 output = _365.out 
 error = _365.err 
 queue 
@@ -2961,8 +2961,8 @@ output = _369.out
 error = _369.err 
 queue 
  
-Requirements =  
-java_vm_args = -Xms2500m -Xmx2500m 
+Requirements = BigMem == TRUE 
+java_vm_args = -Xms7680m -Xmx7680m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 1000000000 2
 output = _370.out 
@@ -2972,7 +2972,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1024 1000000000 2
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1024 1000000000 2
 output = _371.out 
 error = _371.err 
 queue 
@@ -3009,8 +3009,8 @@ output = _375.out
 error = _375.err 
 queue 
  
-Requirements =  
-java_vm_args = -Xms2500m -Xmx2500m 
+Requirements = BigMem == TRUE 
+java_vm_args = -Xms7680m -Xmx7680m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 1000000000 2
 output = _376.out 
@@ -3020,7 +3020,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1048576 1000000000 2
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1048576 1000000000 2
 output = _377.out 
 error = _377.err 
 queue 
@@ -3057,8 +3057,8 @@ output = _381.out
 error = _381.err 
 queue 
  
-Requirements =  
-java_vm_args = -Xms2500m -Xmx2500m 
+Requirements = BigMem == TRUE 
+java_vm_args = -Xms7680m -Xmx7680m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 1000000000 2
 output = _382.out 
@@ -3068,7 +3068,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1073741824 1000000000 2
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1073741824 1000000000 2
 output = _383.out 
 error = _383.err 
 queue 
@@ -3105,8 +3105,8 @@ output = _387.out
 error = _387.err 
 queue 
  
-Requirements =  
-java_vm_args = -Xms2500m -Xmx2500m 
+Requirements = BigMem == TRUE 
+java_vm_args = -Xms7680m -Xmx7680m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 10000000000 2
 output = _388.out 
@@ -3116,7 +3116,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 16 10000000000 2
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 16 10000000000 2
 output = _389.out 
 error = _389.err 
 queue 
@@ -3153,8 +3153,8 @@ output = _393.out
 error = _393.err 
 queue 
  
-Requirements =  
-java_vm_args = -Xms2500m -Xmx2500m 
+Requirements = BigMem == TRUE 
+java_vm_args = -Xms7680m -Xmx7680m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 10000000000 2
 output = _394.out 
@@ -3164,7 +3164,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1024 10000000000 2
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1024 10000000000 2
 output = _395.out 
 error = _395.err 
 queue 
@@ -3201,8 +3201,8 @@ output = _399.out
 error = _399.err 
 queue 
  
-Requirements =  
-java_vm_args = -Xms2500m -Xmx2500m 
+Requirements = BigMem == TRUE 
+java_vm_args = -Xms7680m -Xmx7680m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 10000000000 2
 output = _400.out 
@@ -3212,7 +3212,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1048576 10000000000 2
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1048576 10000000000 2
 output = _401.out 
 error = _401.err 
 queue 
@@ -3249,8 +3249,8 @@ output = _405.out
 error = _405.err 
 queue 
  
-Requirements =  
-java_vm_args = -Xms2500m -Xmx2500m 
+Requirements = BigMem == TRUE 
+java_vm_args = -Xms7680m -Xmx7680m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 10000000000 2
 output = _406.out 
@@ -3260,7 +3260,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1073741824 10000000000 2
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1073741824 10000000000 2
 output = _407.out 
 error = _407.err 
 queue 
@@ -3297,8 +3297,8 @@ output = _411.out
 error = _411.err 
 queue 
  
-Requirements =  
-java_vm_args = -Xms2500m -Xmx2500m 
+Requirements = BigMem == TRUE 
+java_vm_args = -Xms7680m -Xmx7680m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 100000000000 2
 output = _412.out 
@@ -3308,7 +3308,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 16 100000000000 2
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 16 100000000000 2
 output = _413.out 
 error = _413.err 
 queue 
@@ -3345,8 +3345,8 @@ output = _417.out
 error = _417.err 
 queue 
  
-Requirements =  
-java_vm_args = -Xms2500m -Xmx2500m 
+Requirements = BigMem == TRUE 
+java_vm_args = -Xms7680m -Xmx7680m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 100000000000 2
 output = _418.out 
@@ -3356,7 +3356,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1024 100000000000 2
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1024 100000000000 2
 output = _419.out 
 error = _419.err 
 queue 
@@ -3393,8 +3393,8 @@ output = _423.out
 error = _423.err 
 queue 
  
-Requirements =  
-java_vm_args = -Xms2500m -Xmx2500m 
+Requirements = BigMem == TRUE 
+java_vm_args = -Xms7680m -Xmx7680m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 100000000000 2
 output = _424.out 
@@ -3404,7 +3404,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1048576 100000000000 2
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1048576 100000000000 2
 output = _425.out 
 error = _425.err 
 queue 
@@ -3441,8 +3441,8 @@ output = _429.out
 error = _429.err 
 queue 
  
-Requirements =  
-java_vm_args = -Xms2500m -Xmx2500m 
+Requirements = BigMem == TRUE 
+java_vm_args = -Xms7680m -Xmx7680m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 100000000000 2
 output = _430.out 
@@ -3452,7 +3452,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1073741824 100000000000 2
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1073741824 100000000000 2
 output = _431.out 
 error = _431.err 
 queue 
@@ -3497,10 +3497,10 @@ output = _436.out
 error = _436.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 16 1000 4
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 16 1000 4
 output = _437.out 
 error = _437.err 
 queue 
@@ -3545,10 +3545,10 @@ output = _442.out
 error = _442.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1024 1000 4
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1024 1000 4
 output = _443.out 
 error = _443.err 
 queue 
@@ -3593,10 +3593,10 @@ output = _448.out
 error = _448.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1048576 1000 4
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1048576 1000 4
 output = _449.out 
 error = _449.err 
 queue 
@@ -3641,10 +3641,10 @@ output = _454.out
 error = _454.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1073741824 1000 4
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1073741824 1000 4
 output = _455.out 
 error = _455.err 
 queue 
@@ -3689,10 +3689,10 @@ output = _460.out
 error = _460.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 16 10000 4
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 16 10000 4
 output = _461.out 
 error = _461.err 
 queue 
@@ -3737,10 +3737,10 @@ output = _466.out
 error = _466.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1024 10000 4
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1024 10000 4
 output = _467.out 
 error = _467.err 
 queue 
@@ -3785,10 +3785,10 @@ output = _472.out
 error = _472.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1048576 10000 4
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1048576 10000 4
 output = _473.out 
 error = _473.err 
 queue 
@@ -3833,10 +3833,10 @@ output = _478.out
 error = _478.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1073741824 10000 4
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1073741824 10000 4
 output = _479.out 
 error = _479.err 
 queue 
@@ -3881,10 +3881,10 @@ output = _484.out
 error = _484.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 16 100000 4
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 16 100000 4
 output = _485.out 
 error = _485.err 
 queue 
@@ -3929,10 +3929,10 @@ output = _490.out
 error = _490.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1024 100000 4
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1024 100000 4
 output = _491.out 
 error = _491.err 
 queue 
@@ -3977,10 +3977,10 @@ output = _496.out
 error = _496.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1048576 100000 4
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1048576 100000 4
 output = _497.out 
 error = _497.err 
 queue 
@@ -4025,10 +4025,10 @@ output = _502.out
 error = _502.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1073741824 100000 4
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1073741824 100000 4
 output = _503.out 
 error = _503.err 
 queue 
@@ -4073,10 +4073,10 @@ output = _508.out
 error = _508.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 16 1000000 4
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 16 1000000 4
 output = _509.out 
 error = _509.err 
 queue 
@@ -4121,10 +4121,10 @@ output = _514.out
 error = _514.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1024 1000000 4
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1024 1000000 4
 output = _515.out 
 error = _515.err 
 queue 
@@ -4169,10 +4169,10 @@ output = _520.out
 error = _520.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1048576 1000000 4
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1048576 1000000 4
 output = _521.out 
 error = _521.err 
 queue 
@@ -4217,10 +4217,10 @@ output = _526.out
 error = _526.err 
 queue 
  
-Requirements = BigMem == TRUE 
-java_vm_args = -Xms7680m -Xmx7680m 
+Requirements =  
+java_vm_args = -Xms2500m -Xmx2500m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1073741824 1000000 4
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1073741824 1000000 4
 output = _527.out 
 error = _527.err 
 queue 
@@ -4257,8 +4257,8 @@ output = _531.out
 error = _531.err 
 queue 
  
-Requirements =  
-java_vm_args = -Xms2500m -Xmx2500m 
+Requirements = BigMem == TRUE 
+java_vm_args = -Xms7680m -Xmx7680m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 10000000 4
 output = _532.out 
@@ -4268,7 +4268,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 16 10000000 4
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 16 10000000 4
 output = _533.out 
 error = _533.err 
 queue 
@@ -4305,8 +4305,8 @@ output = _537.out
 error = _537.err 
 queue 
  
-Requirements =  
-java_vm_args = -Xms2500m -Xmx2500m 
+Requirements = BigMem == TRUE 
+java_vm_args = -Xms7680m -Xmx7680m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 10000000 4
 output = _538.out 
@@ -4316,7 +4316,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1024 10000000 4
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1024 10000000 4
 output = _539.out 
 error = _539.err 
 queue 
@@ -4353,8 +4353,8 @@ output = _543.out
 error = _543.err 
 queue 
  
-Requirements =  
-java_vm_args = -Xms2500m -Xmx2500m 
+Requirements = BigMem == TRUE 
+java_vm_args = -Xms7680m -Xmx7680m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 10000000 4
 output = _544.out 
@@ -4364,7 +4364,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1048576 10000000 4
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1048576 10000000 4
 output = _545.out 
 error = _545.err 
 queue 
@@ -4401,8 +4401,8 @@ output = _549.out
 error = _549.err 
 queue 
  
-Requirements =  
-java_vm_args = -Xms2500m -Xmx2500m 
+Requirements = BigMem == TRUE 
+java_vm_args = -Xms7680m -Xmx7680m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 10000000 4
 output = _550.out 
@@ -4412,7 +4412,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1073741824 10000000 4
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1073741824 10000000 4
 output = _551.out 
 error = _551.err 
 queue 
@@ -4449,8 +4449,8 @@ output = _555.out
 error = _555.err 
 queue 
  
-Requirements =  
-java_vm_args = -Xms2500m -Xmx2500m 
+Requirements = BigMem == TRUE 
+java_vm_args = -Xms7680m -Xmx7680m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 100000000 4
 output = _556.out 
@@ -4460,7 +4460,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 16 100000000 4
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 16 100000000 4
 output = _557.out 
 error = _557.err 
 queue 
@@ -4497,8 +4497,8 @@ output = _561.out
 error = _561.err 
 queue 
  
-Requirements =  
-java_vm_args = -Xms2500m -Xmx2500m 
+Requirements = BigMem == TRUE 
+java_vm_args = -Xms7680m -Xmx7680m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 100000000 4
 output = _562.out 
@@ -4508,7 +4508,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1024 100000000 4
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1024 100000000 4
 output = _563.out 
 error = _563.err 
 queue 
@@ -4545,8 +4545,8 @@ output = _567.out
 error = _567.err 
 queue 
  
-Requirements =  
-java_vm_args = -Xms2500m -Xmx2500m 
+Requirements = BigMem == TRUE 
+java_vm_args = -Xms7680m -Xmx7680m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 100000000 4
 output = _568.out 
@@ -4556,7 +4556,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1048576 100000000 4
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1048576 100000000 4
 output = _569.out 
 error = _569.err 
 queue 
@@ -4593,8 +4593,8 @@ output = _573.out
 error = _573.err 
 queue 
  
-Requirements =  
-java_vm_args = -Xms2500m -Xmx2500m 
+Requirements = BigMem == TRUE 
+java_vm_args = -Xms7680m -Xmx7680m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 100000000 4
 output = _574.out 
@@ -4604,7 +4604,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1073741824 100000000 4
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1073741824 100000000 4
 output = _575.out 
 error = _575.err 
 queue 
@@ -4641,8 +4641,8 @@ output = _579.out
 error = _579.err 
 queue 
  
-Requirements =  
-java_vm_args = -Xms2500m -Xmx2500m 
+Requirements = BigMem == TRUE 
+java_vm_args = -Xms7680m -Xmx7680m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 1000000000 4
 output = _580.out 
@@ -4652,7 +4652,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 16 1000000000 4
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 16 1000000000 4
 output = _581.out 
 error = _581.err 
 queue 
@@ -4689,8 +4689,8 @@ output = _585.out
 error = _585.err 
 queue 
  
-Requirements =  
-java_vm_args = -Xms2500m -Xmx2500m 
+Requirements = BigMem == TRUE 
+java_vm_args = -Xms7680m -Xmx7680m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 1000000000 4
 output = _586.out 
@@ -4700,7 +4700,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1024 1000000000 4
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1024 1000000000 4
 output = _587.out 
 error = _587.err 
 queue 
@@ -4737,8 +4737,8 @@ output = _591.out
 error = _591.err 
 queue 
  
-Requirements =  
-java_vm_args = -Xms2500m -Xmx2500m 
+Requirements = BigMem == TRUE 
+java_vm_args = -Xms7680m -Xmx7680m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 1000000000 4
 output = _592.out 
@@ -4748,7 +4748,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1048576 1000000000 4
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1048576 1000000000 4
 output = _593.out 
 error = _593.err 
 queue 
@@ -4785,8 +4785,8 @@ output = _597.out
 error = _597.err 
 queue 
  
-Requirements =  
-java_vm_args = -Xms2500m -Xmx2500m 
+Requirements = BigMem == TRUE 
+java_vm_args = -Xms7680m -Xmx7680m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 1000000000 4
 output = _598.out 
@@ -4796,7 +4796,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1073741824 1000000000 4
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1073741824 1000000000 4
 output = _599.out 
 error = _599.err 
 queue 
@@ -4833,8 +4833,8 @@ output = _603.out
 error = _603.err 
 queue 
  
-Requirements =  
-java_vm_args = -Xms2500m -Xmx2500m 
+Requirements = BigMem == TRUE 
+java_vm_args = -Xms7680m -Xmx7680m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 10000000000 4
 output = _604.out 
@@ -4844,7 +4844,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 16 10000000000 4
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 16 10000000000 4
 output = _605.out 
 error = _605.err 
 queue 
@@ -4881,8 +4881,8 @@ output = _609.out
 error = _609.err 
 queue 
  
-Requirements =  
-java_vm_args = -Xms2500m -Xmx2500m 
+Requirements = BigMem == TRUE 
+java_vm_args = -Xms7680m -Xmx7680m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 10000000000 4
 output = _610.out 
@@ -4892,7 +4892,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1024 10000000000 4
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1024 10000000000 4
 output = _611.out 
 error = _611.err 
 queue 
@@ -4929,8 +4929,8 @@ output = _615.out
 error = _615.err 
 queue 
  
-Requirements =  
-java_vm_args = -Xms2500m -Xmx2500m 
+Requirements = BigMem == TRUE 
+java_vm_args = -Xms7680m -Xmx7680m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 10000000000 4
 output = _616.out 
@@ -4940,7 +4940,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1048576 10000000000 4
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1048576 10000000000 4
 output = _617.out 
 error = _617.err 
 queue 
@@ -4977,8 +4977,8 @@ output = _621.out
 error = _621.err 
 queue 
  
-Requirements =  
-java_vm_args = -Xms2500m -Xmx2500m 
+Requirements = BigMem == TRUE 
+java_vm_args = -Xms7680m -Xmx7680m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 10000000000 4
 output = _622.out 
@@ -4988,7 +4988,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1073741824 10000000000 4
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1073741824 10000000000 4
 output = _623.out 
 error = _623.err 
 queue 
@@ -5025,8 +5025,8 @@ output = _627.out
 error = _627.err 
 queue 
  
-Requirements =  
-java_vm_args = -Xms2500m -Xmx2500m 
+Requirements = BigMem == TRUE 
+java_vm_args = -Xms7680m -Xmx7680m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 16 100000000000 4
 output = _628.out 
@@ -5036,7 +5036,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 16 100000000000 4
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 16 100000000000 4
 output = _629.out 
 error = _629.err 
 queue 
@@ -5073,8 +5073,8 @@ output = _633.out
 error = _633.err 
 queue 
  
-Requirements =  
-java_vm_args = -Xms2500m -Xmx2500m 
+Requirements = BigMem == TRUE 
+java_vm_args = -Xms7680m -Xmx7680m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1024 100000000000 4
 output = _634.out 
@@ -5084,7 +5084,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1024 100000000000 4
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1024 100000000000 4
 output = _635.out 
 error = _635.err 
 queue 
@@ -5121,8 +5121,8 @@ output = _639.out
 error = _639.err 
 queue 
  
-Requirements =  
-java_vm_args = -Xms2500m -Xmx2500m 
+Requirements = BigMem == TRUE 
+java_vm_args = -Xms7680m -Xmx7680m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1048576 100000000000 4
 output = _640.out 
@@ -5132,7 +5132,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1048576 100000000000 4
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1048576 100000000000 4
 output = _641.out 
 error = _641.err 
 queue 
@@ -5169,8 +5169,8 @@ output = _645.out
 error = _645.err 
 queue 
  
-Requirements =  
-java_vm_args = -Xms2500m -Xmx2500m 
+Requirements = BigMem == TRUE 
+java_vm_args = -Xms7680m -Xmx7680m 
  
 arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 10000000 1073741824 100000000000 4
 output = _646.out 
@@ -5180,7 +5180,7 @@ queue
 Requirements = BigMem == TRUE 
 java_vm_args = -Xms7680m -Xmx7680m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 50000000 1073741824 100000000000 4
+arguments=edu.columbia.stat.wood.dcc2010.Main ../../../../../data/wikipedia/enwik.xml.gz 30000000 1073741824 100000000000 4
 output = _647.out 
 error = _647.err 
 queue 
