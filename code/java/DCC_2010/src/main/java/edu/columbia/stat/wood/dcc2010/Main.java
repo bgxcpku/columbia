@@ -65,7 +65,7 @@ public class Main {
 
         double logLik = 0.0;
         if(radix == 1){
-            ByteSequenceMemoizer sm = new ByteSequenceMemoizer(new ByteSequenceMemoizerParameters(depth,sizeOfTree, 100 * sizeOfTree));
+            ByteSequenceMemoizer sm = new ByteSequenceMemoizer(new ByteSequenceMemoizerParameters(depth,sizeOfTree, (long) 100 * (long) sizeOfTree));
 
             int bytesLogLik = 0;
             long l;
@@ -77,7 +77,7 @@ public class Main {
                     bytesLogLik = 0;
                     logLik = 0.0;
                     ByteRestaurant.count = 0;
-                    sm = new ByteSequenceMemoizer(new ByteSequenceMemoizerParameters(depth,sizeOfTree, 100 * sizeOfTree));
+                    sm = new ByteSequenceMemoizer(new ByteSequenceMemoizerParameters(depth,sizeOfTree, (long) 100 * (long) sizeOfTree));
                 }
 
                 logLik += sm.continueSequence((byte) l);
@@ -95,7 +95,7 @@ public class Main {
         } else {
             IntSequenceMemoizer sm;
             if(radix == 2){
-                sm = new IntSequenceMemoizer(new IntSequenceMemoizerParameters(depth,sizeOfTree, 100 * sizeOfTree, 1 << 16));
+                sm = new IntSequenceMemoizer(new IntSequenceMemoizerParameters(depth,sizeOfTree, (long) 100 * (long) sizeOfTree, 1 << 16));
             } else if(radix == 4) {
                 IntDiscreteDistribution baseDistribution = new IntUniformDiscreteDistribution(Integer.MIN_VALUE, Integer.MAX_VALUE);
                 double[] discounts = new double[]{0.5, 0.7, 0.8, 0.82, 0.84, 0.88, 0.91, 0.92, 0.93, 0.94, 0.95};
@@ -118,11 +118,11 @@ public class Main {
 
                     IntRestaurant.count = 0;
                     if(radix == 2){
-                        sm = new IntSequenceMemoizer(new IntSequenceMemoizerParameters(depth,sizeOfTree, 100 * sizeOfTree, 1 << 16));
+                        sm = new IntSequenceMemoizer(new IntSequenceMemoizerParameters(depth,sizeOfTree, (long) 100 * (long) sizeOfTree, 1 << 16));
                     } else if (radix == 4){
                         IntDiscreteDistribution baseDistribution = new IntUniformDiscreteDistribution(Integer.MIN_VALUE, Integer.MAX_VALUE);
                         double[] discounts = new double[]{0.5, 0.7, 0.8, 0.82, 0.84, 0.88, 0.91, 0.92, 0.93, 0.94, 0.95};
-                        IntSequenceMemoizerParameters smp = new IntSequenceMemoizerParameters(baseDistribution, discounts, 0.5, depth, 3, sizeOfTree, sizeOfTree * 100);
+                        IntSequenceMemoizerParameters smp = new IntSequenceMemoizerParameters(baseDistribution, discounts, 0.5, depth, 3, sizeOfTree, (long) sizeOfTree * (long) 100);
                         
                         sm = new IntSequenceMemoizer(smp);
                     }
