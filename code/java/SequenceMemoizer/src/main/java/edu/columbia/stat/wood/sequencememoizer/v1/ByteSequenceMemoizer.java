@@ -99,6 +99,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
     /**
      * {@inheritDoc}
      */
+    @Override
     public void newSequence(){
         depth = 0;
     }
@@ -106,6 +107,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
     /**
      * {@inheritDoc}
      */
+    @Override
     public double continueSequence(byte[] types) {
         double logLik = 0.0;
         for (byte b : types) {
@@ -118,6 +120,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] generate(byte[] context, int numSamples) {
         ByteDiscreteDistribution dist;
         Iterator<Pair<Byte, Double>> iter;
@@ -150,6 +153,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
     /**
      * {@inheritDoc}
      */
+    @Override
     public byte[] generateSequence(byte[] context, int sequenceLength) {
         byte[] fullSequence, c, r;
         int index;
@@ -178,6 +182,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
     /**
      * {@inheritDoc}
      */
+    @Override
     public ByteDiscreteDistribution predictiveDistribution(byte[] context) {
         double[] pdf;
         double multFactor;
@@ -198,6 +203,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
     /**
      * {@inheritDoc}
      */
+    @Override
     public double predictiveProbability(byte[] context, byte token) {
         if (context == null) {
             context = new byte[0];
@@ -208,6 +214,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
     /**
      * {@inheritDoc}
      */
+    @Override
     public double sequenceProbability(byte[] context, byte[] sequence) {
         byte[] fullSequence, c;
         int index, l;
@@ -238,6 +245,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
     /**
      * {@inheritDoc}
      */
+    @Override
     public double sample(int numSweeps){
         for(int i = 0; i < numSweeps - 1; i++){
             sampleSeatingArrangements(1);
@@ -251,6 +259,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
     /**
      * {@inheritDoc}
      */
+    @Override
     public void sampleSeatingArrangements(int numSweeps) {
         for (int i = 0; i < numSweeps; i++) {
             sampleSeatingArrangements(ecr, null, 0);
@@ -260,6 +269,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
     /**
      * {@inheritDoc}
      */
+    @Override
     public double sampleDiscounts(int numSweeps) {
         if (numSweeps > 0) {
             double score = 0.0;
@@ -346,6 +356,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
     /**
      * {@inheritDoc}
      */
+    @Override
     public double score() {
         double logLik;
         int tti;
@@ -392,6 +403,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
     /**
      * {@inheritDoc}
      */
+    @Override
     public ByteSequenceMemoizerParameters getParameters() {
         double[] d = new double[discounts.length()];
         for (int i = 0; i < discounts.length(); i++) {
@@ -404,6 +416,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
     /**
      * {@inheritDoc}
      */
+    @Override
     public double continueSequence(byte b) {
         ByteRestaurant r;
         int index;
@@ -437,6 +450,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
     /**
      * {@inheritDoc}
      */
+    @Override
     public void continueSequenceEncode(byte b) {
         ByteRestaurant r;
         double multFactor, l, h;
@@ -479,6 +493,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
     /**
      * {@inheritDoc}
      */
+    @Override
     public void continueSequenceDecode(double pointOnCDF) {
         ByteRestaurant r;
         int index, type;
@@ -527,6 +542,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
     /**
      * {@inheritDoc}
      */
+    @Override
     public void continueSequenceEncodeWithoutInsertion(byte b){
         //fill in mostRecentContext byte array
         if(mostRecentContext == null){
@@ -571,6 +587,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
     /**
      * {@inheritDoc}
      */
+    @Override
     public void continueSequenceDecodeWithoutInsertion(double pointOnCDF){
         //fill in mostRecentContext byte array
         if(mostRecentContext == null){
@@ -621,6 +638,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
     /**
      * {@inheritDoc}
      */
+    @Override
     public void endOfStream() {
         ByteRestaurant r;
         double multFactor, l;
@@ -682,6 +700,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
                 int currentEdgeStart = bi.ind;
                 ByteSeqNode currentNode = bi.node;
 
+                newKey.set(-1);
                 int overlap = bi.overlap(c.edgeNode, c.edgeStart, c.edgeLength, newKey);
 
                 assert overlap > 0;
@@ -706,10 +725,13 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
                     if (newKey.value() > -1) {
                         nc.put((byte) newKey.value(), c);
                         if (c.edgeStart >= bs.blockSize()) {
-                            c.edgeStart %= bs.blockSize();
                             c.edgeNode.remove(c);
-                            c.edgeNode = c.edgeNode.previous();
+                            while(c.edgeStart >= bs.blockSize()){
+                                c.edgeStart -= bs.blockSize();
+                                c.edgeNode = c.edgeNode.previous();
+                            }
                             c.edgeNode.add(c);
+                            assert (byte) newKey.value() == c.edgeNode.byteChunk()[c.edgeStart];
                         }
                     } else {
                         c.edgeNode.remove(c);
@@ -719,8 +741,23 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
                 }
             }
         }
-
         return r;
+    }
+
+    public void checkKeys(){
+        checkKeys(ecr);
+    }
+
+    public void checkKeys(ByteRestaurant r){
+        if(!r.isEmpty()){
+            for(Object c : r.values()){
+                checkKeys((ByteRestaurant) c);
+            }
+        }
+
+        if(r.parent != null){
+            assert r.parent.get(r.edgeNode.byteChunk()[r.edgeStart]).equals(r);
+        }
     }
 
     private ByteRestaurant getWithoutInsertion(byte[] context) {

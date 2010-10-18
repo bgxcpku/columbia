@@ -131,21 +131,29 @@ public class ByteMap<E> implements Serializable{
      */
     public void remove(byte key){
         if(keys == null){
+            System.out.println("key = " + key);
+            System.out.println("keys are null");
             throw new IllegalArgumentException("Key to remove is not in map");
         } else if (keys.length == 1){
             if(key == keys[0]){
                  keys = null;
                  values = null;
             } else {
+                System.out.println("key = " + key);
+                printKeys();
                 throw new IllegalArgumentException("Key to remove is not in map");
             }
         } else if(key > keys[keys.length-1]){
+            System.out.println("key = " + key);
+            printKeys();
             throw new IllegalArgumentException("Key to remove is not in map");
         } else {
             int index;
 
             index = getIndex(key);
             if(key != keys[index]){
+                System.out.println("key = " + key);
+                printKeys();
                 throw new IllegalArgumentException("Key to remove is not in map");
             } else {
                 byte[] newKeys;
@@ -165,6 +173,14 @@ public class ByteMap<E> implements Serializable{
                 values = newValues;
             }
         }
+    }
+
+    private void printKeys(){
+        System.out.print("Keys : [" + keys[0]);
+        for(int i = 1; i < keys.length; i++){
+            System.out.print(", " + keys[i]);
+        }
+        System.out.println("]");
     }
 
     private int getIndex(byte key){
