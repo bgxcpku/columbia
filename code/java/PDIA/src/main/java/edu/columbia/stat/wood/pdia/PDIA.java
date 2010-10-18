@@ -191,54 +191,80 @@ public class PDIA {
         }
     }
 
-    public double scoreTest(){
+    public double[][] ppTest() {
         fillPiCounts();
 
-        TIntObjectHashMap<double[]> predictiveProbs = new TIntObjectHashMap(10000);
+        double[][] pp = new double[testData.length][];
 
-        TIntObjectIterator<int[]> iterator = piCounts.iterator();
-        while(iterator.hasNext()){
-            iterator.advance();
-
-            int[] counts = iterator.value();
-            double[] probs = new double[counts.length];
-
-            int total = 0;
-            int i = 0;
-            for(int c : counts){
-                total += c;
-                probs[i++] = c + beta / (double) alphabetSize;
-            }
-
-            for(int j = 0; j < counts.length; j++){
-                probs[j] /= (double) total + beta;
-            }
-
-            predictiveProbs.put(iterator.key(), probs);
-        }
-
-        double logLik = 0.0;
-
-        for(int line = 0; line < testData.length; line++){
+        for (int line = 0; line < testData.length; line++) {
             int currentState = 0;
-            for(int emission : testData[line]){
-                double probs[] = predictiveProbs.get(currentState);
-                if(probs != null){
-                    logLik += Math.log(probs[emission]);
-                } else {
-                    logLik += Math.log(1.0 / (double) alphabetSize);
+            pp[line] = new double[testData[line].length];
+            int emissionInd = 0;
+            for (int emission : testData[line]) {
+                int[] cnts = piCounts.get(currentState);
+                if (cnts == null) {
+                    cnts = new int[alphabetSize];
+                    piCounts.put(currentState, cnts);
                 }
-                currentState = deltaGet(new IntPair(currentState,emission));
+                int total = 0;
+                for (int c : cnts) {
+                    total += c;
+                }
+                pp[line][emissionInd++] = ((double) cnts[emission] + (beta / (double) alphabetSize)) / ((double) total + beta);
+                cnts[emission]++;
+
+                currentState = deltaGet(new IntPair(currentState, emission));
             }
+        }
+        return pp;
+    }
 
+    public double[][] ppTest(int samples, int passes){
+        double[][] pp = null;
+
+        for(int s = 0; s < samples; s++){
+            System.out.println("sample = " + s);
+            sample();
+            for(int p = 0; p < passes; p++){
+                if(p == 0 && s == 0){
+                    pp = ppTest();
+                } else {
+                    double[][] addpp = ppTest();
+                    for(int i = 0; i < testData.length; i++){
+                        for(int j = 0; j < testData[i].length; j++){
+                            pp[i][j] += addpp[i][j];
+                        }
+                    }
+                }
+                cleanOutDelta();
+            }
+        }
+        
+        for (int i = 0; i < testData.length; i++) {
+            for (int j = 0; j < testData[i].length; j++) {
+                pp[i][j] /= (double) samples * (double) passes;
+            }
         }
 
-        int testDataLength = 0;
-        for(int[] line : testData){
-            testDataLength += line.length;
+        return pp;
+    }
+
+    public double scoreTest(int samples, int passes){
+        double[][] pp = ppTest(samples, passes);
+
+        double ll = 0.0;
+        int total = 0;
+        for (int i = 0; i < testData.length; i++) {
+            for (int j = 0; j < testData[i].length; j++) {
+                ll += Math.log(pp[i][j]);
+                total++;
+            }
         }
 
-        return -logLik / Math.log(2) / (double) testDataLength;
+        ll *= -1;
+        ll /= Math.log(2);
+        ll /= (double) total;
+        return ll;
     }
 
     public double score(){
@@ -307,12 +333,12 @@ public class PDIA {
         System.out.println(pdia.piCounts.size());
 
         for(int i = 0; i < 100; i++){
-            pdia.sample();
+            //pdia.sample();
+            System.out.print(pdia.scoreTest(10,10));
+            System.out.print(", ");
             System.out.print(pdia.piCounts.size());
             System.out.print(", ");
-            System.out.print(pdia.score());
-            System.out.print(", ");
-            System.out.println(pdia.scoreTest());
+            System.out.println(pdia.score());
         }
     }
 }
