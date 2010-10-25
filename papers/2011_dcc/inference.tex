@@ -1,0 +1,68 @@
+\section{Prediction, Inference and Estimation}
+\label{sec:inference}
+
+Exact Bayesian computations in the SM model, such as finding the predictive
+distribution $\Prob(s|\xbf_{1:i})$, are intractable.  In Section \ref{algorithm} we described an incremental algorithm for estimating $\Prob(s|\xbf_{1:i})$ based on viewing the Pitman-Yor distributed random vectors $G_\ubf$ in terms of the CRP as described in Section \ref{sec:pitmanyor}.
+%  
+In this view, the random vectors $G_{\ubf}$ are
+not explicitly represented; instead, the marginal distribution of draws from
+$G_{\ubf}$ is captured by the counts $\{c_{\ubf s},t_{\ubf s}\}_{s\in\Sigma}$ of the CRP. Because the $G_{\ubf}$'s are hierarchically coupled in the SM \eqref{eqn:sm_prior}, the CRPs are coupled as well, leading to a joint
+generative process for the counts $\statei=\{c_{\ubf s},t_{\ubf s}\}_{\ubf\in\Pi_{\xbf_{1:i}},s\in\Sigma}$ in all contexts on the tree.  %
+%\footnote{This joint process is referred to as the ``Chinese restaurant
+%franchise'', see \citep{Teh:JASA06}.}
+Given $\statei$, the predictive probability of the symbol $s$ following $\xbf_{1:i}$ is given by \eqref{eq:predictive}, which is simply a recursive application of the predictive probabilities in the CRPs associated with the contexts on the path from $\xbf_{1:i}$ to the root.  The quantity we are actually interested in, $\Prob(s|\xbf_{1:i})$, can then be approximated by averaging \eqref{eq:predictive} over posterior samples of the CRP counts $\statei$ conditioned on $\xbf_{1:i}$.  
+%---can therefore be approximated by averaging \eqref{eq:predictive} over samples drawn from the joint generative CRP conditioned on $\xbf_{1:i}$, which take the form of counts $c_{\ubf s}$ and $t_{\ubf s}$ for all $\ubf \in \Pi_{\xbf_{1:i}}$ and all $s \in \Sigma$.  
+
+
+%Approximate Monte Carlo methods which compute the required probabilities as
+%sample averages, have been developed for this model \citep{Teh:ACL06,
+%wood2009sms}. 
+%The algorithm described in Section \ref{algorithm} was derived as an
+%incremental variant of such a sampling-based approximate inference method for
+%the SM model. Our sampling scheme, as well as the ones previously derived for
+%the SM model, are based on viewing the PYP-distributed random vectors
+%$G_{\ubf}$  in terms of the CRP as described in section \ref{sec:pitmanyor}. 
+
+The task thus becomes obtaining samples from the posterior over the CRP counts conditioned on the observations $\xbf_{1:i}$.  In our previous work \citep{Teh:ACL06, wood2009sms} these samples were obtained using Markov chain Monte Carlo methods, which is too computationally intensive for the sequential setting considered here.   
+%suitable for the sequential setting here, as we would have to re-run the sampler for each newly observed symbol. 
+In this paper we take a different approach: at each iteration $i$ we simply
+update the counts associated with the new observation of $\xbf_{i+1}$ in the CRP
+associated with context ${\xbf_{1:i}}$, and do not resample all the other
+counts.  In the sequential Monte Carlo literature, this is simply a particle
+filter with only one particle, and corresponds to the $\UpdatePath$ function when
+probabilistic updates are used; we call this variant 1PF.
+
+
+%Because of this, we take a different approach: We maintain a
+%set of samples/particles $\{\Particle\}_{j=1}^M$ and update it incrementally for each new
+%observation, leading to a to particle-filtering type algorithm. 
+%The incremental update for a single sample/particle is precisely the
+%update described in Section \ref{algorithm} when using the $\UpdateCountsPF$
+%update, so that the resulting algorithm can be viewed
+%as a single-particle particle filter (1PF) for sampling from the posterior
+%over states $\state$. The described update essentially consists of
+%initializing the counts in the newly inserted context, and then sampling a
+%setting of the counts that could have given rise to observation $\xbf_i$ under
+%the CRP along the path up the tree. 
+
+To obtain a better approximation to the posterior, the particle filter can be
+run with multiple particles.  Surprisingly, this results in a rather
+negligible improvement (see Section 5).  There are two reasons for this.
+Firstly, as \citep{Teh:ACL06} noted, the posterior is unimodal, so it is easy
+for the particle filter to obtain a sample close to the mode and this single
+sample is likely to perform well.  Secondly, much of the predictive ability of
+the SM comes from the hierarchical sharing of counts which is already present
+in a single sample.  
+%The shared counts result in hierarchical smoothing of the predictive distributions. Averaging over multiple samples simply smooths more. 
+
+The alternative non-probabilistic count update described in Algorithm 1 is an additional
+approximation: Instead of maintaining the counts $t_{\ubf s}$, we constrain
+them to be $1$ whenever $c_{\ubf s}>0$ and 0 otherwise. As noted by
+\citep{Teh:ACL06}, this approximation yields predictive probabilities equal to
+the ones that would be obtained using interpolated Kneser-Ney, a
+state-of-the-art smoothing algorithm for language models; we call this variant
+UKN (for unbounded-depth Kneser-Ney). In our experiments in Section
+\ref{sec:experiments} we find that in the text compression setting this
+approximation also works very well.
+
+% vim: tw=78

@@ -1,0 +1,27 @@
+In this work we describe a sequence compression method based on combining a 
+Bayesian nonparametric sequence model with entropy encoding. 
+The model, a hierarchy of Pitman-Yor processes of unbounded depth previously
+proposed by \citet{wood2009sms} in the context of language modelling, allows
+modelling of long-range dependencies by allowing conditioning contexts of
+unbounded length.
+We show that incremental approximate inference can be performed in this model, 
+thereby allowing it to be used in a text compression setting.
+The resulting compressor reliably outperforms several PPM variants on many types of data,
+but is particularly effective in compressing data that exhibits power law properties.
+
+
+% model several methods for online prediction 
+% of sequences with power law properties using unbounded-depth hierarchical Pitman-Yor
+% process models.
+% The power law properties imposed by the Pitman-Yor process prior have been shown to 
+% be adequate for many naturally occuring discrete sequences, such as natural language.
+% Unbounded-depth hierarchies of Pitman-Yor processes, as proposed by \citet{wood2009sms},
+% allow modelling of long-range dependencies, by avoiding Markov assumptions.
+% As an application we consider lossless text compression using arithmetic coding.
+
+% In this work we describe the power law unbounded Markov predictor (PLUMP)
+% algorithm for (de)compression.  Our lossless compressor (DEPLUMP) results from
+% coupling a new construction algorithm and approximate inference technique for a
+% nonparametric Bayesian sequence prediction model to an entropy encoder.
+
+%vim: tw=78

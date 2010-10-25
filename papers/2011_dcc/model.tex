@@ -1,0 +1,493 @@
+\section{Probabilistic Model}
+
+Our compressor is derived from an underlying probabilistic model which we call
+the sequence memoizer.  This is a hierarchical Bayesian nonparametric model
+composed of Pitman-Yor processes originally conceived of as a model for
+languages (sequences of words).   In this section we briefly describe the
+model and refer the interested reader to \citep{Teh:ACL06,wood2009sms}.
+
+\def\GG{\mathcal{G}} The model describes the conditional probability of each
+symbol $s$ following each context $\ubf$ using a latent variable $G_\ubf(s)$.
+Collecting the variables into a vector, $G_\ubf=[G_\ubf(s)]_{s\in\Sigma}$ is a
+probability vector (non-negative entries summing to one), and the full
+(infinite) set of latent variables in the model is
+$\GG=\{G_\ubf\}_{\ubf\in\Sigma^*}$.  The joint probability of $\xbf$ and $\GG$
+is simply:
+\begin{align}
+P(\xbf,\GG) = P(\GG)\prod_{i=0}^{|\xbf|-1}G_{\xbf_{1:i}}(\xbf_{i+1})
+\end{align}
+where the rightmost term is the probability of each symbol conditioned on the sequence thus far, and $P(\GG)$ is the prior over the variables.  We will describe the prior in the rest of this section.  Taking a Bayesian approach and marginalizing out $\GG$, we get a distribution $P(\xbf)$ with which we can compress $\xbf$.  Section \ref{sec:inference} describes how the algorithm in Section \ref{algorithm} is an approximation of this ideal Bayesian approach.
+
+%The model underlying our compressor is the unbounded-depth hierarchical
+%Pitman-Yor process model (dubbed the ``sequence memoizer'' (SM) introduced in
+%\citep{wood2009sms}, which itself is an extension of the
+%HPYP language model proposed in \citep{Teh:ACL06} to unbounded context length.
+%In this section we briefly review the Pitman-Yor process (PYP),
+%priors based on hierarchies of PYPs, and the sequence memoizer, but  
+%encourage the reader to read \citep{wood2009sms} for further details. 
+
+% Further, define the following counts
+% with respect to a training sequence $\xbf$: Let $c(\ubf)$ denote the number of
+% times $\ubf$ occurs in $\xbf$, so that $c(\ubf s)$ denotes the number of times
+% $s$ follows the context $\ubf$ in $\xbf$. Let $\Sigma_{\ubf}$ denote the set
+% of distinct symbols that occur after context $\ubf$, i.e. $\Sigma_{\ubf} = \{s |
+% c(\ubf s) > 0 \}$.  
+
+\subsection{Pitman-Yor Process}
+\label{sec:pitmanyor}
+The Pitman-Yor process (PYP) \citep{Pitman:AP97}, denoted $\py(d,H)$, is a
+distribution over probability vectors.%
+\footnote{In this paper we describe a simplified Pitman-Yor process.  Firstly,
+Pitman-Yor processes are distributions over \emph{distributions} over an
+arbitrary probability space (here our space is $\Sigma$, a finite alphabet
+set).  Secondly, Pitman-Yor processes typically include a third parameter
+called the concentration or strength parameter.  In this three parameter guise
+the Pitman-Yor process is a generalization of the Dirichlet distribution, the
+more commonly encountered distribution over probability vectors, which is
+obtained when $d=0$ and the concentration parameter is positive.  Here the
+concentration parameter is set to 0 instead, this is sometimes referred to as
+the \emph{normalized stable process}.}
+It is parameterized by a \emph{discount parameter} $d \in (0,1)$ and a
+probability vector $H$ called the \emph{base vector}.  If $G\sim\py(d,H)$ is a
+Pitman-Yor distributed random probability vector, then the base vector is
+simply its mean $\text{E}[G(s)]=H(s)$ while the discount parameter is related
+to its variance $\text{Var}[G(s)]=(1-d)H(s)(1-H(s))$, for each $s\in\Sigma$.
+%
+%Some basic properties of a draw $G \sim \py(d,\alpha,H)$ from the PYP are that 
+%\begin{enumerate}
+%    \item $G$ is discrete with probability one and can be written as
+%        $G(\cdot)
+%        = \sum_{i=1}^\infty v_i \delta_{\theta_i}(\cdot)$, 
+%    \item for any measurable set $A$ we have $\text{E}[G(A)] = H(A)$ and 
+%    \item $\text{Var}[G(A)] = H(A)(1-H(A))(1-d)/(\alpha + 1)$. 
+%\end{enumerate}
+Intuitively, $G$ is ``similar'' to $H$, and the parameter $d$ control how $G$
+varies around $H$.  Another interesting aspect of the PYP is that it exhibits
+power-law properties, making them very successful in modelling data with such
+properties (such as natural languages) \citep{Teh:ACL06}.
+
+A better understanding of the PYP can be obtained by way of the \emph{Chinese
+restaurant process (CRP)}.  Initialize two sets of counts $\{c_s,t_s\}_{s\in\Sigma}$
+to 0, and consider the following generative process: Draw $y_1\sim H$ and set $c_{y_1}=t_{y_1}=1$; for $n=2,3,\ldots$ and
+each $s\in\Sigma$, with probability $\frac{c_s-dt_s}{c_\cdot}$ set $y_n=s$ and
+increment $c_s$, and with probability $\frac{dt_\cdot}{c_\cdot}H(s)$ set
+$y_n=s$ and increment \emph{both} $c_s$ and $t_s$.  The process generates a
+random sequence of symbols $y_1,y_2,\ldots\in\Sigma$.  These symbols are dependent through the updates on the counts (e.g.\ if $y_1=s$ we will more likely see $y_2=s$ as well).  Coming back to the PYP,
+since $G$ is a probability vector, we can treat it as a multinomial
+distribution over $\Sigma$.  Consider a sequence of iid draws
+$y_1,y_2,\ldots\sim G$.  The randomness in $G$ induces dependencies among the
+$y_n$'s once $G$ is marginalized out, and the resulting distribution over the
+sequence $y_1,y_2,\ldots$ is precisely captured by the Chinese restaurant
+process.
+
+%The PYP places substantial mass on distributions that exhibit power law properties, making them very sucessful in modelling data that exhibits these properties (such as natural language). 
+% Note that for
+% this special case the variance of $G(A)$ scales linearly with $-d$. 
+
+%\ywcomment{Perhaps do not need more on PYP power law properties?}
+
+% Throughout this section remember that SM model estimation as
+% described in \citep{wood2009sms} requires the entire observation sequence to
+% be available at training time.  
+%\subsection{Hierarchical Pitman-Yor Process}
+
+%
+%The fact that the mean of a PYP is given by its base distribution makes 
+%it very intuitive to use them to construct hierarchical models for data which
+%we expect to be generated by different but similar distributions.
+%In its simplest form, a hierarchical PYP model consists of some set of random 
+%distributions $\{G_i\}$, where each $G_i$ is drawn from a PYP,
+%$G_i \sim \py(d_i,\alpha_i,G_0)$, where the base distribution is $G_0 \sim
+%\py(d_0,\alpha_0,H)$ and is the same for all $G_i$. Such a model expresses the prior
+%knowledge that we expect all the $G_i$ to be similar to some (unknown)
+%distribution $G_0$, which in turn we expect to be similar to some known and
+%fixed distribution $H$. We can easily extend this simple idea to deeper
+%hierarchies, by again making base distributions at higher levels in the hierarchy
+%PYP-distributed random variables.  
+%The HPYP model \citep{Teh:ACL06} uses this idea to construct a language model.
+%Here, the random distributions $G_i$ are the distributions over the next word in a
+%particular context $\ubf$. In particular, for all non-empty contexts $\ubf \in \Sigma^d$
+%of maximal length $d$, we have $G_{[\ubf]} \sim
+%\py(d_{|\ubf|},\alpha_{|\ubf|},G_{\sigma(\ubf)})$.
+%If we arrange the contexts $\ubf$ (and their associated distributions
+%$G_{[\ubf]})$ in a tree, where the parent of $\ubf$ is given by the longest
+%proper suffix of $\ubf$, $\sigma(\ubf)$, we have that the random distribution
+%$G_{[\ubf]}$ at each node $\ubf$ is PYP-distributed and its mean is given by
+%the random distribution associated with the parent node, $G_{[\sigma(\ubf)]}$. 
+%At the root of the tree is the empty context, with which we associate the
+%distribution $G_{[]} \sim \py(d_0, \alpha_0, H)$ where $H$ is some fixed
+%distribution over $\Sigma$.
+%The distributions are thus tied together in a
+%hierarchical fashion, allowing statistical strength to be shared among
+%contexts that have a common suffix.  
+
+% \py(d_0,\alpha_0, H)$.
+\subsection{Sequence Memoizer}
+The sequence memoizer (SM) \citep{wood2009sms} is distribution over the infinite set $\GG=\{G_\ubf\}_{\ubf\in\Sigma^*}$ of probability vectors reposed on a hierarchical Bayesian model consisting of PYPs.
+%
+%The sequence memoizer \citep{wood2009sms} is an extension of the general HPYP
+%model described above to context of unbounded length, i.e. $\ubf$ is not
+%restricted to maximum length, leading to a context tree of unbounded depth. 
+%In order to make inference in such a model feasible through marginalization
+%(described in the next paragraph), the parameter space of
+%the PYP has to be restricted to $\alpha=0$. 
+Succinctly, we can describe the SM as follows:
+\begin{subequations}
+        \label{eqn:sm_prior}
+        \begin{align}
+            G_{\varepsilon} \mid d_0,H\quad &\sim \quad\py(d_0,H) \label{eq:m1} &\\
+            G_{\ubf} \mid d_{|\ubf|},G_{\suffix(\ubf)} \quad
+            &\sim \quad \py(d_{|\ubf|},G_{\suffix(\ubf)})  & \forall \ubf \in
+            \Sigma^+ \label{eq:m2}%\\
+%            x_i \mid \xbf_{1:i-1}=\ubf \quad &\sim\quad  G_{[\ubf]} 
+%            &  
+%            i=1,\ldots,T \label{eq:m3}
+        \end{align}
+\end{subequations}
+\noindent where $H$ is a base vector (in the following assumed to be
+uniform) and $d_{|\ubf|}$ are the discount parameters.
+%The SM model is a hierarchical prior placed on the set of distributions
+%$\{G_{[\ubf]}\}_{\ubf \in \Sigma^{*}}$, where $G_{[\ubf]}(v)$  corresponds
+%to the probability of symbol $v \in \Sigma$ following the context $\ubf$.
+The structure of the model is an unbounded-depth tree, with each node indexed by a context $\ubf\in\Sigma^*$, labelled by the probability vector $G_\ubf$, and with parent given by $\sigma(\ubf)$.  
+
+The structure encodes the prior knowledge that the predictive distributions over the subsequent symbols in different contexts are similar to each other, with contexts sharing longer suffixes being more similar to each other.  In other words, the later symbols in a context are more important in predicting the subsequent symbol.  Also, by virtue of using PYPs, the SM encodes an assumption that sequences of symbols have power-law properties.
+
+To make computations in the SM tractable, it is essential to reduce the size
+of the model.  Firstly, we can marginalize out all $G_\ubf$ not associated
+with the data in $\xbf$.  This reduces the size of the tree from infinite to
+quadratic in $|\xbf|$.  Secondly, we can marginalize out all non-branching
+nodes in the resulting tree, which further reduces the size to linear in
+$|\xbf|$.  The resulting tree is the context tree as described in Section
+\ref{algorithm}.  The second reduction can be performed analytically due to a
+theorem of \citet{Pitman1999}, which in our situation simply states: if
+$G_1|G_0 \sim \py(d_1,G_0)$ and $G_2|G_1 \sim \py(d_2, G_1)$ then marginally
+$G_2|G_0 \sim \py(d_1d_2,G_0)$ is a Pitman-Yor process as well with modified
+discount parameters.  Further details of this reduction can be found in
+\citep{wood2009sms}.  Note that the algorithm in \citep{wood2009sms} requires
+the entire observation sequence to be known to construct the context tree
+efficiently.  One of the contributions of this paper is the forward incremental
+algorithm for constructing the context tree as described in Section 2, which is essential for text compression since the decoder does not have access to the entire sequence until it has finished decoding. 
+
+%The resulting collapsed prefix tree graphical model
+%contains nodes only for contexts that have observations associated with them. 
+%We denote the parent of a context $\ubf$ in this collapsed tree by
+%$\pi(\ubf)$, and the set of all nodes that are explicitly represented in the
+%prefix tree for sequence $\xbf$ by $\Pi(\xbf)$. 
+%% In \citep{wood2009sms} it was also established that certain
+%% marginalization steps were necessary to construct such a compressed graphical
+%% model and these were taken after the graphical model structure was established
+%% (in compression these identifications must be made online which is another
+%% contribution of our approach).
+%The SM marginalization step affects the discount parameters at
+%each node and the parent child relationships in the tree.  Once properly
+%marginalized, however, the resulting graphical model
+%can be treated as a ``normal'' HPYP model, and standard inference methods
+%developed for the HPYP can be employed. 
+
+
+% \section{Inference}
+% \label{sec:inference}
+% 
+% To clarify this idea, consider the
+% following: given a sequential model parametrized by $\theta$, we can construct
+% a model to compress $\xbf$ as follows.  For $i=1,\ldots,|\xbf|$ we code for
+% each symbol $\xbf_i$ using its marginal probability given past symbols:
+% $p(\xbf_i|\xbf_{1:i-1})=\int p(\xbf_i|\theta)p(\theta|\xbf_{1:i-1})d\theta$.
+% This requires access to a sequence of posteriors $p(\theta|\xbf_{1:i})$, one
+% for each $i$. \emph{Incremental} inference for $\theta$ means computing (or
+% approximating) this sequence of posteriors as each symbol $\xbf_i$ is added in
+% turn to the observation. 
+
+% Inference in the remaining HPYP can be performed in what is known as the Chinese
+% restaurant franchise representation \citep{teh2006bii, Teh:JASA06}, where the
+% state of each Pitman-Yor process associated with a context $\ubf$ in the tree
+% is represented in terms of sets of counts $\mathcal{C}_{\ubf} \bydef \cset$
+% (usually referred to as the ``customers'' in the $\ubf$ ``restaurant'') and
+% $\mathcal{T}_{\ubf} \bydef \tset$ (referred to as the number of ``tables''
+% around which the customers are seated).\footnote{Because of limited space we
+% refer the reader to the description of the Chinese restaurant franchise samplers
+% given in \citep{teh2006bii, Teh:JASA06}.  Here we provide the equations necessary to 
+% implement the compressor but cannot fully
+% reiterate the connection to valid inference in the HPYP.}
+% 
+% The count $\cusk$ corresponds to the number of draws of
+% type $s$ from the PYP associated with $\ubf$ assigned to the $k$-th draw from
+% the base distribution, whereas $\tus$ corresponds to the number of draws from
+% the base distribution $G_{[\parent(\ubf)]}$. 
+% As in the collapsed graphical
+% model prefix tree, the parent-child relationship between explicit nodes can no
+% longer described by the longest-suffix relation $\suffix(\cdot)$ as
+% intermediate nodes may have been marginalized out. To emphasize this fact, we
+% use $\pi(\ubf)$ to denote the parent of context $\ubf$ in the
+% prefix tree, i.e. the longest proper suffix of $\ubf$ that is explicitly
+% represented in the tree. 
+
+% Given these sets of counts for all contexts $\ubf \in \Pi(\xbf)$
+% (which we will in the following jointly refer to as the
+% \emph{sampler state} of the model
+% $\mathcal{S_\xbf}=\{\mathcal{C}_{\ubf},\mathcal{T}_{\ubf}\}_{\ubf \in
+% \Pi(\xbf)})$, the predictive probability for a symbol
+% $s$ in context $\ubf$ is given by
+% \begin{equation}
+%     \Prob(s|\ubf,\state) = \frac{\cus - d_{\ubf} \tus}{\cu} + \frac{d_{\ubf}\tu
+%     }{\cu}\Prob(s|\parent(\ubf),\state)
+%     \label{eq:predictive}
+% \end{equation}
+% when $\cu \neq 0$ and $\Prob(s|\ubf,\state) = \Prob(s|\parent(\ubf),\state)$ otherwise.%
+% \footnote{Note that the predictive distribution does not directly depend on
+% the counts $\cusk$ for each $k$, but only on the marginal count $\cus$. The
+% counts $\cusk$ are however required for sampling from the posterior
+% distribution over states.}
+% The quantities $\cus, \cu$, and $\tu$ are computed from $\cusk$ and $\tus$ by
+% summing over the dimensions marked by $\cdot$.
+% As described in \citep{wood2009sms}, the discount parameters in the
+% marginalized model correspond to products of
+% the per-level discounts $d_{|\ubf|}$. Here we denote by $d_{\ubf}$
+% the discount parameter for the node associated with context $\ubf$ in the
+% prefix tree, so that $d_{\ubf} = d_{|\parent(\ubf)|+1} \cdot
+% d_{|\parent(\ubf)|+2} \cdots d_{|\ubf|}$. To make this more concrete, consider
+% the prefix tree shown in panel (4) of \figref{fig:tree} where we have
+% $\parent(\mathtt{abb}) = \mathtt{b}$ and $d_{\mathtt{abb}} = d_2 d_3$. 
+% 
+% In order to compute the predictive distribution $\Prob(s|\ubf,\xbf_{1:i})$ of a
+% symbol $s$ in context $\ubf$ after having observed input $\xbf_{1:i}$ under
+% the \UHPYP\ model, \eqref{eq:predictive} has to be averaged with respect to
+% the posterior distribution over states
+% $\Prob(\mathcal{S}_{\xbf_{1:i}}|\xbf_{1:i})$.  Estimation of the HPYP model
+% posterior (i.e.~producing samples from
+% $\Prob(\mathcal{S}_{\xbf_{1:i}}|\xbf_{1:i})$) is usually performed using Gibbs
+% sampling (we refer the reader to \citep{teh2006bii,Teh:JASA06} for more
+% details).  However, this approach is not practical for incremental inference,
+% as the sampler would technically have to be restarted and run to convergence
+% after the addition of each new observation.
+
+
+% As previously stated, in order to employ the \UHPYP\ for compression we need to be able to construct
+% the model incrementally and be able to efficiently make next-symbol predictions 
+% $\Prob(x_i|\xbf_{1:i-1})$.  To
+% make this feasible we must (a) incrementally build the required prefix tree
+% (i.e. obtain the tree for $\xbf_{1:i}$ from the tree for $\xbf_{1:i-1})$ and 
+% (b) sequentially estimate the distribution $P(\statei|\xbf_{1:i})$ 
+% so that we can evaluate $\Prob(s|\ubf,\xbf_{1:i})$. We will first
+% discuss (a) in section \ref{sec:treeConstruction} 
+% and then turn to (b) in \ref{sec:seqInference}. 
+
+% \subsection{Sequential Prefix Tree Construction}
+% \label{sec:treeConstruction}
+% In \citep{wood2009sms} the prefix tree was constructed by exploiting the fact
+% that the suffix tree of a string corresponds to the prefix tree of its
+% reverse%
+% \footnote{More precisely, the suffix tree of a string is the reverse prefix
+% tree of its reverse; see \citep{giegerich1997uma} for a discussion of this
+% duality and a review of the different suffix/prefix tree construction
+% algorithms.}
+% and applying Ukkonen's algorithm \citep{Ukkonen:ALGA05} to the reverse of the input -- an
+% approach that requires the entire input sequence to be known in advance. 
+% Here we argue that using a complex $\Oh(N)$ prefix/suffix tree construction algorithm
+% such as Ukkonen's algorithm is neither necessary nor beneficial in the setting of sequential
+% prediction in the SM: This is because the computational complexity of the prediction 
+% algorithm will be dominated by the cost of computing the predictive probability
+% and updating the posterior distribution over states. Computing
+% \eqref{eq:predictive} requires recursively computing \eqref{eq:predictive} at each node on the path from the
+% root to the $\ubf$-node, and there are $|\ubf|$ such nodes in the worst case (which
+% occurs of $\xbf_{1:i}$ consists only of symbols of the same type). Because of
+% this the worst case
+% complexity of sequential prediction of a sequence of $N$ symbols 
+% using the \UHPYP\ is $\Oh(N^2)$.
+% Therefore, we propose using a ``na\"{\i}ve'' $\Oh(N^2)$ prefix tree construction
+% algorithm, 
+% which for each insertion traverses exactly the nodes at which computation must
+% be performed to evaluate \eqref{eq:predictive}, and thus does not increase the
+% asymptotic complexity of the overall algorithm, but only adds a small constant
+% factor.%
+% \footnote{We note in passing that $\Oh(n)$ online algorithms for prefix tree
+% construction \emph{do} exist (e.g. Weiner's ``repetition finder''
+% \citep{giegerich1997uma} which constructs the suffix tree starting from the
+% end of the string), but are not necessarily more efficient for the task at
+% hand for typical inputs as the constant factors involved are larger,
+% and usually do require additional memory for storing additional pointers. 
+% It should also be noted that the prefix tree required for storing the state of
+% the \UHPYP\ contains more nodes than the usual compressed prefix tree, as
+% nodes which have observations associated with them must be explicitly
+% represented.}
+
+
+% Each node in the tree stores pointers into the input marking the beginning and
+% end of the context it represents, a map from symbols to child nodes, and the
+% counts $\cset$ and $\tset$.
+
+% \subsection{Sequential Inference}
+% \label{sec:seqInference}
+% Inference in the \UHPYP\ model amounts to estimating the posterior distribution
+% $P(\statei|\xbf_{1:i})$, usually by approximating it using samples from
+% this distribution (in the form of settings of the counts
+% $\mathcal{C}_{\ubf}$ and $\mathcal{T}_{\ubf}$ for all observed contexts
+% $\ubf$). 
+
+% Here we propose two simple approximate inference schemes which sequentially
+% update samples from $P(\mathcal{S}_{\xbf_{1:i-1}}|\xbf_{1:i-1})$ such that they become samples from
+% $P(\statei|\xbf_{1:i})$. 
+% They are based on the observation that Gibbs
+% sampling in the model converges rapidly, and the number of obtained samples
+% over which the predictive distribution \eqref{eq:predictive} is averaged does
+% not have a dramatic impact on the performance.
+% The first scheme can be understood as particle filter that
+% performs this update. 
+% In this scheme the current estimate of the posterior over states is maintained 
+% in the form of a set of samples/particles $\{\Particle\}_{j=1}^M$, 
+% which are updated to account for the newly observed symbol $x_i$ in context $\xbf_{1:i-1}$ by running the Chinese
+% restaurant franchise forward \citep{Teh:JASA06}.
+% Algorithmically, this yields the update procedure outlined in Algorithm
+% \ref{alg:update}. 
+
+% Algorithmically, this yields the following update rule:%
+% \footnote{$\cusk$ and $\tus$ always represent the counts with
+% respect to the sample under consideration. The update described here
+% corresponds to the \texttt{AddCustomer} function in \citep{teh2006bii}.}
+% \\~\\
+% {\small
+% \quad For $i=1$ to $N$, set  $\ubf = x_{1:i-1}$ and $s = x_i$
+%         \begin{enumerate}
+%     \item The count sets $\mathcal{C}_{\ubf}$ and $\mathcal{T}_{\ubf}$ are
+%         initialized with $c_{\ubf s 1}=1$ and $\tus = 1$.
+% \item Update the counts for the parent $\ubf' = \parent(\ubf)$ to account for a 
+%     draw from $G_{[\parent(\ubf)]}$ in the following way: 
+% \begin{equation}
+%     \text{with probability}~ \propto
+%     \begin{cases}
+%         \text{max}(0,c_{\ubf' s k} - d_{\ubf'}) & \text{increment}~
+%         c_{\ubf' s k}\\
+%         d_{\ubf'}t_{\ubf'\cdot} \Prob(s|\parent(\ubf')) &
+%         \text{increment}~t_{\ubf' s},
+%         \text{set}~c_{\ubf' s t_{\ubf' s}} = 1
+%     \end{cases}
+%     \label{eq:addCust}
+% \end{equation}
+% \item If $t_{\ubf' s}$ was incremented in the process, repeat the process
+%     recursively with $\ubf' \gets \pi(\ubf')$ according to \eqref{eq:addCust} 
+%     until $t_{\ubf' s}$ is not incremented.
+% \end{enumerate}
+% }
+% This is the update for a single particle in a particle filter posterior
+% estimator for the CRF. Using more than a single particle will yield a better
+% approximation to the posterior distribution at the expense of more
+% computation.
+% Intuitively, these updates can be understood in the following way: Every time
+% a new observation is added to the model counts are incremented for some random distance
+% up the tree.  This sharing of counts is the way observations in related context reinforce each
+% other.  
+% The number of particles $M$ controls how accurate our representation of the
+% posterior distribution will be, but the computational complexity also increases linearly with $M$.
+% One extreme case is to set $M=1$, and we will refer to this as the
+% single-particle particle filter (1PF). 
+% One of the reasons why single sample/particle predictive inference
+% works in this model is that much of the predictive ability of the SM comes
+% from this hierarchical sharing of counts.  
+% The shared counts result in hierarchical smoothing of the predictive distributions.
+% Averaging over multiple samples
+% simply smooths more. 
+%The number of samples used to represent the posterior at each step is
+%a parameter of the algorithm that controls the accuracy of the representation of
+%the posterior.
+
+% One extreme case is to just use a single sample -- we refer to
+% this as the single particle particle filter (1PF) -- to represent the
+% posterior. While this is obviously a bad idea if we were directly interested
+% in the posterior distribution over states, it turns out that for
+% prediction using \eqref{eq:predictive} this is a reasonable approximation and
+% one does not achieve significant gains in predictive performance by using more
+% samples.
+
+% This is similar to the method proposed by
+% \citep{anderson1992eib} termed the ``local-MAP'' approach in
+% \citep{sanborn2006mrm} with the difference that instead of choosing the
+% maximum in \eqref{eq:addCust} we sample from the distribution.
+
+% The second method for sequentially updating the state of the \UHPYP\ is not a
+% sampler for $P(\statei|\xbf_{1:i})$ but is instead a deterministic algorithm for
+% producing state configurations that obey the constraints imposed by the
+% probabilistic model.
+% This second method constrains  $\tus$ to
+% be at most one for all $\ubf$. This constraint reduces inference in the HPYP model to
+% interpolated Kneser-Ney smoothing \citep{Chen:CSL99} as shown in
+% \citep{teh2006bii}.
+% By enforcing this constraint as we update the state in \AddCustomer\ (which 
+% makes this function deterministic), we
+% obtain what we refer to as unbounded-depth Kneser-Ney (UKN). 
+% The advantage of UKN over 1PF is
+% that it uses less memory (at most $|\Sigma|$ counts need to be stored at each
+% node), and is significantly faster as no sampling is required. Our experiments
+% show that making this approximation also does not significantly degrade compression performance. 
+
+% \subsection{Outline of the Compression Algorithm}
+% The main advantage of the described inference methods is their computational
+% efficiency: both update schemes can be interleaved with the construction of
+% the tree and the prediction of the next symbol, so that the resulting
+% algorithm has an average case complexity of $\Oh(N\log N)$. 
+% 
+% The insertion point determined in the first stage of the tree update from
+% $\xbf_{1:i-1}$ to $\xbf_{1:i})$ is also the restaurant from which a
+% prediction for $x_{i+1}$ has to be made, and the path from the root that is
+% traversed to the insertion point is also the path that contains the nodes
+% required for computing $\Prob(x_{i+1}|x_{1:i})$ and whose counts updated
+% according to the procedure described above.
+% In order to insert a context, compute the predictive
+% probability in this context, and finally update the seating arrangements to
+% account for the observed (or decoded) symbol we can thus first pass down the
+% predictive probabilities (the second term in \eqref{eq:predictive} as we
+% traverse the tree downward, insert the new context as described above, and
+% finally update the counts on the path with the new input/decoded symbol 
+% as necessary on an upward pass. 
+
+% \subsection{Discount Optimization}
+% As can be seen in \eqref{eq:predictive}, the discount parameters $d_{\ubf}$
+% control the weighting of contexts of different lengths when making predictions, so
+% the values they take are crucial for the performance of the predictor. In
+% \citep{wood2009sms} the discounts were given
+% a prior and sampled using Metropolis-Hastings updates. In the online setting,
+% this would require a re-computation of the joint probability over seating
+% arrangements in the entire tree for each new observed symbol, which is clearly
+% too costly. Instead, we sequentially update the discounts by gradient descent
+% with respect to the predictive probability \eqref{eq:predictive}. After
+% observing the symbol $x_i$, but before updating the associated counts, we
+% compute the gradient of \eqref{eq:predictive} with respect to the discounts
+% $d_{\ubf}$ and then take a small step in that direction, i.e. $d_{\ubf} \gets
+% d_{\ubf} + \varepsilon \frac{\partial \Prob(x_i|\xbf_{1:i-1})}{\partial d_{\ubf}}$. 
+% Recall that the discounts $d_{\ubf}$ correspond to products of per-level
+% discounts. We can either take the gradient with respect to these per-level
+% discounts (in which case discount parameters are shared among nodes), or
+% independently with respect to $d_{\ubf}$ (we refer to these as the
+% \emph{independent} discounts). In both cases, as in \citep{wood2009sms}, the
+% per-level discounts are only represented explicitly up to a pre-defined fixed
+% depth $m$, and share the same discount $d_{\infty}$ below this depth, i.e.
+% $d_k = d_{\infty}$ for $k>m$. The independent discounts are always initialized
+% to the product of the corresponding dependent discounts at the time of
+% initialization. 
+% 
+% \subsection{Runs and Context Mixing}
+% When applying the model described above to real-world data, one interesting
+% aspect of this model emerges: When a single character is repeated many times in the input
+% sequence (e.g. $\mathtt{0}$ repeated 10000 times as is not uncommon in certain
+% types of binary files; we refer to these sequences as \emph{runs}) the model
+% becomes overconfident in its prediction of the next symbol. In the extreme
+% case observing a different symbol then leads to numerical underflow even in log-space, i.e.~it
+% assigns zero probability to anything other than the deterministic continuation
+% of the run. For shorter runs it means that cost of encoding of the next symbol is
+% inappropriately high.
+% 
+% This problem can be overcome in several ways: One simple approach is to
+% pre-process the data using some form of run-length encoding -- an approach
+% that seems common among PPM implementations. 
+% %Another way to guard against the
+% %cost of seeing a symbol with extremely low probability at the end of a run is
+% Our approach is to use a mixture model for prediction. 
+% In addition to predicting in the
+% longest possible context, we blend it with the prediction from the root node of
+% the tree. More precisely, we predict using $\Prob_\text{mixed}(x_{i}|\xbf_{1:i-1}) =
+% (1-\alpha) \Prob_{[\xbf_{1:i-1}]}(x_i) + \alpha\Prob_{[]}(x_i)$, where
+% $\Prob_{[u]}(s)$ denotes the predictive probability \eqref{eq:predictive}
+% under the current seating arrangements starting from context $\ubf$. 
+% We chose the weight $\alpha = 10^{-2}$ empirically.
+
+% vim: tw=78
