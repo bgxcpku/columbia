@@ -16,6 +16,7 @@ import edu.columbia.stat.wood.util.IntUniformDiscreteDistribution;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  *
@@ -28,13 +29,14 @@ import java.io.IOException;
  * stream length
  * radix (bytes)
  */
+ 
 public class Main {
     
-    public static void main(String[] args) throws FileNotFoundException, IOException{
+    public static void main(String[] args) throws FileNotFoundException, IOException, java.lang.InterruptedException{
         int nargs = args.length;
 
         //defaults
-        File f;
+        File f, g;
         String corpus = "/Users/nicholasbartlett/Documents/np_bayes/data/pride_and_prejudice/pap.gz";
         int sizeOfTree = 10000;
         int depth = 1024;
@@ -57,19 +59,22 @@ public class Main {
             radix = Integer.parseInt(args[4]);
         }
 
-        f = new File(corpus);
+	g = new File(corpus);
+	cp(g);
+        f = new File("/tmp/" + g.getName());
         
         System.out.println(corpus + "|" + sizeOfTree + "|" + depth + "|" + streamLength + "|" + radix);
 
         FileRadixInputStream is = new FileRadixInputStream(f,radix);
 
+        int n = 0;
         double logLik = 0.0;
         if(radix == 1){
             ByteSequenceMemoizer sm = new ByteSequenceMemoizer(new ByteSequenceMemoizerParameters(depth,sizeOfTree, (long) 100 * (long) sizeOfTree));
 
             int bytesLogLik = 0;
             long l;
-            while((l = is.readLong()) > -1){
+            while((l = is.readLong()) > -1 && n < 5){
 
                 if(is.bytesRead > streamLength){
                     System.out.println((is.bytesRead - radix) + "|"  + bytesLogLik + "| " + logLik + "|" + (-logLik / Math.log(2) / (double) bytesLogLik));
@@ -77,6 +82,7 @@ public class Main {
                     bytesLogLik = 0;
                     logLik = 0.0;
                     ByteRestaurant.count = 0;
+                    n++;
                     sm = new ByteSequenceMemoizer(new ByteSequenceMemoizerParameters(depth,sizeOfTree, (long) 100 * (long) sizeOfTree));
                 }
 
@@ -108,7 +114,7 @@ public class Main {
 
             int bytesLogLik = 0;
             long l;
-            while((l = is.readLong()) > -1){
+            while((l = is.readLong()) > -1 && n < 5){
 
                 if(is.bytesRead > streamLength){
                     System.out.println((is.bytesRead - radix) + "|" + bytesLogLik + "| " + logLik + "|" + (-logLik / Math.log(2) / bytesLogLik));
@@ -126,6 +132,7 @@ public class Main {
                         
                         sm = new IntSequenceMemoizer(smp);
                     }
+                    n++;
                 }
 
                 logLik += sm.continueSequence((int) l);
@@ -139,5 +146,23 @@ public class Main {
             }
             System.out.println(is.bytesRead + "|" + bytesLogLik + "| " + logLik + "|" + (-logLik / Math.log(2) / (double) bytesLogLik));
         }
+    }
+    
+    public static void cp(File f) throws java.io.IOException, java.lang.InterruptedException {
+    	File g = new File("/tmp/" + f.getName());
+    	if(g.exists()){
+    		return;
+    	} else {
+    		Runtime rt = Runtime.getRuntime();
+    		Process proc = rt.exec("cp " + f.getPath() + " /tmp/" + f.getName());
+    		proc.waitFor();
+    		InputStream is = proc.getErrorStream();
+    		int b;
+    		while((b = is.read()) > -1){
+    			System.err.print((char)b);
+    		}    		
+    		System.out.println();
+    		is.close();
+    	}
     }
 }
