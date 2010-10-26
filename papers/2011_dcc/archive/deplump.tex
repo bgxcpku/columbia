@@ -1,0 +1,74 @@
+\documentclass[oneside,letterpaper,12pt]{article}
+%\areaset{6in}{9in}
+\usepackage{vmargin}
+%\usepackage{pdfpages}
+
+\setpapersize{USletter}
+\setmargins{1.25in}{1in}{6in}{9in}{0mm}{0mm}{0mm}{1cm}
+%\setmarginsrb{1.5cm}{0.5cm}{1.5cm}{1.5cm}{1cm}{0.5cm}{1cm}{1.5cm}
+%\usepackage{lib/aistats2e}
+\usepackage{algorithm}
+%\usepackage{algorithmic}
+\usepackage{algpseudocode}
+
+\usepackage{times}
+\usepackage[square]{natbib}
+\usepackage{amsmath,amssymb}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{multirow}
+%\usepackage[scrtime,time]{prelim2e}
+%\renewcommand{\PrelimWords}{Preliminary Version -- \textbf{Do not distribute!}}
+\usepackage{microtype}
+
+\usepackage{xcolor}
+%\input{definitions.tex}
+\newcommand{\comment}[1]{}
+
+%\input{definitions.tex}
+\title{Deplump: A streaming lossless compressor}
+
+\author{Nicholas Bartlett  \and Frank Wood}
+
+\date{
+\small Department of Statistics, Columbia University, New York, USA}
+
+\begin{document}
+
+\maketitle
+%%% BEGIN CONTENT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection*{Abstract}
+%input{abstract}
+
+%\section{Introduction}
+%\input{introduction}
+
+\section{Algorithm}
+\input{algorithm}
+
+%\input{model}
+
+%\input{inference}
+
+%\section{Experiments}
+%\input{experiments}
+
+%\section{Related Work}
+%\input{review}
+
+%\section{Discussion}
+%\input{discussion}
+
+%\subsubsection*{Acknowledgments}
+%This work was supported by the Gatsby Charitable Foundation and the PASCAL
+%Network of Excellence.
+
+%%% END CONTENT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand{\bibsection}{\subsubsection*{References}}
+%\nocite{*}
+\setlength{\bibsep}{0mm}
+\bibliographystyle{apalike}
+\bibliography{references.bib}
+\end{document}
+  % vim:tw=79:ts=2:sw=2:et
