@@ -6,7 +6,6 @@
 package edu.columbia.stat.wood.pdia;
 
 import edu.columbia.stat.wood.hpyp.HPYP;
-import edu.columbia.stat.wood.hpyp.Restaurant;
 import edu.columbia.stat.wood.util.MersenneTwisterFast;
 import edu.columbia.stat.wood.util.MutableDouble;
 import edu.columbia.stat.wood.util.MutableInt;
@@ -15,9 +14,11 @@ import gnu.trove.iterator.TIntObjectIterator;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -167,8 +168,23 @@ public class PDIA {
         }
     }
 
+    public void sampleBeta() {
+        double dll1 = dataLogLikelihood();
+        double old_beta = beta;
+        beta = beta + RNG.nextGaussian();
+        if ( beta < 0 ) {
+            beta = old_beta;
+        } else {
+            double dll2 = dataLogLikelihood();
+            if ( (dll2 - beta) - (dll1 - old_beta) < Math.log(RNG.nextDouble())) {
+                beta = old_beta;
+            }
+        }
+    }
+
     public void sample(){
         sampleDelta();
+        sampleBeta(); // To do - speed this by only calculating data log likelihood when needed
         for (int i = 0; i < 10; i++) {
             hpyp.sampleHyperParams(0.07, .7);
             hpyp.sampleSeatingArrangments();
@@ -219,12 +235,23 @@ public class PDIA {
         return pp;
     }
 
-    public double[][] ppTest(int samples, int passes){
+    public double[][] ppTest(int samples, int passes, int jump, String filePrefix){
         double[][] pp = null;
 
         for(int s = 0; s < samples; s++){
-            System.out.println("sample = " + s);
-            sample();
+            System.out.println("sample = " + s*jump);
+            for (int j = 0; j < jump; j++) {
+                sample();
+            }
+            try {
+                File file = new File(filePrefix + s*jump + ".sample");
+                FileWriter fw = new FileWriter(file);
+                BufferedWriter out = new BufferedWriter(fw);
+                out.write(toString());
+            } catch (IOException e) {
+                System.err.println("Couldn't write PDIA Params.");
+                e.printStackTrace();
+            }
             for(int p = 0; p < passes; p++){
                 if(p == 0 && s == 0){
                     pp = ppTest();
@@ -249,8 +276,8 @@ public class PDIA {
         return pp;
     }
 
-    public double scoreTest(int samples, int passes){
-        double[][] pp = ppTest(samples, passes);
+    public double scoreTest(int samples, int passes, int jump, String filePrefix){
+        double[][] pp = ppTest(samples, passes, jump, filePrefix);
 
         double ll = 0.0;
         int total = 0;
@@ -271,10 +298,28 @@ public class PDIA {
         return dataLogLikelihood() + hpyp.score();
     }
 
+    @Override
+    public String toString() {
+        String toStr = "Beta: " + beta + "\n";
+        toStr += "Root Restaurant:\n" + hpyp.get(new int[]{}).toString();
+        for (int i = 0; i < alphabetSize; i++) {
+            toStr += "Restaurant " + i + ":\n" + hpyp.get(new int[]{i}).toString();
+        }
+        toStr += "Delta:\n";
+        for ( IntPair pair : delta.keySet() ) {
+            toStr += pair.toString() + " -> " + delta.get(pair) + "\n";
+        }
+        return toStr;
+    }
+
     public static void main(String[] args) throws FileNotFoundException, IOException{
         //Read in the data to trainingData int array
-        File f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/alice_in_wonderland/aiw.train");
-        File g = new File("/Users/nicholasbartlett/Documents/np_bayes/data/alice_in_wonderland/aiw.test");
+        String path = args[0];
+        if (path.charAt(path.length() - 1) != '/') {
+            path = path + "/";
+        }
+        File f = new File(path + "aiw.train");
+        File g = new File(path + "aiw.test");
 
         BufferedReader br = null;
         THashMap<Character,Integer> dictionary = new THashMap<Character,Integer>();
@@ -332,9 +377,12 @@ public class PDIA {
 
         System.out.println(pdia.piCounts.size());
 
+        for (int i = 0; i < 200; i++){
+            pdia.sample(); // burn in
+            System.out.println("Burn-in sample " + i);
+        }
         for(int i = 0; i < 100; i++){
-            //pdia.sample();
-            System.out.print(pdia.scoreTest(10,10));
+            System.out.print(pdia.scoreTest(10,10,10,path+"aiw"));
             System.out.print(", ");
             System.out.print(pdia.piCounts.size());
             System.out.print(", ");

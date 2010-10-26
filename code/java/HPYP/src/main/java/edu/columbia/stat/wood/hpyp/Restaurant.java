@@ -11,6 +11,7 @@ import edu.columbia.stat.wood.util.Pair;
 import edu.columbia.stat.wood.util.SampleWithoutReplacement;
 import gnu.trove.iterator.TIntObjectIterator;
 import gnu.trove.map.hash.TIntObjectHashMap;
+import java.util.Arrays;
 
 /**
  *
@@ -262,6 +263,20 @@ public class Restaurant extends IntMap<Restaurant> {
             iterator.advance();
             iterator.value().removeZeros();
         }
+    }
+
+    @Override
+    public String toString() {
+        String toStr = "Concentration: " + concentration.value() + "\n" +
+                       "Discount: " + discount.value() + "\n";
+        TIntObjectIterator<TSA> iterator = tableArrangements.iterator();
+        while(iterator.hasNext()){
+            iterator.advance();
+            if (iterator.value().customers != 0) {
+                toStr = toStr + iterator.key() + "->" + Arrays.toString(iterator.value().sa) + "\n";
+            }
+        }
+        return toStr;
     }
 
     private static class TSA {

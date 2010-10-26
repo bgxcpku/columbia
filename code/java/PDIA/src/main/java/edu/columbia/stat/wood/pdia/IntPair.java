@@ -53,7 +53,7 @@ public class IntPair {
 
     @Override
     public String toString(){
-        String stringRep = "first = " + f + ", second = " + s + ", hash = " + hashCode();
+        String stringRep = "" + f + ", " + s;
         return stringRep;
     }
 }

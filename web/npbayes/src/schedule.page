@@ -57,6 +57,20 @@ The tentative schedule is
 	
 		<TR>
 		<TD>Oct 29</TD>
+		<TD>The Indian Buffet Process</TD>
+		<TD><a href="http://cocosci.berkeley.edu/tom/papers/ibptr.pdf">Griffiths and Ghahramani (2005)</a> Sections 1-4</TD>
+		<TD>Nick Bartlett</TD>
+	</TR>
+	
+		<TR>
+		<TD>Nov 5</TD>
+		<TD>The Indian Buffet Process</TD>
+		<TD><a href="http://cocosci.berkeley.edu/tom/papers/ibptr.pdf">G&G(2005)</a> Sections 5,6</TD>
+		<TD>David Pfau</TD>
+	</TR>
+	
+		<TR>
+		<TD>Nov 12</TD>
 		<TD>Tree-structured Stick Breaking Processes</TD>
 		<TD><a href="http://arxiv.org/pdf/1006.1062v1">Adams, Ghahramani and Jordan (2010)</a></TD>
 		<TD>Nick Bartlett</TD>
