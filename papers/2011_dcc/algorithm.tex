@@ -17,7 +17,7 @@
 
 Probabilistic compression algorithms work by using a generative model to predict the sequence.  The predictive distribution function is then used as the parameter in a range encoder to compress the stream.  The details of a range encoder implementation are not included here, we only note that if the predictive distribution function is $F$ and the next symbol in the stream is $s$ then the parameters required by the range encoder are $F(s-1)$ and $F(s)$.  In order to decompress the stream the exact same predictive model will need to be built.  This requires that the model estimate prior to compressing $s_n$ is a function of fixed parameters and the symbols $[s_0, s_1, \ldots, s_{n-1}]$ because those are the only symbols available to the decompressor for decompressing $s_n$.  
 
-The algorithm operates primarily on a suffix tree.  A suffix tree is a data structure for keeping track of unique suffices of a set of strings.  The tree structure arranges the suffices hierarchically which makes it easy to search.  In the case of single stream the set of strings to consider is the set of contexts $\{ [ ], [s_0], [s_0,s_1], [s_0, s_1,s_2], \ldots \}$.  The suffix tree is comprised of nodes, each corresponding to a context of the form $[s_m, \ldots, s_{m + k}]$.  Nodes other than the root have exactly one parent, but could have many children.  
+The algorithm operates primarily on a suffix tree.  A suffix tree is a data structure for keeping track of unique suffices of a set of strings.  The tree structure arranges the suffices hierarchically which makes it easy to search.  In the case of single stream the set of strings to consider is the set of contexts $\{ [ ], [s_0], [s_0,s_1], [s_0, s_1,s_2], \ldots \}$.  The suffix tree is comprised of nodes, each corresponding to a context of the form $[s_m, \ldots, s_{m + k}]$.  Nodes other than the root have exactly one parent, but could have many children.  In general we will denote a node as \N.  Furthermore, \N \space refers interchangeably to the node object itself and the context to which the node corresponds.  Finally, we refer to $| \N |$ as the depth of node \N \space in the tree.
 
 The suffix tree must be incrementally constructed as elements of the sequence are processed.  Construction of the tree is handled by the function GetNode in Algorithm~\ref{alg}.  An illustration of the incremental suffix tree construction can be seen in Figure~\ref{fig:suffix_tree} for the toy sequence [PATAT].  Note that in frame 5 the node [A] had to be inserted in order to incorporate the node [PATA].  Using the notation of GetNode([PATA], \T) to describe the frame we find \N \space = [PATA], \M \space = [PA],  and \PP\space = [A].
 
@@ -96,6 +96,9 @@ The suffix tree must be incrementally constructed as elements of the sequence ar
 			\State $F(s-1)$ = sum(cdf(1:($s$-1)))
 			\State \Return [$F(s-1), F(s) = F(s-1)$ + cdf($s$)]
 		\EndIf 
+	\EndFunction
+	
+	\Function{GetDiscount}{\N}
 	\EndFunction
     \end{algorithmic}
 \end{algorithm}
