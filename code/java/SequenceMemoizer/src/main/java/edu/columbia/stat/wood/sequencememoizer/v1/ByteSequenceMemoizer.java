@@ -20,6 +20,9 @@ import edu.columbia.stat.wood.util.MersenneTwisterFast;
 import edu.columbia.stat.wood.util.MutableInt;
 import edu.columbia.stat.wood.util.Pair;
 import edu.columbia.stat.wood.util.SeatingArranger;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -1040,6 +1043,24 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
             this.typeTables = typeTables;
             this.customers = customers;
             this.tables = tables;
+        }
+    }
+
+    public static void main(String[] args) throws IOException{
+        File f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/alice_in_wonderland/alice_in_wonderland.txt");
+        BufferedInputStream bis = null;
+
+        try{
+            bis = new BufferedInputStream(new FileInputStream(f));
+            ByteSequenceMemoizer sm = new ByteSequenceMemoizer();
+            double logLik = 0.0;
+            int b;
+            while((b = bis.read()) > -1){
+                logLik += sm.continueSequence((byte) b);
+            }
+            System.out.println(-logLik / Math.log(2) / (double) f.length());
+        } finally {
+            bis.close();
         }
     }
 }

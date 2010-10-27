@@ -9,6 +9,7 @@ import edu.columbia.stat.wood.sequencememoizer.v1.ByteSequenceMemoizer;
 import edu.columbia.stat.wood.sequencememoizer.v1.util.ByteSeq.ByteSeqNode;
 import edu.columbia.stat.wood.sequencememoizer.v1.ByteSequenceMemoizer.SeatReturn;
 import edu.columbia.stat.wood.util.ByteMap;
+import edu.columbia.stat.wood.util.SampleMultinomial;
 import edu.columbia.stat.wood.util.SeatingArranger;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -72,7 +73,61 @@ public class ByteRestaurant extends ByteMap<ByteRestaurant> implements Serializa
         return p * (double) customers / ((double) tables * discount);
     }
 
+    public void deleteCustomers(int nDelete, double discount) {
+        int[] c = new int[types.length];
+
+        for (int i = 0; i < types.length; i++) {
+            c[i] = customersAndTables[2 * i];
+        }
+
+        int[] toDelete = SampleMultinomial.deleteCustomersAtRandom(nDelete, c, customers, ByteSequenceMemoizer.RNG);
+        int number_zeros = 0;
+        for (int t = 0; t < types.length; t++) {
+            if (toDelete[t] > 0) {
+                int[] sa = SeatingArranger.getSeatingArrangement(customersAndTables[2 * t], customersAndTables[2 * t + 1], discount);
+                int[] cToDelete = SampleMultinomial.deleteCustomersAtRandom(toDelete[t], sa, customersAndTables[2 * t], ByteSequenceMemoizer.RNG);
+
+                customersAndTables[2 * t] -= toDelete[t];
+                customers -= toDelete[t];
+
+                if(customersAndTables[2 * t] == 0){
+                    tables -= customersAndTables[2 * t + 1];
+                    number_zeros++;
+                } else {
+                    for (int i = 0; i < sa.length; i++) {
+                        if (sa[i] == cToDelete[i]) {
+                            tables--;
+                            customersAndTables[2 * t + 1]--;
+                        }
+                    }
+                }
+            }
+        }
+
+        if(number_zeros > 0){
+            byte[] new_types = new byte[types.length - number_zeros];
+            int[] new_customersAndTables = new int[customersAndTables.length - 2 * number_zeros];
+
+            int j = 0, k = 0;
+            for(int i = 0; i < types.length; i++){
+                if(customersAndTables[2*i] > 0){
+                    new_types[j++] = types[i];
+                    new_customersAndTables[k++] = customersAndTables[2*i];
+                    new_customersAndTables[k++] = customersAndTables[2*i + 1];
+                }
+            }
+
+            types = new_types;
+            customersAndTables = new_customersAndTables;
+        }
+    }
+
     public double seat(byte type, double p, double discount, SeatReturn sr) {
+        if (customers >= 5000) {
+            //System.out.println("in deletion of customers");
+            deleteCustomers(500,discount);
+        }
+
         if (customers == 0) {
             sr.set(true, 0, customers, tables);
 
