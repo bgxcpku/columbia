@@ -124,7 +124,6 @@ public class ByteRestaurant extends ByteMap<ByteRestaurant> implements Serializa
 
     public double seat(byte type, double p, double discount, SeatReturn sr) {
         if (customers >= 5000) {
-            //System.out.println("in deletion of customers");
             deleteCustomers(500,discount);
         }
 
