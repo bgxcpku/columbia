@@ -84,6 +84,7 @@ public class ByteRestaurant extends ByteMap<ByteRestaurant> implements Serializa
         int number_zeros = 0;
         for (int t = 0; t < types.length; t++) {
             if (toDelete[t] > 0) {
+                
                 int[] sa = SeatingArranger.getSeatingArrangement(customersAndTables[2 * t], customersAndTables[2 * t + 1], discount);
                 int[] cToDelete = SampleMultinomial.deleteCustomersAtRandom(toDelete[t], sa, customersAndTables[2 * t], ByteSequenceMemoizer.RNG);
 

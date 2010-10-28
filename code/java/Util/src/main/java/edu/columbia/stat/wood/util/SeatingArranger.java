@@ -37,16 +37,16 @@ public class SeatingArranger {
         int previousZ;
         double r, cuSum, tw;
 
-        if (c == 1 && t == 1) {
-            return new int[]{1};
+        if (t == 1){
+            return new int[]{c};
         } else {
-            SeatingArranger.d = d;
+            SeatingArranger.d = d <= .99 ? d : .99;
 
             state = new ZState(t, t);
             state.set(0.0, t);
 
             previousZ = getSeatingArrangement(tsa = new int[t], c - 1, t, t, state);
-
+            
             if (t > previousZ) {
                 tsa[t - 1] = 1;
             } else {
