@@ -57,15 +57,22 @@ public class ByteRestaurant extends ByteMap<ByteRestaurant> implements Serializa
     public double getPP(byte type, double p, double discount, SeatReturn sr) {
         int index, tc, tt, tci, tti;
 
-        index = getIndex(type);
+        if(type > types[types.length -1]){
+            tt = 0;
+            tc = 0;
+        } else {
+            index = getIndex(type);
+            if(types[index] == type){
+                tci = 2 * index;
+                tti = tci + 1;
 
-        assert types[index] == type;
-
-        tci = 2 * index;
-        tti = tci + 1;
-
-        tc = customersAndTables[tci];
-        tt = customersAndTables[tti];
+                tc = customersAndTables[tci];
+                tt = customersAndTables[tti];
+            } else {
+                tt = 0;
+                tc = 0;
+            }
+        }
 
         sr.set(false, tt, customers, tables);
         p -= ((double) tc - (double) tt * discount) / (double) customers;
@@ -101,6 +108,7 @@ public class ByteRestaurant extends ByteMap<ByteRestaurant> implements Serializa
                             customersAndTables[2 * t + 1]--;
                         }
                     }
+                    assert customersAndTables[2*t] >= customersAndTables[2*t +1];
                 }
             }
         }
@@ -123,9 +131,9 @@ public class ByteRestaurant extends ByteMap<ByteRestaurant> implements Serializa
         }
     }
 
-    public double seat(byte type, double p, double discount, SeatReturn sr) {
-        if (customers >= 5000) {
-            deleteCustomers(500,discount);
+    public double seat(byte type, double p, double discount, SeatReturn sr, ByteSequenceMemoizer sm) {
+        if (customers >= sm.maxCustomersInRestaurant) {
+            deleteCustomers((int) (sm.maxCustomersInRestaurant * .1),discount);
         }
 
         if (customers == 0) {
@@ -215,7 +223,7 @@ public class ByteRestaurant extends ByteMap<ByteRestaurant> implements Serializa
     public int getIndex(byte type) {
         int l, r, midPoint;
 
-        assert type <= types[types.length - 1];
+//        assert type <= types[types.length - 1];
 
         l = 0;
         r = types.length - 1;

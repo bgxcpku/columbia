@@ -4,202 +4,202 @@ jar_files = ../../code/java/DCC_2010/target/dcc2010-1.0-jar-with-dependencies.ja
 Requirements = BigMem == TRUE 
 java_vm_args = -Xmx7000m -Xss10m 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 16 10000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 16 10000000 1 10000
 output = w_100.out 
 error = w_100.err 
 queue 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 30000000 16 10000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 30000000 16 10000000 1 10000
 output = w_101.out 
 error = w_101.err 
 queue 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1024 10000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1024 10000000 1 10000
 output = w_106.out 
 error = w_106.err 
 queue 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 30000000 1024 10000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 30000000 1024 10000000 1 10000
 output = w_107.out 
 error = w_107.err 
 queue 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1048576 10000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1048576 10000000 1 10000
 output = w_112.out 
 error = w_112.err 
 queue 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 30000000 1048576 10000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 30000000 1048576 10000000 1 10000
 output = w_113.out 
 error = w_113.err 
 queue 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1073741824 10000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1073741824 10000000 1 10000
 output = w_118.out 
 error = w_118.err 
 queue 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 30000000 1073741824 10000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 30000000 1073741824 10000000 1 10000
 output = w_119.out 
 error = w_119.err 
 queue 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 16 100000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 16 100000000 1 10000
 output = w_124.out 
 error = w_124.err 
 queue 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 30000000 16 100000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 30000000 16 100000000 1 10000
 output = w_125.out 
 error = w_125.err 
 queue 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1024 100000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1024 100000000 1 10000
 output = w_130.out 
 error = w_130.err 
 queue 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 30000000 1024 100000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 30000000 1024 100000000 1 10000
 output = w_131.out 
 error = w_131.err 
 queue 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1048576 100000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1048576 100000000 1 10000
 output = w_136.out 
 error = w_136.err 
 queue 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 30000000 1048576 100000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 30000000 1048576 100000000 1 10000
 output = w_137.out 
 error = w_137.err 
 queue 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1073741824 100000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1073741824 100000000 1 10000
 output = w_142.out 
 error = w_142.err 
 queue 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 30000000 1073741824 100000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 30000000 1073741824 100000000 1 10000
 output = w_143.out 
 error = w_143.err 
 queue 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 16 1000000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 16 1000000000 1 10000
 output = w_148.out 
 error = w_148.err 
 queue 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 30000000 16 1000000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 30000000 16 1000000000 1 10000
 output = w_149.out 
 error = w_149.err 
 queue 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1024 1000000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1024 1000000000 1 10000
 output = w_154.out 
 error = w_154.err 
 queue 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 30000000 1024 1000000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 30000000 1024 1000000000 1 10000
 output = w_155.out 
 error = w_155.err 
 queue 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1048576 1000000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1048576 1000000000 1 10000
 output = w_160.out 
 error = w_160.err 
 queue 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 30000000 1048576 1000000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 30000000 1048576 1000000000 1 10000
 output = w_161.out 
 error = w_161.err 
 queue 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1073741824 1000000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1073741824 1000000000 1 10000
 output = w_166.out 
 error = w_166.err 
 queue 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 30000000 1073741824 1000000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 30000000 1073741824 1000000000 1 10000
 output = w_167.out 
 error = w_167.err 
 queue 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 16 10000000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 16 10000000000 1 10000
 output = w_172.out 
 error = w_172.err 
 queue 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 30000000 16 10000000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 30000000 16 10000000000 1 10000
 output = w_173.out 
 error = w_173.err 
 queue 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1024 10000000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1024 10000000000 1 10000
 output = w_178.out 
 error = w_178.err 
 queue 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 30000000 1024 10000000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 30000000 1024 10000000000 1 10000
 output = w_179.out 
 error = w_179.err 
 queue 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1048576 10000000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1048576 10000000000 1 10000
 output = w_184.out 
 error = w_184.err 
 queue 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 30000000 1048576 10000000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 30000000 1048576 10000000000 1 10000
 output = w_185.out 
 error = w_185.err 
 queue 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1073741824 10000000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1073741824 10000000000 1 10000
 output = w_190.out 
 error = w_190.err 
 queue 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 30000000 1073741824 10000000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 30000000 1073741824 10000000000 1 10000
 output = w_191.out 
 error = w_191.err 
 queue 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 16 100000000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 16 100000000000 1 10000
 output = w_196.out 
 error = w_196.err 
 queue 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 30000000 16 100000000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 30000000 16 100000000000 1 10000
 output = w_197.out 
 error = w_197.err 
 queue 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1024 100000000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1024 100000000000 1 10000
 output = w_202.out 
 error = w_202.err 
 queue 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 30000000 1024 100000000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 30000000 1024 100000000000 1 10000
 output = w_203.out 
 error = w_203.err 
 queue 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1048576 100000000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1048576 100000000000 1 10000
 output = w_208.out 
 error = w_208.err 
 queue 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 30000000 1048576 100000000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 30000000 1048576 100000000000 1 10000
 output = w_209.out 
 error = w_209.err 
 queue 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1073741824 100000000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1073741824 100000000000 1 10000
 output = w_214.out 
 error = w_214.err 
 queue 
  
-arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 30000000 1073741824 100000000000 1
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 30000000 1073741824 100000000000 1 10000
 output = w_215.out 
 error = w_215.err 
 queue 

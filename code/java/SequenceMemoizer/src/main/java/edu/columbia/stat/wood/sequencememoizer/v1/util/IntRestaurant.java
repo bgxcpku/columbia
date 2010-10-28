@@ -100,16 +100,24 @@ public class IntRestaurant extends IntMap<IntRestaurant> implements Serializable
     public double getPP(int type, double p, double discount, SeatReturn sr) {
         int index, tc, tt, tci, tti;
 
-        index = getIndex(type);
 
-        assert types[index] == type;
+        if(type > types[types.length -1]){
+            tt = 0;
+            tc = 0;
+        } else {
+            index = getIndex(type);
+            if(types[index] == type){
+                tci = 2 * index;
+                tti = tci + 1;
 
-        tci = 2 * index;
-        tti = tci + 1;
-
-        tc = customersAndTables[tci];
-        tt = customersAndTables[tti];
-
+                tc = customersAndTables[tci];
+                tt = customersAndTables[tti];
+            } else {
+                tt = 0;
+                tc = 0;
+            }
+        }
+        
         sr.set(false, tt, customers, tables);
         p -= ((double) tc - (double) tt * discount) / (double) customers;
 
@@ -165,9 +173,9 @@ public class IntRestaurant extends IntMap<IntRestaurant> implements Serializable
         }
     }
     
-    public double seat(int type, double p, double discount, SeatReturn sr) {
-        if (customers >= 5000) {
-            deleteCustomers(500,discount);
+    public double seat(int type, double p, double discount, SeatReturn sr, IntSequenceMemoizer sm) {
+        if (customers >= sm.maxCustomersInRestaurant) {
+            deleteCustomers((int) (sm.maxCustomersInRestaurant * .1),discount);
         }
         
         if (customers == 0) {

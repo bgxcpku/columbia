@@ -64,7 +64,7 @@ public class SampleMultinomial {
                     customers--;
                     break;
                 }
-                assert i != l-1;
+                assert i != (l-1);
             }
         }
 

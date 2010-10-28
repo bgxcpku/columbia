@@ -58,6 +58,8 @@ public class IntSequenceMemoizer implements IntSequenceMemoizerInterface, Serial
     private NewKey newKey = new NewKey();
     private long maxNumberRestaurants, maxSequenceLength, seed;
 
+    public int maxCustomersInRestaurant;
+
     /**
      * Constructor initiating the model with the specified parameters.
      * @param parameters parameters for the model
@@ -549,7 +551,7 @@ public class IntSequenceMemoizer implements IntSequenceMemoizerInterface, Serial
         multFactor = 1.0;
         while (ds.hasNext() && sr.seatInParent) {
             discount = ds.pop();
-            p = r.seat(type, p, discount, sr);
+            p = r.seat(type, p, discount, sr, this);
 
             discounts.updateGradient(rDepth - r.edgeLength, rDepth, sr.typeTables, sr.customers, sr.tables, p, discount, multFactor);
             if (sr.customers > 0) {

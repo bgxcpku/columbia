@@ -69,6 +69,8 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
     private MutableInt newKey = new MutableInt(-1);
     private long maxNumberRestaurants, maxSequenceLength, seed;
 
+    public int maxCustomersInRestaurant;
+
     /**
      * Creates a byte sequence memoizer using the specified parameters.
      * @param parameters
@@ -854,7 +856,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
         multFactor = 1.0;
         while (ds.hasNext() && sr.seatInParent) {
             discount = ds.pop();
-            p = r.seat(type, p, discount, sr);
+            p = r.seat(type, p, discount, sr, this);
 
             discounts.updateGradient(rDepth - r.edgeLength, rDepth, sr.typeTables, sr.customers, sr.tables, p, discount, multFactor);
             if (sr.customers > 0) {
@@ -1047,7 +1049,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
     }
 
     public static void main(String[] args) throws IOException{
-        File f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/alice_in_wonderland/alice_in_wonderland.txt");
+        File f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/pride_and_prejudice/pride_and_prejudice.txt");
         BufferedInputStream bis = null;
 
         try{
