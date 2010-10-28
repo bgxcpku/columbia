@@ -1,8 +1,12 @@
 universe = java 
 executable = ../../code/java/DCC_2010/target/dcc2010-1.0-jar-with-dependencies.jar 
 jar_files = ../../code/java/DCC_2010/target/dcc2010-1.0-jar-with-dependencies.jar 
+on_exit_remove = TRUE
+
 Requirements =  
 java_vm_args = -Xmx2500m -Xss10m 
+
+
  
 arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 1000 16 1000 1
 output = w_0.out 
