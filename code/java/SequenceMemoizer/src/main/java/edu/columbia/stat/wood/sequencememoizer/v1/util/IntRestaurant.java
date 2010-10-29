@@ -125,32 +125,39 @@ public class IntRestaurant extends IntMap<IntRestaurant> implements Serializable
     }
 
     public void deleteCustomers(int nDelete, double discount) {
-        int[] c = new int[types.length];
+                int[] c = new int[types.length];
 
-        for (int i = 0; i < types.length; i++) {
-            c[i] = customersAndTables[2 * i];
+        for (int t = 0; t < types.length; t++) {
+            c[t] = customersAndTables[2 * t];
         }
 
         int[] toDelete = SampleMultinomial.deleteCustomersAtRandom(nDelete, c, customers, IntSequenceMemoizer.RNG);
         int number_zeros = 0;
         for (int t = 0; t < types.length; t++) {
             if (toDelete[t] > 0) {
-                int[] sa = SeatingArranger.getSeatingArrangement(customersAndTables[2 * t], customersAndTables[2 * t + 1], discount);
-                int[] cToDelete = SampleMultinomial.deleteCustomersAtRandom(toDelete[t], sa, customersAndTables[2 * t], IntSequenceMemoizer.RNG);
-
-                customersAndTables[2 * t] -= toDelete[t];
-                customers -= toDelete[t];
-
-                if(customersAndTables[2 * t] == 0){
+                if(toDelete[t] == customersAndTables[2*t]){
+                    customers -= toDelete[t];
                     tables -= customersAndTables[2 * t + 1];
+
+                    customersAndTables[2 * t] = 0;
+                    customersAndTables[2 * t + 1] = 0;
+
                     number_zeros++;
                 } else {
+
+                    int[] sa = SeatingArranger.getSeatingArrangement(customersAndTables[2 * t], customersAndTables[2 * t + 1], discount);
+                    int[] cToDelete = SampleMultinomial.deleteCustomersAtRandom(toDelete[t], sa, customersAndTables[2 * t], IntSequenceMemoizer.RNG);
+
+                    customersAndTables[2 * t] -= toDelete[t];
+                    customers -= toDelete[t];
+
                     for (int i = 0; i < sa.length; i++) {
                         if (sa[i] == cToDelete[i]) {
                             tables--;
                             customersAndTables[2 * t + 1]--;
                         }
                     }
+                    assert customersAndTables[2*t] >= customersAndTables[2*t +1];
                 }
             }
         }
@@ -165,6 +172,9 @@ public class IntRestaurant extends IntMap<IntRestaurant> implements Serializable
                     new_types[j++] = types[i];
                     new_customersAndTables[k++] = customersAndTables[2*i];
                     new_customersAndTables[k++] = customersAndTables[2*i + 1];
+                    if(new_customersAndTables[k-2] < new_customersAndTables[k-1] || new_customersAndTables[k-2] == 0 || new_customersAndTables[k-1] == 0){
+                        throw new RuntimeException("new_customersAndTables[k-1] = " + new_customersAndTables[k-1] + ", new_customersAndTables[k-2] = " + new_customersAndTables[k-2]);
+                    }
                 }
             }
 
@@ -174,10 +184,7 @@ public class IntRestaurant extends IntMap<IntRestaurant> implements Serializable
     }
     
     public double seat(int type, double p, double discount, SeatReturn sr, IntSequenceMemoizer sm) {
-        if (customers >= sm.maxCustomersInRestaurant) {
-            deleteCustomers((int) (sm.maxCustomersInRestaurant * .1),discount);
-        }
-        
+                
         if (customers == 0) {
             sr.set(true, 0, customers, tables);
 
@@ -234,6 +241,10 @@ public class IntRestaurant extends IntMap<IntRestaurant> implements Serializable
                     tables++;
                 }
             }
+        }
+
+        if (customers >= sm.maxCustomersInRestaurant) {
+            deleteCustomers((int) (sm.maxCustomersInRestaurant * .1),discount);
         }
 
         return p;

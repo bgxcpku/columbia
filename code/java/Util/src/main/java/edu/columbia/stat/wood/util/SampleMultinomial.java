@@ -47,6 +47,15 @@ public class SampleMultinomial {
             throw new IllegalArgumentException("nDelete must be <= customers");
         }
 
+        int s = 0;
+        for(int j : cc){
+            s += j;
+        }
+
+        if(s != customers){
+            throw new RuntimeException("customers number not correct");
+        }
+
         int[] c = new int[cc.length];
         System.arraycopy(cc,0,c,0,cc.length);
 
@@ -68,6 +77,27 @@ public class SampleMultinomial {
             }
         }
 
+        assert check(sample, cc, nDelete);
+
         return sample;
+    }
+
+    public static boolean check(int[] sample, int[] cc, int nDelete){
+        int c = 0;
+        assert sample.length == cc.length;
+        for(int i = 0; i < cc.length; i++){
+            c += sample[i];
+            assert sample[i] <= cc[i];
+        }
+        assert c == nDelete;
+        return true;
+    }
+
+    public static void main(String[] args){
+        int[] dcr = deleteCustomersAtRandom(15, new int[]{20,40,30,60},150, new MersenneTwisterFast(1));
+        for(int i : dcr){
+            System.out.print(", " + i);
+        }
+        System.out.println();
     }
 }

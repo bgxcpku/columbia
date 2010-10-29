@@ -37,6 +37,10 @@ public class SeatingArranger {
         int previousZ;
         double r, cuSum, tw;
 
+        if(c == 0 || t == 0 || t > c){
+            throw new IllegalArgumentException("illegal: c = " + c + ", t = " + t + ", d = " + d);
+        }
+
         if (t == 1){
             return new int[]{c};
         } else {
@@ -166,5 +170,10 @@ public class SeatingArranger {
                 }
             }
         }
+    }
+
+    public static void main(String[] args){
+        SeatingArranger.rng = new MersenneTwisterFast(1);
+        int[] sa = SeatingArranger.getSeatingArrangement(0, 0, .7);
     }
 }
