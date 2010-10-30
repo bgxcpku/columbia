@@ -448,8 +448,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
         if(depth < trueDepth){
             depth++;
         }
-
-        return Math.log(p);
+        return Math.log((p + minP) / (1.0 + 256.0 * minP));
     }
 
     /**
@@ -1035,6 +1034,16 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
         r.edgeNode = bs.get(in.readInt());
     }
 
+    public void check(ByteRestaurant r){
+        if(!r.isEmpty()){
+            for(Object c : r.values()){
+                check((ByteRestaurant) c);
+            }
+        }
+
+        r.check();
+    }
+
     public class SeatReturn {
 
         public boolean seatInParent;
@@ -1049,16 +1058,24 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
     }
 
     public static void main(String[] args) throws IOException{
-        File f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/pride_and_prejudice/pride_and_prejudice.txt");
+        File f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/wikipedia/wiki_subset");
         BufferedInputStream bis = null;
 
         try{
             bis = new BufferedInputStream(new FileInputStream(f));
-            ByteSequenceMemoizer sm = new ByteSequenceMemoizer();
+            ByteSequenceMemoizer sm = new ByteSequenceMemoizer(new ByteSequenceMemoizerParameters(1048576, 1000000, (long) 100 * (long) 1000000));
+            //ByteSequenceMemoizer sm = new ByteSequenceMemoizer();
+            sm.maxCustomersInRestaurant = 500;
             double logLik = 0.0;
             int b;
+            int cnt = 0;
             while((b = bis.read()) > -1){
                 logLik += sm.continueSequence((byte) b);
+                cnt++;
+                if(cnt % 100000 ==  0){
+                    System.out.println(cnt);
+                    sm.check(sm.ecr);
+                }
             }
             System.out.println(-logLik / Math.log(2) / (double) f.length());
         } finally {
