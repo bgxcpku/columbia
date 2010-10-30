@@ -125,7 +125,7 @@ public class IntRestaurant extends IntMap<IntRestaurant> implements Serializable
     }
 
     public void deleteCustomers(int nDelete, double discount) {
-                int[] c = new int[types.length];
+        int[] c = new int[types.length];
 
         for (int t = 0; t < types.length; t++) {
             c[t] = customersAndTables[2 * t];

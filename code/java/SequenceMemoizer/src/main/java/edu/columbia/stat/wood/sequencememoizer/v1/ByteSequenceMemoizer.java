@@ -1058,14 +1058,16 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
     }
 
     public static void main(String[] args) throws IOException{
-        File f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/wikipedia/wiki_subset");
+        //File f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/wikipedia/wiki_subset");
+        //File f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/pride_and_prejudice/pride_and_prejudice.txt");
+        File f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/alice_in_wonderland/alice_in_wonderland.txt");
         BufferedInputStream bis = null;
 
         try{
             bis = new BufferedInputStream(new FileInputStream(f));
             ByteSequenceMemoizer sm = new ByteSequenceMemoizer(new ByteSequenceMemoizerParameters(1048576, 1000000, (long) 100 * (long) 1000000));
             //ByteSequenceMemoizer sm = new ByteSequenceMemoizer();
-            sm.maxCustomersInRestaurant = 500;
+            sm.maxCustomersInRestaurant = 50;
             double logLik = 0.0;
             int b;
             int cnt = 0;
