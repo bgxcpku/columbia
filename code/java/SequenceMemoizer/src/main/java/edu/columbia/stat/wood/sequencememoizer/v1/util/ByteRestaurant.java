@@ -139,6 +139,17 @@ public class ByteRestaurant extends ByteMap<ByteRestaurant> implements Serializa
 
             types = new_types;
             customersAndTables = new_customersAndTables;
+
+            int cu = 0;
+            int ta = 0;
+            for(int i = 0; i < customersAndTables.length; i++){
+                cu += customersAndTables[i++];
+                ta += customersAndTables[i];
+            }
+
+            assert cu == customers;
+            assert ta == tables;
+
         }
     }
 
