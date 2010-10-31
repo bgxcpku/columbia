@@ -33,29 +33,14 @@ The reference sequence grows with the length of the input sequence and must be s
 
 %The reference sequence $\RS$ is implemented as a linked list. Therefore, instead of using a simple $i,j$ index in each suffix tree node, $i$ is replaced by a linked list node and an offset and $j$ is replaced by a string length $l$.  Each node of the linked list must contain a list of suffix tree nodes which reference it.  The reference sequence grows as the length of the input sequence grows and must be shortened as the algorithm progresses.  The shortening of $\RS$ is made explicit by the $\sigma$ operator in CDFNextSymbol, which returns the argument sequence shortened by removing the fist element.  When $\RS$ is shortened, nodes in the suffix tree which reference removed sections are no longer usable and must be removed from the tree to prevent a memory leak.  Without a list of suffix tree nodes which reference each linked list node, deletion of the unusable nodes requires a search over the tree which is prohibitive for large trees.  The cost of these operations can be amortized by shorting $\RS$ in chunks, i.e. by removing nodes of the linked list.  To minimize the impact of rendering nodes unusable by shortening the reference sequence, nodes should be updated to point to the most recent part of $\RS$ as possible.
 
+Several parameters required by the model must be assigned at initialization.  They are $\D$, $k$, $L$, $\eta$,  and depth.  $\D = [\dd_0, \dd_1, \ldots, \dd_{10}, \alpha]$ is a list of discount parameters, each taking a real value in $(0,1)$.  The parameter $k$ is positive integer valued and is an upper bound on the total count $c$ in each node.  The parameter $L$ is an upper bound on the number of node instances in the suffix tree.  We use $100L$ as an upper bound on the length of $\RS$, but there is no explicit reason to tie these two upper bounds together. The parameter $\eta$ is a learning rate for the updating of the discount parameters and is typically set very small.  Finally, the depth of the tree can be limited by a positive integer.  Depth is not considered in Algorithm~\ref{alg}, but it could be incorporated into the function GetNode.
 
+Since the model must be estimated incrementally, the suffix tree must also be incrementally constructed.  Construction of the tree is handled by the function GetNode and FragmentNode in Algorithm~\ref{alg}.  An illustration of the incremental construction can be seen in Figure~\ref{fig:suffix_tree} for the toy sequence [PATAT].   In frame 4 the function GetNode assigns [ ]  to $\M$ and then [PAT] to $\Seq$ with $\M = $ PA$(\Seq)$. In Frame 5 GetNode assigns [PA] to $\M$, but then must assign [A] = FragmentNode(\M) to $\PP$ and PA$(\M)$ to \PP.  Node $\Seq$ is then created by CreateNode$($[PATA]$,\PP)$.  In each frame the first step is to find $\M$, which can be achieved by descending an appropriate path of the suffix tree.  All of the nodes on the path to $\M$ and possibly $\M$ itself can have the indices into $\RS$ updated to point to a more recent section of the reference sequence. 
 
-Since the model must be estimated incrementally, the suffix tree must also be incrementally constructed.  Construction of the tree is handled by the function GetNode in Algorithm~\ref{alg}.  An illustration of the incremental construction of a suffix tree can be seen in Figure~\ref{fig:suffix_tree} for the toy sequence [PATAT].   In frame 4 the function GetNode assigns [ ]  to $\M$ and then [PAT] to $\Seq$ with $\M = $ PA$(\Seq)$. In Frame 5 GetNode assigns [PA] to $\M$, but then must assign [A] to $\PP$ with $\PP = $PA$(\M)$.  Node $\Seq$ is then created by CreateNode$($[PATA]$,\PP)$.  In each frame the first step is to find $\M$, which can be achieved by descending an appropriate path of the suffix tree.  All of the nodes on the path to $\M$ and possibly $\M$ itself can have the indices into $\RS$ updated to point to a more recent section of the reference sequence.  Finally, although not made explicit in the algorithm, it usually makes sense to limit the maximum length of a context in order to limit the depth of the suffix tree.  In Section~\ref{sec:Results} we empirically investigate performance for different values of depth.
+For each $s$ in the input sequence the function PMFNextSymbol is called to obtain the predictive probability mass function (PMF).  The function PMFNextSymbol enforces the upper bounds on $|\RS|$ and $nc$.  If  $|\RS|$ is hitting the upper bound then then $\RS$ is shortened as described, if $nc$ is hitting the upper bound then leaf nodes of the suffix tree are deleted uniformly at random.  Note that the deleting of leaf nodes uniformly at random is non-trivial to implement. One approach is to maintain an active list must of all the leaf nodes throughout the algorithm. A second approach is for each node to maintain a count of thenumber of leaf nodes in the subtree beneath it.  Given that each node contains the exact number of leaf nodes beneath it a random leaf node can be obtained by taking a weighted random path down the tree.  Finally, PMFNexSymbol returns the predictive PMF.
 
-For each $s$ in the input sequence the function CDFNextSymbol is used to obtain the predictive cumulative distribution function values of interest.  After encoding the symbol the first step to updating the model estimate is performed by the function UpdateCountsAndDiscounts.  Starting at node $\N$ and progressing up to the root of the tree, $c_s$ is incremented if $t_s$ was incremented in the node below.  If $c_s$ is incremented, a stochastic decision is made to increment $t_s$.  The gradients for the discount parameters $\D$ are updated by the function UpdateDiscountParameterGradients.  If $c$ is larger than $k$ in any of the nodes, the counts $c_s$ and potentially $t_s$ are reduced by the function ThinCounts.  The parameter $k$ is a fixed parameter of the model.  Finally, \D \space is updated based on the calculated gradients and a specified learning rate $\eta$ and the symbol is appended to \RS.
+    After encoding or decoding using the predictive PMF $pi$ the first step in updating the model estimate is performed by the function UpdateCountsAndDiscounts.  Starting at node $\N$ and progressing up to the root of the tree, $c_s$ is incremented if $t_s$ was incremented in the node below.  If $c_s$ is incremented, a stochastic decision is made to increment $t_s$.  The gradients for the discount parameters $\D$ are updated by the function UpdateDiscountParameterGradients.  If $c$ is larger than $k$ in any of the nodes, the counts $c_s$ and potentially $t_s$ are reduced by the function ThinCounts. Finally, \D \space is updated based on the calculated gradients and the specified learning rate $\eta$ and the symbol is appended to \RS.
 
-
-Things to make sure to include
-
-Assumed ordering of the symols in the symbol set.
-Describe paremetrization of discounts
-Mention learning rate $\eta$
-Describe RangeEncode function and return
-Describe $\sigma$ operator
-Describe size of tree $L$
-Describe length of \RS \space 
-Describe the deletion of leaf nodes uniformly at random
-Describe pa(\N) operator
-Desribe count notation
-Describe CreateNode function
-Mention arrays indexed from 0
-Describe Draw multinomial
-Discribe k in thin counts
 
 \begin{algorithm}
     \caption{Deplump} \label{alg}
@@ -318,7 +303,6 @@ Discribe k in thin counts
 					\State $\psi \la \alpha^a(1 - \alpha^b) / ((1 - \alpha)  \dd_{10})$ 
 					\State $\G_{10} \la \G_{10} + (d(t * pp - t_s) \psi / c)  m$	
 					\State $\psi \la$ log$(\dd_{10}) (a \alpha^{a-1} - (a + b)\alpha^{a + b-1}) / (1 - \alpha) + (\alpha^a - \alpha^{a + b}) / (1 - \alpha)^2$
-%					\State \hspace{4cm} $+ (\alpha^a - \alpha^{a + b}) / (1 - \alpha)^2$
 					\State $\G_{11} \la \G_{11} + (d(t * pp - t_s)\psi / c)  m$	
 				\EndIf
 			\EndIf
