@@ -1,0 +1,45 @@
+This is BibTeX, Version 0.99c (Web2C 7.5.7)
+The top-level auxiliary file: deplump.aux
+The style file: apalike.bst
+Database file #1: ../uber.bib.bib
+You've used 3 entries,
+            1935 wiz_defined-function locations,
+            531 strings with 5010 characters,
+and the built_in function-call counts, 1587 in all, are:
+= -- 157
+> -- 64
+< -- 2
++ -- 24
+- -- 22
+* -- 117
+:= -- 250
+add.period$ -- 9
+call.type$ -- 3
+change.case$ -- 26
+chr.to.int$ -- 3
+cite$ -- 3
+duplicate$ -- 74
+empty$ -- 117
+format.name$ -- 25
+if$ -- 335
+int.to.chr$ -- 1
+int.to.str$ -- 0
+missing$ -- 3
+newline$ -- 18
+num.names$ -- 9
+pop$ -- 38
+preamble$ -- 1
+purify$ -- 26
+quote$ -- 0
+skip$ -- 54
+stack$ -- 0
+substring$ -- 110
+swap$ -- 23
+text.length$ -- 2
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 18
+warning$ -- 0
+while$ -- 12
+width$ -- 0
+write$ -- 41
