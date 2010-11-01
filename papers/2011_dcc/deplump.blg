@@ -2,44 +2,50 @@ This is BibTeX, Version 0.99c (Web2C 7.5.7)
 The top-level auxiliary file: deplump.aux
 The style file: apalike.bst
 Database file #1: ../uber.bib.bib
-You've used 3 entries,
+Warning--entry type for "Peltola2002" isn't style-file defined
+--line 6883 of file ../uber.bib.bib
+Warning--entry type for "Willems2009" isn't style-file defined
+--line 9614 of file ../uber.bib.bib
+Warning--I didn't find a database entry for "Gasthaus2011"
+You've used 8 entries,
             1935 wiz_defined-function locations,
-            531 strings with 5010 characters,
-and the built_in function-call counts, 1587 in all, are:
-= -- 157
-> -- 64
-< -- 2
-+ -- 24
-- -- 22
-* -- 117
-:= -- 250
-add.period$ -- 9
-call.type$ -- 3
-change.case$ -- 26
-chr.to.int$ -- 3
-cite$ -- 3
-duplicate$ -- 74
-empty$ -- 117
-format.name$ -- 25
-if$ -- 335
+            566 strings with 5629 characters,
+and the built_in function-call counts, 3104 in all, are:
+= -- 313
+> -- 111
+< -- 7
++ -- 38
+- -- 36
+* -- 231
+:= -- 532
+add.period$ -- 23
+call.type$ -- 8
+change.case$ -- 58
+chr.to.int$ -- 8
+cite$ -- 8
+duplicate$ -- 133
+empty$ -- 222
+format.name$ -- 48
+if$ -- 625
 int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 3
-newline$ -- 18
-num.names$ -- 9
-pop$ -- 38
+missing$ -- 5
+newline$ -- 42
+num.names$ -- 24
+pop$ -- 59
 preamble$ -- 1
-purify$ -- 26
+purify$ -- 58
 quote$ -- 0
-skip$ -- 54
+skip$ -- 101
 stack$ -- 0
-substring$ -- 110
-swap$ -- 23
+substring$ -- 210
+swap$ -- 25
 text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 18
+type$ -- 48
 warning$ -- 0
-while$ -- 12
+while$ -- 25
 width$ -- 0
-write$ -- 41
+write$ -- 102
+(There were 3 warnings)
