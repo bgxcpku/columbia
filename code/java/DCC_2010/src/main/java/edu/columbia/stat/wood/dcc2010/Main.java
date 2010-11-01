@@ -40,6 +40,7 @@ public class Main {
         int depth = 1024;
         long streamLength = 100000;
         int radix = 1;
+        int maxCustomersInRestaurant = 10000;
 
         if (nargs > 0) {
             corpus = args[0];
@@ -56,12 +57,15 @@ public class Main {
         if (nargs > 4) {
             radix = Integer.parseInt(args[4]);
         }
+        if (nargs > 5) {
+            maxCustomersInRestaurant = Integer.parseInt(args[5]);
+        }
 
         g = new File(corpus);
         cp(g);
         f = new File("/tmp/" + g.getName());
 
-        System.out.println(corpus + "|" + sizeOfTree + "|" + depth + "|" + streamLength + "|" + radix);
+        System.out.println(corpus + "|" + sizeOfTree + "|" + depth + "|" + streamLength + "|" + radix + "|" + maxCustomersInRestaurant);
 
         FileRadixInputStream is = new FileRadixInputStream(f, radix);
 
@@ -69,6 +73,7 @@ public class Main {
         double logLik = 0.0;
         if (radix == 1) {
             ByteSequenceMemoizer sm = new ByteSequenceMemoizer(new ByteSequenceMemoizerParameters(depth, sizeOfTree, (long) 100 * (long) sizeOfTree));
+            sm.maxCustomersInRestaurant = maxCustomersInRestaurant;
 
             int bytesLogLik = 0;
             long l;
@@ -82,6 +87,7 @@ public class Main {
                     ByteRestaurant.count = 0;
                     n++;
                     sm = new ByteSequenceMemoizer(new ByteSequenceMemoizerParameters(depth, sizeOfTree, (long) 100 * (long) sizeOfTree));
+                    sm.maxCustomersInRestaurant = maxCustomersInRestaurant;
                 }
 
                 logLik += sm.continueSequence((byte) l);
@@ -100,12 +106,14 @@ public class Main {
             IntSequenceMemoizer sm;
             if (radix == 2) {
                 sm = new IntSequenceMemoizer(new IntSequenceMemoizerParameters(depth, sizeOfTree, (long) 100 * (long) sizeOfTree, 1 << 16));
+                sm.maxCustomersInRestaurant = maxCustomersInRestaurant;
             } else if (radix == 4) {
                 IntDiscreteDistribution baseDistribution = new IntUniformDiscreteDistribution(Integer.MIN_VALUE, Integer.MAX_VALUE);
                 double[] discounts = new double[]{0.5, 0.7, 0.8, 0.82, 0.84, 0.88, 0.91, 0.92, 0.93, 0.94, 0.95};
                 IntSequenceMemoizerParameters smp = new IntSequenceMemoizerParameters(baseDistribution, discounts, 0.5, depth, 3, sizeOfTree, sizeOfTree * 100);
 
                 sm = new IntSequenceMemoizer(smp);
+                sm.maxCustomersInRestaurant = maxCustomersInRestaurant;
             } else {
                 throw new RuntimeException("Must use radix 1,2,4");
             }
@@ -123,12 +131,14 @@ public class Main {
                     IntRestaurant.count = 0;
                     if (radix == 2) {
                         sm = new IntSequenceMemoizer(new IntSequenceMemoizerParameters(depth, sizeOfTree, (long) 100 * (long) sizeOfTree, 1 << 16));
+                        sm.maxCustomersInRestaurant = maxCustomersInRestaurant;
                     } else if (radix == 4) {
                         IntDiscreteDistribution baseDistribution = new IntUniformDiscreteDistribution(Integer.MIN_VALUE, Integer.MAX_VALUE);
                         double[] discounts = new double[]{0.5, 0.7, 0.8, 0.82, 0.84, 0.88, 0.91, 0.92, 0.93, 0.94, 0.95};
                         IntSequenceMemoizerParameters smp = new IntSequenceMemoizerParameters(baseDistribution, discounts, 0.5, depth, 3, sizeOfTree, (long) sizeOfTree * (long) 100);
 
                         sm = new IntSequenceMemoizer(smp);
+                        sm.maxCustomersInRestaurant = maxCustomersInRestaurant;
                     }
                     n++;
                 }

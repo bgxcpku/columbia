@@ -20,6 +20,9 @@ import edu.columbia.stat.wood.util.MersenneTwisterFast;
 import edu.columbia.stat.wood.util.MutableInt;
 import edu.columbia.stat.wood.util.Pair;
 import edu.columbia.stat.wood.util.SeatingArranger;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -65,6 +68,8 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
     private ByteDiscreteDistribution baseDistribution;
     private MutableInt newKey = new MutableInt(-1);
     private long maxNumberRestaurants, maxSequenceLength, seed;
+
+    public int maxCustomersInRestaurant;
 
     /**
      * Creates a byte sequence memoizer using the specified parameters.
@@ -443,8 +448,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
         if(depth < trueDepth){
             depth++;
         }
-
-        return Math.log(p);
+        return Math.log((p + minP) / (1.0 + 256.0 * minP));
     }
 
     /**
@@ -851,7 +855,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
         multFactor = 1.0;
         while (ds.hasNext() && sr.seatInParent) {
             discount = ds.pop();
-            p = r.seat(type, p, discount, sr);
+            p = r.seat(type, p, discount, sr, this);
 
             discounts.updateGradient(rDepth - r.edgeLength, rDepth, sr.typeTables, sr.customers, sr.tables, p, discount, multFactor);
             if (sr.customers > 0) {
@@ -1030,6 +1034,16 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
         r.edgeNode = bs.get(in.readInt());
     }
 
+    public void check(ByteRestaurant r){
+        if(!r.isEmpty()){
+            for(Object c : r.values()){
+                check((ByteRestaurant) c);
+            }
+        }
+
+        r.check();
+    }
+
     public class SeatReturn {
 
         public boolean seatInParent;
@@ -1040,6 +1054,34 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
             this.typeTables = typeTables;
             this.customers = customers;
             this.tables = tables;
+        }
+    }
+
+    public static void main(String[] args) throws IOException{
+        //File f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/wikipedia/wiki_subset");
+        //File f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/pride_and_prejudice/pride_and_prejudice.txt");
+        File f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/alice_in_wonderland/alice_in_wonderland.txt");
+        BufferedInputStream bis = null;
+
+        try{
+            bis = new BufferedInputStream(new FileInputStream(f));
+            ByteSequenceMemoizer sm = new ByteSequenceMemoizer(new ByteSequenceMemoizerParameters(1048576, 1000000, (long) 100 * (long) 1000000));
+            //ByteSequenceMemoizer sm = new ByteSequenceMemoizer();
+            sm.maxCustomersInRestaurant = 50;
+            double logLik = 0.0;
+            int b;
+            int cnt = 0;
+            while((b = bis.read()) > -1){
+                logLik += sm.continueSequence((byte) b);
+                cnt++;
+                if(cnt % 100000 ==  0){
+                    System.out.println(cnt);
+                    sm.check(sm.ecr);
+                }
+            }
+            System.out.println(-logLik / Math.log(2) / (double) f.length());
+        } finally {
+            bis.close();
         }
     }
 }

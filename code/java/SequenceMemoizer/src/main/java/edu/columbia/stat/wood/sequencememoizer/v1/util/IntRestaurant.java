@@ -9,6 +9,7 @@ import edu.columbia.stat.wood.sequencememoizer.v1.IntSequenceMemoizer;
 import edu.columbia.stat.wood.sequencememoizer.v1.util.IntSequence.IntSeqNode;
 import edu.columbia.stat.wood.sequencememoizer.v1.IntSequenceMemoizer.SeatReturn;
 import edu.columbia.stat.wood.util.IntMap;
+import edu.columbia.stat.wood.util.SampleMultinomial;
 import edu.columbia.stat.wood.util.SeatingArranger;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -99,23 +100,91 @@ public class IntRestaurant extends IntMap<IntRestaurant> implements Serializable
     public double getPP(int type, double p, double discount, SeatReturn sr) {
         int index, tc, tt, tci, tti;
 
-        index = getIndex(type);
 
-        assert types[index] == type;
+        if(type > types[types.length -1]){
+            tt = 0;
+            tc = 0;
+        } else {
+            index = getIndex(type);
+            if(types[index] == type){
+                tci = 2 * index;
+                tti = tci + 1;
 
-        tci = 2 * index;
-        tti = tci + 1;
-
-        tc = customersAndTables[tci];
-        tt = customersAndTables[tti];
-
+                tc = customersAndTables[tci];
+                tt = customersAndTables[tti];
+            } else {
+                tt = 0;
+                tc = 0;
+            }
+        }
+        
         sr.set(false, tt, customers, tables);
         p -= ((double) tc - (double) tt * discount) / (double) customers;
 
         return p * (double) customers / ((double) tables * discount);
     }
+
+    public void deleteCustomers(int nDelete, double discount) {
+        int[] c = new int[types.length];
+
+        for (int t = 0; t < types.length; t++) {
+            c[t] = customersAndTables[2 * t];
+        }
+
+        int[] toDelete = SampleMultinomial.deleteCustomersAtRandom(nDelete, c, customers, IntSequenceMemoizer.RNG);
+        int number_zeros = 0;
+        for (int t = 0; t < types.length; t++) {
+            if (toDelete[t] > 0) {
+                if(toDelete[t] == customersAndTables[2*t]){
+                    customers -= toDelete[t];
+                    tables -= customersAndTables[2 * t + 1];
+
+                    customersAndTables[2 * t] = 0;
+                    customersAndTables[2 * t + 1] = 0;
+
+                    number_zeros++;
+                } else {
+
+                    int[] sa = SeatingArranger.getSeatingArrangement(customersAndTables[2 * t], customersAndTables[2 * t + 1], discount);
+                    int[] cToDelete = SampleMultinomial.deleteCustomersAtRandom(toDelete[t], sa, customersAndTables[2 * t], IntSequenceMemoizer.RNG);
+
+                    customersAndTables[2 * t] -= toDelete[t];
+                    customers -= toDelete[t];
+
+                    for (int i = 0; i < sa.length; i++) {
+                        if (sa[i] == cToDelete[i]) {
+                            tables--;
+                            customersAndTables[2 * t + 1]--;
+                        }
+                    }
+                    assert customersAndTables[2*t] >= customersAndTables[2*t +1];
+                }
+            }
+        }
+
+        if(number_zeros > 0){
+            int[] new_types = new int[types.length - number_zeros];
+            int[] new_customersAndTables = new int[customersAndTables.length - 2 * number_zeros];
+
+            int j = 0, k = 0;
+            for(int i = 0; i < types.length; i++){
+                if(customersAndTables[2*i] > 0){
+                    new_types[j++] = types[i];
+                    new_customersAndTables[k++] = customersAndTables[2*i];
+                    new_customersAndTables[k++] = customersAndTables[2*i + 1];
+                    if(new_customersAndTables[k-2] < new_customersAndTables[k-1] || new_customersAndTables[k-2] == 0 || new_customersAndTables[k-1] == 0){
+                        throw new RuntimeException("new_customersAndTables[k-1] = " + new_customersAndTables[k-1] + ", new_customersAndTables[k-2] = " + new_customersAndTables[k-2]);
+                    }
+                }
+            }
+
+            types = new_types;
+            customersAndTables = new_customersAndTables;
+        }
+    }
     
-    public double seat(int type, double p, double discount, SeatReturn sr) {
+    public double seat(int type, double p, double discount, SeatReturn sr, IntSequenceMemoizer sm) {
+                
         if (customers == 0) {
             sr.set(true, 0, customers, tables);
 
@@ -172,6 +241,10 @@ public class IntRestaurant extends IntMap<IntRestaurant> implements Serializable
                     tables++;
                 }
             }
+        }
+
+        if (customers >= sm.maxCustomersInRestaurant) {
+            deleteCustomers((int) (sm.maxCustomersInRestaurant * .1),discount);
         }
 
         return p;

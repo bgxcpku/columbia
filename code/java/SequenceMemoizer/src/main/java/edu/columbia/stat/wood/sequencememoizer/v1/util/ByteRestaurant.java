@@ -9,6 +9,7 @@ import edu.columbia.stat.wood.sequencememoizer.v1.ByteSequenceMemoizer;
 import edu.columbia.stat.wood.sequencememoizer.v1.util.ByteSeq.ByteSeqNode;
 import edu.columbia.stat.wood.sequencememoizer.v1.ByteSequenceMemoizer.SeatReturn;
 import edu.columbia.stat.wood.util.ByteMap;
+import edu.columbia.stat.wood.util.SampleMultinomial;
 import edu.columbia.stat.wood.util.SeatingArranger;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -56,15 +57,22 @@ public class ByteRestaurant extends ByteMap<ByteRestaurant> implements Serializa
     public double getPP(byte type, double p, double discount, SeatReturn sr) {
         int index, tc, tt, tci, tti;
 
-        index = getIndex(type);
+        if(type > types[types.length -1]){
+            tt = 0;
+            tc = 0;
+        } else {
+            index = getIndex(type);
+            if(types[index] == type){
+                tci = 2 * index;
+                tti = tci + 1;
 
-        assert types[index] == type;
-
-        tci = 2 * index;
-        tti = tci + 1;
-
-        tc = customersAndTables[tci];
-        tt = customersAndTables[tti];
+                tc = customersAndTables[tci];
+                tt = customersAndTables[tti];
+            } else {
+                tt = 0;
+                tc = 0;
+            }
+        }
 
         sr.set(false, tt, customers, tables);
         p -= ((double) tc - (double) tt * discount) / (double) customers;
@@ -72,7 +80,81 @@ public class ByteRestaurant extends ByteMap<ByteRestaurant> implements Serializa
         return p * (double) customers / ((double) tables * discount);
     }
 
-    public double seat(byte type, double p, double discount, SeatReturn sr) {
+    public void deleteCustomers(int nDelete, double discount) {
+        int[] c = new int[types.length];
+
+        for (int t = 0; t < types.length; t++) {
+            c[t] = customersAndTables[2 * t];
+        }
+
+        int[] toDelete = SampleMultinomial.deleteCustomersAtRandom(nDelete, c, customers, ByteSequenceMemoizer.RNG);
+        int number_zeros = 0;
+        for (int t = 0; t < types.length; t++) {
+            if (toDelete[t] > 0) {
+                if(toDelete[t] == customersAndTables[2*t]){
+                    customers -= toDelete[t];
+                    tables -= customersAndTables[2 * t + 1];
+                    
+                    customersAndTables[2 * t] = 0;
+                    customersAndTables[2 * t + 1] = 0;
+
+                    number_zeros++;
+                } else {
+
+                    int[] sa = SeatingArranger.getSeatingArrangement(customersAndTables[2 * t], customersAndTables[2 * t + 1], discount);
+                    int[] cToDelete = SampleMultinomial.deleteCustomersAtRandom(toDelete[t], sa, customersAndTables[2 * t], ByteSequenceMemoizer.RNG);
+
+                    customersAndTables[2 * t] -= toDelete[t];
+                    customers -= toDelete[t];
+
+                    for (int i = 0; i < sa.length; i++) {
+                        if (sa[i] == cToDelete[i]) {
+                            tables--;
+                            customersAndTables[2 * t + 1]--;
+                            assert customersAndTables[2 * t + 1] > 0;
+                        }
+                    }
+                    assert customersAndTables[2*t] >= customersAndTables[2*t +1];
+                }
+            }
+        }
+
+        if(number_zeros > 0){
+            byte[] new_types = new byte[types.length - number_zeros];
+            int[] new_customersAndTables = new int[customersAndTables.length - 2 * number_zeros];
+
+            int j = 0, k = 0;
+            for(int i = 0; i < types.length; i++){
+                if(customersAndTables[2*i] > 0){
+                    new_types[j++] = types[i];
+                    new_customersAndTables[k++] = customersAndTables[2*i];
+                    new_customersAndTables[k++] = customersAndTables[2*i + 1];
+                    if(new_customersAndTables[k-2] < new_customersAndTables[k-1] || new_customersAndTables[k-2] == 0 || new_customersAndTables[k-1] == 0){
+                        throw new RuntimeException("new_customersAndTables[k-1] = " + new_customersAndTables[k-1] + ", new_customersAndTables[k-2] = " + new_customersAndTables[k-2]);
+                    }
+                }
+            }
+
+            assert k == 2*(types.length - number_zeros) : "k = " + k + ", 2*(types.length - number_zeros) = "  + 2*(types.length - number_zeros);
+
+            types = new_types;
+            customersAndTables = new_customersAndTables;
+
+            int cu = 0;
+            int ta = 0;
+            for(int i = 0; i < customersAndTables.length; i++){
+                cu += customersAndTables[i++];
+                ta += customersAndTables[i];
+            }
+
+            assert cu == customers;
+            assert ta == tables;
+
+        }
+    }
+
+    public double seat(byte type, double p, double discount, SeatReturn sr, ByteSequenceMemoizer sm) {
+
         if (customers == 0) {
             sr.set(true, 0, customers, tables);
 
@@ -131,6 +213,10 @@ public class ByteRestaurant extends ByteMap<ByteRestaurant> implements Serializa
             }
         }
 
+        if (customers >= sm.maxCustomersInRestaurant) {
+            deleteCustomers((int) (sm.maxCustomersInRestaurant * .1),discount);
+        }
+
         return p;
     }
 
@@ -183,6 +269,11 @@ public class ByteRestaurant extends ByteMap<ByteRestaurant> implements Serializa
         int[] irCustomersAndTables, tsa;
         int l, tci, tti, fc, ft, tc, tt, irc, irt;
 
+        int start_customers = customers;
+        int[] start_customersAndTables = new int[customersAndTables.length];
+        System.arraycopy(customersAndTables,0, start_customersAndTables, 0, customersAndTables.length);
+
+        
         customers = 0;
         tables = 0;
 
@@ -247,6 +338,19 @@ public class ByteRestaurant extends ByteMap<ByteRestaurant> implements Serializa
             customersAndTables[tci] = fc;
             customersAndTables[tti] = ft;
         }
+
+        /*int c = 0;
+        int t = 0;
+        for(int i = 0; i < start_customersAndTables.length; i++){
+            assert start_customersAndTables[i] == customersAndTables[i];
+            assert customersAndTables[i] >= customersAndTables[i + 1];
+            c += start_customersAndTables[i++];
+            assert start_customersAndTables[i] <= customersAndTables[i];
+            t += customersAndTables[i];
+            assert customersAndTables[i] > 0;
+        }
+        assert c == customers;
+        assert t == tables;*/
 
         intermediateRestaurant.setTableConfig(irTypes, irCustomersAndTables, irc, irt);
         parent = intermediateRestaurant;
@@ -366,5 +470,33 @@ public class ByteRestaurant extends ByteMap<ByteRestaurant> implements Serializa
         edgeLength = in.readInt();
         numLeafNodesAtOrBelow = in.readInt();
         parent = (ByteRestaurant) in.readObject();
+    }
+
+    public void check(){
+        int c = 0;
+        int t = 0;
+
+        for(int i = 0 ; i < types.length; i++){
+            assert customersAndTables[2*i] >= customersAndTables[2*i + 1] : printCustomersAndTables();
+            assert customersAndTables[2*i] > 0;
+            assert customersAndTables[2*i + 1] > 0;
+            if(i > 0){
+                assert types[i] > types[i-1];
+            }
+            c += customersAndTables[2*i];
+            t += customersAndTables[2*i + 1];
+        }
+
+        assert customers == c;
+        assert tables == t;
+    }
+
+    public String printCustomersAndTables(){
+        String c_and_t = "[" + customersAndTables[0];
+        for(int i = 1; i < customersAndTables.length; i++){
+            c_and_t += ", " + customersAndTables[i];
+        }
+        c_and_t += "]";
+        return c_and_t;
     }
 }

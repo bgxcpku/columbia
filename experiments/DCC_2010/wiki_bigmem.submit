@@ -1,0 +1,106 @@
+universe = java 
+executable = ../../code/java/DCC_2010/target/dcc2010-1.0-jar-with-dependencies.jar 
+jar_files = ../../code/java/DCC_2010/target/dcc2010-1.0-jar-with-dependencies.jar 
+Requirements = BigMem == TRUE 
+java_vm_args = -Xmx7000m -Xss10m 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 16 10000000 1 10000
+output = ww_84.out 
+error = ww_84.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1024 10000000 1 10000
+output = ww_89.out 
+error = ww_89.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1048576 10000000 1 10000
+output = ww_94.out 
+error = ww_94.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1073741824 10000000 1 10000
+output = ww_99.out 
+error = ww_99.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 16 100000000 1 10000
+output = ww_104.out 
+error = ww_104.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1024 100000000 1 10000
+output = ww_109.out 
+error = ww_109.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1048576 100000000 1 10000
+output = ww_114.out 
+error = ww_114.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1073741824 100000000 1 10000
+output = ww_119.out 
+error = ww_119.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 16 1000000000 1 10000
+output = ww_124.out 
+error = ww_124.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1024 1000000000 1 10000
+output = ww_129.out 
+error = ww_129.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1048576 1000000000 1 10000
+output = ww_134.out 
+error = ww_134.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1073741824 1000000000 1 10000
+output = ww_139.out 
+error = ww_139.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 16 10000000000 1 10000
+output = ww_144.out 
+error = ww_144.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1024 10000000000 1 10000
+output = ww_149.out 
+error = ww_149.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1048576 10000000000 1 10000
+output = ww_154.out 
+error = ww_154.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1073741824 10000000000 1 10000
+output = ww_159.out 
+error = ww_159.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 16 100000000000 1 10000
+output = ww_164.out 
+error = ww_164.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1024 100000000000 1 10000
+output = ww_169.out 
+error = ww_169.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1048576 100000000000 1 10000
+output = ww_174.out 
+error = ww_174.err 
+queue 
+ 
+arguments=edu.columbia.stat.wood.dcc2010.Main /hpc/scratch/stats/users/nsb2130/data/wikipedia/enwik.xml.gz 10000000 1073741824 100000000000 1 10000
+output = ww_179.out 
+error = ww_179.err 
+queue 
+ 

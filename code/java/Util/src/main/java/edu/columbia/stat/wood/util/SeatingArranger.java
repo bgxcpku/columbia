@@ -5,166 +5,151 @@
 package edu.columbia.stat.wood.util;
 
 /**
- * Class to provide static method to get a seating arrangement sampled according to
- * the Chinese restaurant process, conditioned on the number of customers, number of tables
- * and discount parameter.
  *
  * @author nicholasbartlett
  */
 public class SeatingArranger {
 
+    private static double[][] M;
     private static double d;
-    
-    /**
-     * Random number generator used in the stochastic operations of this class.
-     */
+    private static int c;
+    private static int t;
     public static MersenneTwisterFast rng;
 
-    /**
-     * Static method to return a seating arrangement sampled from the Chinese restaurant
-     * process.  The seating arrangement is represented as an int[] where each element
-     * denotes the number of customers sitting at a unique table.  The number of tables
-     * will be equal to the length of the returned array.
-     * @param c number of customers
-     * @param t number of tables
-     * @param d discount
-     * @return seating arrangement
-     */
-    @SuppressWarnings("FinalStaticMethod")
-    public static final int[] getSeatingArrangement(int c, int t, double d) {
-        int[] tsa;
-        ZState state;
-        int previousZ;
-        double r, cuSum, tw;
+    public static int[] getSeatingArrangement(int customers, int tables, double discount) {
+        c = customers;
+        t = tables;
 
-        if (c == 1 && t == 1) {
-            return new int[]{1};
+        d = discount < .001 ? .001 : discount;
+        d = d > .999 ? .999 : d;
+
+        int[] sample = new int[tables];
+
+        if (customers < tables || customers <= 0 || tables <= 0) {
+            throw new IllegalArgumentException("c = " + customers + ", t = " + tables + ", d = " + discount);
+        } else if (tables == 1) {
+            sample[0] = customers;
+        } else if (tables == customers) {
+            for (int i = 0; i < tables; i++) {
+                sample[i] = 1;
+            }
         } else {
-            SeatingArranger.d = d;
 
-            state = new ZState(t, t);
-            state.set(0.0, t);
+            M = new double[customers][];
+            M[customers - 1] = new double[]{1};
 
-            previousZ = getSeatingArrangement(tsa = new int[t], c - 1, t, t, state);
+            //backward message passing
+            for (int i = (c - 2); i > -1; i--) {
+                setM(i + 1);
+            }
 
-            if (t > previousZ) {
-                tsa[t - 1] = 1;
-            } else {
-                tw = (double) (c - 1) - d * (double) previousZ;
-                r = rng.nextDouble();
-                cuSum = 0.0;
-                for (int i = 0; i < previousZ; i++) {
-                    cuSum += ((double) tsa[i] - d) / tw;
-                    if (cuSum > r) {
-                        tsa[i]++;
-                        break;
+            //forward sampling
+            double u, s, r, cuSum;
+            boolean up;
+            int z = 1;
+            sample[0] = 1;
+
+            for (int i = 2; i <= c; i++) {
+                s = getM(i, z) * (i - 1 - z * d);
+                u = getM(i, z + 1);
+
+                up = rng.nextBoolean(u / (s + u));
+                if (up && z < t) {
+                    sample[z] = 1;
+                    z++;
+                } else {
+                    r = rng.nextDouble();
+                    cuSum = 0.0;
+                    for (int j = 0; j < z; j++) {
+                        cuSum += ((double) sample[j] - d) / ((double) (i - 1) - z * d);
+                        if (cuSum > r) {
+                            sample[z - 1]++;
+                            break;
+                        }
+
+                        if(j == z-1){
+                            sample[z-1]++;
+                        }
                     }
                 }
             }
-
-            return tsa;
         }
+
+        assert check(sample);
+
+        return sample;
     }
 
-    private static int getSeatingArrangement(int[] tsa, int level, int parentMin, int parentMax, ZState parentState) {
-        int min, max, previousZ, z;
-        double r, cuSum, tw;
-        ZState state;
+    public static double getM(int i, int j) {
+        int mn = 1 > t - (c - i) ? 1 : t - (c - i);
+        int mx = t < i ? t : i;
 
-        if (level == 1) {
-            tsa[0] = 1;
-            return 1;
-        }
-
-        min = parentMin > 1 ? parentMin - 1 : 1;
-        max = level < parentMax ? level : parentMax;
-
-        state = new ZState(min, max);
-
-        for (int i = min; i <= max; i++) {
-            state.set(LogAdd.logAdd(parentState.get(i) + Math.log(((double) level - d * (double) i)), parentState.get(i + 1)), i);
-        }
-
-        previousZ = getSeatingArrangement(tsa, level - 1, min, max, state);
-
-        z = state.sample(previousZ, level);
-
-        if (z > previousZ) {
-            tsa[z - 1] = 1;
+        if (j < mn || j > mx) {
+            return 0.0;
         } else {
-            tw = (double) (level - 1) - d * (double) previousZ;
-            r = rng.nextDouble();
-            cuSum = 0.0;
-            for (int i = 0; i < previousZ; i++) {
-                cuSum += ((double) tsa[i] - d) / tw;
-                if (cuSum > r) {
-                    tsa[i]++;
-                    break;
-                }
-            }
+            return M[i - 1][j - mn];
         }
-        return z;
     }
 
-    private static class ZState {
+    public static void setM(int i) {
+        int mn = 1 > t - (c - i) ? 1 : t - (c - i);
+        int mx = t < i ? t : i;
 
-        private int min;
-        private double[] p;
-        private int l;
+        double[] msg = new double[mx - mn + 1];
 
-        ZState(int min, int max) {
-            this.min = min;
-            l = max - min + 1;
-            p = new double[l];
+        double s = 0;
+        for (int k = 0; k < (mx - mn + 1); k++) {
+            msg[k] = getM(i + 1, mn + k) * (i - (mn + k) * d) + getM(i + 1, mn + k + 1);
+            s += msg[k];
         }
 
-        double get(int zValue) {
-            int ind;
+        for (int k = 0; k < (mx - mn + 1); k++) {
+            msg[k] /= s;
+        }
 
-            ind = zValue - min;
-            if (ind > -1 && ind < l) {
-                return p[ind];
-            } else {
-                return Double.NEGATIVE_INFINITY;
+        M[i - 1] = msg;
+    }
+
+    public static boolean check(int[] sample) {
+        int s = 0;
+        for (int ts : sample) {
+            s += ts;
+            if (ts <= 0) {
+                return false;
             }
         }
+        System.out.println(s);
+        System.out.println(c);
+        return s == c;
+    }
 
-        void set(double value, int zValue) {
-            int ind;
+    public static void main(String[] args) {
 
-            ind = zValue - min;
-            if (ind > -1 && ind < l) {
-                p[ind] = value;
-            } else {
-                throw new IllegalArgumentException("zValue out of range");
-            }
+        rng = new MersenneTwisterFast(1);
+
+        int[] sample = getSeatingArrangement(10000, 9, .8);
+        if (!check(sample)) {
+            System.out.println("this sucks");
         }
 
-        int sample(int previousZ, int level) {
-            int ind;
-            double cuSum, max;
-
-            ind = previousZ - min;
-
-            if (ind == l - 1) {
-                return min + l - 1;
-            } else if (ind == -1) {
-                return min;
-            } else {
-                p[ind] += Math.log((double) level - 1.0 - d * (double) previousZ);
-
-                max = p[ind] > p[ind + 1] ? p[ind] : p[ind + 1];
-                p[ind] -= max;
-                p[ind + 1] -= max;
-
-                cuSum = Math.exp(p[ind]) / (Math.exp(p[ind]) + Math.exp(p[ind + 1]));
-
-                if (cuSum > rng.nextDouble()) {
-                    return min + ind;
-                } else {
-                    return min + ind + 1;
-                }
-            }
+        System.out.print("[" + sample[0]);
+        for (int j = 1; j < sample.length; j++) {
+            System.out.print(", " + sample[j]);
         }
+        System.out.println("]");
+
+
+
+        /*getM(1,5);
+        getM(2,5);
+        getM(3,5);
+        getM(4,5);
+        getM(5,5);
+        getM(6,5);
+        getM(7,5);
+        getM(8,5);
+        getM(9,5);
+        getM(10,5);*/
+
     }
 }
