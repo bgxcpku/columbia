@@ -53,7 +53,7 @@ public class SampleMultinomial {
         }
 
         if(s != customers){
-            throw new RuntimeException("customers number not correct");
+            throw new IllegalArgumentException("customers number not correct, customers = " + customers + ", s = " + s);
         }
 
         int[] c = new int[cc.length];
@@ -77,27 +77,26 @@ public class SampleMultinomial {
             }
         }
 
-        assert check(sample, cc, nDelete);
+        assert checkSample(sample, cc, nDelete);
 
         return sample;
     }
 
-    public static boolean check(int[] sample, int[] cc, int nDelete){
+    public static boolean checkSample(int[] sample, int[] cc, int nDelete){
         int c = 0;
         assert sample.length == cc.length;
         for(int i = 0; i < cc.length; i++){
             c += sample[i];
             assert sample[i] <= cc[i];
         }
-        assert c == nDelete;
-        return true;
+        return c == nDelete;
     }
 
-    public static void main(String[] args){
+    /*public static void main(String[] args){
         int[] dcr = deleteCustomersAtRandom(15, new int[]{20,40,30,60},150, new MersenneTwisterFast(1));
         for(int i : dcr){
             System.out.print(", " + i);
         }
         System.out.println();
-    }
+    }*/
 }

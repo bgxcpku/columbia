@@ -118,16 +118,14 @@ public class SeatingArranger {
                 return false;
             }
         }
-        System.out.println(s);
-        System.out.println(c);
         return s == c;
     }
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
 
         rng = new MersenneTwisterFast(1);
 
-        int[] sample = getSeatingArrangement(10000, 9, .8);
+        int[] sample = getSeatingArrangement(32000, 30000, .001);
         if (!check(sample)) {
             System.out.println("this sucks");
         }
@@ -136,20 +134,8 @@ public class SeatingArranger {
         for (int j = 1; j < sample.length; j++) {
             System.out.print(", " + sample[j]);
         }
+        
         System.out.println("]");
-
-
-
-        /*getM(1,5);
-        getM(2,5);
-        getM(3,5);
-        getM(4,5);
-        getM(5,5);
-        getM(6,5);
-        getM(7,5);
-        getM(8,5);
-        getM(9,5);
-        getM(10,5);*/
-
-    }
+    }*/
+    
 }

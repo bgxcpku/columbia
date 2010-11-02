@@ -13,6 +13,7 @@ import edu.columbia.stat.wood.sequencememoizer.v1.util.ByteSeq.ByteSeqNode;
 import edu.columbia.stat.wood.sequencememoizer.v1.util.Discounts;
 import edu.columbia.stat.wood.util.ByteArrayFiniteDiscreteDistribution;
 import edu.columbia.stat.wood.util.ByteDiscreteDistribution;
+import edu.columbia.stat.wood.util.DLMWriter;
 import edu.columbia.stat.wood.util.DoubleStack;
 import edu.columbia.stat.wood.util.LogBracketFunction;
 import edu.columbia.stat.wood.util.LogGeneralizedSterlingNumbers;
@@ -448,6 +449,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
         if(depth < trueDepth){
             depth++;
         }
+        
         return Math.log((p + minP) / (1.0 + 256.0 * minP));
     }
 
@@ -1044,6 +1046,16 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
         r.check();
     }
 
+    public void printDepths(ByteRestaurant r, int dpth, DLMWriter w) throws IOException{
+        if(!r.isEmpty()){
+            for(Object c : r.values()){
+                printDepths((ByteRestaurant) c, dpth + ((ByteRestaurant) c).edgeLength, w);
+            }
+        }
+
+        w.write(Integer.toString(dpth));
+    }
+
     public class SeatReturn {
 
         public boolean seatInParent;
@@ -1065,9 +1077,9 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
 
         try{
             bis = new BufferedInputStream(new FileInputStream(f));
-            ByteSequenceMemoizer sm = new ByteSequenceMemoizer(new ByteSequenceMemoizerParameters(1048576, 1000000, (long) 100 * (long) 1000000));
+            ByteSequenceMemoizer sm = new ByteSequenceMemoizer(new ByteSequenceMemoizerParameters(1024, 1000000, (long) 100 * (long) 1000000));
             //ByteSequenceMemoizer sm = new ByteSequenceMemoizer();
-            sm.maxCustomersInRestaurant = 50;
+            sm.maxCustomersInRestaurant = 500;
             double logLik = 0.0;
             int b;
             int cnt = 0;
@@ -1080,8 +1092,15 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
                 }
             }
             System.out.println(-logLik / Math.log(2) / (double) f.length());
+/*
+            DLMWriter w = new DLMWriter(new File("/Users/nicholasbartlett/Desktop/trial.txt"),100,"|");
+            sm.printDepths(sm.ecr,0,w);
+            w.close();*/
         } finally {
             bis.close();
         }
+
+
+
     }
 }

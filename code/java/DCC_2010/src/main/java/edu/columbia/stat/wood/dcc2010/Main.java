@@ -33,14 +33,14 @@ public class Main {
     public static void main(String[] args) throws FileNotFoundException, IOException, java.lang.InterruptedException {
         int nargs = args.length;
 
-        //defaults
         File f, g;
         String corpus = "/Users/nicholasbartlett/Documents/np_bayes/data/pride_and_prejudice/pap.gz";
-        int sizeOfTree = 10000;
-        int depth = 1024;
-        long streamLength = 100000;
+        int sizeOfTree = 1000000;
+        int depth = 16;
+        long streamLength = 700000;
         int radix = 1;
         int maxCustomersInRestaurant = 10000;
+        int nSample = 10;
 
         if (nargs > 0) {
             corpus = args[0];
@@ -60,15 +60,53 @@ public class Main {
         if (nargs > 5) {
             maxCustomersInRestaurant = Integer.parseInt(args[5]);
         }
+        if (nargs > 6){
+            nSample = Integer.parseInt(args[6]);
+        }
 
         g = new File(corpus);
         cp(g);
-        f = new File("/tmp/" + g.getName());
+        f = new File("/spare/hpc/tmp/stats/projects/" + g.getName());
+        //f = new File(corpus);
 
         System.out.println(corpus + "|" + sizeOfTree + "|" + depth + "|" + streamLength + "|" + radix + "|" + maxCustomersInRestaurant);
+        
+        ByteSequenceMemoizer sm = null;
+        FileRadixInputStream is = null;
 
-        FileRadixInputStream is = new FileRadixInputStream(f, radix);
+        try{
+            for(int n = 0; n < nSample ; n++){
 
+                is = new FileRadixInputStream(f, radix, streamLength);
+                sm = new ByteSequenceMemoizer(new ByteSequenceMemoizerParameters(depth, sizeOfTree, (long) 100 * (long) sizeOfTree));
+                sm.maxCustomersInRestaurant = maxCustomersInRestaurant;
+                ByteRestaurant.count = 1;
+
+                double l;
+                double logLik = 0.0;
+                
+                while(is.bytesRead < streamLength && (l = is.readLong()) > -1){
+
+                    logLik += sm.continueSequence((byte) l);
+
+                    if(is.bytesRead % 1000000 == 0){
+                        System.out.println(is.bytesRead + "|" + 1000000 + "|" + logLik + "|" + (-logLik / Math.log(2) / 1000000.0));
+                        logLik = 0.0;
+                    }
+                }
+
+                if(is.bytesRead % 1000000 != 0){
+                    System.out.println(is.bytesRead + "|" + (is.bytesRead % 1000000) + "|" + logLik + "|" + (-logLik / Math.log(2) / (double)(is.bytesRead % 1000000)));
+                }
+                
+                is.close();
+            }
+        } finally {
+            is.close();
+        }
+
+        
+        /*
         int n = 0;
         double logLik = 0.0;
         if (radix == 1) {
@@ -102,7 +140,8 @@ public class Main {
 
             System.out.println(is.bytesRead + "|" + bytesLogLik + "| " + logLik + "|" + (-logLik / Math.log(2) / (double) bytesLogLik));
 
-        } else {
+        }
+        /*else {
             IntSequenceMemoizer sm;
             if (radix == 2) {
                 sm = new IntSequenceMemoizer(new IntSequenceMemoizerParameters(depth, sizeOfTree, (long) 100 * (long) sizeOfTree, 1 << 16));
@@ -153,16 +192,16 @@ public class Main {
                 }
             }
             System.out.println(is.bytesRead + "|" + bytesLogLik + "| " + logLik + "|" + (-logLik / Math.log(2) / (double) bytesLogLik));
-        }
+        }*/
     }
 
     public static void cp(File f) throws java.io.IOException, java.lang.InterruptedException {
-        File g = new File("/tmp/" + f.getName());
+        File g = new File("/spare/hpc/tmp/stats/projects/" + f.getName());
         if (g.exists()) {
             return;
         } else {
             Runtime rt = Runtime.getRuntime();
-            Process proc = rt.exec("cp " + f.getPath() + " /tmp/" + f.getName());
+            Process proc = rt.exec("cp " + f.getPath() + " /spare/hpc/tmp/stats/projects/" + f.getName());
             proc.waitFor();
             InputStream is = proc.getErrorStream();
             int b;
