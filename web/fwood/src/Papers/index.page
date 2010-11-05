@@ -24,6 +24,7 @@ sort_info: 1
 * F. Wood, D. H. Grollman, K, A. Heller, O. C. Jenkins, and M. J. Black. <span class="papertitle">Incremental Nonparametric Bayesian Regression</span>  Brown University Dept. Computer Science Technical Report CS-08-07, 2008 <a class="download" href="Wood-INBR-2008.pdf">PDF</a>
 
 ## Journal Publications
+* F. Wood, J. Gasthaus, C. Archambeau, L. James, and Y.W. Teh.  <span class="papertitle"> The Sequence Memoizer.</span> To appear, 2010, In Proceedings of the Communications of the ACM. 
 * F. Wood, and M. J. Black <span class="papertitle">A Nonparametric Bayesian Alternative to Spike Sorting.</span>  Journal of Neuroscience Methods, 173:1-12, 2008. <a class="download" href="Wood-JNM-Preprint-2008.pdf">PDF preprint</a>
 * D. H. Grollman, O. C. Jenkins, and F. Wood. <span class="papertitle">Discovering natural kinds of robot sensory experiences in unstructured environments.</span>  Journal of Field Robotics, 23(11-12):1077-1089, 2006 <a class="download" href="GrollmanJenkinsWood_JFR2006_preprint.pdf">PDF preprint</a>
 * F. Wood, M. Fellows, C. Vargas-Irwin, M. J. Black, and J. P. Donoghue. <span class="papertitle"> On the variability of manual spike sorting</span> . IEEE Transactions in Biomedical Engineering, 51:912-918, 2004. <a class="download" href="Wood-TBME-2004.pdf">PDF</a>
