@@ -4,6 +4,8 @@
 
 The empirical performance of Deplump was evaluated using the most recent Wikipedia content dump as a test corpus.  
 
+The mean number of recursions per byte incorporated into the model with a depth of 16 is 8.7326 (based on a 100K subsample of 100M byte sequence) and with a depth of 1024 the mean number of recursions is 9.0612.
+
 \begin{figure*}[t] 
 	\begin{center}
 		\scalebox{1}{\includegraphics{figs/varying_depths.pdf}} % [clip=true, viewport= 1in 1in 9in 9in]
