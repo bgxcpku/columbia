@@ -1,5 +1,0 @@
-% !TEX root = deplump.tex
-\section{Previous Work}
-\label{section:previous_work}
-
-A lossless compressor based on a probabilistic model called the Sequence Memoizer (\cite{Wood2009}) was proposed in \cite{Gasthaus2010}.  Empirical performance was evaluated on the calgary corpus and an algorithm was outlined.  Unfortunately, In \cite{Gasthaus2010} the algorithm proposed has a memory footprint which grows linearly in the length of the input sequence, making it unsuitable for the compression of streams.  A constant space algorithm for inference in the Sequence Memoizer model has since been developed by \cite{Bartlett2010}.  This implementation of Deplump builds on the inference algorithms proposed in \cite{Bartlett2010}  and \cite{Gasthaus2010} to develop a compressor which has finite memory complexity. 
