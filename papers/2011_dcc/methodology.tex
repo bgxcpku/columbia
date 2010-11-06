@@ -11,7 +11,7 @@ Note that a distribution $P$ over sequences can be factorized as $P(S = [s_0, s_
 	P_{[ ]} &\sim& \PY(d_0,0,\mathcal{U}_{\Sigma})\\
 	P_{u} &\sim& \PY(d_{|u|}, 0, P_{\sigma(u)})
 \end{eqnarray*}
-\noindent where $\mathcal{U}_{\Sigma}$ is the uniform distribution over $\Sigma$.  The hierarchy used in the model smoothes each conditional distribution $P_u$ towards a related, more general distribution $P_{\sigma(u)}$.  Intuitively the hierarchy indicates that the most recent context is the most informative for modeling the conditional distributions.
+\noindent where $\mathcal{U}_{\Sigma}$ is the uniform distribution over $\Sigma$.  The hierarchy used in the model smooths each conditional distribution $P_u$ towards a related, more general distribution $P_{\sigma(u)}$.  Intuitively the hierarchy indicates that the most recent context is the most informative for modeling the conditional distributions.
 
 Inference in the model is performed using a compressed representation in which only two counts for each symbol need to be maintained for a subset of the conditional distributions.  We will refer to this subset at element $t$ of the sequence as $\mathcal{H}$.  The cardinality of $\mathcal{H}$ grows linearly in the length of the sequence.  Bayesian inference is typically performed by averaging over the posterior distributions of parameters, but \cite{Gasthaus2010} demonstrate that using a single particle approximation yields excellent empirical results. \cite{Bartlett2010}  show that by making some independence assumptions the approximation can be extended and the cardinality of $\mathcal{H}$ can be bounded from above to provide a constant space inference procedure without much loss in  empirical performance.
 
