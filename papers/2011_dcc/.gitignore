@@ -4,7 +4,6 @@
 *.out
 *.snm
 *.toc
-*.pdf
 *.bbl
 *.blg
 *.synctex.gz
