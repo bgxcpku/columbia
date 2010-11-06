@@ -1,9 +1,20 @@
 % !TEX root = deplump.tex
 \section{Methodology}
 \label{section:methodology}
+\newcommand{\PY}{\ensuremath{\mathcal{P}\mathcal{Y}}}
 
 \subsection{Review}
-Review mathematics of SM, approximations, etc.  Necessary to make the paper reasonably self-contained.
+
+Note that a probability distribution $P$ over sequences can be factorized as $P(S = [s_0, s_1, \ldots, s_m]) = P(s_0)P_{[s_0]}(s_1)P_{[s_0,s_1]}(s_2) \ldots P_{[s_0,s_1,\ldots,s_{m-1}]}(s_m)$, where $P_u(s) = P(s | u)$.  The sequence memoizer jointly models these conditional distributions using a hierarchical Bayesian framework.  The hierarchy used to define the model makes use of the Pitman-Yor distribution over distributions. If $P \sim \PY(d,c,G)$ then we say $P$ follows a Pitman-Yor distribution with discount parameter $d$, concentration parameter $c$ and mean distribution $G$.  The mean distribution $G$ can be understood as the average $P$ resulting from this distribution, i.e. $\mathbb{E}(P(S)) = G(S)$ for $S \in \Sigma^{+}$.  The discount parameter is a real value between 0 and 1.  If the discount is close to 1 it is an indication that $P$ is likely to be very close to $G$; d close to 0 indicates $P$ may vary significantly from $G$.  In the sequence memoizer the concentration parameters are restricted to 0 and will be omitted from the remaining discussion. If we define the operator $\sigma$ on discrete sequences as $\sigma([s_0, s_1, \ldots, s_m]) = [s_1,s_2, \ldots, s_m])$ then we can write the sequence memoizer model as 
+%
+\begin{eqnarray*}
+	P_{[ ]} &\sim& \PY(d_0,0,\mathcal{U}(\Sigma))\\
+	P_{u} &\sim& \PY(d_{|u|}, 0, P_{\sigma(u)})
+\end{eqnarray*}
+\noindent where $\mathcal{U}(\Sigma)$ is the uniform distribution over $\Sigma$.  The hierarchy used in the model smoothes each conditional distribution $P_u$ towards a related, more general distribution $P_{\sigma(u)}$.  Intuitively the hierarchy indicates that the most recent context is the most informative for modeling the conditional distributions.
+
+Inference in the model is performed using a compressed representation in which only two counts for each symbol need to be maintained for a set of conditional distributions which grows linearly in the length of the sequence.  Bayesian inference is typically performed by averaging over the posterior distributions of parameters, but \cite{Gasthaus2010} demonstrate that using a single particle approximation yields excellent empirical results. \cite{Bartlett2010}  show that by making some independence assumptions the approximation can be extended to facilitate a constant space inference procedure without much loss in  empirical performance.
 
 \subsection{Approximation}
-Explain customer restriction approximation here
+
+The counts that are maintained in the inference procedure grow at a sublinear rate, but are not bounded above.  Unfortunately the computation required to update the model as new data is observed grows as a linear function of these counts.  Therefore, to make the algorithm computationally tractable to streaming sequence, the total count for each conditional distribution must be bounded above.  This further approximation then caps the computation time for each model update at some reasonable level and does not have effect on empirical performance.  
