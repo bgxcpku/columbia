@@ -49,8 +49,8 @@ For each $s$ in the input sequence the function \textsc{PMFNextSymbo}l is called
     After encoding or decoding using the predictive PMF $pi$ the first step in updating the model estimate is performed by the function \textsc{UpdateCountsAndDiscounts}.  Starting at node $\N$ and progressing up to the root of the tree, $c_s$ is incremented if $t_s$ was incremented in the node below.  If $c_s$ is incremented, a stochastic decision is made to increment $t_s$.  The gradients for the discount parameters $\D$ are updated by the function \textsc{UpdateDiscountParameterGradients}.  If $c$ is larger than $k$ in any of the nodes, the counts $c_s$ and potentially $t_s$ are reduced by the function \textsc{ThinCounts}. Finally, \D \space is updated based on the calculated gradients and the specified learning rate $\eta$ and the symbol is appended to \RS.
 
 \begin{algorithm}
-    \caption{Deplump/Plump} \label{deplump}
-        
+    \caption{Deplump/Plump} \label{alg:deplump/plump}
+            
     \begin{algorithmic}[1]
     	\Procedure{Deplump/Plump}{$\IS$}
 		\State $\RS \la [$ $]  $ \Comment{reference sequence}
@@ -81,7 +81,7 @@ For each $s$ in the input sequence the function \textsc{PMFNextSymbo}l is called
 
 
 \begin{algorithm}
-
+	\caption{PMFNextSymbol} \label{alg:pmfnextsymbol}
 	\begin{algorithmic}[1]
 	
 	\Function{PMFNextSymbol}{$\RS$}
@@ -106,6 +106,7 @@ For each $s$ in the input sequence the function \textsc{PMFNextSymbo}l is called
 
 
 \begin{algorithm}
+	\caption{GetDiscount} \label{alg:getdiscount}
     \begin{algorithmic}[1]
     
 
@@ -152,6 +153,7 @@ For each $s$ in the input sequence the function \textsc{PMFNextSymbo}l is called
 \end{algorithm}
 
 \begin{algorithm}
+	\caption{GetNode} \label{alg:getnode}
 	\begin{algorithmic}[1]
 	    
     	\Function{GetNode}{\Seq, \T}
@@ -177,6 +179,7 @@ For each $s$ in the input sequence the function \textsc{PMFNextSymbo}l is called
 \end{algorithm}
 
 \begin{algorithm}
+	\caption{UpdateCountsAndDiscounts} \label{alg:updatecountsanddiscounts}
 	\begin{algorithmic}[1]
 	
 	\Function{UpdateCountsAndDiscounts}{$\N, s, p$, BackOff}
@@ -207,6 +210,7 @@ For each $s$ in the input sequence the function \textsc{PMFNextSymbo}l is called
 \end{algorithm}
 
 \begin{algorithm}
+	\caption{ThinCounts} \label{alg:thincounts}
 	\begin{algorithmic}[1]
 			
 	\Function{ThinCounts}{$\N$}
@@ -226,6 +230,7 @@ For each $s$ in the input sequence the function \textsc{PMFNextSymbo}l is called
 \end{algorithm}
 
 \begin{algorithm}
+	\caption{PMF} \label{alg:pmf}
 	\begin{algorithmic}[1]
 
 	\Function{PMF}{$\N, \pi, m$}
@@ -247,6 +252,7 @@ For each $s$ in the input sequence the function \textsc{PMFNextSymbo}l is called
 \end{algorithm}
 
 \begin{algorithm}
+	\caption{FragmentNode} \label{alg:fragmentnode}
 	\begin{algorithmic}[1]
 
 	
@@ -273,6 +279,7 @@ For each $s$ in the input sequence the function \textsc{PMFNextSymbo}l is called
 \end{algorithm}
 
 \begin{algorithm}
+	\caption{DrawCRP} \label{alg:drawcrp}
 	\begin{algorithmic}[1]
 
 	
@@ -290,6 +297,7 @@ For each $s$ in the input sequence the function \textsc{PMFNextSymbo}l is called
 \end{algorithm}
 
 \begin{algorithm}
+	\caption{SamplePartition} \label{alg:samplepartition}
 	\begin{algorithmic}[1]
 	
 	\Function{SamplePartition}{$c,t,d$}
@@ -322,6 +330,7 @@ For each $s$ in the input sequence the function \textsc{PMFNextSymbo}l is called
 \end{algorithm}
 
 \begin{algorithm}
+	\caption{UpdateDiscountParameterGradients} \label{alg:updatediscountparametergradients}
 	\begin{algorithmic}[1]
 
 
