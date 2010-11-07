@@ -19,12 +19,12 @@ Given a model and observed data,  the task of inference is to learn likely value
 
 \subsection{Approximation}
 
-The inference procedure requires maintaining counts $c^P_\sigma,t^P_\sigma$ for each $P_u \in \mathcal{H}$ and $i \in \Sigma$.  The counts $c_{\sigma_i}$ grow as a sub-linear function of the stream length, but are not bounded above.  Unfortunately the computation required to update the model is only bounded above by $K \max_{P \in \mathcal{H}, \sigma \in \Sigma} \{ c^P_\sigma \}$.  Therefore, to make the algorithm computationally tractable with arbitrary length sequences there must be an upper bound on $c^P_\sigma$.  We impose the stronger an upper bound $\sum_{\sigma \in \Sigma} c_\sigma^P < k$ for fixed $k$.  The upper bound is enforced using a random decrement strategy developed in 
+The inference procedure requires maintaining counts $c^P_\sigma,t^P_\sigma$ for each $P_u \in \mathcal{H}$ and $i \in \Sigma$.  The counts $c_{\sigma_i}$ grow as a sub-linear function of the stream length, but are not bounded above.  Unfortunately the computation required to update the model is only bounded above by $K \max_{P \in \mathcal{H}, \sigma \in \Sigma} \{ c^P_\sigma \}$.  Therefore, to make the algorithm computationally tractable with arbitrary length sequences there must be an upper bound on $c^P_\sigma$.  We impose the stronger upper bound $\sum_{\sigma \in \Sigma} c_\sigma^P < k$ for fixed $k$.  The upper bound is enforced using a random decrement strategy developed in 
 
 
 
 
-the same strategy developed in \cite{
+
 
 
 scheme which is 
