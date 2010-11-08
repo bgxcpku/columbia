@@ -1,11 +1,14 @@
 % !TEX root = deplump.tex
 \section{Experiments}
 \label{sec:experiments}
-The performance and characteristics of Deplump were investigated using the most recent Wikipedia content dump as a test corpus.  As a preliminary analysis, we ran the algorithm twice on the first 100Mb section of the corpus with the depth limited to 16 and 1024.  At the end of the section, the depth and total count was printed at each non-leaf node for each suffix tree.  The scatter plots in Figure~\ref{fig:restaurant_plots} show 100,000 randomly sampled points from this output for each tree.  The fact that there are very few nodes with high total counts suggested that we could set the count upper bound fairly low.  As a follow up experiment we used the algorithm with $L$ set to a million, the depth set to 16, and $k$ varied from 128 to 32,768, to compress ten 100MB subsections of the corpus, sampled randomly with replacement.  Average compression performance varied only slightly across values of $k$.
 
-We then investigate empirical performance for other values in of the model parameters.  Performance is measured in bits per byte, which can be converted to compression ratio by dividing by eight.  For each setting of the parameters, ten sections of the corpus were sample with replacement from the corpus and compressed using the algorithm.  In the first sets of experiments, the sampled subsection was 100Mb, while in the second the sampled subsection varied in length.  In the first set of experiments, $k$ was fixed to 8,192, while $L$ and the depth of the tree were varied. Results are shown in Figure~\ref{fig:varying_depths}. In the second set of experiments $k$ was set to 8,192 and the depth was set to 16 while $L$ was allowed to vary.  Results from the third set of experiments are shown in Figure~\ref{fig:varying_stream_length}.
+As the performance of batch deplump was established relative to other lossless compressors for a variety of datatypes in \citep{Gasthaus2010}, we focus our experiments on establishing a) that the approximations to inference in the sequence memoizer combined in this paper in order to make deplump a streaming compressor do not significantly adversely affect compression performance, b) that the resulting compressor can indeed compress extremely long sequences as the asymptotic guarantees would suggest it should, and c) what settings of the approximation parameters produce the best compression performance.
 
-Figure~\ref{fig:varying_depths} indicates that performance stops improving for depths larger than 10 or 12 while controlling for $L$.  This figure also makes it clear that performance is improved with a larger number of nodes in the tree as long as the depth is at least 6.  Figure~\ref{fig:varying_stream_length} illustrates that the algorithm not only scales to very long sequences, but continues to improve as the sequence grows.  Using a large value of $K$ appears to be beneficial for very long sequences.
+All of the experiments included in this paper use a complete Wikipedia text content dump \citep{Wikipedia} as a test corpus (26.8Gb uncompressed, 7.8Gb gziped and ??Gb paq9a'ed, each with default parameters, and 3.9Gb deplumped).  To establish what approximation parameters produce the best compression results we first ran streaming deplump on the first 100Mb section of the corpus limiting the depth to two different values ($D=16$ and $D=1024$) with a fixed limit on the number of nodes in the tree ($L=10^6$).  We observed that in both cases only very few nodes had high total counts ($c > 8,192$) suggesting that it might be possible to set the count upper bound to a relatively low value ($k= 8,192$) without significant compression performance degradation.  That compression performance should not be affected by a reasonable count bound follows intuitively from the fact that in byte sequences $|\Sigma| = 256$ and setting $k=10,000$ is similar in effect to using 10,000 observations to estimate a 256 element discrete distribution.  To ensure that compression performance did in fact not suffer, we compressed ten 100Mb subsections of the corpus (sampled randomly with replacement) for multiple values of $k$ between 128 and 32,768 (fixing $L=10^6$ and $D=16$).  We observed that average compression performance varied insignificantly over different values of $k>?$ .
+
+ In each of the following experiments subsections of the corpus were sampled with replacement.  In the first experiment the sampled subsections were 100Mb, while in the second the sampled subsections varied in length.  In the first experiment, the interplay between limiting the number of nodes in the tree and restricting the depth of the tree was explored (results for which are shown in Figure~\ref{fig:varying_depths}).  Here $k$ was set to 8,192, while $L$ and the depth of the tree $D$ were varied as indicated in the figure.  In the second experiment, the interplay between stream length and node limit was explored (Figure~\ref{fig:varying_stream_length}).  In this experiment $k$ remained fixed at the same value and the depth was set to $D=16$ while $L$ varied as shown in the figure.  
+
+Figure~\ref{fig:varying_depths} indicates that compression performance becomes essentially indistinguishable for depth restrictions greater than $D=10$.  This figure also suggests that compression performance improves as a function of the number of nodes in the tree for depths of at  least 6.  Figure~\ref{fig:varying_stream_length} illustrates that the algorithm not only scales to very long sequences, but continues to improve as the sequence grows.  Using a large value of $K$ appears to be beneficial for very long sequences.
 
 \begin{figure*}[t] 
 	\begin{center}
@@ -31,18 +34,19 @@ Figure~\ref{fig:varying_depths} indicates that performance stops improving for d
 	\end{center} 
 \end{figure*} 
 
-\begin{figure*}[t] 
-	\begin{center}
-		\scalebox{1}{\includegraphics{figs/scatter_16.pdf}} % [clip=true, viewport= 1in 1in 9in 9in]
-		\caption{Scatter plots to explore the relationship between the depth of a node and the total count}
-		\label{fig:restaurant_plots}
-	\end{center} 
-\end{figure*} 
 
-\begin{figure*}[t] 
-	\begin{center}
-		\scalebox{1}{\includegraphics{figs/scatter_1024.pdf}} % [clip=true, viewport= 1in 1in 9in 9in]
-		\caption{Scatter plots to explore the relationship between the depth of a node and the total count}
-		\label{fig:restaurant_plots}
-	\end{center} 
-\end{figure*} 
+%\begin{figure*}[t] 
+%	\begin{center}
+%		\scalebox{1}{\includegraphics{figs/scatter_16.pdf}} % [clip=true, viewport= 1in 1in 9in 9in]
+%		\caption{Scatter plots to explore the relationship between the depth of a node and the total count}
+%		\label{fig:restaurant_plots}
+%	\end{center} 
+%\end{figure*} 
+
+%\begin{figure*}[t] 
+%	\begin{center}
+%		\scalebox{1}{\includegraphics{figs/scatter_1024.pdf}} % [clip=true, viewport= 1in 1in 9in 9in]
+%		\caption{Scatter plots to explore the relationship between the depth of a node and the total count}
+%		\label{fig:restaurant_plots}
+%	\end{center} 
+%\end{figure*} 
