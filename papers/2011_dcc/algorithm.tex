@@ -5,11 +5,11 @@
 \newcommand{\M}{\ensuremath{\mathcal{M}}}
 \newcommand{\PP}{\ensuremath{\mathcal{P}}}
 \newcommand{\nc}{\ensuremath{nc}}
-\newcommand{\RS}{\ensuremath{\mathcal{R}\mathcal{S}}}
+\newcommand{\RS}{\ensuremath{\mathcal{R}}}
 \newcommand{\D}{\ensuremath{\mathcal{D}}}
 \newcommand{\la}{\ensuremath{\leftarrow}}
 \newcommand{\G}{\ensuremath{\mathcal{G}}}
-\newcommand{\IS}{\ensuremath{\mathcal{I}\mathcal{S}}}
+\newcommand{\IS}{\ensuremath{\mathcal{I}}}
 \newcommand{\Seq}{\ensuremath{\mathcal{S}}}
 \newcommand{\dd}{\ensuremath{\delta}}
 %
@@ -21,9 +21,16 @@
 %	\end{center} 
 %\end{figure*} 
 %
-Given a sequence of symbols $\Seq = [s_0, s_1, s_2, \ldots]$ where each symbol $s_n$ comes from from an ordered set of symbols $\{\sigma_0, \sigma_1, \ldots\} = \Sigma$,  deplump works by repeatedly producing a predictive distribution for the continuation of the sequence given the full preceding context and encoding the next symbol by passing that predictive distribution to an entropy encoder.  In this paper explicit details related to encoding and decoding are not included, instead we present the algorithms necessary to incrementally construct the predictive distributions needed by the encoder and decoder.  Specifically, we assume that if the predictive distribution function is $F$ and the next symbol in the stream is $s$ then the stream can be compressed using an entropy encoder that takes $F(s-1)$ and $F(s)$ as arguments and returns a bit stream (possibly null)\citep{Witten1987,arithmeticencoding}.   The cumulative distribution function is well defined because the symbols are ordered. We use the notation $s-1$ to refer to the symbol prior to $s$ in the symbol set $\Sigma$.  %Note that the symbol set can be ordered as the set is discovered.
+Our focus in this section is on providing the first comprehensive implementation reference for deplump with the changes necessary to achieve streaming performance highlighted.  Many of the individual algorithms that appear in this section are justified and explained in detail in prior art.  We explain the functionality of each algorithm, but refer the interested reader to the prior art for detailed mathematical justifications, in particular \citep{Wood2009,Gasthaus2010,Bartlett2010}.
 
-The algorithms of deplump run over an incrementally constructed suffix-tree-like data structure \citep{Ukkonen1992}. This data structure efficiently encodes the set of unique suffices of all contexts in a sequence (i.e.~the set $\{ [ ], [s_0], [s_0,s_1], [s_0, s_1,s_2], \ldots \}$). Each edge in the tree is labeled by a subsequence of the input sequence.  On each edge we use indices $i$ and $j$ to indicate that the edge label is $[s_{i+1}, s_{i+2}, \ldots,s_{j}]$.  Also, each node in the tree corresponds to a subsequence $[s_m, \ldots, s_{m + k}]$ of the input sequence.  The subsequence a node corresponds to is edge labels between the node and the root of the tree concatenated from right to left. We use $\N$ to refer interchangeably to a node and the subsequence to which the node corresponds.  Finally, note that for a given suffix the location of the corresponding node can be found by traversing edges of the tree that match the suffix read from right to left. 
+Given a sequence of symbols $\Seq = [s_0, s_1, s_2, \ldots]$ where each symbol $s_n$ comes from from an ordered set of symbols $\{\sigma_0, \sigma_1, \ldots\} = \Sigma$,  streaming deplump works by repeatedly producing a predictive distribution for the continuation of the sequence given the full preceding context and encoding the next symbol by passing that predictive distribution to an entropy encoder.  In this paper explicit details related to encoding and decoding are not included, instead we present the algorithms necessary to incrementally construct the predictive distributions needed by the encoder and decoder.  Specifically, we assume that if the predictive distribution function is $F$ and the next symbol in the stream is $s$ then the stream can be compressed using an entropy encoder that takes $F(s-1)$ and $F(s)$ as arguments and returns a bit stream (possibly null) \citep{Witten1987}.   The cumulative distribution function is well defined because the symbols are ordered. We use the notation $s-1$ to refer to the symbol prior to $s$ in the symbol set $\Sigma$.  %Note that the symbol set can be ordered as the set is discovered.
+%Further, although there is a beautiful interplay between the algorithms presented herein and approximate inference in the underlying model, we have decided to, given the availability of referenced work on 
+
+
+The algorithms of deplump run over a constant space, incrementally constructed suffix-tree-like data structure.  Note that the fact that this datastructure is of constant size is a significant point of  differentiation between this work and that of \cite{Gasthaus2010}. This tree-shaped data structure efficiently encodes a subset of the set of unique suffixes of all contexts in a sequence.  Each edge in the tree has a label which is a subsequence of the input sequence.  Each edge label is represented by two indices into a fixed-length suffix of the input sequence which we call the reference sequence (i.e.~each edge label is $[r_{i+1}, r_{i+2}, \ldots,r_{j}]$ for indices $i$ and $j$ into the reference sequence where $[r_{n-T} = s_{n-T}, \ldots, r_n = s_n]$ after every $n$th input sequence element is processed.)  
+Therefore, each node in the tree corresponds to a subsequence $[s_m, \ldots, s_{m + k}]$ of the input sequence and a (potentially non-sequential) set of subsequences of the reference sequence.  
+%The suffix a node corresponds to is determined by concatenating the edge labels on the path from the root to the node. (i.e.~the set $\{ [ ], [s_0], [s_0,s_1], [s_0, s_1,s_2], \ldots \}$)
+We use $\N$ to refer interchangeably to a node and the suffix in the input sequence to which the node corresponds.  Note that for a given suffix the corresponding node is accessed by traversing edges of the tree that match the suffix read from right to left. 
 
 \begin{algorithm}[t]
     \caption{Deplump/Plump} \label{alg:deplump/plump}
@@ -55,16 +62,19 @@ The algorithms of deplump run over an incrementally constructed suffix-tree-like
 	\end{algorithmic}
 \end{algorithm}
 
-Algorithm~\ref{alg:deplump/plump} shows that deplump processes each element of an input sequence $\IS$ in succession.  For each element $s_n$ of $\IS$, \textsc{PMFNextSymbol} is called to retrieve the predictive probability mass function $\pi$ (conditioned on the observed context $[s_0, s_1, \ldots, s_{n-1}] = \RS$).  The element $s_n$ is then encoded by an entropy encoder with parameter $\pi$.  The counts in the tree are updated and the gradients for the discount parameters are calculated by \textsc{UpdateCountsAndDiscountGradients}. The discount parameters are updated based on a learning rate $\eta$ and the encoded symbol in appended to $\RS$.
+Streaming deplump is given in Algorithm~\ref{alg:deplump/plump}.  Deplump processes each element of an input sequence $\IS$ incrementally.  For each element $s_n$ of $\IS$, \textsc{PMFNextSymbol} computes the predictive probability mass function $\pi$ (conditioned on the observed context $[s_0, s_1, \ldots, s_{n-1}] = \RS$) needed for compression.  The element $s_n$ is then encoded by an entropy encoder with parameter $\pi$.  \textsc{PMFNextSymbol} also handles the incremental maintenance of the underlying constant-space datastructures by restricting the length of the reference sequence and by both constructing and deleting nodes in the tree as needed.  The final steps in streaming deplump are to incrementally integrate the observation into the approximated sequence memoizer and to adjust the back-off/smoothing parameters $\D$.  This involves updating counts in the tree and calculating a stochastics gradient for $\D$.  Both of these are done in \textsc{UpdateCountsAndDiscountGradients}. %The discount parameters are updated based on a learning rate $\eta$ and the encoded symbol in appended to $\RS$. 
+The organization of functions in this way minimizes the number of tree traversals that need to be performed, tree traversals being a major component of the computational cost of this algorithm.
 
-The first two steps of \textsc{PMFNextSymbol} concern upper bounds on $|\RS|$ and $|\mathcal{H}|$.  We note that $|\RS|$ grows by one as each symbol of the input sequence is incorporated into the model.  To limit this growth we use an absolute upper bound on $|\RS|$ and shorten $\RS$ using the $\sigma$ operator to enforce this bound. Since the labels of edges in the tree reference $\RS$, when it is shortened, some edges may become unlabeled.  Unlabeled edges are removed from the tree along with all the nodes in the subtrees below them. To minimize the number of nodes removed this way, the edge indices can be updated as the algorithm progresses to reference recent sections of $\RS$.  The bound on $| \mathcal{H} |$ is the approximate inference technique introduced in \citep{Bartlett2010}.  If the number of nodes in the tree approaches the limit $L$ then random leaf nodes are removed.  A leaf node is a node with no descendants. To facilitate their random deletion we maintain a count in each node of the number of leaf nodes in the subtree below it.  A random leaf node can be obtained by traversing a weighted random path down the tree.  At the end of \textsc{PMFNextSymbol} the appropriate node for prediction is retrieved by calling \textsc{GetNode} and the predictive probability mass function is calculated by \textsc{PMF}.
+\textsc{PMFNextSymbol} (Alg.~\ref{alg:pmfnextsymbol}) starts by enforcing the bounds on $|\RS|$ and $|\mathcal{H}|$.  Both of these bounds require nodes to be removed from the tree (the first implicitly as a result of edge labels becoming undefined and the second explicitly).  Removing nodes from the underlying sequence datastructure has no consequence in and of itself, but as an operation on the corresponding sequence memoizer graphical model some care must be taken because node removal has ramifications in terms of what kinds of approximations are being imposed on inference.  \cite{Bartlett2010} showed that removing leaf nodes from the sequence memoizer results in a coherent approximate inference algorithm for the sequence memoizer.  So, enforcing the bound on $| \mathcal{H} | < L$ can be as simple as incrementally removing leaf nodes uniformly at random.  To facilitate random deletion we maintain a count in each node of the number of leaf nodes in the subtree below it.  A random leaf node can then be obtained by traversing a weighted random path down the tree.  
 
-Since the model is estimated incrementally, the tree data structure must also be incrementally constructed.  Construction of the tree is handled by the function \textsc{GetNode} within \textsc{PMFNextSymbol}.  Within the function \textsc{GetNode}, nodes are created by \textsc{CreateNode} and \textsc{FragmentNode}. The function \textsc{CreateNode(\N,\M)} creates a node $\N$ with parent $\M$. \textsc{FragmentNode} implements the fragmentation operation developed in \citep{Wood2009} and is called when none of the existing tree nodes are a suffix of the context \RS.  
+The removal of nodes due to their edge labels becoming undefined is an unfortunate consequence of having to constrain the reference sequence $\RS$ to be of constant length.  Note that without a bound $|\RS|$ would grow in length by one as each symbol of the input sequence is incorporated into the model.  To maintain the upper bound on $|\RS|$ we shorten $\RS$ by one as in a fixed length FIFO queue. Since the labels of edges in the tree index into $\RS$ then, when it is shortened, some edges may end up having labels that index beyond the retained elements of $\RS$ resulting in potentially many ``undefined'' edges.  Nodes below any undefined edges in the tree must be removed because they can no longer be accessed.  Their removal is justified in the same way as before because all subtree removals can be implemented as a cascade of leaf node removals.  It is desirable to minimize the number of nodes removed due to the incessant shortening of $\RS$.  One way to do this is to always update all edge indices on all paths traversed in the process of inserting nodes into the tree (that we do this is not made explicit in Alg.~\ref{alg:getnode} but on line 2 this updating of the edge indices should be performed)   \textsc{PMFNextSymbol} finishes by accessing the correct node for prediction using \textsc{GetNode} (Alg.~\ref{alg:getnode}) and the predictive probability mass function is calculated recursively by \textsc{PMF} (Alg.~\ref{alg:pmf}).
+
+Incremental construction of the tree is handled by the function \textsc{GetNode} within \textsc{PMFNextSymbol} which creates two or fewer nodes in the tree for every call.  Within the function \textsc{GetNode}, nodes are created by \textsc{CreateNode} and \textsc{FragmentNode}. The function \textsc{CreateNode(\N,\M)} simply creates a node $\N$ with parent $\M$. \textsc{FragmentNode} (Alg.~\ref{alg:fragmentnode}) implements the fragmentation operation developed in \citep{Wood2009} required to ensure proper sequence memoizer inference in the case where an edge must be split and a node inserted.  This new intervening node corresponds to a predictive context and the counts corresponding to a proper estimate of this predictive distribution must be inferred.   \textsc{FragmentNode} \textsc{DrawCRP(n,d,c)} returns the length of a random partition drawn from the $\mathcal{E}\mathcal{S}_{n}(d,c)$.  The function \textsc{Partition(c,t,d)} implements the seating arrangement reconstruction algorithm discussed in \citep{Gasthaus2011} to sample a partition following the $\mathcal{E}\mathcal{S}_{c}(d,0)$ distribution conditioned that the length of the partition be $t$.%and is called when none of the existing tree nodes are a suffix of the context \RS.  
 %An illustration of the incremental construction of a suffix tree can be seen in Figure~\ref{fig:suffix_tree} for the toy sequence [PATAT].  We use \textsc{PA}(\N) to refer to the parent of $\N$ in the tree.  In frame 4 the function \textsc{GetNode} assigns [ ]  to $\M$ and then [PAT] to $\Seq$ with $\M = \textsc{PA}(\Seq)$. In Frame 5 \textsc{GetNode} assigns [PA] to $\M$, but then must assign [A] = \textsc{FragmentNode}(\M) to $\PP$ and \textsc{PA}$(\M)$ to \PP.  Node $\Seq$ is then created by \textsc{CreateNode}$($[PATA]$,\PP)$.   % In each frame the first step is to find $\M$, which can be achieved by descending an appropriate path of the suffix tree.  All of the nodes on the path to $\M$ and possibly $\M$ itself can have the indices into $\RS$ updated to point to a more recent section of the reference sequence. 
 
 
 
-Each node instance $\N$ contains two counts for each $\sigma \in \Sigma$, $c_\sigma$ and $t_\sigma$.  We use $c$ and $t$ to refer to the marginal counts $\sum_{\sigma \in \Sigma} c_\sigma$ and $\sum_{\sigma \in \Sigma} t_\sigma$.  Each node also has a discount associated with it which we refer to as $d^\N$ in the algorithms. If we define $\delta_{n} = \delta_{10}^{\alpha^{n - 10}}$ for $n \geq 10$ then $d^{\N} = \Pi_{i =|\textsc{PA}(\N)| + 1}^{|\N|} \delta_{i}$ if $\N$ is not the root and $\delta_{0}$ if $\N$ is the root.  Counts are updated and discount parameter gradients are calculated by Algorithm~\ref{alg:updatecountsandgradients}.  The new approximation discussed in Section~\ref{section:methodology} is implemented by \textsc{ThinCounts}.
+%Each node instance $\N$ contains two counts for each $\sigma \in \Sigma$, $c_\sigma$ and $t_\sigma$.  We use $c$ and $t$ to refer to the marginal counts $\sum_{\sigma \in \Sigma} c_\sigma$ and $\sum_{\sigma \in \Sigma} t_\sigma$.  Each node also has a discount associated with it which we refer to as $d^\N$ in the algorithms. If we define $\delta_{n} = \delta_{10}^{\alpha^{n - 10}}$ for $n \geq 10$ then $d^{\N} = \Pi_{i =|\textsc{PA}(\N)| + 1}^{|\N|} \delta_{i}$ if $\N$ is not the root and $\delta_{0}$ if $\N$ is the root.  Counts are updated and discount parameter gradients are calculated by Algorithm~\ref{alg:updatecountsandgradients}.  The new approximation discussed in Section~\ref{section:methodology} is implemented by \textsc{ThinCounts}.
 
 %The reference sequence grows with the length of the input sequence and must be shortened as the algorithm progresses.  When $\RS$ is shortened, nodes in the suffix tree which reference removed sections are no longer usable and must be removed from the tree to prevent a memory leak.  To facilitate the removal process pointers are maintained from the elements of $\RS$ to the suffix tree nodes which reference them.  Without the use of pointers, deletion of the unusable nodes requires a search over the tree which is prohibitive for large trees. The cost of these operations can be amortized by shorting $\RS$ in chunks and keeping pointers from each chunk of $\RS$ instead of each element.  
 
@@ -97,6 +107,24 @@ Several parameters required by the model must be assigned at initialization.  Th
 		\State \Return [$\pi$, \N]
 	\EndFunction
 	 \end{algorithmic}
+\end{algorithm}
+\vspace{-.75cm}
+\begin{algorithm}[H]
+	\caption{DrawCRP} \label{alg:drawcrp}
+	\begin{algorithmic}[1]
+
+	
+	\Function{DrawCRP}{$n,d,c$} \Comment{$ n \geq 1$}
+		\State $t \la 1$
+		\For{i = 2 : n}
+			\State $r \la 0$
+			\State $r  \la 1$ w.p. $\frac{td + c}{i-1 + c}$
+			\State $t \la t + r$
+		\EndFor
+		\State \Return $t$
+	\EndFunction
+	
+	\end{algorithmic}	
 \end{algorithm}
 	 \end{minipage}
 	\hfill
@@ -276,23 +304,6 @@ Several parameters required by the model must be assigned at initialization.  Th
 		\end{algorithmic}
 \end{algorithm}
 
-%\begin{algorithm}
-%	\caption{DrawCRP} \label{alg:drawcrp}
-%	\begin{algorithmic}[1]
-%
-%	
-%	\Function{DrawCRP}{$n,d,c$} \Comment{$ n \geq 1$}
-%		\State $t \la 1$
-%		\For{i = 2 : n}
-%			\State $r \la 0$
-%			\State $r  \la 1$ w.p. $\frac{td + c}{i-1 + c}$
-%			\State $t \la t + r$
-%		\EndFor
-%		\State \Return $t$
-%	\EndFunction
-%	
-%	\end{algorithmic}	
-%\end{algorithm}
 
 \begin{algorithm}
 	\caption{Partition} \label{alg:samplepartition}
