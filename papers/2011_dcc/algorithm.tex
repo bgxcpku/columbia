@@ -23,7 +23,7 @@
 %
 Given a sequence of symbols $\Seq = [s_0, s_1, s_2, \ldots]$ where each symbol $s_n$ comes from from an ordered set of symbols $\{\sigma_0, \sigma_1, \ldots\} = \Sigma$,  deplump works by repeatedly producing a predictive distribution for the continuation of the sequence given the full preceding context and encoding the next symbol by passing that predictive distribution to an entropy encoder.  In this paper explicit details related to encoding and decoding are not included, instead we present the algorithms necessary to incrementally construct the predictive distributions needed by the encoder and decoder.  Specifically, we assume that if the predictive distribution function is $F$ and the next symbol in the stream is $s$ then the stream can be compressed using an entropy encoder that takes $F(s-1)$ and $F(s)$ as arguments and returns a bit stream (possibly null)\citep{Witten1987,arithmeticencoding}.   The cumulative distribution function is well defined because the symbols are ordered. We use the notation $s-1$ to refer to the symbol prior to $s$ in the symbol set $\Sigma$.  %Note that the symbol set can be ordered as the set is discovered.
 
-The algorithms of deplump run over an incrementally constructed suffix-tree-like data structure \citep{Ukkonen1992}. This data structure efficiently encodes the set of unique suffices of all contexts in a sequence (i.e.~the set $\{ [ ], [s_0], [s_0,s_1], [s_0, s_1,s_2], \ldots \}$).  Each node in the tree corresponds to a subsequence $[s_m, \ldots, s_{m + k}]$ of the input sequence.  We use $\N$ to refer interchangeably to a node and the subsequence to which the node corresponds.  Each edge in the tree is labeled with a sequence of one or more symbols. For a given suffix the location of the corresponding node can be found by traversing edges of the tree that match the suffix read from right to left. Suffix tree data structures use a reference sequence (\RS) to store the literal suffices in the tree.  Therefore, each edge actually contains two indices into $\RS$ which specify the label on the edge. If the indices for an edge are $i$ and $j$, then the edge label is $\RS[i : j]$.
+The algorithms of deplump run over an incrementally constructed suffix-tree-like data structure \citep{Ukkonen1992}. This data structure efficiently encodes the set of unique suffices of all contexts in a sequence (i.e.~the set $\{ [ ], [s_0], [s_0,s_1], [s_0, s_1,s_2], \ldots \}$).  Each node in the tree corresponds to a subsequence $[s_m, \ldots, s_{m + k}]$ of the input sequence.  We use $\N$ to refer interchangeably to a node and the subsequence to which the node corresponds.  Each edge in the tree is labeled by a subsequence of the input sequence.  On each edge we use indices $i$ and $j$ to indicate that the edge label is $[s_{i+1}, s_{i+2}, \ldots,s_{j}]$. For a given suffix the location of the corresponding node can be found by traversing edges of the tree that match the suffix read from right to left. 
 
 \begin{algorithm}[t]
     \caption{Deplump/Plump} \label{alg:deplump/plump}
@@ -55,14 +55,13 @@ The algorithms of deplump run over an incrementally constructed suffix-tree-like
 	\end{algorithmic}
 \end{algorithm}
 
-Algorithm~\ref{alg:deplump/plump} shows that deplump processes each element of an input sequence $\IS$ in succession.  For each element $s_n$ of $\IS$, Algorithm~\ref{alg:pmfnextsymbol} is called to retrieve the predictive probability mass function (PMF) $\pi$ (conditioned on the observed context $[s_0, s_1, \ldots, s_{m-1}] = \RS$).  The element $s_n$ in then encoded by an entropy encoder with parameter $\pi$.  The counts in the tree are updated and the gradients for the discount parameters are calculated by Algorithm~\ref{alg:updatecountsandgradients}.  Finally, the discount parameters are updated based on a learning rate $\eta$.
+Algorithm~\ref{alg:deplump/plump} shows that deplump processes each element of an input sequence $\IS$ in succession.  For each element $s_n$ of $\IS$, \textsc{PMFNextSymbol} is called to retrieve the predictive probability mass function $\pi$ (conditioned on the observed context $[s_0, s_1, \ldots, s_{n-1}] = \RS$).  The element $s_n$ is then encoded by an entropy encoder with parameter $\pi$.  The counts in the tree are updated and the gradients for the discount parameters are calculated by \textsc{UpdateCountsAndDiscountGradients}. The discount parameters are updated based on a learning rate $\eta$ and the encoded symbol in appended to $\RS$.
 
-Note that the first two steps of Algorithm~\ref{alg:pmfnextsymbol} concern the upper bounds imposed on deplump.  First, since the reference sequence grows linearly with the length of $\IS$ it must be shortened as the algorithm progresses.  When $\RS$ is shortened, edges in the suffix-tree data structure are removed, i.e. all the nodes below the edges are removed from the tree.  To minimize the impact of rendering nodes unusable by shortening the reference sequence, suffix tree nodes are updated as the algorithm progresses to reference recent sections of $\RS$. Second, if the number of nodes in the tree approaches the limit $L$ then random leaf nodes are removed.  A leaf node is a node with no descendants. To facilitate their random deletion we maintain a count in each node of the number of leaf nodes in the subtree below.  A random leaf node can then be obtained by taking a weighted random path down the tree.  The third step retrieves the appropriate node for prediction by calling \textsc{GetNode}. The predictive probability mass function is calculated by \textsc{PMF}.
+The first two steps of \textsc{PMFNextSymbol} concern upper bounds on $|\RS|$ and $|\mathcal{H}|$.  First, since the labeling of edges in the tree reference $\RS$, when it is shortened, some edges may become unlabeled.  Those edges are removed from the tree along with all the nodes in the subtrees below them. To minimize the number of nodes removed this way, the edge indices are updated as the algorithm progresses to reference recent sections of $\RS$. Second, if the number of nodes in the tree approaches the limit $L$ then random leaf nodes are removed.  A leaf node is a node with no descendants. To facilitate their random deletion we maintain a count in each node of the number of leaf nodes in the subtree below it.  A random leaf node can be obtained by traversing a weighted random path down the tree.  The third step of \textsc{PMFNextSymbol} retrieves the appropriate node for prediction by calling \textsc{GetNode}. The predictive probability mass function is calculated by \textsc{PMF}.
 
-Since the model is estimated incrementally, the tree datastructure must also be incrementally constructed.  Construction of the tree is handled by the function \textsc{GetNode} within \textsc{PMFNextSymbol}.  Within the function \textsc{GetNode}, nodes are created by \textsc{CreateNode} and \textsc{FragmentNode}. The function \textsc{CreateNode(\N,\M)} creates a node $\N$ with parent $\M$. \textsc{FragmentNode} is called when none of the existing tree nodes are a suffix of the current predictive context.  An illustration of the incremental construction can be seen in Figure~\ref{fig:suffix_tree} for the toy sequence [PATAT].  We use \textsc{PA}(\N) to refer to the parent of $\N$ in the tree.  In frame 4 the function \textsc{GetNode} assigns [ ]  to $\M$ and then [PAT] to $\Seq$ with $\M = \textsc{PA}(\Seq)$. In Frame 5 \textsc{GetNode} assigns [PA] to $\M$, but then must assign [A] = \textsc{FragmentNode}(\M) to $\PP$ and \textsc{PA}$(\M)$ to \PP.  Node $\Seq$ is then created by \textsc{CreateNode}$($[PATA]$,\PP)$.   % In each frame the first step is to find $\M$, which can be achieved by descending an appropriate path of the suffix tree.  All of the nodes on the path to $\M$ and possibly $\M$ itself can have the indices into $\RS$ updated to point to a more recent section of the reference sequence. 
+Since the model is estimated incrementally, the tree data structure must also be incrementally constructed.  Construction of the tree is handled by the function \textsc{GetNode} within \textsc{PMFNextSymbol}.  Within the function \textsc{GetNode}, nodes are created by \textsc{CreateNode} and \textsc{FragmentNode}. The function \textsc{CreateNode(\N,\M)} creates a node $\N$ with parent $\M$. \textsc{FragmentNode} implements the fragmentation operation developed in \citep{Wood2009} and is called when none of the existing tree nodes are a suffix of the context.  An illustration of the incremental construction of a suffix tree can be seen in Figure~\ref{fig:suffix_tree} for the toy sequence [PATAT].  We use \textsc{PA}(\N) to refer to the parent of $\N$ in the tree.  In frame 4 the function \textsc{GetNode} assigns [ ]  to $\M$ and then [PAT] to $\Seq$ with $\M = \textsc{PA}(\Seq)$. In Frame 5 \textsc{GetNode} assigns [PA] to $\M$, but then must assign [A] = \textsc{FragmentNode}(\M) to $\PP$ and \textsc{PA}$(\M)$ to \PP.  Node $\Seq$ is then created by \textsc{CreateNode}$($[PATA]$,\PP)$.   % In each frame the first step is to find $\M$, which can be achieved by descending an appropriate path of the suffix tree.  All of the nodes on the path to $\M$ and possibly $\M$ itself can have the indices into $\RS$ updated to point to a more recent section of the reference sequence. 
 
-Each node instance $\N$ contains two counts for each $\sigma \in \Sigma$, $c_\sigma$ and $t_\sigma$.  We use $c$ and $t$ to refer to the marginal counts $\sum_{\sigma \in \Sigma} c_\sigma$ and $\sum_{\sigma \in \Sigma} t_\sigma$.  Each node also has a discount associated with it which we refer to as $d^\N$ in the algorithms. If we define $\delta_{n} = \delta_{10}^{\alpha^{i - 10}}$ for $n \geq 10$ then $d^{\N} = \Pi_{i =|\textsc{PA}(\N)| + 1}^{|\N|} \delta_{i}$ if $\N$ is not the root and $\delta_{0}$ if $\N$ is the root.  Counts are updated and discount parameter gradients are calculated by Algorithm~\ref{alg:updatecountsandgradients}.  The count $c$ is also reduced if needed by calling \textsc{ThinCounts}.
-
+Each node instance $\N$ contains two counts for each $\sigma \in \Sigma$, $c_\sigma$ and $t_\sigma$.  We use $c$ and $t$ to refer to the marginal counts $\sum_{\sigma \in \Sigma} c_\sigma$ and $\sum_{\sigma \in \Sigma} t_\sigma$.  Each node also has a discount associated with it which we refer to as $d^\N$ in the algorithms. If we define $\delta_{n} = \delta_{10}^{\alpha^{n - 10}}$ for $n \geq 10$ then $d^{\N} = \Pi_{i =|\textsc{PA}(\N)| + 1}^{|\N|} \delta_{i}$ if $\N$ is not the root and $\delta_{0}$ if $\N$ is the root.  Counts are updated and discount parameter gradients are calculated by Algorithm~\ref{alg:updatecountsandgradients}.  The new approximation discussed in Section~\ref{section:methodology} is implemented by \textsc{ThinCounts}.
 
 %The reference sequence grows with the length of the input sequence and must be shortened as the algorithm progresses.  When $\RS$ is shortened, nodes in the suffix tree which reference removed sections are no longer usable and must be removed from the tree to prevent a memory leak.  To facilitate the removal process pointers are maintained from the elements of $\RS$ to the suffix tree nodes which reference them.  Without the use of pointers, deletion of the unusable nodes requires a search over the tree which is prohibitive for large trees. The cost of these operations can be amortized by shorting $\RS$ in chunks and keeping pointers from each chunk of $\RS$ instead of each element.  
 
@@ -73,20 +72,18 @@ Several parameters required by the model must be assigned at initialization.  Th
 
 %For each $s$ in the input sequence the function \textsc{PMFNextSymbo}l is called to obtain the predictive probability mass function (PMF).  After encoding or decoding using the predictive PMF $pi$ the first step in updating the model estimate is performed by the function \textsc{UpdateCountsAndDiscounts}.  Starting at node $\N$ and progressing up to the root of the tree, $c_s$ is incremented if $t_s$ was incremented in the node below.  If $c_s$ is incremented, a stochastic decision is made to increment $t_s$.  The gradients for the discount parameters $\D$ are updated by the function \textsc{UpdateDiscountParameterGradients}.  If $c$ is larger than $k$ in any of the nodes, the counts $c_s$ and potentially $t_s$ are reduced by the function \textsc{ThinCounts}. Finally, \D \space is updated based on the calculated gradients and the specified learning rate $\eta$ and the symbol is appended to \RS.
 
-
-
-
-\begin{algorithm}
-	\caption{PMFNextSymbol} \label{alg:pmfnextsymbol}
+\begin{figure*}[ttt!]
+	\begin{minipage}[t]{.48\linewidth}
+		\begin{algorithm}[H]
+			\caption{PMFNextSymbol} \label{alg:pmfnextsymbol}
 	\begin{algorithmic}[1]
-	
 	\Function{PMFNextSymbol}{$\RS$}
-		\While{$ |\RS| \geq 100 L$}
-			\State Delete nodes referencing \RS[1] and update $nc$
+		\While{$ |\RS| \geq T$}
+%			\State Delete nodes referencing \RS[1] and update $nc$
 			\State $\RS \la \sigma(\RS)$
 		\EndWhile
 		\While{ $\nc > (L - 2)$}
-			\State Delete leaf node uniformly at random
+			\State Delete random leaf node
 			\State $nc \la nc -1$
 		\EndWhile
 		
@@ -95,17 +92,15 @@ Several parameters required by the model must be assigned at initialization.  Th
 	%	\State UpdateCountsAndDiscountGradients($\N,s,\pi_s,$TRUE)
 		\State \Return [$\pi$, \N]
 	\EndFunction
-	
 	 \end{algorithmic}
-
 \end{algorithm}
-
-
-%\begin{algorithm}
+	 \end{minipage}
+	\hfill
+%
+%
+%%\begin{algorithm}
 %	\caption{GetDiscount} \label{alg:getdiscount}
 %    \begin{algorithmic}[1]
-    
-
 %    	\Function{PointOnCDFNextSymbol}{$h,\T,\RS$}
 %		\While{$ |\RS| \geq 100 L$}
 %			\State Delete nodes referencing \RS[0]
@@ -114,7 +109,6 @@ Several parameters required by the model must be assigned at initialization.  Th
 %		\While{ $\nc > (L - 2)$}
 %			\State Delete leaf node uniformly at random
 %		\EndWhile
-
 %		\State $\N \la$ GetNode$(\RS, \T)$
 %		\State $\pi \la$ PMF($\N, \vec 0, 1.0$) \Comment{$| \vec 0| = | \Sigma|$}
 %		
@@ -128,8 +122,7 @@ Several parameters required by the model must be assigned at initialization.  Th
 %		\State $F(s-1) \la F(s) - \pi_s$
 %		\State Update $h$
 %		\Return  $[h,s, F(s-1), F(s)]$
-%	\EndFunction
-	
+%	\EndFunction	
 %	\Function{GetDiscount}{\N}
 %		\State $d = 1.0$
 %		\If{\N = [ ]}
@@ -147,15 +140,14 @@ Several parameters required by the model must be assigned at initialization.  Th
 %	
 %		\end{algorithmic}
 %\end{algorithm}
-
-\begin{algorithm}
+	\begin{minipage}[t]{.48\linewidth}
+\begin{algorithm}[H]
 	\caption{GetNode} \label{alg:getnode}
 	\begin{algorithmic}[1]
-	    
     	\Function{GetNode}{\Seq, \T}
-		\State Find the node \M \space in the suffix tree sharing the longest suffix with \Seq.
+		\State Find the node \M \space in the tree sharing the longest suffix with \Seq
 		\If{\M \space is a suffix of \Seq}
-			\If{$\Seq = \M$}
+			\If{$\Seq = \M$ or $|\M| = D$}
 				\State \Return \M
 			\Else
 				\State $\Seq \la$ \textsc{CreateNode}$(\Seq, \M)$
@@ -164,57 +156,60 @@ Several parameters required by the model must be assigned at initialization.  Th
 			\EndIf
 		\Else
 			\State \PP \la \space \textsc{FragmentNode}(\M, \Seq)
-%			\State PA(\M) \la \space \PP
 			\State $\Seq \la $ \textsc{CreateNode}$(\Seq, \PP)$
 			\State $nc \la nc + 1$
 			\State \Return \Seq
 		\EndIf
 	\EndFunction
-	
-	\end{algorithmic}
+	\end{algorithmic}	
 \end{algorithm}
+	\end{minipage}
+	\end{figure*}
+	
 
 \begin{algorithm}
-	\caption{UpdateCountsAndDiscounts} \label{alg:updatecountsandgradients}
+	\caption{UpdateCountsAndDiscountGradients} \label{alg:updatecountsandgradients}
 	\begin{algorithmic}[1]
 	
 	\Function{UpdateCountsAndDiscounts}{$\N, s, p$, BackOff}
-		\State $d \la $ \textsc{GetDiscount}(\N)
+	%	\State $d \la $ \textsc{GetDiscount}(\N)
 		\State $pp \la p$
 		\If{$c > 0$}
-			\State $pp \la (p - \frac{c_s - t_s d}{c}))(\frac{c}{t d})$
-			\State $w \la c_s	+ d(t *pp - t_s)$		
+			\State $pp \la (p - \frac{c_s - t_s d^{\N}}{c}))(\frac{c}{t d^{\N}})$
+			\State $w \la c_s	+ d^{\N}(t *pp - t_s)$		
 		\EndIf
 		
 		\If{BackOff  and $c > 0$}
 			\State $c_s \la c_s + 1$
 			\State BackOff $\la 0$
-			\State BackOff $\la 1$ w.p. $pp (\frac{t d}{w})$ \Comment{w.p abbreviates ``with probability"}
+			\State BackOff $\la 1$ w.p. $pp (\frac{t d^{\N}}{w})$ \Comment{w.p abbreviates ``with probability"}
 			\If{BackOff}
 				\State $t_s \la t_s + 1$
 			 \EndIf
 		\ElsIf{BackOff}
-				\State $c_s \la c_s + 1$
-				\State $t_s \la t_s + 1$
+				\State $c_s \la c_s + 1$;  $t_s \la t_s + 1$
 		\EndIf
-		\State \textsc{UpdateDiscountParameterGradients}($t_s, t,pp, d$)
-		\State \textsc{UpdateCountsAndDiscounts}(\textsc{PA}(\N), $s,pp$, BackOff)
+		\State \textsc{UpdateDiscountParameterGradients}($t_s, t,pp, d^{\N}$)
+		\State \textsc{UpdateCountsAndDiscountGradients}(\textsc{PA}(\N), $s,pp$, BackOff)
 		\State \textsc{ThinCounts}(\N)
 	\EndFunction
-	
 		\end{algorithmic}
 \end{algorithm}
 
-\begin{algorithm}
+\begin{figure*}[ttt!]
+\begin{minipage}[t]{.48\linewidth}
+\begin{algorithm}[H]
 	\caption{ThinCounts} \label{alg:thincounts}
 	\begin{algorithmic}[1]
 			
 	\Function{ThinCounts}{$\N$}
-		\State $d \la$ \textsc{GetDiscount}$(\N)$
+	%	\State $d \la$ \textsc{GetDiscount}$(\N)$
 		\While{$c > k$}
-			\State $s \la $ \textsc{DrawMultinomial}$(\pi)$ s.t. $\pi_l = \frac{c_l}{c}$ \Comment{$\pi$ is a distribution over $\Sigma$}
-			\State $\phi \la$ \textsc{SamplePartition}$(c_s, t_s, d)$
-			\State $i \la$ \textsc{DrawMultinomial}$([\frac{\phi_1}{c_s}, \frac{\phi_2}{c_s}, \ldots, \frac{\phi_{t_s }}{c_s} ])$
+			\State $\pi_{l} = \frac{c_l}{c}$, $l = 1, \ldots, |\Sigma|$
+			\State $s \la $ \textsc{Multinomial}$(\pi)$ %s.t. $\pi_l = \frac{c_l}{c}$ % \Comment{$\pi$ is a distribution over $\Sigma$}
+			\State $\phi \la$ \textsc{Partition}$(c_s, t_s, d^{\N})$
+			\State $\psi \la \frac{\phi}{c_{s}}$
+			\State $i \la$ \textsc{Multinomial}$(\psi)$
 			\If{$\phi_i == 1$}
 				\State $t_s \la t_s - 1$
 			\EndIf
@@ -224,28 +219,32 @@ Several parameters required by the model must be assigned at initialization.  Th
 	
 	\end{algorithmic}	
 \end{algorithm}
-
-\begin{algorithm}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{.48\linewidth}
+\begin{algorithm}[H]
 	\caption{PMF} \label{alg:pmf}
 	\begin{algorithmic}[1]
 
 	\Function{PMF}{$\N, \pi, m$}
-		\State $d \la $ \textsc{GetDiscount}(\N)		
+%		\State $d \la $ \textsc{GetDiscount}(\N)		
 		\If{$c > 0$}
 			\For{$s \in \Sigma$}
-				\State $\pi_s\la \pi_s + m(\frac{c_s - t_s d}{c})$
+				\State $\pi_s\la \pi_s + m(\frac{c_s - t_s d^{\N}}{c})$
 			\EndFor
 		\EndIf
 		
 		\If{\textsc{PA}$(\N) \neq$ null}
-			\State \Return \textsc{PMF}(\textsc{PA}(\N), $\pi, d m$)
+			\State \Return \textsc{PMF}(\textsc{PA}(\N), $\pi, d^{\N} m$)
 		\Else
-			\State $\pi \la (1- d m)\pi + dm\mathcal{U}(\Sigma)$ \Comment{$\mathcal{U}(\Sigma)$ is the uniform distribution over $\Sigma$}
+			\State $\pi \la (1- d^{\N} m)\pi + d^{\N}m\mathcal{U}_{\Sigma}$ %\Comment{$\mathcal{U}(\Sigma)$ is the uniform distribution over $\Sigma$}
 			\State \Return $\pi$
 		\EndIf 
 	\EndFunction
 		\end{algorithmic}
 \end{algorithm}
+\end{minipage}
+\end{figure*}
 
 \begin{algorithm}
 	\caption{FragmentNode} \label{alg:fragmentnode}
@@ -253,16 +252,15 @@ Several parameters required by the model must be assigned at initialization.  Th
 
 	
 	\Function{FragmentNode}{$\M, \Seq$}
-		\State $d^\M \la$ \textsc{GetDiscount}(\M)
+%		\State $d^\M \la$ \textsc{GetDiscount}(\M)
 		\State $\PP \la$ maximum overlapping suffix  of \M \space and \Seq
 		\State $\PP \la $ \textsc{CreateNode}$(\PP,$ \textsc{PA}$(\M))$
 		\State $nc \la nc + 1$
 		\State\textsc{ PA}(\M) $\la \PP$
-		\State $d^\PP \la$ \textsc{GetDiscount}(\PP)
+%		\State $d^\PP \la$ \textsc{GetDiscount}(\PP)
 		\For{$s \in \Sigma$}
-			\State $\phi \la$ \textsc{SamplePartition} $(c^\M_s, t^\M_s,d^\M)$
-			\State $t^\PP_s \la t^\M_s$
-			\State $t^\M_s \la 0$
+			\State $\phi \la$ \textsc{Partition} $(c^\M_s, t^\M_s,d^\M)$
+			\State $t^\PP_s \la t^\M_s$;  $t^\M_s \la 0$
 			\For{$i= 1 : | \phi|$}
 				\State $a \la$ \textsc{DrawCRP}$(\phi[i],d^\M / d^\PP,-d^\M)$
 				\State $t_s^\M \la t_s^\M + a$
@@ -274,29 +272,29 @@ Several parameters required by the model must be assigned at initialization.  Th
 		\end{algorithmic}
 \end{algorithm}
 
-\begin{algorithm}
-	\caption{DrawCRP} \label{alg:drawcrp}
-	\begin{algorithmic}[1]
+%\begin{algorithm}
+%	\caption{DrawCRP} \label{alg:drawcrp}
+%	\begin{algorithmic}[1]
+%
+%	
+%	\Function{DrawCRP}{$n,d,c$} \Comment{$ n \geq 1$}
+%		\State $t \la 1$
+%		\For{i = 2 : n}
+%			\State $r \la 0$
+%			\State $r  \la 1$ w.p. $\frac{td + c}{i-1 + c}$
+%			\State $t \la t + r$
+%		\EndFor
+%		\State \Return $t$
+%	\EndFunction
+%	
+%	\end{algorithmic}	
+%\end{algorithm}
 
-	
-	\Function{DrawCRP}{$n,d,c$} \Comment{$ n \geq 1$}
-		\State $t \la 1$
-		\For{i = 2 : n}
-			\State $r \la 0$
-			\State $r  \la 1$ w.p. $\frac{td + c}{i-1 + c}$
-			\State $t \la t + r$
-		\EndFor
-		\State \Return $t$
-	\EndFunction
-	
-	\end{algorithmic}	
-\end{algorithm}
-
 \begin{algorithm}
-	\caption{SamplePartition} \label{alg:samplepartition}
+	\caption{Partition} \label{alg:samplepartition}
 	\begin{algorithmic}[1]
 	
-	\Function{SamplePartition}{$c,t,d$}
+	\Function{Partition}{$c,t,d$}
 		\State $M \la  t \times c$ matrix of zeros
 		\State $M(t,c) \la 1.0$
 		\For{$j = (c-1) : 1$}
@@ -306,8 +304,7 @@ Several parameters required by the model must be assigned at initialization.  Th
 			\State $M(d,j) \la M(t,j+1)$
 		\EndFor
 		\State $\phi \la \vec 0$ \Comment{$|\vec 0| = t$}
-		\State $\phi[1] \la 1$
-		\State $k \la 1$
+		\State $\phi[1] \la 1$;  $k \la 1$
 		\For{j = 2 : c}
 			\State $M(k,j) \la M(k,j)(j-1 -k d)$
 			\State $r \la 0$
@@ -316,7 +313,7 @@ Several parameters required by the model must be assigned at initialization.  Th
 				\State $k \la k + 1$
 				\State $\phi[k]  \la 1$
 			\Else
-				\State $i \la$ \textsc{DrawMultinomial}$([\frac{\phi[1] - d}{j-1 -kd}, \frac{\phi[2] - d}{j-1 -kd}, \ldots, \frac{\phi[k] - d}{j-1 -kd}])$
+				\State $i \la$ \textsc{Multinomial}$([\frac{\phi[1] - d}{j-1 -kd}, \frac{\phi[2] - d}{j-1 -kd}, \ldots, \frac{\phi[k] - d}{j-1 -kd}])$
 				\State $\phi[i] \la \phi[i] + 1$
 			\EndIf
 		\EndFor
@@ -325,35 +322,34 @@ Several parameters required by the model must be assigned at initialization.  Th
 		\end{algorithmic}
 \end{algorithm}
 
-\begin{algorithm}
-	\caption{UpdateDiscountParameterGradients} \label{alg:updatediscountparametergradients}
-	\begin{algorithmic}[1]
-
-
-	\Function{UpdateDiscountParameterGradients}{$\N, t_s, c, t, pp, d, m$}
-		\If{$c > 0$}
-			\If{$|\N| = 0$}
-				\State $ \psi \la \frac{1.0}{\dd_0}$
-				\State $\G_0 \la \G_0 + (d(t * pp - t_s)\psi / c)  m$
-			\Else
-				\State $z \la |$\textsc{PA}(\N)$| + 1$
-				\While{$z \leq |\N|$ and $z < 10$}
-					\State $\psi \la \frac{1.0}{\dd_z}$
-					\State $\G_z \la \G_z + (d(t * pp - t_s) \psi / c)  m$	
-				\EndWhile
-				
-				\If{$|\N| \geq 10$}
-					\State $a \la z - 10$
-					\State $b \la |\N| - z + 1$
-					\State $\psi \la \alpha^a(1 - \alpha^b) / ((1 - \alpha)  \dd_{10})$ 
-					\State $\G_{10} \la \G_{10} + (d(t * pp - t_s) \psi / c)  m$	
-					\State $\psi \la$ log$(\dd_{10}) (a \alpha^{a-1} - (a + b)\alpha^{a + b-1}) / (1 - \alpha) + (\alpha^a - \alpha^{a + b}) / (1 - \alpha)^2$
-					\State $\G_{11} \la \G_{11} + (d(t * pp - t_s)\psi / c)  m$	
-				\EndIf
-			\EndIf
-		\EndIf
-	\EndFunction
-
-	\end{algorithmic}	
-\end{algorithm}
-
+%\begin{algorithm}
+%	\caption{UpdateDiscountParameterGradients} \label{alg:updatediscountparametergradients}
+%	\begin{algorithmic}[1]
+%
+%
+%	\Function{UpdateDiscountParameterGradients}{$\N, t_s, c, t, pp, d, m$}
+%		\If{$c > 0$}
+%			\If{$|\N| = 0$}
+%				\State $ \psi \la \frac{1.0}{\dd_0}$
+%				\State $\G_0 \la \G_0 + (d(t * pp - t_s)\psi / c)  m$
+%			\Else
+%				\State $z \la |$\textsc{PA}(\N)$| + 1$
+%				\While{$z \leq |\N|$ and $z < 10$}
+%					\State $\psi \la \frac{1.0}{\dd_z}$
+%					\State $\G_z \la \G_z + (d(t * pp - t_s) \psi / c)  m$	
+%				\EndWhile
+%				
+%				\If{$|\N| \geq 10$}
+%					\State $a \la z - 10$
+%					\State $b \la |\N| - z + 1$
+%					\State $\psi \la \alpha^a(1 - \alpha^b) / ((1 - \alpha)  \dd_{10})$ 
+%					\State $\G_{10} \la \G_{10} + (d(t * pp - t_s) \psi / c)  m$	
+%					\State $\psi \la$ log$(\dd_{10}) (a \alpha^{a-1} - (a + b)\alpha^{a + b-1}) / (1 - \alpha) + (\alpha^a - \alpha^{a + b}) / (1 - \alpha)^2$
+%					\State $\G_{11} \la \G_{11} + (d(t * pp - t_s)\psi / c)  m$	
+%				\EndIf
+%			\EndIf
+%		\EndIf
+%	\EndFunction
+%
+%	\end{algorithmic}	
+%\end{algorithm}
