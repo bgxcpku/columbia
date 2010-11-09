@@ -51,6 +51,19 @@ Unfortunately the linear growth of $|\mathcal{H}|$ makes using the model intract
 %
 \subsection{Approximation}
 
+
+
+We introduce two more approximating procedures that combined with those above yield streaming deplump.  First, because the data structure used by batch deplump is a suffix tree its storage complexity is linear in the input sequence length.  For this reason, streaming deplump cannot maintain a suffix tree representation of the entire input sequence.  Instead a fixed-length ``reference sequence''  is maintained instead (see Algorithm~\ref{alg:pmfnextsymbol}), along with a dynamically updated suffix tree referencing only the suffixes found therein.  Deleting nodes from the context tree forces node-removal inference approximations of the sort defined in \citep{Bartlett2010}, operations that are justifiable from a statistical perspective but whose net practical effect is characterized for the first time in this paper. %This means we make the data structure underlying streaming deplump an approximation to the data structure used in the published inference algorithms, which allows our algorithm to maintain constant space complexity.
+
+The efficient, exact node representation in \cite{Gasthaus2011} maintains counts $c^\U_\sigma$ and $t^\U_\sigma$ for each $\U \in \mathcal{H}$ and $\sigma \in \Sigma$.  During incremental estimation, for each symbol $s$ in the input sequence, $c^\U_s$ is incremented in at least one node on the tree.  Clearly $\max_{P \in \mathcal{H}, \sigma \in \Sigma} \{ c^\U_\sigma \}$ then grows monotonically as a function of the length of the input sequence. Unfortunately incremental construction of the model includes an operation on node elements known as fragmentation (Alg.~\ref{alg:getnode}) that requires computation proportional to $\max_{\sigma \in \Sigma} \{ c_\sigma^\U \}$ for node $\U$ \citep{Gasthaus2011}. Therefore, to ensure computational complexity that is independent of the sequence length, $c^\U_\sigma$ must be bounded for all $\U \in \mathcal{H}$.  The effect of imposing this restriction on compression performance is also characterized for the first time in this paper. 
+
+%The counts $c_{\sigma}$ and $t_{\sigma}$ are constrained such that $0 \leq t_{\sigma} \leq c_{\sigma} $. 
+%The $c^\U_{\sigma}$ are counts of atoms in the estimation of a discrete distribution over $\Sigma$.  The $t^\U_{\sigma}$ regularize the estimation and create smoothing towards the distribution at a more general context.  Intuitively, limiting $\max_{P \in \mathcal{H}} \{ c^\U =  \sum_{\sigma \in \Sigma} c^\U_{\sigma} \} < k$  has the effect of using at most $k$ observations to estimate each discrete distribution in $\mathcal{H}$.  If $k$ is set high relative to $|\Sigma|$ this approximation should have little effect on the estimated distribution. We implement this in Algorithm~\ref{alg:thincounts}.  Using a fixed $k$ for all $P \in \mathcal{H}$ forces the computational complexity of the algorithm to be a linear function of the input sequence while maintaining constant space complexity.
+
+
+
+
+
 \begin{algorithm}[t!]
     \caption{Deplump/Plump} \label{alg:deplump/plump}
     \begin{algorithmic}[1]
@@ -79,17 +92,4 @@ Unfortunately the linear growth of $|\mathcal{H}|$ makes using the model intract
 	\EndProcedure
 	\end{algorithmic}
 \end{algorithm}
-
-We introduce two more approximating procedures that combined with those above yield streaming deplump.  First, because the data structure used by batch deplump is a suffix tree its storage complexity is linear in the input sequence length.  For this reason, streaming deplump cannot maintain a suffix tree representation of the entire input sequence.  Instead a fixed-length ``reference sequence''  is maintained instead (see Algorithm~\ref{alg:pmfnextsymbol}), along with a dynamically updated suffix tree referencing only the suffixes found therein.  Deleting nodes from the context tree forces node-removal inference approximations of the sort defined in \citep{Bartlett2010}, operations that are justifiable from a statistical perspective but whose net practical effect is characterized for the first time in this paper. %This means we make the data structure underlying streaming deplump an approximation to the data structure used in the published inference algorithms, which allows our algorithm to maintain constant space complexity.
-
-The efficient, exact node representation in \cite{Gasthaus2011} maintains counts $c^\U_\sigma$ and $t^\U_\sigma$ for each $\U \in \mathcal{H}$ and $\sigma \in \Sigma$.  During incremental estimation, for each symbol $s$ in the input sequence, $c^\U_s$ is incremented in at least one node on the tree.  Clearly $\max_{P \in \mathcal{H}, \sigma \in \Sigma} \{ c^\U_\sigma \}$ then grows monotonically as a function of the length of the input sequence. Unfortunately incremental construction of the model includes an operation on node elements known as fragmentation (Alg.~\ref{alg:getnode}) that requires computation proportional to $\max_{\sigma \in \Sigma} \{ c_\sigma^\U \}$ for node $\U$ \citep{Gasthaus2011}. Therefore, to ensure computational complexity that is independent of the sequence length, $c^\U_\sigma$ must be bounded for all $\U \in \mathcal{H}$.  The effect of imposing this restriction on compression performance is also characterized for the first time in this paper. 
-
-%The counts $c_{\sigma}$ and $t_{\sigma}$ are constrained such that $0 \leq t_{\sigma} \leq c_{\sigma} $. 
-%The $c^\U_{\sigma}$ are counts of atoms in the estimation of a discrete distribution over $\Sigma$.  The $t^\U_{\sigma}$ regularize the estimation and create smoothing towards the distribution at a more general context.  Intuitively, limiting $\max_{P \in \mathcal{H}} \{ c^\U =  \sum_{\sigma \in \Sigma} c^\U_{\sigma} \} < k$  has the effect of using at most $k$ observations to estimate each discrete distribution in $\mathcal{H}$.  If $k$ is set high relative to $|\Sigma|$ this approximation should have little effect on the estimated distribution. We implement this in Algorithm~\ref{alg:thincounts}.  Using a fixed $k$ for all $P \in \mathcal{H}$ forces the computational complexity of the algorithm to be a linear function of the input sequence while maintaining constant space complexity.
-
-
-
-
-
-
 
