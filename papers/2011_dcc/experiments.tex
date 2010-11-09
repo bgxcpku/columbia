@@ -1,5 +1,5 @@
 % !TEX root = deplump.tex
-
+%
 \begin{figure*}[t] 
 	\begin{center}
 		\scalebox{.4}{\includegraphics{figs/varying_depths.pdf}} % [clip=true, viewport= 1in 1in 9in 9in]
@@ -7,7 +7,7 @@
 		\label{fig:varying_depths}
 	\end{center} 
 \end{figure*} 
-
+%
 %\begin{figure*}[t] 
 %	\begin{center}
 %		\scalebox{.6}{\includegraphics{figs/varying_max_customers.pdf}} % [clip=true, viewport= 1in 1in 9in 9in]
@@ -15,7 +15,7 @@
 %		\label{fig: varying_max_customers}
 %	\end{center} 
 %\end{figure*} 
-
+%
 \begin{figure*}[t] 
 	\begin{center}
 		\scalebox{.4}{\includegraphics{figs/varying_stream_length.pdf}} % [clip=true, viewport= 1in 1in 9in 9in]
@@ -23,7 +23,7 @@
 		\label{fig:varying_stream_length}
 	\end{center} 
 \end{figure*} 
-
+%
 \section{Experiments}
 \label{sec:experiments}
 
@@ -39,11 +39,7 @@ To ensure that compression performance did in fact not suffer, we compressed ten
 
 Figure~\ref{fig:varying_depths} indicates that compression performance becomes essentially indistinguishable for depth restrictions greater than $D=10$.  However, this figure also suggests that compression performance almost improves as a function of the number of nodes in the tree for depths 6 and greater.  Figure~\ref{fig:varying_stream_length} illustrates that the algorithm not only scales to very long sequences, but average compression performance continues to improve as the sequence grows.  Using a large value of $L$ appears to be beneficial for very long sequences.
 
-
-Considering these results, we chose seemingly reasonable values for the approximating parameters ($D=16$, $L=10^7$, $k=8,192$, $T=10^8$, $\mathcal{D} = [.5, .6, .7, .8, ..., .1]$, and $\eta=??$) then compared streaming deplump to to batch deplump.  In this experiment we compressed the 100Mb Wikipedia corpus excerpt used for the Hutter Prize \citep{Hutter2006} using the streaming variant of deplump and found it gives a compression ratio of 4.78.  Using batch deplump gives a compression ratio of 4.82 \citep{Gasthaus2010}, while running batch deplump repeatedly on the 5Mb subsections of the corpus reduces the compression ratio to 4.25.  These results demonstrate that the approximations made for streaming deplump give it a significant advantage over compressing the file in chunks and have very little negative effect when compared to the full model.
-
-
-
+Considering these results, we chose values for the approximating parameters ($D=32$, $L=10^7$, $k=8,192$, $T=10^8$, $\mathcal{D} = [.5, .7, .8, .82, .84, .88, .91, .92, .93, .94, .95, .93]$, and $\eta=0.0001$) then compared streaming deplump to to batch deplump.  In this experiment we achieved compression performance of 1.67 bites per byte on the 100Mb Wikipedia corpus excerpt used for the Hutter Prize \citep{Hutter2006} using the streaming variant of deplump.  Using batch deplump \citep{Gasthaus2010} achieve 1.66 bits per byte.  If we use batch deplump to compress the corpus in 5Mb subsections the performance falls to 1.88 bits per byte. These results demonstrate that the approximations made for streaming deplump give it a significant advantage over compressing the file in chunks and have very little negative effect when compared to the full model.
 
 %\begin{figure*}[t] 
 %	\begin{center}
