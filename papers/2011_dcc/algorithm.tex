@@ -1,17 +1,17 @@
 % !TEX root = deplump.tex
 \section{Algorithm}
-\newcommand{\T}{\ensuremath{\mathcal{T}}}
-\newcommand{\N}{\ensuremath{\mathcal{N}}}
-\newcommand{\M}{\ensuremath{\mathcal{M}}}
-\newcommand{\PP}{\ensuremath{\mathcal{P}}}
-\newcommand{\nc}{\ensuremath{nc}}
-\newcommand{\RS}{\ensuremath{\mathcal{R}}}
-\newcommand{\D}{\ensuremath{\mathcal{D}}}
-\newcommand{\la}{\ensuremath{\leftarrow}}
-\newcommand{\G}{\ensuremath{\mathcal{G}}}
-\newcommand{\IS}{\ensuremath{\mathcal{I}}}
-\newcommand{\Seq}{\ensuremath{\mathcal{S}}}
-\newcommand{\dd}{\ensuremath{\delta}}
+%\newcommand{\T}{\ensuremath{\mathcal{T}}}
+%\newcommand{\N}{\ensuremath{\mathcal{N}}}
+%\newcommand{\M}{\ensuremath{\mathcal{M}}}
+%\newcommand{\PP}{\ensuremath{\mathcal{P}}}
+%\newcommand{\nc}{\ensuremath{nc}}
+%\newcommand{\RS}{\ensuremath{\mathcal{R}}}
+%\newcommand{\D}{\ensuremath{\mathcal{D}}}
+%\newcommand{\la}{\ensuremath{\leftarrow}}
+%\newcommand{\G}{\ensuremath{\mathcal{G}}}
+%\newcommand{\IS}{\ensuremath{\mathcal{I}}}
+%\newcommand{\Seq}{\ensuremath{\mathcal{S}}}
+%\newcommand{\dd}{\ensuremath{\delta}}
 %
 %\begin{figure*}[t] 
 %	\begin{center}
@@ -21,34 +21,6 @@
 %	\end{center} 
 %\end{figure*} 
 %
-\begin{algorithm}[t!]
-    \caption{Deplump/Plump} \label{alg:deplump/plump}
-    \begin{algorithmic}[1]
-    	\Procedure{$\mathcal{O}\mathcal{S} \la $ Deplump/Plump}{$\IS$}
-		\State $\RS \la [$ $]$ ;  $\mathcal{O}\mathcal{S} \la  [$ $]$%\Comment{reference sequence}
-%		\State Initialize $[$ $]$ node of \T \Comment{suffix tree}
-		\State $\nc \la 1$ \Comment{node count}
-		\State $\D \la  \{ \dd_0, \dd_1, \dd_2, \dots, \dd_{10}, \alpha \}$ \Comment{discount parameters}
-% \Comment{output sequence}
-		\For{i = 1: $| \IS|$}
-			\State $\G \la \vec 0$ \Comment{discount parameter gradients, $|\G| = |\D|$}
-			\State $ \{ \pi, \N  \} \la$  \textsc{PMFNext} (\RS)
-			\If{Plump}
-%				\State $s \la $ 
-				\State $\mathcal{O}\mathcal{S} \la [\mathcal{O}\mathcal{S}$,  \textsc{RangeDecode}$(\pi, \IS)]$
-			\Else
-				\State $s \la \IS[i]$
-%				\State $b \la$
-				\State $\mathcal{O}\mathcal{S} \la [\mathcal{O}\mathcal{S}$,   \textsc{RangeEncode}$(\Sigma_{i = 1}^{s-1} \pi_i, \Sigma_{i = 1}^{s} \pi_i)]$		
-			\EndIf
-			\State \textsc{UpdateCountsAndDiscountGradients}($\N,s,\pi_s,$TRUE)
-			\State $\D \la \D + \G \eta / \pi_s$ \Comment{update discount parameters}
-			\State $\RS \la [\RS$ $s]$ \Comment{append symbol to reference sequence}
-		\EndFor
-%		\State \Return $\mathcal{O}\mathcal{S}$
-	\EndProcedure
-	\end{algorithmic}
-\end{algorithm}
 
 Our focus in this section is on providing the first comprehensive implementation reference for deplump with the changes necessary to achieve streaming asymptotics highlighted.  Many of the individual algorithms that appear in this section are justified and explained in detail in prior art.  We explain the functionality of each algorithm, but refer the interested reader to the prior art for detailed mathematical justifications, in particular \citep{Wood2009,Gasthaus2010,Bartlett2010}.
 

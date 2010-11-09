@@ -1,7 +1,47 @@
 % !TEX root = deplump.tex
 \section{Methodology}
+\newcommand{\T}{\ensuremath{\mathcal{T}}}
+\newcommand{\N}{\ensuremath{\mathcal{N}}}
+\newcommand{\M}{\ensuremath{\mathcal{M}}}
+\newcommand{\PP}{\ensuremath{\mathcal{P}}}
+\newcommand{\nc}{\ensuremath{nc}}
+\newcommand{\RS}{\ensuremath{\mathcal{R}}}
+\newcommand{\D}{\ensuremath{\mathcal{D}}}
+\newcommand{\la}{\ensuremath{\leftarrow}}
+\newcommand{\G}{\ensuremath{\mathcal{G}}}
+\newcommand{\IS}{\ensuremath{\mathcal{I}}}
+\newcommand{\Seq}{\ensuremath{\mathcal{S}}}
+\newcommand{\dd}{\ensuremath{\delta}}
 \label{section:methodology}
-\newcommand{\PY}{\ensuremath{\mathcal{P}\mathcal{Y}}}
+
+\begin{algorithm}[t!]
+    \caption{Deplump/Plump} \label{alg:deplump/plump}
+    \begin{algorithmic}[1]
+    	\Procedure{$\mathcal{O}\mathcal{S} \la $ Deplump/Plump}{$\IS$}
+		\State $\RS \la [$ $]$ ;  $\mathcal{O}\mathcal{S} \la  [$ $]$%\Comment{reference sequence}
+%		\State Initialize $[$ $]$ node of \T \Comment{suffix tree}
+		\State $\nc \la 1$ \Comment{node count}
+		\State $\D \la  \{ \dd_0, \dd_1, \dd_2, \dots, \dd_{10}, \alpha \}$ \Comment{discount parameters}
+% \Comment{output sequence}
+		\For{i = 1: $| \IS|$}
+			\State $\G \la \vec 0$ \Comment{discount parameter gradients, $|\G| = |\D|$}
+			\State $ \{ \pi, \N  \} \la$  \textsc{PMFNext} (\RS)
+			\If{Plump}
+%				\State $s \la $ 
+				\State $\mathcal{O}\mathcal{S} \la [\mathcal{O}\mathcal{S}$,  \textsc{RangeDecode}$(\pi, \IS)]$
+			\Else
+				\State $s \la \IS[i]$
+%				\State $b \la$
+				\State $\mathcal{O}\mathcal{S} \la [\mathcal{O}\mathcal{S}$,   \textsc{RangeEncode}$(\Sigma_{i = 1}^{s-1} \pi_i, \Sigma_{i = 1}^{s} \pi_i)]$		
+			\EndIf
+			\State \textsc{UpdateCountsAndDiscountGradients}($\N,s,\pi_s,$TRUE)
+			\State $\D \la \D + \G \eta / \pi_s$ \Comment{update discount parameters}
+			\State $\RS \la [\RS$ $s]$ \Comment{append symbol to reference sequence}
+		\EndFor
+%		\State \Return $\mathcal{O}\mathcal{S}$
+	\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
 
 In this section we first review the sequence memoizer model and the inference algorithm used in the batch deplump compressor. We discuss two approximations to this inference algorithm.  The first approximation allows the model to have a constant space representation.  The second approximation ensures that the computational complexity of the algorithm is a linear function of the input sequence length.
 
