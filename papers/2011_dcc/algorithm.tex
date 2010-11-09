@@ -29,6 +29,7 @@ we assume that if the predictive distribution function is $F$ and the next symbo
 an entropy encoder exists that takes $F(s-1)$ and $F(s)$ as arguments and returns a bit stream \citep{Witten1987}. %  The cumulative distribution function is well defined because the symbols are ordered. 
 We use the notation $s-1$ to refer to the symbol prior to $s$ in the symbol set $\Sigma$.  %Note that the symbol set can be ordered as the set is discovered.
 %Further, although there is a beautiful interplay between the algorithms presented herein and approximate inference in the underlying model, we have decided to, given the availability of referenced work on 
+
 \begin{figure*}[ttt!]
 	\begin{minipage}[t]{.48\linewidth}
 		\begin{algorithm}[H]
@@ -68,7 +69,30 @@ We use the notation $s-1$ to refer to the symbol prior to $s$ in the symbol set 
 	
 	\end{algorithmic}	
 \end{algorithm}
-	 \end{minipage}
+\vspace{-.75cm}
+\begin{algorithm}[H]
+	\caption{PMF} \label{alg:pmf}
+	\begin{algorithmic}[1]
+
+	\Function{$\pi \la $ PMF}{$\N, \pi, m$}
+%		\State $d \la $ \textsc{GetDiscount}(\N)		
+		\If{$c^\N > 0$}
+			\For{$\sigma \in \Sigma$}
+				\State $\pi_\sigma\la \pi_\sigma + m(\frac{c^\N_\sigma - t^\N_\sigma d^{\N}}{c^\N})$
+			\EndFor
+		\EndIf
+		
+		\If{\textsc{PA}$(\N) \neq$ null}
+			\State $\pi \la $ \textsc{PMF}(\textsc{PA}(\N), $\pi, d^{\N} m$)
+		\Else
+			\State $\pi \la (1- d^{\N} m)\pi + d^{\N}m\mathcal{U}_{\Sigma}$ %\Comment{$\mathcal{U}(\Sigma)$ is the uniform distribution over $\Sigma$}
+%			\State \Return $\pi$
+		\EndIf 
+	\EndFunction
+		\end{algorithmic}
+\end{algorithm}
+
+\end{minipage}
 	\hfill
 %
 %
@@ -137,6 +161,27 @@ We use the notation $s-1$ to refer to the symbol prior to $s$ in the symbol set 
 	\EndFunction
 	\end{algorithmic}	
 \end{algorithm}
+\vspace{-.75cm}
+\begin{algorithm}[H]
+	\caption{ThinCounts} \label{alg:thincounts}
+	\begin{algorithmic}[1]
+			
+	\Function{ThinCounts}{$\N$}
+	%	\State $d \la$ \textsc{GetDiscount}$(\N)$
+		\While{$c^\N > k$}
+			\State $\pi = [\frac{c^\N_{\sigma_1}}{c^\N}, \frac{c^\N_{\sigma_2}}{c^\N}, \ldots, \frac{c^\N_{\sigma_{|\Sigma}}}{c^\N}]$
+			\State $s \la $ \textsc{Multinomial}$(\pi)$ %s.t. $\pi_l = \frac{c_l}{c}$ % \Comment{$\pi$ is a distribution over $\Sigma$}
+			\State $\phi \la$ \textsc{Partition}$(c^\N_s, t^\N_s, d^{\N})$
+			\State $\psi \la (\frac{1}{c^\N_{s}} ) \phi$
+			\State $i \la$ \textsc{Multinomial}$(\psi)$
+			\If{$\phi_i = 1$}
+				\State $t^\N_s \la t^\N_s - 1$
+			\EndIf
+			\State $c^\N_s \la c^\N_s - 1$
+		\EndWhile
+	\EndFunction	
+	\end{algorithmic}	
+\end{algorithm}
 	\end{minipage}
 	\end{figure*}
 
@@ -144,6 +189,19 @@ The algorithms of deplump run over a constant space, incrementally constructed s
 Therefore, each node in the tree corresponds to a subsequence $[s_m, \ldots, s_{m + k}]$ of the input sequence and a (potentially non-sequential) set of subsequences of the reference sequence.  
 %The suffix a node corresponds to is determined by concatenating the edge labels on the path from the root to the node. (i.e.~the set $\{ [ ], [s_0], [s_0,s_1], [s_0, s_1,s_2], \ldots \}$)
 We use $\N$ to refer interchangeably to a node and the suffix in the input sequence to which the node corresponds.  Note that for a given suffix the corresponding node is accessed by traversing edges of the tree that match the suffix read from right to left. 
+\begin{figure*}[ttt!]
+\begin{minipage}[t]{.48\linewidth}
+
+\end{minipage}
+\hfill
+\end{figure*}
+
+Streaming deplump is given in Algorithm~\ref{alg:deplump/plump}.  Deplump processes each element of an input sequence $\IS$ incrementally.  For each element $s_n$ of $\IS$, \textsc{PMFNext} computes the predictive probability mass function $\pi$ (conditioned on the observed context $[s_0, s_1, \ldots, s_{n-1}] = \RS$) needed for compression.  The element $s_n$ is then encoded by an entropy encoder with parameter $\pi$.  \textsc{PMFNext} also handles the incremental maintenance of the underlying constant-space datastructures by restricting the length of the reference sequence and by both constructing and deleting nodes in the tree as needed.  The final steps in streaming deplump are to incrementally integrate the observation into the approximated sequence memoizer and to adjust the back-off/smoothing parameters $\D$.  This involves updating counts in the tree and calculating a stochastic gradient for $\D$.  Both of these are done in \textsc{UpdateCountsAndDiscountGradients}. %The discount parameters are updated based on a learning rate $\eta$ and the encoded symbol in appended to $\RS$. 
+The organization of functions in this way minimizes the number of tree traversals that need to be performed, tree traversals being a major component of the computational cost of this algorithm.
+
+\textsc{PMFNext} (Alg.~\ref{alg:pmfnextsymbol}) starts by enforcing the bounds on $|\RS|$ and $|\mathcal{H}|$.  Both of these bounds require nodes to be removed from the tree (the first implicitly as a result of edge labels becoming undefined and the second explicitly).  Removing nodes from the underlying sequence datastructure has no consequence in and of itself, but as an operation on the corresponding sequence memoizer graphical model some care must be taken because node removal has ramifications in terms of what kinds of approximations are being imposed on inference.  \cite{Bartlett2010} showed that removing leaf nodes from the sequence memoizer results in a coherent approximate inference algorithm for the sequence memoizer.  So, enforcing the bound on $| \mathcal{H} | < L$ can be as simple as incrementally removing leaf nodes uniformly at random.  To facilitate random deletion we maintain a count in each node of the number of leaf nodes in the subtree below it.  A random leaf node can then be obtained by traversing a weighted random path down the tree.  
+
+
 \begin{algorithm}[t!]
 	\caption{UpdateCountsAndDiscountGradients} \label{alg:updatecountsandgradients}
 	\begin{algorithmic}[1]
@@ -174,60 +232,6 @@ We use $\N$ to refer interchangeably to a node and the suffix in the input seque
 		\end{algorithmic}
 \end{algorithm}
 
-Streaming deplump is given in Algorithm~\ref{alg:deplump/plump}.  Deplump processes each element of an input sequence $\IS$ incrementally.  For each element $s_n$ of $\IS$, \textsc{PMFNext} computes the predictive probability mass function $\pi$ (conditioned on the observed context $[s_0, s_1, \ldots, s_{n-1}] = \RS$) needed for compression.  The element $s_n$ is then encoded by an entropy encoder with parameter $\pi$.  \textsc{PMFNext} also handles the incremental maintenance of the underlying constant-space datastructures by restricting the length of the reference sequence and by both constructing and deleting nodes in the tree as needed.  The final steps in streaming deplump are to incrementally integrate the observation into the approximated sequence memoizer and to adjust the back-off/smoothing parameters $\D$.  This involves updating counts in the tree and calculating a stochastic gradient for $\D$.  Both of these are done in \textsc{UpdateCountsAndDiscountGradients}. %The discount parameters are updated based on a learning rate $\eta$ and the encoded symbol in appended to $\RS$. 
-The organization of functions in this way minimizes the number of tree traversals that need to be performed, tree traversals being a major component of the computational cost of this algorithm.
-
-\textsc{PMFNext} (Alg.~\ref{alg:pmfnextsymbol}) starts by enforcing the bounds on $|\RS|$ and $|\mathcal{H}|$.  Both of these bounds require nodes to be removed from the tree (the first implicitly as a result of edge labels becoming undefined and the second explicitly).  Removing nodes from the underlying sequence datastructure has no consequence in and of itself, but as an operation on the corresponding sequence memoizer graphical model some care must be taken because node removal has ramifications in terms of what kinds of approximations are being imposed on inference.  \cite{Bartlett2010} showed that removing leaf nodes from the sequence memoizer results in a coherent approximate inference algorithm for the sequence memoizer.  So, enforcing the bound on $| \mathcal{H} | < L$ can be as simple as incrementally removing leaf nodes uniformly at random.  To facilitate random deletion we maintain a count in each node of the number of leaf nodes in the subtree below it.  A random leaf node can then be obtained by traversing a weighted random path down the tree.  
-
-\begin{figure*}[ttt!]
-\begin{minipage}[t]{.48\linewidth}
-\begin{algorithm}[H]
-	\caption{ThinCounts} \label{alg:thincounts}
-	\begin{algorithmic}[1]
-			
-	\Function{ThinCounts}{$\N$}
-	%	\State $d \la$ \textsc{GetDiscount}$(\N)$
-		\While{$c^\N > k$}
-			\State $\pi = [\frac{c^\N_{\sigma_1}}{c^\N}, \frac{c^\N_{\sigma_2}}{c^\N}, \ldots, \frac{c^\N_{\sigma_{|\Sigma}}}{c^\N}]$
-			\State $s \la $ \textsc{Multinomial}$(\pi)$ %s.t. $\pi_l = \frac{c_l}{c}$ % \Comment{$\pi$ is a distribution over $\Sigma$}
-			\State $\phi \la$ \textsc{Partition}$(c^\N_s, t^\N_s, d^{\N})$
-			\State $\psi \la (\frac{1}{c^\N_{s}} ) \phi$
-			\State $i \la$ \textsc{Multinomial}$(\psi)$
-			\If{$\phi_i = 1$}
-				\State $t^\N_s \la t^\N_s - 1$
-			\EndIf
-			\State $c^\N_s \la c^\N_s - 1$
-		\EndWhile
-	\EndFunction	
-	
-	\end{algorithmic}	
-\end{algorithm}
-\end{minipage}
-\hfill
-\begin{minipage}[t]{.48\linewidth}
-\begin{algorithm}[H]
-	\caption{PMF} \label{alg:pmf}
-	\begin{algorithmic}[1]
-
-	\Function{$\pi \la $ PMF}{$\N, \pi, m$}
-%		\State $d \la $ \textsc{GetDiscount}(\N)		
-		\If{$c^\N > 0$}
-			\For{$\sigma \in \Sigma$}
-				\State $\pi_\sigma\la \pi_\sigma + m(\frac{c^\N_\sigma - t^\N_\sigma d^{\N}}{c^\N})$
-			\EndFor
-		\EndIf
-		
-		\If{\textsc{PA}$(\N) \neq$ null}
-			\State $\pi \la $ \textsc{PMF}(\textsc{PA}(\N), $\pi, d^{\N} m$)
-		\Else
-			\State $\pi \la (1- d^{\N} m)\pi + d^{\N}m\mathcal{U}_{\Sigma}$ %\Comment{$\mathcal{U}(\Sigma)$ is the uniform distribution over $\Sigma$}
-%			\State \Return $\pi$
-		\EndIf 
-	\EndFunction
-		\end{algorithmic}
-\end{algorithm}
-\end{minipage}
-\end{figure*}
 
 The removal of nodes due to their edge labels becoming undefined is an unfortunate consequence of having to constrain the reference sequence $\RS$ to be of constant length.  Note that without a bound $|\RS|$ would grow in length by one as each symbol of the input sequence is incorporated into the model.  To maintain the upper bound on $|\RS|$ we shorten $\RS$ by one as in a fixed length FIFO queue. Since the labels of edges in the tree index into $\RS$ then, when it is shortened, some edges may end up having labels that index beyond the retained elements of $\RS$ resulting in ``undefined'' edges.  Nodes below any undefined edges in the tree must be removed because they can no longer be accessed.  Their removal is justified in the same way as before because all subtree removals can be implemented as a cascade of leaf node removals.  It is desirable to minimize the number of nodes removed due to the incessant shortening of $\RS$.  One way to do this is to always update all edge indices on all paths traversed in the process of inserting nodes into the tree (that we do this is not made explicit in Alg.~\ref{alg:getnode} but on line 2 this updating of the edge indices should be performed)   \textsc{PMFNext} finishes by accessing the correct node for prediction using \textsc{GetNode} (Alg.~\ref{alg:getnode}) and the predictive probability mass function is calculated recursively by \textsc{PMF} (Alg.~\ref{alg:pmf}).
 
