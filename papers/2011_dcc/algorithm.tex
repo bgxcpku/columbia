@@ -24,7 +24,7 @@
 
 Our focus in this section is on providing the first comprehensive implementation reference for deplump with the changes necessary to achieve streaming asymptotics highlighted.  Many of the individual algorithms that appear in this section are justified and explained in detail in prior art.  We explain the functionality of each algorithm, but refer the interested reader to the prior art for detailed mathematical justifications, in particular \citep{Wood2009,Gasthaus2010,Bartlett2010}.
 
-Given a sequence of symbols $\Seq = [s_0, s_1, s_2, \ldots]$ where each symbol $s_n$ comes from from an ordered set of symbols $\{\sigma_0, \sigma_1, \ldots\} = \Sigma$,  streaming deplump works by repeatedly producing a predictive distribution for the continuation of the sequence given the full preceding context and encoding the next symbol by passing that predictive distribution to an entropy encoder.  In this paper explicit details related to encoding and decoding are not included, instead we present the algorithms necessary to incrementally construct the predictive distributions needed by the encoder and decoder.  Specifically, we assume that if the predictive distribution function is $F$ and the next symbol in the stream is $s$ then the stream can be compressed using an entropy encoder that takes $F(s-1)$ and $F(s)$ as arguments and returns a bit stream (possibly null) \citep{Witten1987}.   The cumulative distribution function is well defined because the symbols are ordered. We use the notation $s-1$ to refer to the symbol prior to $s$ in the symbol set $\Sigma$.  %Note that the symbol set can be ordered as the set is discovered.
+Given a sequence of symbols $\Seq = [s_0, s_1, s_2, \ldots]$ where each symbol $s_n$ comes from from an ordered set of symbols $\{\sigma_1, \sigma_2, \ldots\} = \Sigma$,  streaming deplump works by repeatedly producing a predictive distribution for the continuation of the sequence given the full preceding context and encoding the next symbol by passing that predictive distribution to an entropy encoder.  In this paper explicit details related to encoding and decoding are not included, instead we present the algorithms necessary to incrementally construct the predictive distributions needed by the encoder and decoder.  Specifically, we assume that if the predictive distribution function is $F$ and the next symbol in the stream is $s$ then the stream can be compressed using an entropy encoder that takes $F(s-1)$ and $F(s)$ as arguments and returns a bit stream (possibly null) \citep{Witten1987}.   The cumulative distribution function is well defined because the symbols are ordered. We use the notation $s-1$ to refer to the symbol prior to $s$ in the symbol set $\Sigma$.  %Note that the symbol set can be ordered as the set is discovered.
 %Further, although there is a beautiful interplay between the algorithms presented herein and approximate inference in the underlying model, we have decided to, given the availability of referenced work on 
 \begin{figure*}[ttt!]
 	\begin{minipage}[t]{.48\linewidth}
@@ -148,24 +148,23 @@ We use $\N$ to refer interchangeably to a node and the suffix in the input seque
 	\Function{UpdateCountsAndDiscountGradients}{$\N, s, p$, BackOff}
 	%	\State $d \la $ \textsc{GetDiscount}(\N)
 		\State $pp \la p$
-		\If{$c > 0$}
-			\State $pp \la (p - \frac{c_s - t_s d^{\N}}{c}))(\frac{c}{t d^{\N}})$
-			\State $w \la c_s	+ d^{\N}(t *pp - t_s)$		
+		\If{$c^\N > 0$}
+			\State $pp \la (p - \frac{c^\N_s - t^\N_s d^{\N}}{c^\N})(\frac{c_\N}{t^\N d^{\N}})$
+			\State $w \la c^\N_s	+ d^\N (t^\N pp   - t^\N_s)$		
 		\EndIf
 		
 		\If{BackOff  and $c > 0$}
-			\State $c_s \la c_s + 1$
+			\State $c^\N_s \la c^\N_s + 1$
 			\State BackOff $\la 0$
-			\State BackOff $\la 1$ w.p. $pp (\frac{t d^{\N}}{w})$ \Comment{w.p abbreviates ``with probability"}
+			\State BackOff $\la 1$ w.p. $pp (\frac{t^\N d^{\N}}{w})$ \Comment{w.p abbreviates ``with probability"}
 			\If{BackOff}
-				\State $t_s \la t_s + 1$
+				\State $t^\N_s \la t^\N_s + 1$
 			 \EndIf
 		\ElsIf{BackOff}
-				\State $c_s \la c_s + 1$;  $t_s \la t_s + 1$
+				\State $c^\N_s \la c^\N_s + 1$;  $t^\N_s \la t^\N_s + 1$
 		\EndIf
 		
-		
-		\State \textsc{UpdateDiscountParameterGradients}($t_s, t,pp, d^{\N}$)
+		\State \textsc{UpdateDiscountParameterGradients}%($t^\N_s, t^\N,pp, d^{\N}$)
 		\State \textsc{UpdateCountsAndDiscountGradients}(\textsc{PA}(\N), $s,pp$, BackOff)
 		\State \textsc{ThinCounts}(\N)
 	\EndFunction
@@ -185,13 +184,13 @@ The organization of functions in this way minimizes the number of tree traversal
 			
 	\Function{ThinCounts}{$\N$}
 	%	\State $d \la$ \textsc{GetDiscount}$(\N)$
-		\While{$c > k$}
+		\While{$c^\N > k$}
 			\State $\pi = [\frac{c_{\sigma_1}}{c}, \frac{c_{\sigma_2}}{c}, \ldots, \frac{c_{\sigma_{|\Sigma}}}{c}]$
 			\State $s \la $ \textsc{Multinomial}$(\pi)$ %s.t. $\pi_l = \frac{c_l}{c}$ % \Comment{$\pi$ is a distribution over $\Sigma$}
 			\State $\phi \la$ \textsc{Partition}$(c_s, t_s, d^{\N})$
 			\State $\psi \la (\frac{1}{c_{s}} ) \phi$
 			\State $i \la$ \textsc{Multinomial}$(\psi)$
-			\If{$\phi_i == 1$}
+			\If{$\phi_i = 1$}
 				\State $t_s \la t_s - 1$
 			\EndIf
 			\State $c_s \la c_s - 1$

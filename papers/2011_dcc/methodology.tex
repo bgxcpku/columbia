@@ -12,45 +12,19 @@
 \newcommand{\IS}{\ensuremath{\mathcal{I}}}
 \newcommand{\Seq}{\ensuremath{\mathcal{S}}}
 \newcommand{\dd}{\ensuremath{\delta}}
+\newcommand{\U}{\mathcal{U}}
 \label{section:methodology}
 
-\begin{algorithm}[t!]
-    \caption{Deplump/Plump} \label{alg:deplump/plump}
-    \begin{algorithmic}[1]
-    	\Procedure{$\mathcal{O}\mathcal{S} \la $ Deplump/Plump}{$\IS$}
-		\State $\RS \la [$ $]$ ;  $\mathcal{O}\mathcal{S} \la  [$ $]$%\Comment{reference sequence}
-%		\State Initialize $[$ $]$ node of \T \Comment{suffix tree}
-		\State $\nc \la 1$ \Comment{node count}
-		\State $\D \la  \{ \dd_0, \dd_1, \dd_2, \dots, \dd_{10}, \alpha \}$ \Comment{discount parameters}
-% \Comment{output sequence}
-		\For{i = 1: $| \IS|$}
-			\State $\G \la \vec 0$ \Comment{discount parameter gradients, $|\G| = |\D|$}
-			\State $ \{ \pi, \N  \} \la$  \textsc{PMFNext} (\RS)
-			\If{Plump}
-%				\State $s \la $ 
-				\State $\mathcal{O}\mathcal{S} \la [\mathcal{O}\mathcal{S}$,  \textsc{RangeDecode}$(\pi, \IS)]$
-			\Else
-				\State $s \la \IS[i]$
-%				\State $b \la$
-				\State $\mathcal{O}\mathcal{S} \la [\mathcal{O}\mathcal{S}$,   \textsc{RangeEncode}$(\Sigma_{i = 1}^{s-1} \pi_i, \Sigma_{i = 1}^{s} \pi_i)]$		
-			\EndIf
-			\State \textsc{UpdateCountsAndDiscountGradients}($\N,s,\pi_s,$TRUE)
-			\State $\D \la \D + \G \eta / \pi_s$ \Comment{update discount parameters}
-			\State $\RS \la [\RS$ $s]$ \Comment{append symbol to reference sequence}
-		\EndFor
-%		\State \Return $\mathcal{O}\mathcal{S}$
-	\EndProcedure
-	\end{algorithmic}
-\end{algorithm}
+
 
 In this section we first review the sequence memoizer model and the inference algorithm used in the batch deplump compressor. We discuss two approximations to this inference algorithm.  The first approximation allows the model to have a constant space representation.  The second approximation ensures that the computational complexity of the algorithm is a linear function of the input sequence length.
 
 \subsection{Review}
 
-Note that a distribution $P$ over sequences can be factorized as $P(S = [s_0, s_1, \ldots, s_m]) = P(s_0)P_{[s_0]}(s_1)P_{[s_0,s_1]}(s_2) \ldots P_{[s_0,s_1,\ldots,s_{m-1}]}(s_m)$, where $P_{\bf u}(s) = P(s | {\bf u})$.  The sequence memoizer \citep{Wood2009} jointly models these conditional distributions using a hierarchical Bayesian framework in which the non-negative, integer parameters $\{ c^{P_{\bf u}}_\sigma, t^{P_{\bf u}}_\sigma \}_{\sigma \in \Sigma, {\bf u} \in \Sigma^{+}}$ are used to characterize each $P_{\bf u }$.  The model is
+Note that a distribution $P$ over sequences can be factorized as $P(S = [s_0, s_1, \ldots, s_m]) = P(s_0)P_{[s_0]}(s_1)P_{[s_0,s_1]}(s_2) \ldots P_{[s_0,s_1,\ldots,s_{m-1}]}(s_m)$, where $P_\U (s) = P(s | \U)$.  The sequence memoizer \citep{Wood2009} jointly models these conditional distributions using a hierarchical Bayesian framework in which the non-negative, integer parameters $\{ c^\U_\sigma, t^\U_\sigma \}_{\sigma \in \Sigma, \U \in \Sigma^{+}}$ are used to characterize each $P_\U$.  The model is
 %
 \begin{eqnarray*}
-	P_{\bf u}(s) &=& \frac{c_s - t_s \delta_{|u|} }{\sum_{\sigma \in \Sigma} c_\sigma} +  \frac{\delta_{|u|} P_{ \sigma({\bf u})}(s) \sum_{\sigma \in \Sigma} t_\sigma}{\sum_{\sigma \in \Sigma} c_\sigma} \\
+	P_\U(s) &=& \frac{c^\U_s - t^\U_s \delta_{|\U|} }{\sum_{\sigma \in \Sigma} c^\U_\sigma} +  \frac{\delta_{|\U|} P_{ \sigma(\U)}(s) \sum_{\sigma \in \Sigma} t^\U_\sigma}{\sum_{\sigma \in \Sigma} c^\U_\sigma} \\
 \end{eqnarray*}
 %
 \noindent where $\sigma([s_1, s_2, s_3, \ldots]) = [s_2,s_3, \ldots]$ and $P_{\sigma([])}$ is the uniform distribution over $\Sigma$.
@@ -67,7 +41,7 @@ Note that a distribution $P$ over sequences can be factorized as $P(S = [s_0, s_
 %%
 %\noindent where $\mathcal{U}_{\Sigma}$ is the uniform distribution over $\Sigma$.  The hierarchy used in the model smooths each conditional distribution $P_{\bf u}$ towards a related, more general distribution $P_{\sigma({\bf u})}$.  Intuitively the hierarchy indicates that the most recent context is the most informative for modeling the conditional distributions.
 
-Given a model and observed data,  the task of inference is to learn likely values of the latent parameters.  The latent parameters of the sequence memoizer are  $\mathcal{G} = \{ \{ c^{P_{\bf u}}_\sigma, t^{P_{\bf u}}_\sigma \}_{\sigma \in \Sigma} \ | \ {\bf u} \in \Sigma^{+} \}$  and $\delta_n$ for $n \geq 0$.  While $| \mathcal{G}| = \infty$, \citep{Wood2009} show that inference for the full model only requires computation on a set $\mathcal{H} \subset \mathcal{G}$ for any finite training sequence $\mathcal{S}$ such that $|\mathcal{H} | \leq 2 |\mathcal{S}|$.  Furthermore, they parameterize the discounts such that $\delta_n$ is a function of $\{\delta_0, \delta_1, \ldots, \delta_{10} \}$ for $n \geq 0$.   Unfortunately the linear bound on $|\mathcal{H}|$ makes using the model intractable for streaming sequences. \citep{Bartlett2010} and \citep{Gasthaus2010} demonstrate that approximate inference using a single particle filter and a pruning scheme yields results comparable to inference for the full model, while maintaining a constant bound on $|\mathcal{H}| $ for arbitrary length sequences.  Finally, \cite{Gasthaus2011} show that computation on $\mathcal{H}$ requires maintaining at most most $2|\Sigma| |\mathcal{H}|$ unique counts.  If these techniques are combined the result is an inference algorithm with a constant space representation of the parameters $P \in \mathcal{H}$.  
+Given a model and observed data,  the task of inference is to learn likely values of the latent parameters.  The latent parameters of the sequence memoizer are  $\mathcal{G} = \{ \{ c^\U_\sigma, t^\U_\sigma \}_{\sigma \in \Sigma} \ | \ \U \in \Sigma^{+} \}$  and $\delta_n$ for $n \geq 0$.  While $| \mathcal{G}| = \infty$, \citep{Wood2009} show that inference for the full model only requires computation on a set $\mathcal{H} \subset \mathcal{G}$ for any finite training sequence $\mathcal{S}$ such that $|\mathcal{H} | \leq 2 |\mathcal{S}|$.  Furthermore, they parameterize the discounts such that $\delta_n$ is a function of $\{\delta_0, \delta_1, \ldots, \delta_{10} \}$ for $n \geq 0$.   Unfortunately the linear bound on $|\mathcal{H}|$ makes using the model intractable for streaming sequences. \citep{Bartlett2010} and \citep{Gasthaus2010} demonstrate that approximate inference using a single particle filter and a pruning scheme yields results comparable to inference for the full model, while maintaining a constant bound on $|\mathcal{H}| $ for arbitrary length sequences.  Finally, \cite{Gasthaus2011} show that computation on $\mathcal{H}$ requires maintaining at most most $2|\Sigma| |\mathcal{H}|$ unique counts.  If these techniques are combined the result is an inference algorithm with a constant space representation of the parameters $P \in \mathcal{H}$.  
 
 %Given a model and observed data,  the task of inference is to learn likely values of the latent parameters.  The latent parameters of the sequence memoizer are  $\mathcal{G} = \{P_{\bf u} \ | \ {\bf u} \in \Sigma^{+} \}$ and $\delta_n$ for $n \geq 0$.  While $| \mathcal{G}| = \infty$, \citep{Wood2009} show that inference for the full model only requires computation on a set $\mathcal{H} \subset \mathcal{G}$ for any finite training sequence $\mathcal{S}$ such that $|\mathcal{H} | \leq 2 |\mathcal{S}|$.  Furthermore, they parameterize the discounts such that $\delta_n$ is a function of $\{\delta_0, \delta_1, \ldots, \delta_{10} \}$ for $n \geq 0$.   Unfortunately the linear bound on $|\mathcal{H}|$ makes using the model intractable for streaming sequences. \citep{Bartlett2010} and \citep{Gasthaus2010} demonstrate that approximate inference using a single particle filter and a pruning scheme yields results comparable to inference for the full model, while maintaining a constant bound on $|\mathcal{H}| $ for arbitrary length sequences.  Finally, \cite{Gasthaus2011} show that computation on $\mathcal{H}$ requires maintaining at most most $2|\Sigma| |\mathcal{H}|$ unique counts.  If these techniques are combined the result is an inference algorithm with a constant space representation of the parameters $P \in \mathcal{H}$.  
 
@@ -75,12 +49,41 @@ Given a model and observed data,  the task of inference is to learn likely value
 %
 \subsection{Approximation}
 
+\begin{algorithm}[t!]
+    \caption{Deplump/Plump} \label{alg:deplump/plump}
+    \begin{algorithmic}[1]
+    	\Procedure{$\mathcal{O} \la $ Deplump/Plump}{$\IS$}
+		\State $\RS \la [$ $]$ ;  $\mathcal{O} \la  [$ $]$%\Comment{reference sequence}
+%		\State Initialize $[$ $]$ node of \T \Comment{suffix tree}
+		\State $\nc \la 1$ \Comment{node count}
+		\State $\D \la  \{ \dd_0, \dd_1, \dd_2, \dots, \dd_{10}, \alpha \}$ \Comment{discount parameters}
+% \Comment{output sequence}
+		\For{i = 1: $| \IS|$}
+			\State $\G \la \vec 0$ \Comment{discount parameter gradients, $|\G| = |\D|$}
+			\State $ \{ \pi, \N  \} \la$  \textsc{PMFNext} (\RS)
+			\If{Plump}
+%				\State $s \la $ 
+				\State $\mathcal{O} \la [\mathcal{O}$,  \textsc{RangeDecode}$(\pi, \IS)]$
+			\Else
+				\State $s \la \IS[i]$
+%				\State $b \la$
+				\State $\mathcal{O}\la [\mathcal{O}$,   \textsc{RangeEncode}$(\Sigma_{i = 1}^{s-1} \pi_i, \Sigma_{i = 1}^{s} \pi_i)]$		
+			\EndIf
+			\State \textsc{UpdateCountsAndDiscountGradients}($\N,s,\pi_s,$TRUE)
+			\State $\D \la \D + \G \eta / \pi_s$ \Comment{update discount parameters}
+			\State $\RS \la [\RS$ $s]$ \Comment{append symbol to reference sequence}
+		\EndFor
+%		\State \Return $\mathcal{O}\mathcal{S}$
+	\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
+
 We need to introduce two more approximations to render the algorithm appropriate for streams.  First, the data structure used by the inference algorithms mentioned depends on an underlying reference sequence which grows as a linear function of the input sequence length.  As the algorithm progresses we maintain a fixed upper bound on the length of this sequence by pruning the sections which are most distant from the current predictive context (see Algorithm~\ref{alg:pmfnextsymbol}).  This means we make the data structure underlying streaming deplump an approximation to the data structure used in the published inference algorithms, which allows our algorithm to maintain constant space complexity.
 
-We note that inference procedure considered in \cite{Gasthaus2011} maintains counts $c^P_\sigma$ and $t^P_\sigma$ for each $P_{\bf u} \in \mathcal{H}$ and $\sigma \in \Sigma$.  For each symbol $s$ in the input sequence, $c_{s}$ is incremented in at least one node on the tree.  From this fact it can be seen that $\max_{P \in \mathcal{H}, \sigma \in \Sigma} \{ c^{P}_{\sigma} \}$ grows monotonically as a function of the length of the input sequence. Unfortunately incremental construction of the model includes an operation on node elements known as fragmentation and requires computation proportional to $\max_{\sigma \in \Sigma} \{ c_{\sigma}^{P_{\bf u}} \}$ for node $P_{\bf u}$\citep{Gasthaus2011}. Therefore, to make the algorithm computationally tractable with arbitrary length sequences there must be an upper bound on $c^{P_{\bf u}}_\sigma$ for all $P_{\bf u} \in \mathcal{H}$.  
+We note that inference procedure considered in \cite{Gasthaus2011} maintains counts $c^\U_\sigma$ and $t^\U_\sigma$ for each $P_\U \in \mathcal{H}$ and $\sigma \in \Sigma$.  For each symbol $s$ in the input sequence, $c^\U_s$ is incremented in at least one node on the tree.  From this fact it can be seen that $\max_{P \in \mathcal{H}, \sigma \in \Sigma} \{ c^\U_\sigma \}$ grows monotonically as a function of the length of the input sequence. Unfortunately incremental construction of the model includes an operation on node elements known as fragmentation and requires computation proportional to $\max_{\sigma \in \Sigma} \{ c_\sigma^\U \}$ for node $P_\U$ \citep{Gasthaus2011}. Therefore, to make the algorithm computationally tractable with arbitrary length sequences there must be an upper bound on $c^\U_\sigma$ for all $P_\U \in \mathcal{H}$.  
 
 %The counts $c_{\sigma}$ and $t_{\sigma}$ are constrained such that $0 \leq t_{\sigma} \leq c_{\sigma} $. 
-The $c_{\sigma}$ are counts of atoms in the estimation of a discrete distribution over $\Sigma$.  The $t_{\sigma}$ regularize the estimation and create smoothing towards the distribution at a more general context.  Intuitively, limiting $\max_{P \in \mathcal{H}} \{ c^{P} =  \sum_{\sigma \in \Sigma} c^{P}_{\sigma} \} < k$  has the effect of using at most $k$ observations to estimate each discrete distribution in $\mathcal{H}$.  If $k$ is set high relative to $|\Sigma|$ this approximation should have little effect on the estimated distribution. We implement this in Algorithm~\ref{alg:thincounts}.  Using a fixed $k$ for all $P \in \mathcal{H}$ forces the computational complexity of the algorithm to be a linear function of the input sequence while maintaining constant space complexity.
+The $c^\U_{\sigma}$ are counts of atoms in the estimation of a discrete distribution over $\Sigma$.  The $t^\U_{\sigma}$ regularize the estimation and create smoothing towards the distribution at a more general context.  Intuitively, limiting $\max_{P \in \mathcal{H}} \{ c^\U =  \sum_{\sigma \in \Sigma} c^\U_{\sigma} \} < k$  has the effect of using at most $k$ observations to estimate each discrete distribution in $\mathcal{H}$.  If $k$ is set high relative to $|\Sigma|$ this approximation should have little effect on the estimated distribution. We implement this in Algorithm~\ref{alg:thincounts}.  Using a fixed $k$ for all $P \in \mathcal{H}$ forces the computational complexity of the algorithm to be a linear function of the input sequence while maintaining constant space complexity.
 
 
 
