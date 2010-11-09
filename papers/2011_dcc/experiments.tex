@@ -2,7 +2,7 @@
 
 \begin{figure*}[t] 
 	\begin{center}
-		\scalebox{.42}{\includegraphics{figs/varying_depths.pdf}} % [clip=true, viewport= 1in 1in 9in 9in]
+		\scalebox{.4}{\includegraphics{figs/varying_depths.pdf}} % [clip=true, viewport= 1in 1in 9in 9in]
 		\caption{Average ($\pm$ std.) streaming deplump compression performance as measured in bits in compressed output vs.~bytes in uncompressed input.  Here the depth limit ($D$) and node limit ($L$) are varied.  From this we conclude that setting the depth limit to $D\geq16$ and the node limit to the largest value possible given physical memory constraints leads to optimal compression performance.}
 		\label{fig:varying_depths}
 	\end{center} 
@@ -18,7 +18,7 @@
 
 \begin{figure*}[t] 
 	\begin{center}
-		\scalebox{.42}{\includegraphics{figs/varying_stream_length.pdf}} % [clip=true, viewport= 1in 1in 9in 9in]
+		\scalebox{.4}{\includegraphics{figs/varying_stream_length.pdf}} % [clip=true, viewport= 1in 1in 9in 9in]
 		\caption{Average ($\pm$ std.) streaming deplump compression performance as measured in bits in compressed output vs.~bytes in uncompressed input.  Here the input stream length and node limit ($L$) are varied.  From this we observe that average deplump streaming compression performance monotonically improves as the input sequence grows in length but asymptotes at a different value per node limit  Also, it can be seen that large node limits may actually hurt compression performance for small input sequences.}
 		\label{fig:varying_stream_length}
 	\end{center} 
