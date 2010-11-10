@@ -9,6 +9,7 @@ import edu.columbia.stat.wood.sequencememoizer.v1.ByteSequenceMemoizer;
 import edu.columbia.stat.wood.sequencememoizer.v1.util.ByteSeq.ByteSeqNode;
 import edu.columbia.stat.wood.sequencememoizer.v1.ByteSequenceMemoizer.SeatReturn;
 import edu.columbia.stat.wood.util.ByteMap;
+import edu.columbia.stat.wood.util.MutableLong;
 import edu.columbia.stat.wood.util.SampleMultinomial;
 import edu.columbia.stat.wood.util.SeatingArranger;
 import java.io.IOException;
@@ -30,9 +31,7 @@ public class ByteRestaurant extends ByteMap<ByteRestaurant> implements Serializa
     public ByteRestaurant parent;
     public ByteSeqNode edgeNode;
 
-    public static int count = 0;
-
-    public ByteRestaurant(ByteRestaurant parent, int edgeStart, int edgeLength, ByteSeqNode edgeNode, int numLeafNodesAtOrBelow) {
+    public ByteRestaurant(ByteRestaurant parent, int edgeStart, int edgeLength, ByteSeqNode edgeNode, int numLeafNodesAtOrBelow, MutableLong restCount) {
         this.parent = parent;
         this.edgeStart = edgeStart;
         this.edgeLength = edgeLength;
@@ -44,7 +43,7 @@ public class ByteRestaurant extends ByteMap<ByteRestaurant> implements Serializa
         }
         customers = 0;
         tables = 0;
-        count++;
+        restCount.increment();
     }
 
     public void setTableConfig(byte[] types, int[] customersAndTables, int customers, int tables) {
@@ -262,7 +261,7 @@ public class ByteRestaurant extends ByteMap<ByteRestaurant> implements Serializa
         return l;
     }
 
-    public ByteRestaurant fragmentForInsertion(ByteRestaurant irParent, int irEdgeStart, int irEdgeLength, ByteSeqNode irEdgeNode, double discount, double irDiscount) {
+    public ByteRestaurant fragmentForInsertion(ByteRestaurant irParent, int irEdgeStart, int irEdgeLength, ByteSeqNode irEdgeNode, double discount, double irDiscount, MutableLong restCount) {
         double fragDiscount, fragConcentration, numerator, denominator;
         ByteRestaurant intermediateRestaurant;
         byte[] irTypes;
@@ -277,7 +276,7 @@ public class ByteRestaurant extends ByteMap<ByteRestaurant> implements Serializa
         customers = 0;
         tables = 0;
 
-        intermediateRestaurant = new ByteRestaurant(irParent, irEdgeStart, irEdgeLength, irEdgeNode, numLeafNodesAtOrBelow);
+        intermediateRestaurant = new ByteRestaurant(irParent, irEdgeStart, irEdgeLength, irEdgeNode, numLeafNodesAtOrBelow, restCount);
 
         if (types == null) {
             edgeLength -= irEdgeLength;
@@ -360,15 +359,15 @@ public class ByteRestaurant extends ByteMap<ByteRestaurant> implements Serializa
         return intermediateRestaurant;
     }
     
-    public ByteRestaurant fragmentForPrediction(ByteRestaurant irParent, double discount, double irDiscount){
+    public ByteRestaurant fragmentForPrediction(ByteRestaurant irParent, double discount, double irDiscount, MutableLong restCount){
         ByteRestaurant intermediateRestaurant;
         double fragDiscount, fragConcentration, numerator, denominator;
         byte[] irTypes;
         int[] irCustomersAndTables, tsa;
         int l, irc, irt, tci, tti, tc, tt, fc, ft;
 
-        intermediateRestaurant = new ByteRestaurant(irParent, 0, 0, null, 0);
-        count--;
+        intermediateRestaurant = new ByteRestaurant(irParent, 0, 0, null, 0, restCount);
+        restCount.decrement();
         
         if(types != null){
             fragDiscount = discount / irDiscount;
@@ -423,21 +422,21 @@ public class ByteRestaurant extends ByteMap<ByteRestaurant> implements Serializa
         return intermediateRestaurant;
     }
 
-    public final void removeFromTree(){
+    public final void removeFromTree(MutableLong restCount){
         parent.remove(edgeNode.byteChunk()[edgeStart]);
         if(!parent.isEmpty()){
             parent.decrementLeafNodeCount();
         }
-        count--;
+        restCount.decrement();
     }
 
-    public final void removeFromTreeAndEdgeNode(){
+    public final void removeFromTreeAndEdgeNode(MutableLong restCount){
         edgeNode.remove(this);
         parent.remove(edgeNode.byteChunk()[edgeStart]);
         if(!parent.isEmpty()){
             parent.decrementLeafNodeCount();
         }
-        count--;
+        restCount.decrement();
     }
 
     public void incrementLeafNodeCount(){

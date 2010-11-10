@@ -6,6 +6,7 @@
 package edu.columbia.stat.wood.sequencememoizer.v1.util;
 
 import edu.columbia.stat.wood.sequencememoizer.v1.IntSequenceMemoizer.NewKey;
+import edu.columbia.stat.wood.util.MutableLong;
 import gnu.trove.set.hash.THashSet;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -74,9 +75,9 @@ public class IntSequence implements Serializable {
      * Shorten the sequence by deleting the earliest node and all the restaurant
      * nodes in the model which point to it.
      */
-    public void shorten() {
+    public void shorten(MutableLong restCount) {
         for (IntRestaurant r : first) {
-            r.removeFromTree();
+            r.removeFromTree(restCount);
         }
 
         length -= nodeSize;

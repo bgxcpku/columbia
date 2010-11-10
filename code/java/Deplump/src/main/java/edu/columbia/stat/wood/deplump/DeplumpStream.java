@@ -32,6 +32,16 @@ public class DeplumpStream extends OutputStream {
         enc = new Encoder(factory.get(depth, maxNumberRestaurants, maxSequenceLength, serializedModel),out,insert);
     }
 
+    public DeplumpStream(OutputStream out) throws IOException{
+        //version
+        out.write(1);
+
+        BytePredictiveModelFactory factory = new BytePredictiveModelFactory();
+
+        this.out = out;
+        enc = new Encoder(factory.get(-1, -1, -1, null),out,true);
+    }
+
     @Override
     public void close() throws IOException {
         enc.close();

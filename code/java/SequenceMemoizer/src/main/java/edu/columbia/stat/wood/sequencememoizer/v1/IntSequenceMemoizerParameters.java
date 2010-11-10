@@ -29,8 +29,8 @@ public class IntSequenceMemoizerParameters extends SequenceMemoizerParameters{
      * @param maxNumberRestaurants
      * @param maxSequenceLength
      */
-    public IntSequenceMemoizerParameters(IntDiscreteDistribution baseDistribution, double[] discounts, double infiniteDiscount, int depth, long seed, long maxNumberRestaurants, long maxSequenceLength) {
-        super(discounts, infiniteDiscount, depth, seed, maxNumberRestaurants, maxSequenceLength);
+    public IntSequenceMemoizerParameters(IntDiscreteDistribution baseDistribution, double[] discounts, double infiniteDiscount, int depth, long seed, long maxNumberRestaurants, long maxSequenceLength, long maxCustomersInRestaurant) {
+        super(discounts, infiniteDiscount, depth, seed, maxNumberRestaurants, maxSequenceLength,maxCustomersInRestaurant);
         this.baseDistribution = baseDistribution;
     }
 

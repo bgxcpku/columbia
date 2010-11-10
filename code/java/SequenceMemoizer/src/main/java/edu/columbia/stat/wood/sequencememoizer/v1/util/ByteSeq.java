@@ -5,6 +5,7 @@
 package edu.columbia.stat.wood.sequencememoizer.v1.util;
 
 import edu.columbia.stat.wood.util.MutableInt;
+import edu.columbia.stat.wood.util.MutableLong;
 import gnu.trove.set.hash.THashSet;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -52,9 +53,9 @@ public class ByteSeq implements Serializable {
         return length;
     }
 
-    public void shorten() {
+    public void shorten(MutableLong restCount) {
         for (ByteRestaurant r : first) {
-            r.removeFromTree();
+            r.removeFromTree(restCount);
         }
 
         length -= nodeSize;
@@ -64,6 +65,10 @@ public class ByteSeq implements Serializable {
 
     public BackwardsIterator backwardsIterator() {
         return new BackwardsIterator();
+    }
+
+    public BackwardsIterator backwardsIterator(ByteSeqNode node, int offset) {
+        return new BackwardsIterator(node, offset);
     }
 
     public int overlap(ByteSeqNode edgeNode, int edgeIndex, int edgeLength, byte[] context, int index) {
@@ -185,6 +190,11 @@ public class ByteSeq implements Serializable {
         public BackwardsIterator() {
             node = last;
             ind = index + 1;
+        }
+
+        public BackwardsIterator(ByteSeqNode node, int offset){
+            this.node = node;
+            ind = offset;
         }
 
         public byte peek() {

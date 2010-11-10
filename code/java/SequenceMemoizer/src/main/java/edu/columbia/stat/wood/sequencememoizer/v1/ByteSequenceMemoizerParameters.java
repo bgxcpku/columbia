@@ -29,8 +29,8 @@ public class ByteSequenceMemoizerParameters extends SequenceMemoizerParameters{
      * @param maxNumberRestaurants
      * @param maxSequenceLength
      */
-    public ByteSequenceMemoizerParameters(ByteDiscreteDistribution baseDistribution, double[] discounts, double infiniteDiscount, int depth, long seed, long maxNumberRestaurants, long maxSequenceLength) {
-        super(discounts, infiniteDiscount, depth, seed, maxNumberRestaurants, maxSequenceLength);
+    public ByteSequenceMemoizerParameters(ByteDiscreteDistribution baseDistribution, double[] discounts, double infiniteDiscount, int depth, long seed, long maxNumberRestaurants, long maxSequenceLength, long maxCustomersInRestaurant) {
+        super(discounts, infiniteDiscount, depth, seed, maxNumberRestaurants, maxSequenceLength,maxCustomersInRestaurant);
         this.baseDistribution = baseDistribution;
     }
 

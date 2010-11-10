@@ -9,6 +9,7 @@ import edu.columbia.stat.wood.sequencememoizer.v1.IntSequenceMemoizer;
 import edu.columbia.stat.wood.sequencememoizer.v1.util.IntSequence.IntSeqNode;
 import edu.columbia.stat.wood.sequencememoizer.v1.IntSequenceMemoizer.SeatReturn;
 import edu.columbia.stat.wood.util.IntMap;
+import edu.columbia.stat.wood.util.MutableLong;
 import edu.columbia.stat.wood.util.SampleMultinomial;
 import edu.columbia.stat.wood.util.SeatingArranger;
 import java.io.IOException;
@@ -70,12 +71,7 @@ public class IntRestaurant extends IntMap<IntRestaurant> implements Serializable
      */
     public IntSeqNode edgeNode;
 
-    /**
-     * Static count of total instantiated restaurants.
-     */
-    public static int count = 0;
-
-    public IntRestaurant(IntRestaurant parent, int edgeStart,  int edgeLength, IntSeqNode edgeNode,  int numLeafNodesAtOrBelow) {
+    public IntRestaurant(IntRestaurant parent, int edgeStart,  int edgeLength, IntSeqNode edgeNode,  int numLeafNodesAtOrBelow, MutableLong restCount) {
         this.parent = parent;
         this.edgeStart = edgeStart;
         this.edgeLength = edgeLength;
@@ -87,7 +83,7 @@ public class IntRestaurant extends IntMap<IntRestaurant> implements Serializable
         }
         customers = 0;
         tables = 0;
-        count++;
+        restCount.increment();
     }
 
     public void setTableConfig(int[] types, int[] customersAndTables, int customers, int tables) {
@@ -273,7 +269,7 @@ public class IntRestaurant extends IntMap<IntRestaurant> implements Serializable
         customersAndTables = newCustomersAndTables;
     }
 
-    public IntRestaurant fragmentForInsertion(IntRestaurant irParent, int irEdgeStart, int irEdgeLength, IntSeqNode irEdgeNode, double discount, double irDiscount) {
+    public IntRestaurant fragmentForInsertion(IntRestaurant irParent, int irEdgeStart, int irEdgeLength, IntSeqNode irEdgeNode, double discount, double irDiscount, MutableLong restCount) {
         double fragDiscount, fragConcentration, numerator, denominator;
         IntRestaurant intermediateRestaurant;
         int[] irTypes;
@@ -283,7 +279,7 @@ public class IntRestaurant extends IntMap<IntRestaurant> implements Serializable
         customers = 0;
         tables = 0;
 
-        intermediateRestaurant = new IntRestaurant(irParent, irEdgeStart, irEdgeLength, irEdgeNode, numLeafNodesAtOrBelow);
+        intermediateRestaurant = new IntRestaurant(irParent, irEdgeStart, irEdgeLength, irEdgeNode, numLeafNodesAtOrBelow, restCount);
 
         if (types == null) {
             edgeLength -= irEdgeLength;
@@ -353,15 +349,15 @@ public class IntRestaurant extends IntMap<IntRestaurant> implements Serializable
         return intermediateRestaurant;
     }
 
-    public IntRestaurant fragmentForPrediction(IntRestaurant irParent, double discount, double irDiscount){
+    public IntRestaurant fragmentForPrediction(IntRestaurant irParent, double discount, double irDiscount, MutableLong restCount){
         IntRestaurant intermediateRestaurant;
         double fragDiscount, fragConcentration, numerator, denominator;
         int[] irTypes;
         int[] irCustomersAndTables, tsa;
         int l, irc, irt, tci, tti, tc, tt, fc, ft;
 
-        intermediateRestaurant = new IntRestaurant(irParent, 0, 0, null, 0);
-        count--;
+        intermediateRestaurant = new IntRestaurant(irParent, 0, 0, null, 0, restCount);
+        restCount.decrement();
 
         if(types != null){
             fragDiscount = discount / irDiscount;
@@ -435,21 +431,21 @@ public class IntRestaurant extends IntMap<IntRestaurant> implements Serializable
         return l;
     }
 
-    public final void removeFromTree(){
+    public final void removeFromTree(MutableLong restCount){
         parent.remove(edgeNode.intChunk()[edgeStart]);
         if(!parent.isEmpty()){
             parent.decrementLeafNodeCount();
         }
-        count--;
+        restCount.decrement();
     }
 
-    public final void removeFromTreeAndEdgeNode(){
+    public final void removeFromTreeAndEdgeNode(MutableLong restCount){
         edgeNode.remove(this);
         parent.remove(edgeNode.intChunk()[edgeStart]);
         if(!parent.isEmpty()){
             parent.decrementLeafNodeCount();
         }
-        count--;
+        restCount.decrement();
     }
 
     public void incrementLeafNodeCount(){

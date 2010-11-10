@@ -25,13 +25,13 @@ public class BytePredictiveModelFactory extends edu.columbia.stat.wood.sequencem
     public BytePredictiveModel get(int depth, long maxNumberRestaurants, long maxSequenceLength, URL url) {
         if (url == null) {
             if(depth <= -1){
-                depth = 1023;
+                depth = 32;
             }
             if(maxNumberRestaurants <= 0){
-                maxNumberRestaurants = Long.MAX_VALUE;
+                maxNumberRestaurants = 10000000;
             }
             if(maxSequenceLength <= 1024){
-                maxSequenceLength = Long.MAX_VALUE;
+                maxSequenceLength = 100000000;
             }
             return new ByteSequenceMemoizer(new ByteSequenceMemoizerParameters(depth, maxNumberRestaurants, maxSequenceLength));
         } else {

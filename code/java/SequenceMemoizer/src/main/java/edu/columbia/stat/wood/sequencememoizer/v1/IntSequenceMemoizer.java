@@ -21,14 +21,10 @@ import edu.columbia.stat.wood.util.LogBracketFunction;
 import edu.columbia.stat.wood.util.LogGeneralizedSterlingNumbers;
 import edu.columbia.stat.wood.util.MersenneTwisterFast;
 import edu.columbia.stat.wood.util.MutableDouble;
+import edu.columbia.stat.wood.util.MutableLong;
 import edu.columbia.stat.wood.util.Pair;
 import edu.columbia.stat.wood.util.SeatingArranger;
 import gnu.trove.map.hash.TIntObjectHashMap;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -58,6 +54,7 @@ public class IntSequenceMemoizer implements IntSequenceMemoizerInterface, Serial
     private IntDiscreteDistribution baseDistribution;
     private NewKey newKey = new NewKey();
     private long maxNumberRestaurants, maxSequenceLength, seed;
+    private MutableLong restCount;
 
     public int maxCustomersInRestaurant;
 
@@ -70,7 +67,7 @@ public class IntSequenceMemoizer implements IntSequenceMemoizerInterface, Serial
         trueDepth = parameters.depth;
         depth = 0;
         rDepth = 0;
-        ecr = new IntRestaurant(null, 0, 0, null, 1);
+        ecr = new IntRestaurant(null, 0, 0, null, 1, restCount);
         is = new IntSequence(1024);
         discounts = new Discounts(parameters.discounts, parameters.infiniteDiscount);
         ds = new DoubleStack();
@@ -107,10 +104,10 @@ public class IntSequenceMemoizer implements IntSequenceMemoizerInterface, Serial
         double p;
 
         while (is.length() > maxSequenceLength - 1) {
-            is.shorten();
+            is.shorten(restCount);
         }
 
-        while (IntRestaurant.count > maxNumberRestaurants - 2) {
+        while (restCount.value() > maxNumberRestaurants - 2) {
             deleteRandomRestaurant();
         }
 
@@ -445,7 +442,7 @@ public class IntSequenceMemoizer implements IntSequenceMemoizerInterface, Serial
             if (c == null) {
                 el = bi.available(depth - rDepth);
                 ds.push(discounts.get(rDepth, rDepth + el));
-                c = new IntRestaurant(r, bi.ind, el, bi.node, 1);
+                c = new IntRestaurant(r, bi.ind, el, bi.node, 1, restCount);
 
                 if (!r.isEmpty()) {
                     r.incrementLeafNodeCount();
@@ -478,7 +475,7 @@ public class IntSequenceMemoizer implements IntSequenceMemoizerInterface, Serial
                     discount = discounts.get(rDepth, rDepth + overlap);
                     ds.push(discount);
 
-                    nc = c.fragmentForInsertion(r, currentEdgeStart, overlap, currentNode, discounts.get(rDepth, rDepth + c.edgeLength), discount);
+                    nc = c.fragmentForInsertion(r, currentEdgeStart, overlap, currentNode, discounts.get(rDepth, rDepth + c.edgeLength), discount, restCount);
                     rDepth += overlap;
 
                     r.put(key, nc);
@@ -491,7 +488,7 @@ public class IntSequenceMemoizer implements IntSequenceMemoizerInterface, Serial
                                 c.edgeNode = c.edgeNode.previous();
                             }
                             c.edgeNode.add(c);
-                            assert (byte) newKey.value() == c.edgeNode.intChunk()[c.edgeStart];
+                            assert newKey.value() == c.edgeNode.intChunk()[c.edgeStart] ;
                         }
                     } else {
                         c.edgeNode.remove(c);
@@ -539,7 +536,7 @@ public class IntSequenceMemoizer implements IntSequenceMemoizerInterface, Serial
                     discount = discounts.get(rDepth, rDepth + overlap);
                     ds.push(discount);
 
-                    c = c.fragmentForPrediction(r, discounts.get(rDepth, rDepth + c.edgeLength), discount);
+                    c = c.fragmentForPrediction(r, discounts.get(rDepth, rDepth + c.edgeLength), discount, restCount);
 
                     rDepth += overlap;
 
@@ -682,7 +679,7 @@ public class IntSequenceMemoizer implements IntSequenceMemoizerInterface, Serial
     }
 
     private void deleteRandomRestaurant() {
-        getRandomLeafNode().removeFromTreeAndEdgeNode();
+        getRandomLeafNode().removeFromTreeAndEdgeNode(restCount);
     }
 
     public class SeatReturn {
@@ -738,7 +735,7 @@ public class IntSequenceMemoizer implements IntSequenceMemoizerInterface, Serial
         out.writeLong(maxNumberRestaurants);
         out.writeLong(maxSequenceLength);
         out.writeLong(seed);
-        out.writeInt(IntRestaurant.count);
+        out.writeObject(restCount);
         out.writeObject(ecr);
 
         writeEdgeNodeObjects(out);
@@ -772,7 +769,7 @@ public class IntSequenceMemoizer implements IntSequenceMemoizerInterface, Serial
         maxNumberRestaurants = in.readLong();
         maxSequenceLength = in.readLong();
         seed = in.readLong();
-        IntRestaurant.count = in.readInt();
+        restCount = (MutableLong) in.readObject();
 
         ecr = (IntRestaurant) in.readObject();
 

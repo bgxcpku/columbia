@@ -35,6 +35,19 @@ public class PlumpStream extends InputStream {
         this.is = is;
     }
 
+    public PlumpStream(InputStream is) throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException{
+        //get version
+        int version = is.read();
+
+        ClassLoader cl = ClassLoader.getSystemClassLoader();
+
+        dec = (Decoder) cl.loadClass("edu.columbia.stat.wood.deplump.v" + version + ".Decoder" ).newInstance();
+        BytePredictiveModelFactory factory = (BytePredictiveModelFactory) cl.loadClass("edu.columbia.stat.wood.sequencememoizer.v" + version + ".BytePredictiveModelFactory").newInstance();
+
+        dec.set(factory.get(-1, -1, -1, null), is, true);
+        this.is = is;
+    }
+
     @Override
     public int available() throws IOException {
         throw new UnsupportedOperationException("Not supported.");

@@ -19,6 +19,7 @@ import edu.columbia.stat.wood.util.LogBracketFunction;
 import edu.columbia.stat.wood.util.LogGeneralizedSterlingNumbers;
 import edu.columbia.stat.wood.util.MersenneTwisterFast;
 import edu.columbia.stat.wood.util.MutableInt;
+import edu.columbia.stat.wood.util.MutableLong;
 import edu.columbia.stat.wood.util.Pair;
 import edu.columbia.stat.wood.util.SeatingArranger;
 import java.io.BufferedInputStream;
@@ -29,6 +30,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Iterator;
+import java.util.zip.GZIPInputStream;
 
 /**
  * Implementation of a byte based sequence memoizer.  Implementation is memory efficient
@@ -69,8 +71,10 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
     private ByteDiscreteDistribution baseDistribution;
     private MutableInt newKey = new MutableInt(-1);
     private long maxNumberRestaurants, maxSequenceLength, seed;
+    private MutableLong restCount;
 
-    public int maxCustomersInRestaurant;
+    public long maxCustomersInRestaurant;
+
 
     /**
      * Creates a byte sequence memoizer using the specified parameters.
@@ -81,7 +85,8 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
         trueDepth = parameters.depth;
         depth = 0;
         rDepth = 0;
-        ecr = new ByteRestaurant(null, 0, 0, null, 1);
+        restCount = new MutableLong(0);
+        ecr = new ByteRestaurant(null, 0, 0, null, 1, restCount);
         bs = new ByteSeq(1024);
         discounts = new Discounts(parameters.discounts, parameters.infiniteDiscount);
         ds = new DoubleStack();
@@ -90,7 +95,8 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
         maxNumberRestaurants = parameters.maxNumberRestaurants;
         maxSequenceLength = parameters.maxSequenceLength;
         seed = parameters.seed;
-
+        maxCustomersInRestaurant = parameters.maxCustomersInRestaurant;
+        
         SeatingArranger.rng = RNG;
     }
 
@@ -416,7 +422,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
             d[i] = discounts.get(i);
         }
 
-        return new ByteSequenceMemoizerParameters(baseDistribution, d, discounts.getdInfinity(), depth, seed, this.maxNumberRestaurants, this.maxSequenceLength);
+        return new ByteSequenceMemoizerParameters(baseDistribution, d, discounts.getdInfinity(), depth, seed, this.maxNumberRestaurants, this.maxSequenceLength, maxCustomersInRestaurant);
     }
 
     /**
@@ -429,10 +435,10 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
         double p;
 
         while (bs.length() > maxSequenceLength - 1) {
-            bs.shorten();
+            bs.shorten(restCount);
         }
 
-        while (ByteRestaurant.count > maxNumberRestaurants - 2) {
+        while (restCount.value() > maxNumberRestaurants - 2) {
             deleteRandomRestaurant();
         }
 
@@ -453,6 +459,39 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
         return Math.log((p + minP) / (1.0 + 256.0 * minP));
     }
 
+    public double continueSequence(byte b,DLMWriter out) throws IOException {
+        ByteRestaurant r;
+        int index;
+        double p;
+
+        while (bs.length() > maxSequenceLength - 1) {
+            bs.shorten(restCount);
+        }
+
+        while (restCount.value() > maxNumberRestaurants - 2) {
+            deleteRandomRestaurant();
+        }
+
+        r = getWithInsertion();
+
+        index = ds.index();
+
+        out.write(Integer.toString(index));
+
+        p = predictiveProbability(r, b);
+
+        ds.setIndex(index);
+        seatAndUpdateDiscount(b, r, p);
+
+        bs.append(b);
+
+        if(depth < trueDepth){
+            depth++;
+        }
+
+        return Math.log((p + minP) / (1.0 + 256.0 * minP));
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -463,10 +502,10 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
         int type, index;
 
         while (bs.length() > maxSequenceLength - 1) {
-            bs.shorten();
+            bs.shorten(restCount);
         }
 
-        while (ByteRestaurant.count > maxNumberRestaurants - 2) {
+        while (restCount.value() > maxNumberRestaurants - 2) {
             deleteRandomRestaurant();
         }
 
@@ -506,10 +545,10 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
         double multFactor, l, h;
 
         while (bs.length() > maxSequenceLength - 1) {
-            bs.shorten();
+            bs.shorten(restCount);
         }
 
-        while (ByteRestaurant.count > maxNumberRestaurants - 2) {
+        while (restCount.value() > maxNumberRestaurants - 2) {
             deleteRandomRestaurant();
         }
 
@@ -650,10 +689,10 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
         double multFactor, l;
 
         while (bs.length() > maxSequenceLength - 1) {
-            bs.shorten();
+            bs.shorten(restCount);
         }
 
-        while (ByteRestaurant.count > maxNumberRestaurants - 2) {
+        while (restCount.value() > maxNumberRestaurants - 2) {
             deleteRandomRestaurant();
         }
 
@@ -691,7 +730,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
             if (c == null) {
                 el = bi.available(depth - rDepth);
                 ds.push(discounts.get(rDepth, rDepth + el));
-                c = new ByteRestaurant(r, bi.ind, el, bi.node, 1);
+                c = new ByteRestaurant(r, bi.ind, el, bi.node, 1, restCount);
 
                 if (!r.isEmpty()) {
                     r.incrementLeafNodeCount();
@@ -724,7 +763,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
                     discount = discounts.get(rDepth, rDepth + overlap);
                     ds.push(discount);
 
-                    nc = c.fragmentForInsertion(r, currentEdgeStart, overlap, currentNode, discounts.get(rDepth, rDepth + c.edgeLength), discount);
+                    nc = c.fragmentForInsertion(r, currentEdgeStart, overlap, currentNode, discounts.get(rDepth, rDepth + c.edgeLength), discount, restCount);
                     rDepth += overlap;
 
                     r.put(key, nc);
@@ -800,7 +839,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
                     discount = discounts.get(rDepth, rDepth + overlap);
                     ds.push(discount);
 
-                    c = c.fragmentForPrediction(r, discounts.get(rDepth, rDepth + c.edgeLength), discount);
+                    c = c.fragmentForPrediction(r, discounts.get(rDepth, rDepth + c.edgeLength), discount, restCount);
 
                     rDepth += overlap;
 
@@ -934,7 +973,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
     }
 
     private void deleteRandomRestaurant() {
-        getRandomLeafNode().removeFromTreeAndEdgeNode();
+        getRandomLeafNode().removeFromTreeAndEdgeNode(restCount);
     }
 
     /**
@@ -971,7 +1010,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
         out.writeLong(maxNumberRestaurants);
         out.writeLong(maxSequenceLength);
         out.writeLong(seed);
-        out.writeInt(ByteRestaurant.count);
+        out.writeObject(restCount);
         out.writeObject(ecr);
 
         writeEdgeNodeObjects(out);
@@ -1005,7 +1044,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
         maxNumberRestaurants = in.readLong();
         maxSequenceLength = in.readLong();
         seed = in.readLong();
-        ByteRestaurant.count = in.readInt();
+        restCount = (MutableLong) in.readObject();
 
         ecr = (ByteRestaurant) in.readObject();
 
@@ -1046,14 +1085,30 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
         r.check();
     }
 
-    public void printDepths(ByteRestaurant r, int dpth, DLMWriter w) throws IOException{
-        if(!r.isEmpty()){
-            for(Object c : r.values()){
-                printDepths((ByteRestaurant) c, dpth + ((ByteRestaurant) c).edgeLength, w);
+    public void printDepths(ByteRestaurant r, int dpth, String context, DLMWriter w) throws IOException {
+
+        int isLeaf = 1;
+        if (!r.isEmpty()) {
+            isLeaf = 0;
+            if (r.edgeNode != null) {
+                BackwardsIterator bi = bs.backwardsIterator(r.edgeNode, r.edgeStart);
+                for (int i = 0; i < r.edgeLength; i++) {
+                    if (bi.hasNext()) {
+                        context = Integer.toString(bi.next()) + " " + context;
+                    }
+                }
+            }
+
+            for (Object c : r.values()) {
+                printDepths((ByteRestaurant) c, dpth + ((ByteRestaurant) c).edgeLength, context, w);
             }
         }
 
         w.write(Integer.toString(dpth));
+        w.write(Integer.toString(r.customers));
+        w.write(Integer.toString(r.types.length));
+        w.write(Integer.toString(isLeaf));
+        w.write(context);
     }
 
     public class SeatReturn {
@@ -1070,37 +1125,66 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
     }
 
     public static void main(String[] args) throws IOException{
+
+        /*int nargs = args.length;
+        int sizeOfTree = Integer.MAX_VALUE;
+        int depth = Integer.MAX_VALUE;
+
+        if(nargs > 0 ){
+            sizeOfTree = Integer.parseInt(args[0]);
+        }
+
+        if(nargs > 1){
+            depth = Integer.parseInt(args[1]);
+        }*/
+
+        String f_string = args[0];
+        int sizeOfTree = 10000000;
+        int depth = 32;
+
         //File f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/wikipedia/wiki_subset");
         //File f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/pride_and_prejudice/pride_and_prejudice.txt");
-        File f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/alice_in_wonderland/alice_in_wonderland.txt");
+        //File f = new File("/Users/nicholasbartlett/Documents/np_bayes/data/alice_in_wonderland/alice_in_wonderland.txt.gz");
+        File f = new File(f_string);
+        //GZIPInputStream gis = null;
         BufferedInputStream bis = null;
 
+        //DLMWriter wd = null;
+        //DLMWriter wr = null;
         try{
+            //wr = new DLMWriter(new File("/home/bartlett/enwik_xml_gz_recursions_" + depth + ".txt"),100,"|");
+            //gis = new GZIPInputStream(new FileInputStream(f));
             bis = new BufferedInputStream(new FileInputStream(f));
-            ByteSequenceMemoizer sm = new ByteSequenceMemoizer(new ByteSequenceMemoizerParameters(1024, 1000000, (long) 100 * (long) 1000000));
-            //ByteSequenceMemoizer sm = new ByteSequenceMemoizer();
-            sm.maxCustomersInRestaurant = 500;
+
+            ByteSequenceMemoizer sm = new ByteSequenceMemoizer(new ByteSequenceMemoizerParameters(depth, sizeOfTree, (long) 100 * (long) sizeOfTree));
+            sm.maxCustomersInRestaurant =  8192;
+            //sm.maxCustomersInRestaurant = Integer.MAX_VALUE;
+
             double logLik = 0.0;
             int b;
-            int cnt = 0;
+            long cnt = 0;
             while((b = bis.read()) > -1){
                 logLik += sm.continueSequence((byte) b);
                 cnt++;
-                if(cnt % 100000 ==  0){
-                    System.out.println(cnt);
-                    sm.check(sm.ecr);
+                if(cnt % 10000000 ==  0){
+
+                    System.out.println(cnt + " | " + (-logLik / Math.log(2) / 10000000.0));
+                    logLik = 0.0;
+
+                    //ByteRestaurant.count = 0;
+                    //sm = new ByteSequenceMemoizer(new ByteSequenceMemoizerParameters(depth, sizeOfTree, (long) 100 * (long) sizeOfTree));
+                    //sm.maxCustomersInRestaurant = Integer.MAX_VALUE;
+
+                    //wd = new DLMWriter(new File("/home/bartlett/enwik_xml_gz_depths_" + (cnt / 1000000) + "_" + depth + ".txt"), 5, "|");
+                    //sm.printDepths(sm.ecr,0,"",wd);
+                    //wd.close();
                 }
             }
-            System.out.println(-logLik / Math.log(2) / (double) f.length());
-/*
-            DLMWriter w = new DLMWriter(new File("/Users/nicholasbartlett/Desktop/trial.txt"),100,"|");
-            sm.printDepths(sm.ecr,0,w);
-            w.close();*/
+            System.out.println(cnt + " | " + (-logLik / Math.log(2) / (double) (cnt % 10000000)));
         } finally {
             bis.close();
+            //wd.close();
+            //wr.close();
         }
-
-
-
     }
 }
