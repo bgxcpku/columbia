@@ -16,6 +16,21 @@ public class SeatingArranger {
     private static int t;
     public static MersenneTwisterFast rng;
 
+    /*public static int[] getSeatingArrangement(int customers, int tables, double discount) {
+        int[] sample = new int[tables];
+
+        int toSeat = customers;
+        for(int i = 0; i < tables; i++){
+            sample[i] = 1;
+            toSeat--;
+        }
+
+        sample[0] += toSeat;
+        return sample;
+    }*/
+
+
+
     public static int[] getSeatingArrangement(int customers, int tables, double discount) {
         c = customers;
         t = tables;
