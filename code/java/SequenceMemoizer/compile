@@ -1,0 +1,4 @@
+cd ../Util
+mvn install
+cd ../SequenceMemoizer
+mvn install

@@ -1,0 +1,6 @@
+cd ../Util
+mvn clean install
+cd ../SequenceMemoizer
+mvn clean install
+cd ../Deplump
+mvn clean install
