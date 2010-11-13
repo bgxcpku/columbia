@@ -4,8 +4,8 @@
  */
 package edu.columbia.stat.wood.sequencememoizer.v1.util;
 
-import edu.columbia.stat.wood.util.MutableInt;
-import edu.columbia.stat.wood.util.MutableLong;
+import edu.columbia.stat.wood.pub.sequencememoizer.util.MutableInt;
+import edu.columbia.stat.wood.pub.sequencememoizer.util.MutableLong;
 import gnu.trove.set.hash.THashSet;
 import java.io.IOException;
 import java.io.ObjectInputStream;

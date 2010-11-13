@@ -4,10 +4,10 @@
  */
 package edu.columbia.stat.wood.sequencememoizer.v1.util;
 
+import edu.columbia.stat.wood.pub.sequencememoizer.util.Pair;
+import edu.columbia.stat.wood.pub.sequencememoizer.util.SampleWithoutReplacement;
 import edu.columbia.stat.wood.sequencememoizer.v1.ByteSequenceMemoizer;
 import edu.columbia.stat.wood.util.ByteDiscreteDistribution;
-import edu.columbia.stat.wood.util.Pair;
-import edu.columbia.stat.wood.util.SampleWithoutReplacement;
 import gnu.trove.iterator.TByteObjectIterator;
 import gnu.trove.map.hash.TByteObjectHashMap;
 

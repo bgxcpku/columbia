@@ -4,24 +4,24 @@
  */
 package edu.columbia.stat.wood.sequencememoizer.v1;
 
+import edu.columbia.stat.wood.pub.sequencememoizer.util.Discounts;
+import edu.columbia.stat.wood.pub.sequencememoizer.util.DoubleStack;
+import edu.columbia.stat.wood.pub.sequencememoizer.util.LogBracketFunction;
+import edu.columbia.stat.wood.pub.sequencememoizer.util.LogGeneralizedSterlingNumbers;
+import edu.columbia.stat.wood.pub.sequencememoizer.util.MersenneTwisterFast;
+import edu.columbia.stat.wood.pub.sequencememoizer.util.MutableInt;
+import edu.columbia.stat.wood.pub.sequencememoizer.util.MutableLong;
+import edu.columbia.stat.wood.pub.sequencememoizer.util.Pair;
+import edu.columbia.stat.wood.pub.sequencememoizer.util.SeatingArranger;
 import edu.columbia.stat.wood.sequencememoizer.BytePredictiveModel;
 import edu.columbia.stat.wood.sequencememoizer.v1.util.ByteRestaurant;
 import edu.columbia.stat.wood.sequencememoizer.v1.util.ByteSamplingNode;
 import edu.columbia.stat.wood.sequencememoizer.v1.util.ByteSeq;
 import edu.columbia.stat.wood.sequencememoizer.v1.util.ByteSeq.BackwardsIterator;
 import edu.columbia.stat.wood.sequencememoizer.v1.util.ByteSeq.ByteSeqNode;
-import edu.columbia.stat.wood.sequencememoizer.v1.util.Discounts;
 import edu.columbia.stat.wood.util.ByteArrayFiniteDiscreteDistribution;
 import edu.columbia.stat.wood.util.ByteDiscreteDistribution;
 import edu.columbia.stat.wood.util.DLMWriter;
-import edu.columbia.stat.wood.util.DoubleStack;
-import edu.columbia.stat.wood.util.LogBracketFunction;
-import edu.columbia.stat.wood.util.LogGeneralizedSterlingNumbers;
-import edu.columbia.stat.wood.util.MersenneTwisterFast;
-import edu.columbia.stat.wood.util.MutableInt;
-import edu.columbia.stat.wood.util.MutableLong;
-import edu.columbia.stat.wood.util.Pair;
-import edu.columbia.stat.wood.util.SeatingArranger;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -30,7 +30,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Iterator;
-import java.util.zip.GZIPInputStream;
 
 /**
  * Implementation of a byte based sequence memoizer.  Implementation is memory efficient

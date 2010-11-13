@@ -5,13 +5,13 @@
 package edu.columbia.stat.wood.sequencememoizer.v1.util;
 
 
+import edu.columbia.stat.wood.pub.sequencememoizer.util.MutableLong;
+import edu.columbia.stat.wood.pub.sequencememoizer.util.SampleMultinomial;
+import edu.columbia.stat.wood.pub.sequencememoizer.util.SeatingArranger;
 import edu.columbia.stat.wood.sequencememoizer.v1.ByteSequenceMemoizer;
 import edu.columbia.stat.wood.sequencememoizer.v1.util.ByteSeq.ByteSeqNode;
 import edu.columbia.stat.wood.sequencememoizer.v1.ByteSequenceMemoizer.SeatReturn;
 import edu.columbia.stat.wood.util.ByteMap;
-import edu.columbia.stat.wood.util.MutableLong;
-import edu.columbia.stat.wood.util.SampleMultinomial;
-import edu.columbia.stat.wood.util.SeatingArranger;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;

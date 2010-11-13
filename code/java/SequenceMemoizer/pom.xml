@@ -27,12 +27,12 @@
             <version>1.0</version>
              <type>jar</type>
          </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.4</version>
-            <scope>test</scope>
-        </dependency>
+         <dependency>
+            <groupId>edu.columbia.stat.wood.pub</groupId>
+            <artifactId>sequencememoizer</artifactId>
+            <version>1.0</version>
+             <type>jar</type>
+         </dependency>
         <dependency>
             <groupId>gnu</groupId>
             <artifactId>trove</artifactId>

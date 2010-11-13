@@ -5,6 +5,7 @@
 
 package edu.columbia.stat.wood.sequencememoizer.v1;
 
+import edu.columbia.stat.wood.pub.sequencememoizer.SequenceMemoizerParameters;
 import edu.columbia.stat.wood.util.ByteCompleteUniformDiscreteDistribution;
 import edu.columbia.stat.wood.util.ByteDiscreteDistribution;
 

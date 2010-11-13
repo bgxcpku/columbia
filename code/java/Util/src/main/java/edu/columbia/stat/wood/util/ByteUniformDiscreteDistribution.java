@@ -5,6 +5,7 @@
 
 package edu.columbia.stat.wood.util;
 
+import edu.columbia.stat.wood.pub.sequencememoizer.util.Pair;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;

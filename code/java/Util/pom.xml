@@ -27,6 +27,12 @@
             <version>3.0.0a3</version>
              <type>jar</type>
          </dependency>
+         <dependency>
+            <groupId>edu.columbia.stat.wood.pub</groupId>
+            <artifactId>sequencememoizer</artifactId>
+            <version>1.0</version>
+             <type>jar</type>
+         </dependency>
     </dependencies>
 
 
