@@ -47,15 +47,6 @@ public class SampleMultinomial {
             throw new IllegalArgumentException("nDelete must be <= customers");
         }
 
-        int s = 0;
-        for(int j : cc){
-            s += j;
-        }
-
-        if(s != customers){
-            throw new IllegalArgumentException("customers number not correct, customers = " + customers + ", s = " + s);
-        }
-
         int[] c = new int[cc.length];
         System.arraycopy(cc,0,c,0,cc.length);
 
