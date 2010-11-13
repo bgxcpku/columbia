@@ -21,10 +21,14 @@ public class LogGeneralizedSterlingNumbers {
      * @param discount discount value to be used when calculating the generalized sterling number
      */
     public LogGeneralizedSterlingNumbers(double discount){
-        if(discount <= 0.0 || discount >= 1.0){
-            throw new IllegalArgumentException("Discount must be in (0,1.0)");
+        if(discount >= 1.0){
+            d = .999;
+        } else if (discount <= 0.0){
+            d = .001;
+        }  else {
+            d = discount;
         }
-        d = discount;
+
         lookup = new HashMap<Pair<Integer,Integer>, Double>();
     }
 
