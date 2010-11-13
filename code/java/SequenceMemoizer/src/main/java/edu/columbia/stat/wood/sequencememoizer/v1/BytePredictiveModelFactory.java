@@ -33,7 +33,9 @@ public class BytePredictiveModelFactory extends edu.columbia.stat.wood.sequencem
             if(maxSequenceLength <= 1024){
                 maxSequenceLength = 100000000;
             }
-            return new ByteSequenceMemoizer(new ByteSequenceMemoizerParameters(depth, maxNumberRestaurants, maxSequenceLength));
+            ByteSequenceMemoizerParameters smp = new ByteSequenceMemoizerParameters(depth, maxNumberRestaurants, maxSequenceLength);
+            smp.maxCustomersInRestaurant = 8192;
+            return new ByteSequenceMemoizer(smp);
         } else {
             try {
                 ObjectInputStream ois = null;
