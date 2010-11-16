@@ -4,22 +4,33 @@ in_menu: true
 routed_title: Project
 ---
 
-Information forthcoming.
-
-<!--
 Final Project Instructions
 ==========================
 <br></br>
 
 
-The final project is meant to be a time-intensive, significant, team-based effort that demonstrates your knowledge of advanced regression analysis techniques. Note that the final project takes the place of nearly 6 homeworks and a final exam. So, if you typically spend 3-4 hours per homework and would have spent 20-30 hours studying for the final examination then the total equivalent effort that you will be expected to expend on the final project will be, per person, something like 40-50 hours. In teams of up to 4, this means between that each project will be expected to benefit from between 160 and 200 man hours of labour, enough to get a significant amount of work done. This means that you will fail to complete a satisfactory final project if you wait until the last minute to begin and complete the project.
+The final project is meant to be a significant piece of work that demonstrates your data mining / statistical machine learning knowledge on a problem domain of interest to you (and hopefully also of interest to a larger academic, governmental, or industry community).  The deliverables include a (2 (preferred) - 3 (max) page proposal (single space, 11pt font, single column -- formatting instruction below)); a short, publication-quality paper (4 (preferred) - 6 (max) pages, same format); and a 10-20 minute presentation. You will fail to complete a satisfactory final project if you wait until the last minute to begin the project.  
 
-The final schedule is as follows:
+Schedule :
 ---------------------------------
 
-_Week 14_ Final project groups are to be formed by this date. A project team may consist of 4 people maximum. Groups consisting of 2-3 people are preferred. Single member groups are strongly discouraged. Each group should submit a piece of paper with a group name and the names and CUID’s of all group members by the end of the last class of the week.
+* [11/23/2010] :  Project groups are to be formed by this date _and_ a first draft of the proposal is to be handed in. A project team may consist of 4 people maximum. Groups consisting of 2-3 people are preferred. Single member groups are discouraged but OK. 
 
-_Week 15_ Final project proposals are due on this date. The proposal will be graded and will count as 25% of the final project grade. The proposal should consist of a 1 page, single space, full column-width, 10pt font paper describing the general outline of the intended final project. In particular, it should take the form of a research abstract short paper – title, authors, abstract, introduction, data, methods, conclusions, and references. Note that the only significant missing piece is the results. Other sections will grow in the final project report as well, but each should appear in the project proposal in reasonably complete form. Of particular interest are a description of the data to be used, a detailed description of how it was collected, a literature search of analyses already performed on the data and the conclusions drawn from those analyses, and an overview of the techniques you intend to use in analysing the data. Project proposals that do not outline a project with sufficiently high complexity will be given zero credit and groups that author such proposals will be required to resubmit project proposals on a weekly basis thereafter until the proposal reaches a sufficient level of complexity to warrant a passing grade.
+	The proposal will be graded and will count as 25% of the final project grade. The proposal should take the form of a research abstract, i.e. it should include a title, authors, abstract, introduction, data, methods, conclusions, and references. Note that the only significant missing pieces should be the methods and results. Other sections will grow in the final project report as well, but each should appear in the project proposal in reasonably complete form. Of particular interest are a description of the data to be used, a detailed description of how it was collected, a literature search of analyses already performed on the data and the conclusions drawn from those analyses, and an overview of the techniques you intend to use in analyzing the data. Project proposals that do not outline a project with sufficiently high complexity will be given zero credit and groups that author such proposals will be required to resubmit project proposals on a weekly basis thereafter until the proposal reaches a sufficient level of complexity to warrant a passing grade.
 
 
-_Final Exam Period_ – Final project presentations. The presentation will be graded and will count as 25% of the final project grade. Each group will present their results in a short in-class presentation (single presenters are preferred). The day on which your group will give their presentation will be decided in class on Dec. 3rd by a random selection process. The duration of each presentation will depend on the total number of groups formed, but should not exceed 10 minutes. Slides for the presentations (plan on 1-2 per minute of presentation) must be delivered to the instructor 15 minutes before the start of class. The presentation should explain the domain of the regression analysis, highlight the methods used, and cover analysis results. Each group will be subject to 5-10 minutes of questioning from both the instruction and the other students in the class about all aspects of their project. Having backup slides (slides prepared, but not used in the presentation) for questions about methodology detail will be expected of all groups.-->
+* [Final Exam Period] : (the final exam period for this class is scheduled for Tuesday, 12/21/2010, 7:10pm - 10:00pm) Final papers due _and_ final project presentations are to be given at this time. The presentation will be graded and will count as 25% of the final project grade. Each group will present their results in a short in-class presentation (single presenters are preferred).  The duration of each presentation will depend on the total number of groups formed, but should not exceed 20 minutes. Slides for the presentations (plan on 1-2 per minute of presentation) must be delivered to the instructor 15 minutes before the start of class. The presentation should introduce the problem, highlight the methods used, and cover analysis results. Each group will be subject to 5-10 minutes of questioning from the instructor, the TA, potentially guest faculty reviewers, and the other students in the class about all aspects of their project. Having backup slides (slides prepared, but not used in the presentation) for questions about methodology detail will be expected of all groups.
+
+Paper formatting materials
+==========================
+<br></br>
+
+Latex (yes!) is preferred for formatting your proposals and papers.  Included here are a number of files that will be extremely useful to you in  preparing a properly formatted paper.
+
+* [main.tex](main.tex)
+* [nips10submit_e.sty](nips10submit_e.sty)
+* [fig1.pdf](fig1.pdf)
+* [refs.bib](refs.bib)
+
+_Instructions for use_ : download all of the files to a single folder then run "pdflatex main; bibtex main; pdflatex main; pdflatex main."  This will produce a file "main.pdf."  Edit main.tex to include elements related to your final project.  Google extensively to learn latex.  Math symbols are particularly easy to look up.
+ 
