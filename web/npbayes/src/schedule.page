@@ -75,6 +75,25 @@ The tentative schedule is
 		<TD><a href="http://arxiv.org/pdf/1006.1062v1">Adams, Ghahramani and Jordan (2010)</a></TD>
 		<TD>Nick Bartlett</TD>
 	</TR>
+			<TR>
+		<TD>Nov 19</TD>
+		<TD>Slice Sampling</TD>
+		<TD><a href="http://www.jstor.org/stable/3448413">Neal (2003)</a> and <a href="http://www.icer.it/docs/wp2006/ICERwp16-06.pdf">Walker (2006)</a></TD>
+		<TD>Nick Bartlett</TD>
+	</TR>
+	
+	<TR>
+		<TD>Nov 26</TD>
+		<TD>No Meeting - Thanksgiving</TD>
+		<TD></TD>
+		<TD></TD>
+	</TR>
+			<TR>
+		<TD>Dec 3rd</TD>
+		<TD>Bits-back Coding</TD>
+		<TD><a href="http://www.cis.hut.fi/cis/projects/bayes/papers/files/Honkela04TNN.pdf">Honkela and Valpola (2004)</a></TD>
+		<TD>David Pfau</TD>
+	</TR>
 </TABLE>
 
 The schedule is tentative and likely to change as the reading group evolves. Each session will have a group leader assigned, but this person is not responsible for creating a polished presentation of the reading material, only to help lead the group and provoke discussion.
