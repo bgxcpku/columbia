@@ -14,9 +14,8 @@ sort_order: 2
 | Java 1.6 | [Nicholas Bartlett] | 1.0 | [javadocs](../documentation/sequencememoizer/index.html)| [License](../licensing/README.txt) | [jar](jars/v1.6/sequencememoizer-1.0-jar-with-dependencies.jar)
 
 ###Notes
-*The two version authored by Nicholas Bartlett are compiled with different versions of the JDK. The jars contain the [gnu.trove] package as well as the [edu.columbia.stat.wood.pub.sequencememoizer] and [edu.columbia.stat.wood.pub.util] packages.  There are no main methods implemented in Java, so all use of this code should be used either through MATLAB or as a Java library accessed by your own project.
+*The two version authored by Nicholas Bartlett are compiled with different versions of the JDK. The jars contain the [gnu.trove] package as well as the [edu.columbia.stat.wood.pub.sequencememoizer] package.  There are no main methods implemented in Java, so all use of this code should be used either through MATLAB or as a Java library accessed by your own project.
 
 [gnu.trove]: http://trove4j.sourceforge.net/
 [edu.columbia.stat.wood.pub.sequencememoizer]: ../documentation/sequencememoizer/index.html
-[edu.columbia.stat.wood.pub.util]: ../documentation/util/index.html
 [Nicholas Bartlett]: http://stat.columbia.edu/~bartlett
