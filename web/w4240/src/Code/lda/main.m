@@ -12,7 +12,7 @@ clear DS WS
 n_docs = max(document_assignment);
 
 %number of topics
-n_topics = 10;
+n_topics = 50;
 
 %topic assigments
 topic_assignment = ceil(rand(size(words))*n_topics);
@@ -40,7 +40,7 @@ alpha = 1;
 gamma = 1;
 
 jll = [];
-for i = 1 : 100
+for i = 1 : 1000
 jll = [jll joint_log_lik(doc_counts,topic_counts,alpha,gamma)];
 plot(jll);
 drawnow;
