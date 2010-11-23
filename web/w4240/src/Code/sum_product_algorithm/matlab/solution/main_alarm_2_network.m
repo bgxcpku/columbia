@@ -739,21 +739,20 @@ vn_Intubation.addNode(fn_MinVol_VentLung_Intubation);
 fn_MinVol_VentLung_Intubation.addNode(vn_Intubation); 
 
 %now we do the next node 
-%%
 
-%vn_LVFailure.setValue(1);
-%vn_PulmEmbolus.setValue(1);
+vn_SaO2.setValue(1);
+vn_BP.setValue(1);
+vn_ArtCO2.setValue(1);
+vn_Press.setValue(2);
+vn_ExpCO2.setValue(1);
 
 for i = 1 : 20
     disp(['i = ' num2str(i)]);
     vn_MinVol.loopy_bp;
     vn_MinVol.setNotUpdated;
-    %vn_TPR.getMarginalDistribution
 end
 
-vn_VentLung.getMarginalDistribution
-vn_VentMach.getMarginalDistribution
-vn_PCWP.getMarginalDistribution
+vn_KinkedTube.getMarginalDistribution
 
 %%
 f_hy = [0.2 0.8];

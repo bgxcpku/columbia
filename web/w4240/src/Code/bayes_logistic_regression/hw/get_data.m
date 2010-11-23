@@ -1,3 +1,4 @@
+
 function [X Y headers] = get_data()
 
 fid = fopen('arthritis_treatment');
@@ -21,7 +22,7 @@ while 1
         male = 0;
     end
     
-    X = [X ; treated male A{4}];
+    X = [X ; treated male log(A{4})];
     Y = [Y ; (A{5} > 0)];
     
     if strcmp(A{7},'Treated')
@@ -36,16 +37,12 @@ while 1
         male = 0;
     end
     
-    X = [X ; treated male A{9}];
+    X = [X ; treated male log(A{9})];
     Y = [Y ; (A{10} > 0)];
 end
 
-headers = {'treated', 'male', 'age'};
-
 X = [X X(:,1).*X(:,2) X(:,1).*X(:,3) X(:,2).*X(:,3) X(:,1).*X(:,2).*X(:,3)];
 X = [ones(size(X,1),1) X];
-
-
-
+headers = {'intercept','treated','male','log age','treated x male', 'treated x log age', 'male x age', 'treated x male x log age'};
 
 fclose(fid);
