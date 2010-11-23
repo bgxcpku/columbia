@@ -47,5 +47,4 @@ classdef node < handle
             end
         end
     end
-    
 end

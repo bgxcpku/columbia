@@ -25,26 +25,13 @@ fn_am.setcm({vn_m,vn_a},{ones(2,1),ones(2,1)});
 fn_bea.setcm({vn_a,vn_e,vn_b},{ones(2,1), ones(2,1),ones(2,1)});
 vn_m.setcm({fn_am},{ones(2,1)});
 
+%set some nodes
+%vn_e.set_value(1);
+vn_j.set_value(1);
 
-% edit get_message_vn.m
-%%
+%do inference
 get_all_messages(vn_b);
 pass_all_messages(vn_b);
 
-% vn_b.m{1} = get_message_fn_b(vn_b);
-% vn_b.m{2} = get_message_fn_bea(vn_b);
-
-
-
-%%
-%get_all_messages('vn_b',vn_b,nodes)
-
-vn_b.m{1} = get_message_fn_b('vn_b',nodes);
-vn_b.m{2} = get_message_fn_bea('vn_b',nodes);
-
-vn_a.m{1}
-
-m_dist = vn_b.m{1}.*vn_b.m{2};
-m_dist = m_dist / sum(m_dist)
-
-%get_message_vn('vn_b',nodes)
+%display some marginal distributions
+get_marginal_distribution(vn_b)

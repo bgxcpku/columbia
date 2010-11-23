@@ -7,6 +7,8 @@ clf
 figure(1)
 plot_data(data,labels)
 
+%%
+
 [mu sigma pi] = k_means(k,data);
 
 ll = log_likelihood(data,mu,sigma,pi);

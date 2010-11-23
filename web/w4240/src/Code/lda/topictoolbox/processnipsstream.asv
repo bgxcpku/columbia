@@ -1,0 +1,5 @@
+load 'nipsstream' WS DS WO;
+
+[ WW , WO , WS , DS , SI , ORIGWSPOS ]=stream_to_collocation_data(DS,WS,WO,stopfile);
+
+save 'NYTimesCo' WW WO DS WS SI ORIGWSPOS;

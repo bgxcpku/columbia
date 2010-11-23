@@ -1,0 +1,40 @@
+rand( 'state' ,1 );
+ND = 100;
+
+load 'NYTimesCollocation'; % WW WO DS WS SI;
+
+WW_NEW = WW;
+WW_OLD = WW;
+DS_NEW = DS;
+DS_OLD = DS;
+WS_NEW = WS;
+WS_OLD = WS;
+SI_NEW = SI;
+SI_OLD = SI;
+
+clear WW WS DS SI;
+
+% take a subset of docs for the 'NEW' document set
+D = max( DS_NEW );
+dset = randperm( D );
+dset = unique(dset( 1:ND );
+wh = find( ismember( DS_NEW , dset ));
+
+DS_NEW = DS_NEW( wh );
+WS_NEW = WS_NEW( wh );
+SI_NEW = SI_NEW( wh );
+
+% map document indices into new set
+[ temp , loc ] = ismember( DS_NEW , dset );
+DS_NEW = loc;
+
+load 'ldacol_NYTimes'; % WPNEW DPNEW WONEW WP DP WC C ALPHA BETA GAMMA0 GAMMA1 DELTA SEED N Z T;
+
+WP_OLD = WP;
+DP_OLD = DP;
+WC_OLD = WC;
+
+clear WP DP WC;
+
+[ DP_NEW,C,Z,PROB ] = NewDocumentsLDACOL( WS_NEW , DS_NEW , SI_NEW , WW_NEW , T , N , NSAMPLE , ALPHA , BETA , GAMMA0, GAMMA1 , DELTA , SEED , OUTPUT , WW_OLD , WP_OLD , WC_OLD , WS_OLD);
+  

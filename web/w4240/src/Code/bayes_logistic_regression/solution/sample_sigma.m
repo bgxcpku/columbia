@@ -7,5 +7,4 @@ function sigma = sample_sigma(beta, a, b)
 
 sigma_inv = gamrnd(size(beta,1) / 2 + a, 1 / (1 / b + .5 * sum(b.^2)));
 sigma = 1 / sigma_inv;
-end
 

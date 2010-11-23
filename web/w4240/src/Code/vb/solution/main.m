@@ -12,8 +12,9 @@ plot_d_dimensional_mixture_data(meas,group)
 
 global m_0 b_0 a_0 W_0 nu_0
 
+
 [N D]  = size(meas);
-K = 15;
+K = 10;
 
 assignments = k_means(K,meas);
 r = (ones(N,K) / K) * .1;
@@ -21,11 +22,20 @@ for k = 1 : K
     r(:,k) = r(:,k) + .9 * (assignments == k);
 end
 
+% r = gamrnd(5,1,N,K);
+% r = r ./ repmat(sum(r,2),1,K);
+
 m_0 = zeros(D,1);
 b_0 = 1;
 a_0 = 1;
 nu_0 = 4;
 W_0 = 10 * eye(4) / nu_0;
+
+
+%[data labels] = sample_from_prior(K,D);
+
+%plot_d_dimensional_mixture_data(data, labels);
+
 
 lb = [];
 lower_bound = -Inf;
@@ -58,9 +68,4 @@ for i = 1 : 1000
 end
 
 disp(['mean number of clusters in posterior distribution is = ' num2str(mean_number_clusters / 1000)])
-
-
-
-
-
 

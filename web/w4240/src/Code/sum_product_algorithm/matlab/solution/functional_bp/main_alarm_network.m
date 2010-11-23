@@ -26,12 +26,12 @@ fn_bea.setcm({vn_a,vn_e,vn_b},{ones(2,1), ones(2,1),ones(2,1)});
 vn_m.setcm({fn_am},{ones(2,1)});
 
 %set some nodes
-vn_e.set_value(1);
-vn_b.set_value(1);
+%vn_e.set_value(1);
+vn_j.set_value(1);
 
 %do inference
 get_all_messages(vn_b);
 pass_all_messages(vn_b);
 
 %display some marginal distributions
-get_marginal_distribution(vn_j)
+get_marginal_distribution(vn_b)
