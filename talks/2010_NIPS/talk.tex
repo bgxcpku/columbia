@@ -42,42 +42,63 @@
   David~Pfau %\inst{1}
 }
 
-\institute[Columbia]
+\institute[Poster T81]
 {
   %\inst{1}%
   Columbia University
 }
 
-\date[Poster T81]
-{8 December 2010}
-
 %\def\blfootnote{\xdef\@thefnmark{}\@footnotetext}
 
 % The main document
 
+\setbeamertemplate{frametitle}{ 
+\begin{centering} 
+\large{\insertframetitle} \\
+\small{\insertframesubtitle}
+\par 
+\end{centering} 
+} 
+
 \begin{document}
 
 \begin{frame}
-	\begin{block}{Discrete Sequence Modeling}
-		\begin{itemize}
-			\item{01101010111001011...}
-			\item{CGTAACCGATTAC...}
-			\item{\em Four score and seve...}
-		\end{itemize}
-	\end{block}
-	\begin{block}{Tasks}
-		\begin{itemize}
-			\item{Conditional Prediction}
-			\item{Typicality - Clustering, etc}
-		\end{itemize}
-	\end{block}
+	\frametitle{Probabilistic Deterministic Infinite Automata} 
+	\framesubtitle{David Pfau, Nicholas Bartlett, Frank Wood}
+	\begin{center}\
+		\includegraphics[scale=0.4]{columbia_logo.pdf}
+	\end{center}
+		\begin{block}{Discrete Sequence Modeling}
+			\begin{itemize}
+				\item{01101010111001011...}
+				\item{CGTAACCGATTAC...}
+				\item{\em Four score and seven...}
+			\end{itemize}
+		\end{block}
+		\begin{block}{Tasks}
+			\begin{itemize}
+				\item{Conditional Prediction}
+				\item{Typicality - Clustering, etc}
+			\end{itemize}
+		\end{block}
 \end{frame}
 
 \begin{frame}
-	Choose model that trades off accurate prediction, space complexity and prediction speed: {\em Probabilistic Deterministic Infinite Automata} 
-	\begin{center}
-		\includegraphics[scale=0.1]{plot.pdf}
+	\begin{block}{Probabilistic Deterministic Infinite Automata (PDIA)}
+		\begin{itemize}
+			\item{Trade off generalization, space complexity, prediction speed}
+			\item{Versus Hidden Markov Model (HMM) or n$^{th}$ order Markov model (m-gram)}
+		\end{itemize}
+	\end{block}
+ 	\begin{center}
+		\begin{table}[ht]
+			\begin{tabular}{cc}
+				\includegraphics[scale=0.1]{front.pdf} & 
+				\includegraphics[scale=0.1]{side.pdf}
+			\end{tabular}
+		\end{table}
 	\end{center}
+	\vfill\vspace{1.13cm}\hfill\includegraphics[scale=0.2]{columbia_logo.pdf}
 \end{frame}
 
 \begin{frame}
@@ -85,37 +106,39 @@
 		\column{0.5\textwidth}
 			\begin{block}{Probabilistic DFA}
 				\begin{itemize}
-					\item{Roughly: HMMs with one possible path through states given data}
+					\item{A PDFA $\approx$ HMM with one possible path through states given data}
 					\item{m-gram $\subsetneq$ PDFA $\subsetneq$ HMM}
 				\end{itemize}
 			\end{block}
-			\begin{block}{An Infinite Automata Prior}
+			\begin{block}{Bayesian Infinite Automata}
 				\begin{itemize}
-					\item{Define Prior over DFA topology}
-					\item{Biased towards small DFA that reuse states}
+					\item{Define prior over DFA topology}
+					\item{Bias towards small DFA that reuse states}
 					\item{Let bound on state cardinality $\rightarrow \infty$}
 				\end{itemize}
 			\end{block}
 		\column{0.5\textwidth}
-			\includegraphics[scale=0.8]{even.pdf}
+			\includegraphics[scale=0.8]{bigram.pdf}
 	\end{columns}
+	\vfill\hfill\includegraphics[scale=0.2]{columbia_logo.pdf}
 \end{frame}
 
 \begin{frame}
 	\begin{block}{Results}
 		\begin{itemize}
-			\item{Recovers topology of artificial PDFAs}
-			\item{Natural language: generalizes as well as 3rd-order Markov, 1/10th the model size}
-			\item{Averaging predictions over DFA topologies better than single topology}
+			\item{Recovers topology of simple PDFA}
+			\item{Generalizes as well as 3rd-order Markov, 1/10th the \# of states (natural language)}
+			\item{Predicts better with averaging from PDFA of different topology than with single PDFA}
 		\end{itemize}
 	\end{block}
 	\begin{block}{Recap}
 		\begin{itemize}
 			\item{Nonparametric Bayesian learning of simple models for discrete sequences}
-			\item{Favorable tradeoff between model size and generalization}
 			\item{Faster forward prediction than for HMM}
+			\item{Favorable tradeoff between model size and generalization}
 		\end{itemize}
 	\end{block}
+	\vfill\vspace{.51cm}\hfill\includegraphics[scale=0.2]{columbia_logo.pdf}
 \end{frame}
 
 \end{document}
