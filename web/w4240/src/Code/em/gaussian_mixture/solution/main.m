@@ -1,13 +1,11 @@
-k = 30;
-d = 20;
+k = 12;
+d = 2;
 n = 10000;
 [data labels] = generate_data(n,d,k);
 
 clf
 figure(1)
 plot_data(data,labels)
-
-%%
 
 [mu sigma pi] = k_means(k,data);
 

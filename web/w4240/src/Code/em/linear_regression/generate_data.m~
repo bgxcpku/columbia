@@ -1,5 +1,0 @@
-function [X Y] = generate_data(n,d,data_noise,weight_noise)
-
-weights = mvnrnd(zeros(d + 1,1),weight_noise * eye(d+1));
-
-X = [ones(n,1) unifrnd(-10,10,n,d)];
