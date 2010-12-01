@@ -22,20 +22,11 @@ for k = 1 : K
     r(:,k) = r(:,k) + .9 * (assignments == k);
 end
 
-% r = gamrnd(5,1,N,K);
-% r = r ./ repmat(sum(r,2),1,K);
-
 m_0 = zeros(D,1);
 b_0 = 1;
 a_0 = 1;
 nu_0 = 4;
 W_0 = 10 * eye(4) / nu_0;
-
-
-%[data labels] = sample_from_prior(K,D);
-
-%plot_d_dimensional_mixture_data(data, labels);
-
 
 lb = [];
 lower_bound = -Inf;
