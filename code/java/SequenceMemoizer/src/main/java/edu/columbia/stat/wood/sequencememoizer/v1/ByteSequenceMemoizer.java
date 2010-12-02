@@ -175,6 +175,7 @@ public class ByteSequenceMemoizer extends BytePredictiveModel implements ByteSeq
 
         fullSequence = new byte[context.length + sequenceLength];
         index = context.length;
+        System.arraycopy(context, 0, fullSequence, 0, index);
 
         for (int i = 0; i < sequenceLength; i++) {
             c = new byte[index];
