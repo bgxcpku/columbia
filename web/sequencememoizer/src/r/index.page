@@ -11,7 +11,7 @@ It is possible to use the Java versions of the sequence memoizer in R.
 
 ### R Package
 
-<a href = "SequenceMemoizer_1.0.0.tar.gz" onClick="javascript: pageTracker._trackPageview('/downloads/sm_r_package_v1'); ">SequenceMemoizer_1.0.0.tar.gz</a>
+<a href = "R_SequenceMemoizer_1.1.tar.gz" onClick="javascript: pageTracker._trackPageview('/downloads/sm_r_package_v1'); ">R_SequenceMemoizer_1.1.tar.gz</a>
 
 ### Using rJava (first integration)
 

@@ -1,0 +1,33 @@
+---
+title: R
+in_menu: true
+routed_title: R
+sort_order: 4
+---
+## R + Java + Sequence Memoizer
+It is possible to use the Java versions of the sequence memoizer in R.  
+
+[Daniel Lee](mailto:bearlee@alum.mit.edu) has developed two different approaches to using the sequence memoizer in R.
+
+### R Package
+
+<a href = "SequenceMemoizer_1.0.0.tar.gz" onClick="javascript: pageTracker._trackPageview('/downloads/sm_r_package_v1'); ">SequenceMemoizer_1.0.0.tar.gz</a>
+
+### Using rJava (first integration)
+
+"I've ported the example that's in the Matlab section to R. This was
+done without an R friendly wrapper. I figured you might as well throw
+this up to demonstrate how easy it is to get it up and running now. It
+is assumed that the [jar](../jar_file/index.html) is placed in the working directory of R (which
+can be found by calling getwd()) and rJava is installed
+(install.packages ("rJava")). There is no "import" functionality in
+rJava, so I've had to construct the objects using the fully qualified
+names. Other than that, it's mostly a line by line translation of the
+Matlab example."
+
+### R sequence memoizer usage (java, simple) 
+
+[Example-withoutPackage.R](Example-withoutPackage.R)
+
+We are looking for a collaborator to help develop an R package importing the current jar files into R.
+

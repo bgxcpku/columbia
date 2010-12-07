@@ -1,0 +1,19 @@
+---
+title: Home
+in_menu: true
+routed_title: Home
+sort_info: 0
+---
+
+The [Sequence Memoizer](papers/index.html) is a nonparametric Bayesian model for discrete sequence data.  Discrete sequence data arises in natural language processing, [compression](http://deplump.com/), stock-market prediction, and so forth.  The sequence memoizer is a nth-order Markov model in the limit of n going to infinity that can be trained and represented efficiently. 
+
+Download latest java version:
+
+|---
+|:-:|:-:
+|<a href = "jar_file/jars/v1.6/sequencememoizer-1.0-jar-with-dependencies.jar"  onClick="javascript: pageTracker._trackPageview('/downloads/v1.6'); ">sequencememoizer-1.0-jar-with-dependencies.jar</a>| [javadoc](documentation/sequencememoizer/index.html)|
+
+
+
+This website has been established to share implementations of the sequence memoizer and encourage further development.
+Further, it is to be a platform for discussing the sequence memoizer and other nonparameteric Bayesian methods.  If you are doing research related to the Sequence Memoizer or just want to be informed regarding the ongoing discussion, please sign up for the [sequence memoizer google group](http://groups.google.com/group/sequence-memoizer?hl=en).

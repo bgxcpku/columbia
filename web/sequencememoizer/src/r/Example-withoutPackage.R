@@ -25,7 +25,7 @@ vocab_size <- as.integer (max(int_gettysburg_address)+1)  # sequence memoizer is
 
 # initialize sequence memoizer
 library (rJava)
-.jinit (classpath="sequencememoizer-1.0-jar-with-dependencies.jar")
+.jinit (classpath="sequencememoizer-1.1-jar-with-dependencies.jar")
 
 ismp <- .jnew ("edu.columbia.stat.wood.pub.sequencememoizer.IntSequenceMemoizerParameters", vocab_size)
 sm <- .jnew ("edu.columbia.stat.wood.pub.sequencememoizer.IntSequenceMemoizer", ismp);
