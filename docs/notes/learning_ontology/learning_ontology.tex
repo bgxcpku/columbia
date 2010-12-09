@@ -1,0 +1,36 @@
+\documentclass[11pt]{article}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{epstopdf}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\title{Learning an ontology for discrete observations with high dimensional discrete contextual information : or something like that}
+\author{Nick Bartlett}
+
+\begin{document}
+\maketitle
+
+As a cononical case I will consider the application of a market basket in the most basic sense.  By that I mean that we have observed data $X$ which is a $n \ {\rm x } \ d$ binary matrix.  A $1$ in the $i,j$ entry indicates that the $i$'th person had item $j$ in their basket.  For now, we will assume that is all the information we have about the consumer, i.e. we have no covariate information about the individual user.  We may be able to include that information later if we decide on an appropriately flexible and awesome framework for modeling.  
+
+After brainstorming and thinking about the tools we have for this problem and the basic kinds of things we want our model to discover I would like to get us started by beginning to outline a model.  To each unique row, of which there are $2^d$, I will assume there is a latent vector of K binary, hierarchical features.  I will denote these features as $\phi^i$.
+
+We will have to endow this latent hierarchical vector of veatures with a prior, probably it makes sense to define the prior by factoring it as $P(\phi) = P(\phi_0)P(\phi_1 | \phi_0) \ldots P(\phi_M| \phi_{M-1}, \ldots, \phi_0)$ and then specifying an independent beta-bernoulli prior for each factor.  Maybe the priors should be tied together somehow, like based on depth, but I'm not sure. 
+
+Now, I would also like to associate a latent, hiearchical binary feature vector of length $J$ to each product in the store.  I will denote the feature vector for product $j$ as $\theta^j$.
+
+The model I am thinking about is hieararchical.  I assume that person $i$ selected the elements of the basket as a sequence of independent bernoulli trials.  So what we are after is modeling the $p_{i,j}$ for the bernoulli trials.  I will assume that $p_{i,j} = p_{\phi^i, \theta^j}$, which is to say that the probability of person $i$ throwing object $j$ into the basket depends only on the features of person $i$ and the features of product $j$.  So, the model is
+
+\begin{eqnarray*}
+  X_{i,j} &\sim& \ {\rm Bernoulli}(p_{i,j})\\
+  p_{\phi^i,\theta^j} &\sim& \ {\rm Beta}(\alpha_{i,j}, \lambda_{\phi^i,\theta^j} p_{\sigma(\phi^i),\theta^j} + (1 - \lambda_{\phi^i, \theta^j})p_{\phi^i,\sigma(\theta^j)})
+\end{eqnarray*}
+
+When I write the beta distribution parameterized as ${\rm Beta}(\alpha, p)$, I mean the same thing as the typical parameterization ${\rm Beta}(p\alpha, (1-p)\alpha)$.  Finally, the $\sigma$ operator here is used here to represent the prefix operator on the features.  That is $\sigma([\phi_0, \ldots, \phi_{K}]) = [\phi_0, \ldots, \phi_{K-1}]$.
+
+I have not yet considered sampling in this model.  We know how to sample the parameters with the latent features fixed.  Sampling the features will be difficult, but if people think this kind of model could be interesting it might be worth writing up a slice sampler and seeing if we get anything out.  We will have to consider appropriate priors on the latent features as we would hope to bias towards some clustering.  Obviously it might also make sense to allow the features to have variable length, perhaps even infinite length, but at the very least to allow for observations at non-terminal nodes of the hierrachical trees we are creating.
+
+\end{document}  
