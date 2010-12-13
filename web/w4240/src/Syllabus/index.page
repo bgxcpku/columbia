@@ -31,7 +31,7 @@ _Note: in order to play the pencast files you need to download and install [live
 | 19 | [Variational Inference Usage](../Lectures/vb_usage.pdf) | 10.6
 | 20 | [Basic sampling methods]() | 11.1
 | 21 | [Markov chain Monte Carlo]() | 11.2
-| 22 | cont. | 11.3
+| 22 | [LDA](../Lectures/lda_lecture.pdf) | 
 | 23 | [PCA]() | 12.1
 | 24 | [(Hidden) Markov Models]() | 13.1
 | 25 | [Forward backward, Viterbi, Sum product again]() | 13.2
