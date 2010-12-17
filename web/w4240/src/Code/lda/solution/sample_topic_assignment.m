@@ -30,8 +30,6 @@ function [topic_assignment topic_counts doc_counts topic_N] =  ...
         %sample assignment
         p = (doc_counts(doc,:) + alpha) / (doc_N(doc) + alpha_sum);
         p = p .* (topic_counts(:,word) + gamma)' ./ (topic_N + gamma_sum)';
-%         size(p)
-%         n_topics
         
         topic = randsample(n_topics,1,true,p);    
         
@@ -40,5 +38,7 @@ function [topic_assignment topic_counts doc_counts topic_N] =  ...
         topic_N(topic) = topic_N(topic) + 1;
         
         doc_counts(doc,topic) = doc_counts(doc,topic) + 1;
+        
+        %assign topic
         topic_assignment(i) = topic;
     end
