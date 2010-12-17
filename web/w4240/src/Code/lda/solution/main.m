@@ -4,16 +4,16 @@ load bagofwords_nips
 alphabet_size = max(WS);
 
 %subset the data
-document_assignment  = DS(DS <= 25);
-words = WS(DS <= 25);
+document_assignment  = DS; %(DS <= 25);
+words = WS; %(DS <= 25);
 clear DS WS
 
 %number of documents
-n_docs = max(document_assignment);
+n_docs = max(document_assignment)
 
 %number of topics
-%n_topics = 20;
-n_topics = 10;
+n_topics = 20
+%n_topics = 10;
 
 %topic assigments
 topic_assignment = ceil(rand(size(words))*n_topics);
@@ -45,7 +45,7 @@ mx_jll = -Inf;
 mx_doc_counts = doc_counts;
 mx_topic_counts = topic_counts;
 
-n_iters = 10;
+n_iters = 10000;
 ll = zeros(1,n_iters);
 
 for i = 1 : n_iters
@@ -72,15 +72,20 @@ sample_topic_assignment(topic_assignment ...
 jll = joint_log_lik(doc_counts,topic_counts,alpha,gamma);
 ll(i) = jll;
 
+disp(['i = ' num2str(i)]);
+disp(['joint log like = ' num2str(jll)]);
+
 if jll > mx_jll
     mx_doc_counts = doc_counts;
     mx_topic_counts = topic_counts;
     mx_jll = jll;
+
+    save('mx_sample','mx_doc_counts','mx_topic_counts')
 end
                         
 end
 
-save('mx_sample','mx_doc_counts','mx_topic_counts')
+
 
 % jll = [jll joint_log_lik(doc_counts,topic_counts,alpha,gamma)];
 % plot(jll);
