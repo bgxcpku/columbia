@@ -1,0 +1,164 @@
+\documentclass[11pt]{article}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{epstopdf}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\title{Information Theory and Dirichlet Processes}
+\author{David Pfau}
+%\date{}                                           % Activate to display a given date or no date
+
+\newcommand{\Log}{\mathrm{log}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\G}{\mathcal{G}}
+\newcommand{\B}{\mathrm{Beta}}
+
+\begin{document}
+\maketitle
+%\section{}
+%\subsection{}
+
+\section{Expected Entropy}
+
+\subsection{Dirichlet Process}
+
+We consider here the expected entropy from a draw from a Dirichlet Process.  Let $G$ be the base distribution of this process, $\alpha$ be the concentration parameter, then we want to know $\mathbb{E}[H[\G]]$ where $\G \sim$ DP$(\alpha,G)$.  A draw from the DP has form $\G = \sum_{i=0}^\infty \pi_i \delta_{\theta_i}$, and so
+
+\[
+H[\G] = -\sum_{i=0}^\infty \pi_i \Log\pi_i
+\]
+
+\[
+\E[H[\G]] = -\sum_{i=0}^\infty \E[\pi_i \Log\pi_i] = -\sum_{i=0}^\infty \E\left[\left(\pi'_i\prod_{j=0}^{i-1} (1-\pi'_j)\right)\Log\left(\pi'_i\prod_{k=0}^{i-1} (1-\pi'_k)\right)\right] 
+\]
+
+\[
+= -\sum_{i=0}^\infty \left(\E[\pi'_i\Log\pi'_i]\prod_{j=0}^{i-1}\E[1-\pi'_j] + \sum_{k=0}^{i-1}\E[\pi'_i]\E[(1-\pi'_k)\Log(1-\pi'_k)]\prod_{l \neq k} \E[1-\pi'_l]\right)
+\]
+
+By the independence of different $\pi'_i$.  Since $\pi'_i \sim$ Beta$(1,\alpha)$ i.i.d., $\E[\pi'_i] = \frac{1}{1+\alpha}$, $\E[1-\pi'_i] = \frac{\alpha}{1+\alpha}$ and $\E[\pi'_i$log$\pi'_i] = \frac{1-H_{\alpha+1}}{1+\alpha}$, $\E[(1-\pi'_i)\Log(1-\pi'_i)] = \frac{-\alpha}{(1+\alpha)^2}$, where $H_{n}$ is the $n^{th}$ harmonic number.  Plugging this into the above yields
+
+\[
+-\sum_{i=0}^\infty \left( \frac{1-H_{\alpha+1}}{1+\alpha}\left(\frac{\alpha}{1+\alpha}\right)^i - \frac{i}{1+\alpha}\frac{\alpha}{(1+\alpha)^2}\left(\frac{\alpha}{1+\alpha}\right)^{i-1}\right)
+\]
+
+\[
+= -\sum_{i=0}^\infty \frac{(1+\alpha)(1-H_{\alpha+1}) - i}{(1+\alpha)^2}\left(\frac{\alpha}{1+\alpha}\right)^i 
+\]
+
+\[
+= H_{\alpha+1} - \frac{1}{1+\alpha}
+\]
+
+\subsection{Pitman-Yor Process}
+
+Extending to Pitman-Yor processes with discount $d$, the $\pi'_i$ are distributed Beta$(1-d,\alpha + id)$, so 
+
+\begin{eqnarray*}
+\E[\pi'_i] & = & \frac{1-d}{1+\alpha+(i-1)d} \\
+\E[1-\pi'_i] & = & \frac{\alpha+id}{1+\alpha+(i-1)d} \\
+\E[\pi'_i\Log\pi'_i] & = & \frac{(1-d)(H_{1-d} - H_{1+\alpha+(i-1)d})}{1+\alpha + (i-1)d} \\
+\E[(1-\pi'_i)\Log(1-\pi'_i)] & = & \frac{(\alpha + id)(H_{\alpha+id}-H_{1+\alpha+(i-1)d})}{1+\alpha+(i-1)d}
+\end{eqnarray*}
+
+\begin{eqnarray*}
+\E[H[\G]] & = & -\sum_{i=0}^\infty \frac{(1-d)(H_{1-d} - H_{1+\alpha+(i-1)d})}{1+\alpha+(i-1)d}\prod_{j=0}^{i-1}\frac{\alpha+jd}{1+\alpha+(j-1)d}  \\
+& & + \sum_{k=0}^{i-1} \frac{1-d}{1+\alpha+(k-1)d} \frac{(\alpha+kd)(H_{\alpha+kd}-H_{1+\alpha+(k-1)d})}{1+\alpha + (k-1)d} \\
+& & \frac{1+\alpha+(k-1)d}{\alpha+kd}\prod_{j=0}^{i-1} \frac{\alpha+jd}{1+\alpha+(j-1)d} \\
+& = & -\sum_{i=0}^\infty \left(\prod_{j=0}^{i-1}\frac{\alpha+jd}{1+\alpha+(j-1)d}\right) \left(\sum_{k=0}^{i}\frac{(1-d)(H_{1-d} - H_{1+\alpha+(k-1)d})}{1+\alpha+(k-1)d} \right)
+\end{eqnarray*}
+
+\section{Expected Entropy - The Easy Way}
+
+We can also use the self-similarity property of a draw from a DP: if we remove the first stick $\pi_0$ and rescale all other sticks $\pi^*_i = \frac{\pi_i}{1-\pi_0}$, the result is also a draw from DP$(\alpha,H)$.  For a Pitman-Yor process, the remaining rescaled sticks are a draw from PY$(\alpha+d,d,H)$.  Using this we get:
+
+\begin{eqnarray*}
+\E\left[-\sum_{i=0}^\infty \pi_i\Log\pi_i\right] & = & -\E[\pi_0\Log\pi_0] - \sum_{i=0}^\infty \E[(1-\pi_0)\pi^*_i(\Log(1-\pi_0) + \Log\pi^*_i)] \\
+& = & -\E[\pi_0\Log\pi_0] - \E[(1-\pi_0)\Log(1-\pi_0)]\sum_{i=0}^\infty\E[\pi^*_i] - \E[1-\pi_0]\sum_{i=0}^\infty\E[\pi^*_i\Log\pi^*_i]
+\end{eqnarray*}
+
+Since $\sum_{i=0}^\infty \pi^*_i = 1$ and $\E[\pi^*_i\Log\pi^*_i] = \E[\pi_i\Log\pi_i]$ for draws from a DP:
+
+\begin{eqnarray*}
+\E\left[-\sum_{i=0}^\infty \pi_i\Log\pi_i\right] & = & \frac{-\E[\pi_0\Log\pi_0] - \E[(1-\pi_0)\log(1-\pi_0)]}{\E[1-\pi_0] - 1} \\
+& = & \frac{\frac{H_{\alpha+1}-1}{1+\alpha}+\frac{\alpha}{(1+\alpha)^2}}{\frac{\alpha}{1+\alpha}-1} = -\frac{(H_{\alpha+1}-1)(1+\alpha)+\alpha}{1+\alpha} = H_{\alpha+1}-\frac{1}{1+\alpha}
+\end{eqnarray*}
+
+Once again, things are slightly tricker for Pitman-Yor processes, and let's say that if $\G \sim$ DP$(\alpha,d,H)$, then $f(\alpha,d) := \E[H[\G]]$, and we get the recursion relation
+
+\begin{eqnarray*}
+f(\alpha,d) & = & -\E[\pi_0\Log\pi_0] - \E[(1-\pi_0)\Log(1-\pi_0)]-\E[1-\pi_0]f(\alpha+d,d) \\
+& = & -\frac{(1-d)(H_{1-d} - H_{1+\alpha-d})}{1+\alpha - d} - \frac{\alpha(H_{\alpha}-H_{1+\alpha-d})}{1+\alpha-d} - \frac{\alpha}{1+\alpha-d} f(\alpha+d,d) \\
+& = & H_{1+\alpha-d} - \frac{(1-d)H_{1-d} + \alpha(H_\alpha+f(\alpha+d,d))}{1+\alpha-d}
+\end{eqnarray*}
+
+\section{Subextensive Entropy}
+
+Note that the entropy does not depend at all on the base distribution $G$, not just in the case of expected entropy, but in general.  If $\G$ is known, then all information about $G$ is in the location of the sticks.  If $\G$ is not known, however, then a draw $\theta_n$ from $\G$ may correspond to an earlier draw, in which case there is no information about $G$, or it may be a previously unseen draw from $G$.  In the limit as $n \rightarrow \infty$ the $\theta_n$ are drawn from existing values almost surely, and the entropy rate of the sequence of draws is just the entropy of $\G$.  There is however a term in the conditional entropy $H[\Theta_n|\Theta_1\ldots\Theta_{n-1}]$ that vanishes as $n\rightarrow\infty$ but is still significant for smaller values of $n$, the so-called {\em subextensive} entropy.  We will assume that $n$ is large enough that the distribution over values we have already observed is close to $\G$, but that the probability of an unseen draw $\frac{\alpha}{n+\alpha}$ is also still significant.  Thus the conditional entropy is approximately given by 
+
+\[
+\frac{n}{\alpha+n}\left(-\Log\left(\frac{n}{\alpha+n}\right) + H_{\alpha+1} -\frac{1}{1+\alpha}\right) + \frac{\alpha}{\alpha+n}\left(-\Log\left(\frac{\alpha}{\alpha+n}\right) + H[G]\right)
+\]
+
+This is a rather sketchy derivation, and a more rigorous one follows.  In particular, say we want to calculate not the conditional entropy but the block entropy.  This means taking an average over all possible configurations of $\theta_1\ldots\theta_n$.  First, consider the probability that there are $K$ distinct values of $\theta_1\ldots\theta_n$, or in the parlance of the CRP, that the $n$ customers are seated at $K$ tables.  The exact value is difficult to calculate, but we can give a recursion relation:
+\[
+p_n(k) = \frac{n-1}{\alpha+n-1}p_{n-1}(k) + \frac{\alpha}{\alpha+n-1}p_{n-1}(k-1)
+\]
+
+And from this we can get the expected number of tables exactly:
+
+\begin{eqnarray*}
+\E_n[K] & = & \sum_{k=1}^n k p_n(k) = \sum_{k=1}^n \frac{n-1}{\alpha+n-1}(kp_{n-1}(k)) + \frac{\alpha}{\alpha+n-1}((k-1)p_{n-1}(k-1)) +\frac{\alpha}{\alpha+n-1}p_{n-1}(k-1) \\
+& = & \E_{n-1}[K] + \frac{\alpha}{\alpha+n-1} = \sum_{i=0}^{n-1} \frac{\alpha}{\alpha+i} = \alpha(\psi(\alpha+n)-\psi(\alpha))
+\end{eqnarray*}
+
+where $\psi$ is the digamma function.
+
+Now, given there are $k$ distinct values of $\theta$, the probability that the counts of each value are $m_1\,\ldots,m_k$ are (also wrong, also missing combinatorial term)
+
+\[
+P_k(M_1=m_1,\ldots,M_k=m_k) = \prod_{i=1}^k \Gamma(m_i)\frac{\Gamma(k)}{\Gamma(n)}
+\]
+
+The block entropy can then be broken up as following:
+
+\begin{eqnarray*}
+H[\Theta_1\ldots\Theta_n] & = & \sum_{k=1}^n p_n(k)\sum_{m_,\ldots, m_k}\int\ldots\int_{\Theta}\left(\prod_{i=1}^k \Gamma(m_i)\right)\Log \left(p_n(k)\prod_{i=1}^k \Gamma(m_i) G(\Psi_i) \right)dG(\Psi_1)\ldots dG(\Psi_k) \\
+& = & \sum_{k=1}^n p_n(k)\left(kH[G] + \sum_{m_,\ldots, m_k}\left(\prod_{i=1}^k \Gamma(m_i)\right)\Log \left(p_n(k)\prod_{i=1}^k \Gamma(m_i) \right)\right) \\
+& = & \sum_{k=1}^n p_n(k)\left(kH[G] + \Log\left(p_n(k)\right) + \sum_{m_,\ldots, m_k}\left(\prod_{i=1}^k \Gamma(m_i)\right)\Log \left(\prod_{i=1}^k \Gamma(m_i) \right)\right) \\
+& = & \alpha(\psi(\alpha+n)-\psi(\alpha))H[G] + H[K] + \sum_{k=1}^n p_n(k) H[M_,\ldots,M_k]
+\end{eqnarray*}
+
+The first term is the expected number of tables times the entropy of the "dish" at each table, while the last two terms together are the block entropy of $n$ draws from the Chinese restaurant process.  The block entropy of the CRP is difficult to calculate directly, so instead we will attempt to derive it in the limit of a Dirichlet-Multinomial model with an infinite number of categories.  Start with a Beta-Binomial model with prior distributed Beta$(\alpha,\beta)$, the probability of seeing $k$ successes in $n$ trials is $\frac{B(\alpha+k,\beta+n-k)}{B(\alpha,\beta)}$, and there are $n$ choose $k$ configurations of $k$ successes in $n$ trials, so the entropy of $n$ draws is given by
+
+\begin{eqnarray*}
+H[\Theta_1,\ldots,\Theta_n] & = & -\sum_{k=0}^n {n \choose k} \frac{B(\alpha+k,\beta+n-k)}{B(\alpha,\beta)}\Log\left(\frac{B(\alpha+k,\beta+n-k)}{B(\alpha,\beta)}\right) \\
+& = & \frac{-1}{B(\alpha,\beta)}\sum_{k=0}^n {n \choose k} B(\alpha+k,\beta+n-k)\Log\left(B(\alpha+k,\beta+n-k)\right) + \Log(B(\alpha,\beta))
+\end{eqnarray*}
+
+This is intractable, and so we have to make a few sacrifices.  First, we restrict ourselves to the symmetric case $\alpha=\beta$, which for the CRP limit is the only one that matters.  Thanks to this symmetry, we only need consider $k\ge\frac{n}{2}$ and take the large $n$ and $k$ approximation and use Stirling's approximation log$(n!) \approx n\Log(n) - n + \frac{1}{2}\Log(2\pi n)$, giving
+
+%\[
+%\approx \Log(B(\alpha,\beta)) -
+ %\]
+ 
+% \[\frac{1}{B(\alpha,\beta)}\sum_{k=0}^n \frac{(\alpha+k)^{\alpha+k-\frac{1}{2}}(\beta+n-k)^{\beta+n-k-\frac{1}{2}}n^{n+\frac{1}{2}}}{(\alpha+\beta+n)^{\alpha+\beta+n-\frac{1}{2}}k^{k+\frac{1}{2}}(n-k)^{n-k+\frac{1}{2}}}\Log\left(\frac{\sqrt{2\pi}(\alpha+k)^{\alpha+k-\frac{1}{2}}(\beta+n-k)^{\beta+n-k-\frac{1}{2}}}{(\alpha+\beta+n)^{\alpha+\beta+n-\frac{1}{2}}}\right)
+%\]
+
+%\[
+%= \Log(B(\alpha,\beta)) - \frac{\Log(2\pi) - (\alpha+\beta+n-\frac{1}{2})\Log(\alpha+\beta+n)}{B(\alpha,\beta)} +
+%\]
+
+%\[
+%\frac{n^{n+\frac{1}{2}}}{B(\alpha,\beta)(\alpha+\beta+n)^{\alpha+\beta+n-\frac{1}{2}}}\sum_{k=0}^n\frac{(\alpha+k)^{\alpha+k-\frac{1}{2}}(\beta+n-k)^{\beta+n-k-\frac{1}{2}}}{k^{k+\frac{1}{2}}(n-k)^{n-k+\frac{1}{2}}}
+%\]
+
+%\[
+%\left((\alpha+k-\frac{1}{2})\Log(\alpha+k)+(\beta+n-k-\frac{1}{2})\Log(\beta+n-k)\right)
+%\]
+
+\end{document}  
