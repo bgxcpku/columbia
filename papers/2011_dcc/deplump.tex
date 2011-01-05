@@ -2,7 +2,6 @@
 %\areaset{6in}{9in}
 \usepackage{vmargin}
 %\usepackage{pdfpages}
-
 \setpapersize{USletter}
 \setmargins{1.25in}{1in}{6in}{9in}{0mm}{0mm}{0mm}{1cm}
 %\setmarginsrb{1.5cm}{0.5cm}{1.5cm}{1.5cm}{1cm}{0.5cm}{1cm}{1.5cm}
@@ -27,6 +26,8 @@
 \newcommand{\comment}[1]{}
 
 %\input{definitions.tex}
+\pagestyle{empty}
+
 \title{Deplump for Streaming Data}
 
 \author{Nicholas Bartlett  \and Frank Wood}
@@ -38,7 +39,7 @@
 
 \maketitle
 %%% BEGIN CONTENT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\thispagestyle{empty}
 \input{abstract}
 
 \input{introduction}
@@ -73,4 +74,4 @@
 %{\small
 \bibliography{../uber.bib}%}
 \end{document}
-  % vim:tw=79:ts=2:sw=2:et
+ 
