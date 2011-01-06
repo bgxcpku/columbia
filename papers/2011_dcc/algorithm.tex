@@ -24,7 +24,7 @@
 
 Our focus in this section is on providing the most complete implementation reference for deplump to date with the changes necessary to achieve streaming asymptotics highlighted.  Many of the individual algorithms that appear in this section are justified and explained in detail in earlier papers.  We explain the functionality of each algorithm, but refer the interested reader to the earlier papers for detailed mathematical justifications, in particular \citep{Wood2009,Gasthaus2010,Bartlett2010}.
 
-Given a sequence of symbols $\Seq = [s_0, s_1, s_2, \ldots]$ where each symbol $s_n$ comes from from an ordered set of symbols $\{\sigma_1, \sigma_2, \ldots\} = \Sigma$,  streaming deplump works by repeatedly producing a predictive distribution for the continuation of the sequence given the full preceding context and encoding the next symbol by passing that predictive distribution to an entropy encoder. % In this paper explicit details related to encoding and decoding are not included, instead we present the algorithms necessary to incrementally construct the predictive distributions needed by the encoder and decoder.  Specifically, 
+Given a sequence of symbols $\Seq = [s_0, s_1, s_2, \ldots]$ where each symbol $s_n$ comes from an ordered set of symbols $\{\sigma_1, \sigma_2, \ldots\} = \Sigma$,  streaming deplump works by repeatedly producing a predictive distribution for the continuation of the sequence given the full preceding context and encoding the next symbol by passing that predictive distribution to an entropy encoder. % In this paper explicit details related to encoding and decoding are not included, instead we present the algorithms necessary to incrementally construct the predictive distributions needed by the encoder and decoder.  Specifically, 
 We assume that if the predictive distribution function is $F$ and the next symbol in the stream is $s$ then %the stream can be compressed using 
 an entropy encoder exists that takes $F(\textsc{prev}(s))$ and $F(s)$ as arguments and returns a bit stream \citep{Witten1987}. %  The cumulative distribution function is well defined because the symbols are ordered. 
 We use the function \textsc{prev}$(s)$ to refer to the symbol previous to $s$ in the symbol set $\Sigma$ and define $F(\textsc{prev}(\sigma_0)) = 0$.  %Note that the symbol set can be ordered as the set is discovered.
@@ -39,13 +39,14 @@ We use the function \textsc{prev}$(s)$ to refer to the symbol previous to $s$ in
 		\While{$ |\RS| \geq T$}
 %			\State Delete nodes referencing \RS[1] and update $nc$
 			\State $\RS \la \xi(\RS)$
+                        \State Delete necessary nodes
 		\EndWhile
 		\While{ $\nc > (L - 2)$}
 			\State Delete random leaf node
 			\State $nc \la nc -1$
 		\EndWhile
 		
-		\State $\N \la$ \textsc{GetNode}$(\RS, \T)$
+		\State $\N \la$ \textsc{GetNode}$(\RS)$
 		\State $\pi \la$ \textsc{PMF}($\N, \vec 0, 1.0$) \Comment{$| \vec 0| = | \Sigma|$}
 	%	\State UpdateCountsAndDiscountGradients($\N,s,\pi_s,$TRUE)
 %		\State \Return [$\pi$, \N]
@@ -85,7 +86,7 @@ We use the function \textsc{prev}$(s)$ to refer to the symbol previous to $s$ in
 		\If{\textsc{PA}$(\N) \neq$ null}
 			\State $\pi \la $ \textsc{PMF}(\textsc{PA}(\N), $\pi, d^{\N} m$)
 		\Else
-			\State $\pi \la (1- d^{\N} m)\pi + d^{\N} m P_{\sigma([])}$
+			\State $\pi \la (1- d^{\N} m)\pi + d^{\N} m P_{\xi([])}$
 			
 %			\mathcal{U}_{\Sigma}$ %\Comment{$\mathcal{U}(\Sigma)$ is the uniform distribution over $\Sigma$}
 %			\State \Return $\pi$
@@ -144,8 +145,8 @@ We use the function \textsc{prev}$(s)$ to refer to the symbol previous to $s$ in
 \begin{algorithm}[H]
 	\caption{GetNode} \label{alg:getnode}
 	\begin{algorithmic}[1]
-    	\Function{$\Seq \la $ GetNode}{\Seq, \T}
-		\State Find the node \M \space in the tree sharing the longest suffix with \Seq \space and update indices on edges in the path from \M \space to the root to point to more recent sections of $\mathcal{R}$
+    	\Function{$\Seq \la $ GetNode}{\Seq}
+		\State Find the node \M \space in the tree sharing the longest suffix with \Seq \space and update indices on edges in the path from \M \space to the root to point to the most recent sections of $\mathcal{R}$ where possible
 		\If{\M \space is a suffix of \Seq}
 %			\If{$\Seq = \M$ or $|\M| = D$}
 %				\State \Return \M
@@ -172,14 +173,14 @@ We use the function \textsc{prev}$(s)$ to refer to the symbol previous to $s$ in
 	%	\State $d \la$ \textsc{GetDiscount}$(\N)$
 		\While{$c^\N > k$}
 			\State $\pi = [\frac{c^\N_{\sigma_1}}{c^\N}, \frac{c^\N_{\sigma_2}}{c^\N}, \ldots, \frac{c^\N_{\sigma_{|\Sigma}}}{c^\N}]$
-			\State $s \la $ \textsc{Multinomial}$(\pi)$ %s.t. $\pi_l = \frac{c_l}{c}$ % \Comment{$\pi$ is a distribution over $\Sigma$}
-			\State $\phi \la$ \textsc{Partition}$(c^\N_s, t^\N_s, d^{\N})$
-			\State $\psi \la (\frac{1}{c^\N_{s}} ) \phi$
+			\State $\sigma \la $ \textsc{Multinomial}$(\pi)$ %s.t. $\pi_l = \frac{c_l}{c}$ % \Comment{$\pi$ is a distribution over $\Sigma$}
+			\State $\phi \la$ \textsc{Partition}$(c^\N_\sigma, t^\N_\sigma, d^{\N})$
+			\State $\psi \la (\frac{1}{c^\N_{\sigma}} ) \phi$
 			\State $i \la$ \textsc{Multinomial}$(\psi)$
 			\If{$\phi_i = 1$}
-				\State $t^\N_s \la t^\N_s - 1$
+				\State $t^\N_\sigma \la t^\N_\sigma - 1$
 			\EndIf
-			\State $c^\N_s \la c^\N_s - 1$
+			\State $c^\N_\sigma \la c^\N_\sigma - 1$
 		\EndWhile
 	\EndFunction	
 	\end{algorithmic}	
@@ -187,8 +188,7 @@ We use the function \textsc{prev}$(s)$ to refer to the symbol previous to $s$ in
 	\end{minipage}
 	\end{figure*}
 
-The algorithms of streaming deplump run over a constant space, incrementally constructed suffix-tree-like data structure.  Note that the fact that this datastructure is of constant size is a significant point of  differentiation between this work and that of \cite{Gasthaus2010}. This tree-shaped data structure efficiently encodes a subset of the unique suffixes of all contexts in a sequence.  Each edge in the tree has a label which is a subsequence of the input sequence.  Each edge label is represented by two indices into a fixed-length suffix of the input sequence which we call the reference sequence (i.e.~each edge label is $[r_{i+1}, r_{i+2}, \ldots,r_{j}]$ for indices $i$ and $j$ into the reference sequence where $[r_{1} = s_{n-T}, \ldots, r_T = s_n]$ after the $n$th input sequence element is processed.)  
-Therefore, each node in the tree corresponds to a subsequence $[s_m, \ldots, s_{m + k}]$ of the input sequence and a (potentially non-sequential) set of subsequences of the reference sequence.  
+The algorithms of streaming deplump run over a constant space, incrementally constructed suffix-tree-like data structure.  Note that the fact that this datastructure is of constant size is a significant point of  differentiation between this work and that of \cite{Gasthaus2010}. This tree-shaped data structure efficiently encodes a subset of the unique suffixes of all contexts in a sequence.  Each edge in the tree has a label which is a subsequence of the input sequence.  Each edge label is represented by two indices into a fixed-length suffix of the input sequence which we call the reference sequence (i.e.~each edge label is $[r_{i+1}, r_{i+2}, \ldots,r_{j}]$ for indices $i$ and $j$ into the reference sequence where $[r_{1} = s_{n-T+1}, \ldots, r_T = s_n]$ after the $n$th input sequence element is processed). Therefore, each node in the tree corresponds to a subsequence $[s_m, \ldots, s_{m + k}]$ of the input sequence and a (potentially non-sequential) set of subsequences of the reference sequence.  
 %The suffix a node corresponds to is determined by concatenating the edge labels on the path from the root to the node. (i.e.~the set $\{ [ ], [s_0], [s_0,s_1], [s_0, s_1,s_2], \ldots \}$)
 We use $\N$ to refer interchangeably to a node and the suffix in the input sequence to which the node corresponds.  For a given suffix the corresponding node is accessed by traversing edges of the tree that match the suffix read from right to left. 
 %\begin{figure*}[ttt!]
@@ -212,11 +212,11 @@ The organization of functions in this way minimizes the number of tree traversal
 	%	\State $d \la $ \textsc{GetDiscount}(\N)
 		\State $pp \la p$
 		\If{$c^\N > 0$}
-			\State $pp \la (p - \frac{c^\N_s - t^\N_s d^{\N}}{c^\N})(\frac{c_\N}{t^\N d^{\N}})$
+			\State $pp \la (p - \frac{c^\N_s - t^\N_s d^{\N}}{c^\N})(\frac{c^\N}{t^\N d^{\N}})$
 			\State $w \la c^\N_s	+ d^\N (t^\N pp   - t^\N_s)$		
 		\EndIf
 		
-		\If{BackOff  and $c > 0$}
+		\If{BackOff  and $c^\N > 0$}
 			\State $c^\N_s \la c^\N_s + 1$
 			\State BackOff $\la 0$
 			\State BackOff $\la 1$ w.p. $pp (\frac{t^\N d^{\N}}{w})$ \Comment{w.p abbreviates ``with probability"}
@@ -236,7 +236,7 @@ The organization of functions in this way minimizes the number of tree traversal
 
 
 The removal of nodes due to their edge labels becoming undefined is an unfortunate consequence of having to constrain the reference sequence $\RS$ to be of constant length.  Note that without a bound $|\RS|$ would grow in length by one as each symbol of the input sequence is incorporated into the model.  To maintain the upper bound on $|\RS|$ we shorten $\RS$ by one as in a fixed length FIFO queue. Since the labels of edges in the tree index into $\RS$ then, when it is shortened, some edges may end up having labels that index beyond the retained elements of $\RS$ resulting in ``undefined'' edges.  Nodes below any undefined edges in the tree must be removed because they can no longer be accessed.  Their removal is justified in the same way as before because all subtree removals can be implemented as a cascade of leaf node removals.  It is desirable to minimize the number of nodes removed due to the incessant shortening of $\RS$.  One way to do this is to update all edge indices on all paths traversed in the process of inserting nodes into the tree (Alg.~\ref{alg:getnode}). % (that we do this is not made explicit in Alg.~\ref{alg:getnode} but on line 2 this updating of the edge indices should be performed)   
-\textsc{PMFNext} finishes by accessing the correct node for prediction using \textsc{GetNode} (Alg.~\ref{alg:getnode}) and the predictive probability mass function is calculated recursively by \textsc{PMF} (Alg.~\ref{alg:pmf}).
+\textsc{PMFNext} finishes by accessing the correct node for prediction using \textsc{GetNode} (Alg.~\ref{alg:getnode}) and the predictive probability mass function is calculated recursively by \textsc{PMF} (Alg.~\ref{alg:pmf}). The function \textsc{PA}(\N) returns the parent of node $\N$.
 
 \begin{algorithm}[t!]
 	\caption{FragmentNode} \label{alg:fragmentnode}
@@ -248,7 +248,7 @@ The removal of nodes due to their edge labels becoming undefined is an unfortuna
 		\State $\PP \la$ maximum overlapping suffix  of \M \space and \Seq
 		\State $\PP \la $ \textsc{CreateNode}$(\PP,$ \textsc{PA}$(\M))$
 		\State $nc \la nc + 1$
-		\State\textsc{ PA}(\M) $\la \PP$
+		\State \textsc{PA}(\M) $\la \PP$
 %		\State $d^\PP \la$ \textsc{GetDiscount}(\PP)
 		\For{$\sigma \in \Sigma$}
 			\State $\phi \la$ \textsc{Partition} $(c^\M_\sigma, t^\M_\sigma,d^\M)$
@@ -301,7 +301,7 @@ Incremental construction of the tree is handled by \textsc{GetNode} within \text
 		\end{algorithmic}
 \end{algorithm}
 
-Finally \textsc{UpdateCountsAndDiscounts} (Alg.~\ref{alg:updatecountsandgradients}) integrates the observation into the underlying probability model, adjusting counts in potentially all nodes on the path from the context in which the observation was made to the root of the context tree.   \textsc{UpdateCountsAndDiscounts} also computes a partial stochastic gradient for the discount parameter of each node on this path (this gradient is used in \textsc{Deplump} to update $\mathcal{D}$).  The details of the discount computation performed in \textsc{UpdateDiscountParameterGradients} are too long to include.  \textsc{UpdateCountsAndDiscounts} also uses \textsc{ThinCounts} (Alg.~\ref{alg:thincounts}) to enforce the bound on the counts in each node required to ensure computational asymptotics appropriate for streaming compression. 
+Finally \textsc{UpdateCountsAndDiscounts} (Alg.~\ref{alg:updatecountsandgradients}) integrates the observation into the underlying probability model, adjusting counts in potentially all nodes on the path from the context in which the observation was made to the root of the context tree.   \textsc{UpdateCountsAndDiscounts} also computes a partial stochastic gradient for the discount parameter of each node on this path (this gradient is used in \textsc{Deplump} to update $\mathcal{D}$).  The details of the discount computation performed in \textsc{UpdateDiscountParameterGradients} are too long to include, however it is no more complicated than computing the gradient contribution of each new symbol for each discount parameter. \textsc{UpdateCountsAndDiscounts} also uses \textsc{ThinCounts} (Alg.~\ref{alg:thincounts}) to enforce the bound on the counts in each node required to ensure computational asymptotics appropriate for streaming compression. 
 
 
 %Each node instance $\N$ contains two counts for each $\sigma \in \Sigma$, $c_\sigma$ and $t_\sigma$.  We use $c$ and $t$ to refer to the marginal counts $\sum_{\sigma \in \Sigma} c_\sigma$ and $\sum_{\sigma \in \Sigma} t_\sigma$.  Each node also has a discount associated with it which we refer to as $d^\N$ in the algorithms. If we define $\delta_{n} = \delta_{10}^{\alpha^{n - 10}}$ for $n \geq 10$ then $d^{\N} = \Pi_{i =|\textsc{PA}(\N)| + 1}^{|\N|} \delta_{i}$ if $\N$ is not the root and $\delta_{0}$ if $\N$ is the root.  Counts are updated and discount parameter gradients are calculated by Algorithm~\ref{alg:updatecountsandgradients}.  The new approximation discussed in Section~\ref{section:methodology} is implemented by \textsc{ThinCounts}.
