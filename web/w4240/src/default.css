@@ -13,7 +13,7 @@ background:#e8eaec;
 }
 
 a{
-color: rgb(97, 60, 46);
+color: rgb(60,85,93);
 font-weight:bold;
 text-decoration:none;
 background-color:inherit;
@@ -64,14 +64,14 @@ font-weight:normal;
 margin:10px 0 0 40px;
 font-size:1.4em;
 background-color:inherit;
-color: rgb(181, 123, 93);
+color: rgb(135,157,162);
 letter-spacing:-1px;
 font-weight:normal;
 }
 
 #header a {
 text-decoration:none;
-color: rgb(204, 169, 150);
+color: rgb(60,85,93);
 }
 
 #navigation{
@@ -79,7 +79,7 @@ height:2.2em;
 line-height:2.2em;
 width:758px;
 margin:0 1px;
-background: rgb(97, 60, 46);
+background: rgb(60,85,93);
 color:#ffffff;
 }
 
@@ -104,7 +104,7 @@ color: #ffffff;
 * html #navigation a {width:1%;}
 
 #navigation .webgen-menu-item-selected a, #navigation .webgen-menu-item-selected span, #navigation a:hover {
-background: rgb(204, 169, 150);
+background: rgb(135,157,162);
 color:#ffffff;
 text-decoration:none;
 }
@@ -197,7 +197,7 @@ padding:5px 0;
 margin:0 1px;
 font-size:0.9em;
 color:#f0f0f0;
-background: rgb(97, 60, 46);
+background: rgb(60,85,93);
 }
 
 #footer p{padding:0; margin:0; text-align:center;}

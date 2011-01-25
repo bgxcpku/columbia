@@ -6,25 +6,31 @@ routed_title: Info
 Big Picture
 -----------
 
-W4240 is a master's / advanced undergraduate level course in data mining, pattern recognition, and statistical machine learning.
+W4240 is a master's / advanced undergraduate level course in data mining, pattern recognition, and statistical machine learning.  W6240 is the same but for PhD's.  Extra work will be required of the PhD students.
 
-Rough Course Outline
+High Level Syllabus 
 --------------------
 
 This course will be divided into roughly six parts, five structured, the sixth, a grab bag which may include presentations from other faculty and students who specialize in particular techniques.  Each section except the last will be accompanied by a programming project.  The subject of the programming project is listed below the topic for each section.
 
- 
+* Introduction / Review
+  * Iterated Conditional Modes
 * Graphical Models
   * Belief propagation on discrete Bayes nets
-* Sequential Data
-  * Kalman and particle filtering
-* Sampling
-  * Gaussian mixture models and clustering
+* Expectation Maximization (EM)
+  * EM for linear regression
+  * EM for Gaussian mixture models (GMM)
 * Variational Inference
-  * Variational logistic regression
-* Regression
-  * Bayesian linear regression, Gaussian process regression
-* Miscellaneous Topics
+  * Variational GMM
+* Sampling
+  * Bayesian Logistic Regression
+  * Latent Dirichlet Allocation (LDA)
+* Miscellaneous Topics	
+  * Regression
+    * Bayesian linear regression, Gaussian process regression
+  * Sequential Data
+    * Kalman and particle filtering
+  * K-means
   * Neural nets
   * Dimensionality reduction
   * Bayesian nonparametrics
