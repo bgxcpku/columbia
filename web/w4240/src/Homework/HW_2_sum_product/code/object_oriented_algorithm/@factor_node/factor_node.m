@@ -23,7 +23,8 @@ classdef factor_node < node
         
         %implement getMessage
         function message = getMessage(obj, to_unid)
-            
+            ?
+            ?
             %message must be column vector
             message = message(:);
         end
