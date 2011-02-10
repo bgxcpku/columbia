@@ -1,9 +1,0 @@
-universe = java
-executable = icml2010-1.0-jar-with-dependencies.jar
-jar_files = icml2010-1.0-jar-with-dependencies.jar
-java_vm_args = -Xmx2g -Xms2g -Xss1g
-
-arguments=edu.columbia.stat.wood.icml2010.Main SIMPLE -1 -1 $(Process) 1000 /hpc/scratch/stats/users/nsb2130/data/calgary_corpus/
-output = simple_$(Process).out
-error = simple_$(Process).err
-queue 10

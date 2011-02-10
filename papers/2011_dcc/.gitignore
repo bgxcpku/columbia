@@ -3,6 +3,7 @@
 *.nav
 *.out
 *.snm
+*.pdf
 *.toc
 *.bbl
 *.blg

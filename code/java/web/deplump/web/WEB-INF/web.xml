@@ -8,6 +8,10 @@
         <servlet-name>PlumpServlet</servlet-name>
         <servlet-class>edu.columbia.stat.wood.PlumpServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LookupStatistics</servlet-name>
+        <servlet-class>edu.columbia.stat.wood.LookupStatistics</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>DeplumpServlet</servlet-name>
         <url-pattern>/DeplumpServlet</url-pattern>
@@ -16,12 +20,22 @@
         <servlet-name>PlumpServlet</servlet-name>
         <url-pattern>/PlumpServlet</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LookupStatistics</servlet-name>
+        <url-pattern>/LookupStatistics</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>index.html</welcome-file>
     </welcome-file-list>
+    <resource-ref>
+        <res-ref-name>deplumpWebsiteMYSQLDatabase</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+        <res-sharing-scope>Shareable</res-sharing-scope>
+    </resource-ref>
 </web-app>

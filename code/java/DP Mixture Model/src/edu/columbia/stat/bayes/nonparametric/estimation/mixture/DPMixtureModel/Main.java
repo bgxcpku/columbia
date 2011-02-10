@@ -16,7 +16,7 @@ public class Main {
      */
     public static void main(String[] args) {
 
-        int vocabSize = 20 ;
+        int vocabSize = 200 ;
         int docLength = 100 ;
         int n = 100 ;
 

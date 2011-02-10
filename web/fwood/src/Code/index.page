@@ -4,6 +4,10 @@ in_menu: true
 sort_info: 41
 ---
 
+## Sequence Memoizer / Hierarchical Pitman-Yor Process
+
+Java code with Matlab and R examples usage scripts for the sequence memoizer are available on [sequencememoizer.com](http://www.sequencememoizer.com/).
+
 ## Dirichlet Process Mixture Model 
 
 MATLAB code for a Dirichlet process mixture model with Gaussian likelihood.  Includes Gibbs and particle filter estimators.  Included is an example script showing how to get started using the code on your own data (the example is a spike sorting, however the code can be used for any data for which which multivariate Gaussian likelihood assumption is appropriate).

@@ -28,8 +28,8 @@ public class Main {
     public static void main(String[] args) throws FileNotFoundException, IOException {
 
         if (args.length == 0) {
-            String[] newArgs = {"SIMPLE", "-1", "-1", "0", "1000", "1000000",
-                "/Users/nicholasbartlett/Documents/np_bayes/data/alice_in_wonderland/", "AliceInWonderland.txt"}; //, "book1", "book2"};
+            String[] newArgs = {"SIMPLE", "-1", "-1", "0", "1000", "2000000",
+                "/Users/fwood/Data/natural_language/","lmdata-nyt"};
             args = newArgs;
         }
 

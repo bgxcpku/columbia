@@ -3,7 +3,7 @@ in_menu: true
 sort_info: 31
 ---
 
-- Contrastive Divergence <a href="contrastive_divergence.ppt">PPT</a>  <a href="contrastive_divergence..pdf">PDF</a>
+- Contrastive Divergence <a href="contrastive_divergence.ppt">PPT</a>  <a href="contrastive_divergence.pdf">PDF</a>
 - Sequential Monte Carlo (particle filtering) <a href="sequential_monte_carlo.ppt">PPT</a> <a href="sequential_monte_carlo.pdf">PDF</a>
 
 --- name:sidebar

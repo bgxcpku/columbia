@@ -4,7 +4,7 @@
  */
 package edu.columbia.stats.dataprocessing;
 
-import edu.columbia.stats.hdplda.BagOfWordsObservation;
+import edu.columbia.stats.hdplda.Document;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;
@@ -63,7 +63,7 @@ public class Main {
                 for (int i = 0; i < bag.size(); i++) {
                     intBag[i] = bag.get(i);
                 }
-                BagOfWordsObservation obs = new BagOfWordsObservation(intBag);
+                Document obs = new Document(intBag);
             }
             in.close();
         } catch (Exception e) {

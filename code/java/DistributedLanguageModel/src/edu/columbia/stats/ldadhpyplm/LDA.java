@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Random;
 
-import com.aliasi.symbol.*;
-
 /**
  *
  * @author davidpfau
@@ -477,8 +475,12 @@ public class LDA implements Serializable {
                                            /(numAllTestWordsInTopic[t] + numAllWordsInTopic[t] + dict.size()*beta))
                                           *((numInTopicPerDoc[t] + alpha)
                                            /(i + numTopics*alpha));
+
                     }
                     numTestWordInTopic[d.getDomain(i)-1][d.getToken(i)]++;
+
+                    assert 0 < -1 : "Fail because";
+
                     numAllTestWordsInTopic[d.getDomain(i)-1]++; // since sampleTestWord() automatically holds out the current token, add it in initially
                     sampleTestWord(d,i,numInTopicPerDoc);
                     numInTopicPerDoc[d.getDomain(i)-1]++;

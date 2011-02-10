@@ -11,17 +11,17 @@ import java.util.HashSet ;
  * @author nicholasbartlett
  */
 public class Population extends HashSet  {
-    public BagOfWordsObservation sufficientStatisic;
+    public Document sufficientStatisic;
 
     //method to initizialize a population with an index and a multinomial/
     //BagOfWords observation.
-    public Population(Integer obsIndex, BagOfWordsObservation obs){
-        sufficientStatisic = new BagOfWordsObservation(obs.value.length) ;
+    public Population(Integer obsIndex, Document obs){
+        sufficientStatisic = new Document(obs.value.length) ;
         add(obsIndex,obs) ;
     }
 
     //overiding method to add observations to the population
-    public boolean add(Integer obsIndex, BagOfWordsObservation obs) {
+    public boolean add(Integer obsIndex, Document obs) {
         boolean returnVal ;
         returnVal = super.add(obsIndex) ;
         if(obs.value.length == sufficientStatisic.value.length){
@@ -33,7 +33,7 @@ public class Population extends HashSet  {
     }
 
     //overiding method to remove observations from the population
-    public boolean remove(Integer obsIndex, BagOfWordsObservation obs) {
+    public boolean remove(Integer obsIndex, Document obs) {
         boolean returnVal ;
         returnVal = super.remove(obsIndex) ;
         if(obs.value.length == sufficientStatisic.value.length){

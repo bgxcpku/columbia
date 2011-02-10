@@ -8,11 +8,23 @@
 \usepackage{epstopdf}
 \DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
 
-\title{Learning an ontology for discrete observations with high dimensional discrete contextual information : or something like that}
-\author{Nick Bartlett}
+\title{Hiearchical Bayesian Ontology Learning}
+\author{N. Bartlett, M. Hoffman, F. Wood}
+
 
 \begin{document}
 \maketitle
+
+\section{Introduction}
+
+Predictive models are characterized by generalizing from observed predictive relationships between contexts and outputs to predictions about outputs given unknown contexts, often by defining a similarity between contexts and sharing predictive statistical strength between contexts close together.  Prediction is sometimes relatively easy in the sense that if only a predictive model is needed for some particular application, the specifics of how each dimension of the context relates to the prediction outcome is often not of interest.  Multicolinearity, identifying the nature of interactions, variable selection, and the lot are largely irrelevant when only prediction is the goal.  For this reason it is possible to posit and attempt to design ``black-box'' predictors into which example covariate vectors (contexts) and outcomes (outputs) are fed, and out of which, given a ``test context'' predictions are made.  Examples problems that can be cast in this way include predicting which word will come next given a sequence of preceding words, predicting which movie a person will like (and, perhaps, to what extent) given other expressed preferences, predicting which subset of a population will acquire a disease given attributes of each individual, and so forth.  In short, prediction requires conditional density estimation.  The relationships between the covariates are generally not considered.  
+
+Descriptive models have a slightly different character.  Descriptive models attempt to explain the relationships between observations.  Descriptive models include clustering models, models for dimensionality reduction, and, in general latent variable models.
+
+Our hypothesis is that there is a mutually beneficial interplay between the task of prediction and the formation of useful latent variable/descriptive models.  Prediction can be thought of 
+
+
+\section{Notation}
 
 As a cononical case I will consider the application of a market basket in the most basic sense.  By that I mean that we have observed data $X$ which is a $n \ {\rm x } \ d$ binary matrix.  A $1$ in the $i,j$ entry indicates that the $i$'th person had item $j$ in their basket.  For now, we will assume that is all the information we have about the consumer, i.e. we have no covariate information about the individual user.  We may be able to include that information later if we decide on an appropriately flexible and awesome framework for modeling.  
 

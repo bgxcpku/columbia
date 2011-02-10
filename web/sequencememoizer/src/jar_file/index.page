@@ -12,10 +12,15 @@ sort_order: 2
 | Language | Author | Version | Documentation | License | Download
 | Java 1.5 | [Nicholas Bartlett] | 1.1 | [javadocs](../documentation/sequencememoizer/index.html)| [License](../licensing/README.txt) | <a href = "./jars/v1.5/sequencememoizer-1.1-jar-with-dependencies.jar"  onClick="javascript: pageTracker._trackPageview('/downloads/v1.5'); ">sequencememoizer-1.1-jar-with-dependencies.jar</a>
 | Java 1.6 | [Nicholas Bartlett] | 1.1 | [javadocs](../documentation/sequencememoizer/index.html)| [License](../licensing/README.txt) |<a href = "./jars/v1.6/sequencememoizer-1.1-jar-with-dependencies.jar"  onClick="javascript: pageTracker._trackPageview('/downloads/v1.6'); ">sequencememoizer-1.1-jar-with-dependencies.jar</a>
+| C++ | [Jan Gasthaus] | 0.1 | [documentation](http://www.gatsby.ucl.ac.uk/~ucabjga/code.html)| ? |<a href = "http://www.gatsby.ucl.ac.uk/~ucabjga/code/libplump/libplump-0.1.tar.gz"  onClick="javascript: pageTracker._trackPageview('/downloads/libplump-0.1.tar.gz'); ">libplump-0.1.tar.gz</a>
 
 ###Notes
 *The two versions authored by Nicholas Bartlett are compiled with different versions of the JDK. The jars contain the [gnu.trove] package as well as the [edu.columbia.stat.wood.pub.sequencememoizer] package.  There are no example applications included in the jar, so you must implement your own application in MATLAB, R, or Java that uses this code.  Example usage is given on the [Matlab page](../matlab/index.html).  This example is easily translated into Java usage.
+*The C++ version's documentation is found inside the tarball.
+*The C++ version includes Python bindings.
+
 
 [gnu.trove]: http://trove4j.sourceforge.net/
 [edu.columbia.stat.wood.pub.sequencememoizer]: ../documentation/sequencememoizer/index.html
 [Nicholas Bartlett]: http://stat.columbia.edu/~bartlett
+[Jan Gasthaus]: http://www.gatsby.ucl.ac.uk/~ucabjga

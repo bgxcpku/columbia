@@ -22,7 +22,7 @@ font-size:3.5em;font-weight:normal;letter-spacing:-2px;margin:0 0 4px 15px;paddi
 }
 
 #header h1 a,#header h1 a:hover {
-padding:0;
+padding:0;text-decoration: none;
 }
 
 #header p {

@@ -5,6 +5,7 @@ routed_title: Papers
 sort_info: 1
 ---
 ##Refereed Conference Proceedings
+* N. Bartlett and F. Wood, [Deplump for Streaming Data](Papers/Bartlett-DCC-2011.pdf), DCC, 2011 
 * D. Pfau, N. Bartlett, and F. Wood [Probabilistic Deterministic Infinite Automata](Pfau-NIPS-2010.pdf), In Advances in Neural Information Processing Systems, to appear, 2011.
 * N. Bartlett, D. Pfau, and F. Wood <span class="papertitle"> Forgetting counts : Constant Memory inference for a Dependent hierarchical Pitman-Yor Process </span> In Proceedings of the 17th International Conference on Machine Learning, 2010  <a class="download" href="Bartlett-ICML-2010.pdf">PDF</a> 
 * J. Gasthaus, F. Wood, and Y.W. Teh.  <span class="papertitle"> Lossless compression based on the Sequence Memoizer</span> Data Compression Conference, 2010. <a class="download" href="Gasthaus-DCC-2010.pdf">PDF</a> 

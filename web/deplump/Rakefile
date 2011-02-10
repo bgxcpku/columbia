@@ -70,5 +70,5 @@ end
 
 desc "Deploy the site"
 task :upload do
-  sh %{cp -r out/* /Users/fwood/Projects/columbia/code/java/web/deplump/web/}
+  sh %{cp -r out/* ../../code/java/web/deplump/web/}
 end

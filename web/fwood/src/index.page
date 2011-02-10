@@ -7,13 +7,15 @@ sort_info: 0
 
 ## Cool Stuff
 
+Check out [sequencememoizer.com](http://www.sequencememoizer.com/) to download sequence memoizer source code, see example Matlab and R usage scripts, etc.
+
 Check out [deplump.com](http://www.deplump.com/) a demonstration site for a new general purpose lossless compressor my group has been involved in developing.
 
 ## Research Highlights 
 
--   D. Pfau, N. Bartlett, F. Wood, [Probabilistic Deterministic Infinite Automata](Papers/Pfau-NIPS-2010.pdf), to appear, NIPS 2010.
+-  N. Bartlett and F. Wood, [Deplump for Streaming Data](Papers/Bartlett-DCC-2011.pdf), DCC, 2011 
+-   D. Pfau, N. Bartlett, F. Wood, [Probabilistic Deterministic Infinite Automata](Papers/Pfau-NIPS-2010.pdf), NIPS 2011.
 -  N. Bartlett, D. Pfau, and F. Wood, [Forgetting counts : Constant Memory inference for a dependent hierarchical Pitman-Yor Process](Papers/Bartlett-ICML-2010.pdf), ICML, 2010 
--   J. Gasthaus, F. Wood, and Y.W. Teh, [Lossless compression based on the Sequence Memoizer](Papers/Gasthaus-DCC-2010.pdf).  DCC, 2010.
 -   F. Wood, C. Archambeau, J. Gasthaus, L. James, and Y.W. Teh, [A Stochastic Memoizer for Sequence Data](Papers/Wood-ICML-2009.pdf)   ICML, 2009., <a href="Talks/sequence_memoizer.pdf">Talk</a>, <a href="http://videolectures.net/icml09_wood_sms/">Video Lecture</a>
 -   F. Wood and Y.W. Teh [A hierarchical nonparametric Bayesian approach to statistical language model domain adaptation](Papers/Wood-AISTATS-2009.pdf), AISTATS 2009.  <em>Best Paper Award</em>
 

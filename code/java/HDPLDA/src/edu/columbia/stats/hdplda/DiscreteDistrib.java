@@ -47,11 +47,11 @@ public class DiscreteDistrib {
             parameter[j] = 1.0 / k;
         }
     }
-
+/*
     //Method to return a sample from the distribution
-    public BagOfWordsObservation sample() {
+    public Document sample() {
         double rawSample = Math.random();
-        BagOfWordsObservation samp = new BagOfWordsObservation(parameter.length);
+        Document samp = new Document(parameter.length);
 
         double cumSum = 0;
         for (int j = 0; j < parameter.length; ++j) {
@@ -65,38 +65,23 @@ public class DiscreteDistrib {
     }
 
     //Method to return a multimnomail sample from the distribution with m draws
-    public BagOfWordsObservation sample(int m) {
-        BagOfWordsObservation samp = new BagOfWordsObservation(parameter.length);
+    public Document sample(int m) {
+        Document samp = new Document(parameter.length);
         for (int j = 0; j < m; ++j) {
             samp.plus(sample());
         }
         return samp;
     }
-
+*/
     //Method to return likelihood evaluated at SS
-    public double getLikelihood(BagOfWordsObservation obs) {
+    public double getLikelihood(Token obs) {
         return Math.exp(getLogLikelihood(obs));
     }
 
     //Method to return log-likelihood evaluated at SS
-    public double getLogLikelihood(BagOfWordsObservation obs) {
-        //performs checks to make sure ss and the distribution align ;
-        if (obs.value.length != parameter.length) {
-            throw new RuntimeException("Tried to asses the likelihood at a " +
-                    "value which is not the same length as the parameter");
-        }
+    public double getLogLikelihood(Token obs) {
+    
 
-        double ll = 0;
-        for (int j = 0; j < parameter.length; ++j) {
-            if (obs.value[j] > 0) {
-                if (parameter[j] == 0.0) {
-                    ll = Double.NEGATIVE_INFINITY;
-                    break;
-                } else {
-                    ll += Math.log(parameter[j]) * obs.value[j];
-                }
-            }
-        }
-        return ll;
+        return Math.log(parameter[obs.getType()]);
     }
 }

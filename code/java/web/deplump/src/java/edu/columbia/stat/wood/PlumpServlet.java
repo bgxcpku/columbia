@@ -7,11 +7,9 @@ package edu.columbia.stat.wood;
 import edu.columbia.stat.wood.deplump.PlumpStream;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -46,14 +44,12 @@ public class PlumpServlet extends HttpServlet {
             if (!isMultipart) {
                 out = response.getWriter();
                 response.setContentType("text/html;charset=UTF-8");
-                out.println("<html>");
-                out.println("<head>");
-                out.println("<title>PlumpServlet Error</title>");
-                out.println("</head>");
-                out.println("<body>");
-                out.println("PlumpServlet called with non multipart form data.");
-                out.println("</body>");
-                out.println("</html>");
+                DeplumpServletHelper.printHeader(out);
+            out.println("Please help us by <a href=\"mailto:problem@deplump.com\">emailing</a> the following error message to us as well as a description of what you were doing when we screwed up.  Thank you.<br>");
+            out.println("PlumpServlet called with non multipart form data.");
+            DeplumpServletHelper.printFooter(out);
+            out.close();
+                return;
             } else {
 
                 // Create a new file upload handler
@@ -80,27 +76,41 @@ public class PlumpServlet extends HttpServlet {
                                     out = new PrintWriter(bos);
                                 }
                                 response.setContentType("text/html;charset=UTF-8");
-                                out.println("<html>");
-                                out.println("<head>");
-                                out.println("<title>DeplumpServlet Error</title>");
-                                out.println("</head>");
-                                out.println("<body>");
+                                DeplumpServletHelper.printHeader(out);
                                 out.println("No filename specified for plumping.  Press the back button on the browser and select a deplumped file.");
-                                out.println("</body>");
-                                out.println("</html>");
+                                DeplumpServletHelper.printFooter(out);
+
+                                out.close();
+                                return;
+                            }
+
+                            int dot_loc = filename.lastIndexOf(".");
+
+                            String extension = null;
+                            if(dot_loc+1 <= filename.length())
+                                extension = filename.substring(dot_loc+1,filename.length());
+                            if(extension == null || !extension.equals("dpl")) {
+                                if (out == null && bos == null) {
+                                    out = response.getWriter();
+                                } else {
+                                    out = new PrintWriter(bos);
+                                }
+                                response.setContentType("text/html;charset=UTF-8");
+                                DeplumpServletHelper.printHeader(out);
+                                out.println("The filename we received \""+filename+"\" does not end in .dpl, please check that the file is a deplumped file and, if it doesn't end in a .dpl extension, please add this extension to the filename.  Press the back button on the browser and select a (potentially renamed) deplumped file.");
+                                DeplumpServletHelper.printFooter(out);
 
                                 out.close();
                                 return;
                             }
 
 
-                            response.setContentType("application/plump");
 
                             filename = filename.substring(0, filename.lastIndexOf("."));
 
-                            response.setHeader("Content-Disposition", "attachment; filename=" + filename);
 
-                            bos = new BufferedOutputStream(response.getOutputStream());
+
+                            ByteArrayOutputStream baos = new ByteArrayOutputStream(DeplumpServlet.MAXSTREAMLENGTH);
 
 
 
@@ -113,12 +123,25 @@ public class PlumpServlet extends HttpServlet {
                             byte[] buffer = new byte[1000];
                             int length_read =0;
                             while(( length_read = stream.read(buffer))!=-1) {
-                                bos.write(buffer,0,length_read);
+                                baos.write(buffer,0,length_read);
                             }
 
+                            baos.flush();
+                            baos.close();
+
+                            byte[] plumped_stream = baos.toByteArray();
+                            response.setContentType("application/plump");
+                            response.setContentLength(plumped_stream.length);
+
+                            
+
+                            response.setHeader("Content-Disposition", "attachment; filename=" + filename);
+                            response.setHeader("Content-Transfer-Encoding","binary");
+
+                            bos = new BufferedOutputStream(response.getOutputStream());
+                            bos.write(plumped_stream);
                             bos.flush();
                             bos.close();
-
                             //System.out.println("File field " + name + " with file name "
                             //        + item.getName() + " detected.");
                             // Process the input stream
@@ -126,8 +149,19 @@ public class PlumpServlet extends HttpServlet {
                         }
                     }
                 } catch (FileUploadException fue) {
-                    fue.printStackTrace();
-                }
+if (out == null && bos == null) {
+                                    out = response.getWriter();
+                                } else {
+                                    out = new PrintWriter(bos);
+                                }
+                                response.setContentType("text/html;charset=UTF-8");
+                                DeplumpServletHelper.printHeader(out);
+                        out.println("Please notify <a href=\"mailto:problem@deplump.com\">problem@deplump.com</a> of the following error condition, and what you were doing when we screwed up.  Thank you.<br>");
+                        fue.printStackTrace(out);
+                                DeplumpServletHelper.printFooter(out);
+
+                                out.close();
+                                return;                }
 
                 /* TODO output your page here */
             }
@@ -139,14 +173,11 @@ public class PlumpServlet extends HttpServlet {
                 out = new PrintWriter(bos);
             }
             response.setContentType("text/html;charset=UTF-8");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>DeplumpServlet Error</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("PlumpServlet exception. " + e.getMessage());
-            out.println("</body>");
-            out.println("</html>");
+           DeplumpServletHelper.printHeader(out);
+                        out.println("Please notify <a href=\"mailto:problem@deplump.com\">problem@deplump.com</a> of the following error condition, and what you were doing when we screwed up.  Thank you.<br>");
+                        e.printStackTrace(out);
+                                DeplumpServletHelper.printFooter(out);
+
 
             out.close();
         }
