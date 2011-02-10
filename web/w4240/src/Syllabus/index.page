@@ -11,10 +11,10 @@ _Note: in order to play the pencast files you need to download and install [live
 |:-:|:-|:-|:-|:-|
 | 00 | [Introduction](../Lectures/introduction/main.pdf) | | [main.m](../Code/introduction_to_bayes/main.m)<br>[generate_example_data.m](../Code/introduction_to_bayes/generate_example_data.m)<br>[plot_flips.m](../Code/introduction_to_bayes/plot_flips.m)
 | 01 | cont.
-| 02 |  [Sum and Product Rules](../Lectures/sum_and_product_rules.pdf) | 1 | [CPT Sum Prod Rule - main.m](../Code/matlab_and_basic_prob_intro/main.m)<br>[Intro to Matlab](http://www.stat.columbia.edu/~fwood/w4315/Code/introduction_to_matlab/general_matlab_demo.m) |
-| 03 | [Graphical Models](../Lectures/graphical_model_notation.pdf) | 1 |
+| 02 |  [Sum and Product Rules](../Lectures/sum_and_product_rules.pdf) <br> Introduction to Matlab| 1 | [CPT Sum Prod Rule - main.m](../Code/matlab_and_basic_prob_intro/main.m)<br>[Intro to Matlab](http://www.stat.columbia.edu/~fwood/w4315/Code/introduction_to_matlab/general_matlab_demo.m) |
+| 03 | [Markov Random Fields](../Lectures/markov_random_fields.pdf) & [Graphical Models](../Lectures/graphical_model_notation.pdf) | 8 |
 | 04 | [Computational Aspects of Discrete and Linear Gaussian Models](../Lectures/discrete_and_linear_gaussian_models.pdf) | 8.1 |
-| 05 | [Conditional Independence](../Lectures/conditional_independence.pdf) & <br> [Markov Random Fields](../Lectures/markov_random_fields.pdf) | 8.2-3 | 
+| 05 | [Conditional Independence](../Lectures/conditional_independence.pdf) & <br>  | 8.2-3 | 
 | 06 | [Inference in Graphical Models & Factor Graphs](../Lectures/inference_on_a_chain.pdf) | 8.4 |
 | 07 | cont.
 | 08 | [Sum product Algorithm (Belief Propagation)](../Lectures/factor_graphs_and_the_sum_product_algorithm.pdf) 

@@ -2,8 +2,8 @@
 
 %% set some parameters and examine prior
 % beta distribution params for prior belief factory defect rate
-alpha = 3;
-beta = 3;
+alpha = 5;
+beta = 5;
 
 % plot prior probability of pencil defect
 theta = linspace(0,1,50);
@@ -17,7 +17,7 @@ title('\Theta = pencil defect rate')
 %% generate from generative model
 % i.e., what would draws from such a prior over factories look like
 
-num_coins = 1000;
+num_coins = 1000000;
 coin_thetas = betarnd(alpha,beta,num_coins,1);
 
 figure(2)

@@ -11,5 +11,5 @@ Miscellaneous Course Related Code
 
 - Introduction to Bayes
   - [main.m](./introduction_to_bayes/main.m)
-  - [gen_exampl_data.m](./introduction_to_bayes/gen_exampl_data.m)
+  - [generate_example_data.m](./introduction_to_bayes/generate_example_data.m)
   - [plot_flip.m](./introduction_to_bayes/plot_flips.m)

@@ -31,4 +31,4 @@ default_processing_pipeline:
 
 patterns:
   Copy:
-    add: [**/*.pdf, **/*.dat, **/*.avi, **/*.m, **/*.tar.gz, **/*.zip, **/*.txt, **/*.ppt, **/*.mat]
+    add: [**/*.pdf, **/*.tex, **/*.bib, **/*.sty, **/*.dat, **/*.avi, **/*.m, **/*.tar.gz, **/*.zip, **/*.txt, **/*.ppt, **/*.mat]

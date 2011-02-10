@@ -6,7 +6,7 @@ Y = 1; % rv in (1...L}
 M = 5;
 L = 3;
 
-n = ceil(rand(M,L)*10); % random counts
+n = ceil(rand(M,L)*10) % random counts
 imagesc(n); % look at counts
 colorbar; 
 
@@ -98,6 +98,6 @@ PBandF = PFgivenB.*repmat(PB,2,1)
 PF = sum(PBandF,2)
 PB = sum(PBandF)
 
-PBgivenF = PBandF./repmat(PF,1,2)
+PBgivenF = (PBandF./repmat(PF,1,2))' %transpose for indexing purposes
 
-PBgivenF(r,o)
+PBgivenF(r,o) % posterior probability of the red basket (same at 10 lines above)

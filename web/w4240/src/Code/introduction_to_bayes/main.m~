@@ -2,8 +2,8 @@
 
 %% set some parameters and examine prior
 % beta distribution params for prior belief factory defect rate
-alpha = 3;
-beta = 3;
+alpha = 5;
+beta = 5;
 
 % plot prior probability of pencil defect
 theta = linspace(0,1,50);
@@ -17,7 +17,7 @@ title('\Theta = pencil defect rate')
 %% generate from generative model
 % i.e., what would draws from such a prior over factories look like
 
-num_coins = 1000;
+num_coins = 1000000;
 coin_thetas = betarnd(alpha,beta,num_coins,1);
 
 figure(2)
@@ -26,7 +26,7 @@ hist(coin_thetas,100)
 
 %% do some posterior computation(s)
 
-outcomes = {'heads', 'tails'};
+outcomes = {'defective', 'good'};
 
 % observe data with hidden parameter (unobserved)
 flips = generate_example_data();
@@ -70,28 +70,25 @@ for n =1:num_flips
     % plot the prior (fixed in red) and the posterior (variable in green) 
     figure(3)
     prior_h = plot(theta,betapdf(theta,prior_params(1), prior_params(2)),'r');
-    hold on
+    hold on % overlay the second plot
     post_h = plot(theta,betapdf(theta,posterior_params(1), posterior_params(2)),'g');
-    
-    alpha = .05;
-    % approximately normal confidence intervals
-    %max_p = num_heads/n + norminv((1-alpha))*sqrt(num_heads*(n-num_heads )/(n^2)); % bug?
-    %min_p = num_heads/n - norminv((1-alpha))*sqrt(num_heads*(n-num_heads )/(n^2));
-    
     hold off
     legend([prior_h post_h], 'Prior', ['Posterior after ' num2str(n) ' obs.']);
      xlabel('Defective=0 , Non-defective=1')
      ylabel('P(\Theta)')
      
+     % compute posterior intervals
      lower_lim = betainv(.05,posterior_params(1),posterior_params(2));
-upper_lim = betainv(.95,posterior_params(1),posterior_params(2));
+    upper_lim = betainv(.95,posterior_params(1),posterior_params(2));
     
+    % draw intervals on plots
     line([lower_lim lower_lim],[0 max(betapdf(theta,posterior_params(1), posterior_params(2)))]);
     line([upper_lim upper_lim],[0 max(betapdf(theta,posterior_params(1), posterior_params(2)))]);
     drawnow
     
-    figure(4) % posterior predictive
-    
+    % plot the posterior predictve distribution of a defect on the n+1^th
+    % observation
+    figure(4) % posterior predictive figure
     predicted_outcome = 0;
     log_p_heads = gammaln(prior_params(1)+prior_params(2)+n) - gammaln(num_heads + prior_params(1)) - gammaln(n-num_heads + prior_params(2)) + ...
         gammaln(num_heads + prior_params(1) + (1-predicted_outcome)) + gammaln(n+1 -num_heads -(1-predicted_outcome)+ prior_params(2)) - gammaln(prior_params(1)+ prior_params(2)+n+1);
@@ -103,6 +100,7 @@ upper_lim = betainv(.95,posterior_params(1),posterior_params(2));
     xlabel('Defective=0 , Non-defective=1')
     ylabel('Posterior predictive probability');
     
+    % for the first ten loops, pause for user input
     if n<10
         pause
     end
