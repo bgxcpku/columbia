@@ -1,4 +1,12 @@
 function pass_messages(from_node, message, node)
+% pass_messages
+%
+% This is a recursive function to pass messages from an originating node 
+% accross the graph.
+%
+% @param from_node : node message is originating from
+% @param message   : message being passed
+% @param node      : node message being sent to
 
 %set message just passed in
 index = 0;
@@ -9,7 +17,6 @@ for i = 1 : length(node.c)
     end
 end
 assert(index > 0);
-
 node.m{index} = message;
 
 % find out if in a fn or vn node
@@ -19,7 +26,7 @@ else
     vn = true;
 end
 
-%pass messages to all appropriate children
+% pass messages to all appropriate children
 for i = 1 : length(node.c)
     if i ~= index
         child = node.c{i};
