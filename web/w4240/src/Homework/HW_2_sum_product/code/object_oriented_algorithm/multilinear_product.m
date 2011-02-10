@@ -1,13 +1,15 @@
-function mp = multilinear_product(varargin) %#ok<STOUT>
-%Returns the pairwise product, as matrix, of all the elements passed in.
-%The assumption is that you pass in column vectors
-%If, for example you pass in two vectors, W and V then mp(i,j) = W(i) *
-%V(j);
+function mp = multilinear_product(varargin)
+% multilinear_product
+%
+% Returns the outer product, as a tensor, of all the elements passed in.
+% The assumption is that you pass in column vectors
+% If, for example you pass in two vectors, W and V then mp(i,j) = W(i) *
+% V(j);
 
-%initialize mp
 if nargin == 1
     mp = varargin{1};
 else
+    %initialize mp
     init_mp = ['mp = ones(' num2str(size(varargin{1},1))];
 
     for dim = 2 : nargin

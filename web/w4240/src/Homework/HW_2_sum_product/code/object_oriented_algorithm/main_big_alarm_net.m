@@ -1,3 +1,15 @@
+% main_big_alarm_net
+%
+% This file creates the graph structure needed for the big alarm network.
+% Creating the graph structure includes creating all nodes, placing the
+% nodes into the stucture with the appropriate neighbors and assigning
+% probability tables to the factor nodes.  At the very end of this main
+% file is a for loop which is documented.  That for loop executes the
+% inference algorithm accross the graph. At initialization, every variable
+% node in the graph is unobserved.  If you wish to do inference with some
+% of the nodes observed you will need to indicate the observed variables
+% before the inference procedure is executed.
+
 clear
 clear global
 
@@ -741,13 +753,16 @@ fn_MinVol_VentLung_Intubation.addNode(vn_VentLung);
 vn_Intubation.addNode(fn_MinVol_VentLung_Intubation); 
 fn_MinVol_VentLung_Intubation.addNode(vn_Intubation); 
  
-%set the value of some of the nodes
+% set the value of any nodes which are observed
 
-%do inference
+% do loopy beleif propogation as an inference procedure.  pass messages in
+% every node 20 times.
+
 for i = 1 : 20
     disp(['i = ' num2str(i)]);
     vn_MinVol.loopy_bp;
     vn_MinVol.setNotUpdated;
 end
 
+% display the marginal distribution in the variable node for Kinked Tube
 vn_KinkedTube.getMarginalDistribution

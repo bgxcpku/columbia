@@ -1,3 +1,10 @@
+% factor_node : object used for factor nodes in a factor graph
+% representation of a graphical model.
+%
+% properties
+%
+% factor : factor object associated with this factor node
+%
 classdef factor_node < node
 
     properties(GetAccess = 'public', SetAccess = 'private')
@@ -6,7 +13,10 @@ classdef factor_node < node
     
     methods
         
-        %constructor
+        % factor_node : constructor method to create this factor node
+        %
+        % @param factor : factor associated with this factor node
+        %
         function obj = factor_node(unid, factor)
             obj = obj@node(unid);
             if nargin == 2;
@@ -14,14 +24,19 @@ classdef factor_node < node
             end
         end
         
-        %implement addNode
+        % addNode : adds a node to the cell array of neighboring nodes
+        %
         function addNode(obj,node)
             l = length(obj.nodes);
             obj.nodes{l + 1} = node;
             obj.messages{l + 1} = ones(node.dimension,1);
         end
         
-        %implement getMessage
+        % getMessage : gets the message to be sent to the given node. THIS
+        %              METHOD IS ONE WITH STUDENT NEEDS TO FILL OUT.
+        %
+        % @param to_unid : node to which message will be sent
+        %
         function message = getMessage(obj, to_unid)
             ?
             ?
@@ -29,7 +44,8 @@ classdef factor_node < node
             message = message(:);
         end
 
-        %display
+        % display : overides the default display behavior
+        %
         function display(obj)
             display@node(obj);
             disp(' ');
