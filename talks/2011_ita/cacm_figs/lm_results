@@ -1,0 +1,55 @@
+import graph;
+
+picture pic1;
+
+//size(pic1,10cm,8cm,IgnoreAspect);
+size(pic1,10cm,6cm,IgnoreAspect);
+defaultpen(1);
+
+//real trans(real x) {static real log2=log(2); return log(x)/log2;}
+real trans(real x) {return x;}
+
+real[] n={0,1,2,3,4,5,6};
+real[] nyt_hpyp_perplexity={347.0, 218.05, 168.0, 146.1, 136.4, 132.3, 130.9};
+real nyt_igram_perplexity = 129.1;
+real nyt_nodes_in_tree = 5272088;
+//real[] hpyp_nodes_in_tree = {1 , 130062 , 1879452 , 6687271 , 13563764 , 21279099 , 29284173};
+real[] hpyp_nodes_in_tree = {1, 80970 , 981973 , 3143113 , 6016779 , 9144795 , 12355678};
+scale(pic1, true);
+draw(pic1,graph(n,hpyp_nodes_in_tree),heavyred);
+yaxis(pic1,"Number of nodes",Right, heavyred, LeftTicks);
+xaxis(pic1,"Context length ($n$)",BottomTop,LeftTicks(DefaultFormat,new real[] {0,1,2,3,4,5,6}));
+yequals(pic1,nyt_nodes_in_tree,heavyred+dashed);
+xequals(pic1,4,dotted);
+
+
+picture q = secondaryY(pic1,new void(picture pic2){
+scale(pic2,true);
+draw(pic2,graph(pic2,n,map(trans,nyt_hpyp_perplexity)),deepblue);
+yaxis(pic2,"Perplexity",Left,deepblue,RightTicks);
+yequals(pic2,trans(nyt_igram_perplexity),deepblue+dashed);
+});
+
+// n-MM
+//label(q,rotate(-61)*minipage("\scriptsize $n$-MM perplexity"),(0.99,7080000));
+//label(q,"\scriptsize SM perplexity",(1.1,2000000));
+//label(q,rotate(42)*"\scriptsize $n$-MM \#nodes",(5.0,10000000));
+//label(q,"\scriptsize SM \#nodes",(5.0,5900000));
+
+// n-HPYP
+//label(q,rotate(-60)*minipage("\scriptsize $n$-HPYP perplexity"),(0.97,7580000));
+//label(q,"\scriptsize SM perplexity",(1.1,2000000));
+//label(q,rotate(42)*"\scriptsize $n$-HPYP \#nodes",(5.0,10000000));
+//label(q,"\scriptsize SM \#nodes",(5.0,5900000));
+
+label(q,rotate(-61)*"\scriptsize Markov perplexity",(0.72,9100000));
+label(q,"\scriptsize SM perplexity",(1.1,2000000));
+label(q,rotate(42)*"\scriptsize Markov \#nodes",(5.0,10000000));
+label(q,"\scriptsize SM \#nodes",(5.0,5900000));
+
+add(pic1,q);
+add(pic1.fit());
+
+
+
+
