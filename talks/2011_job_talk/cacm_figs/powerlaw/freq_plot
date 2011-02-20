@@ -1,0 +1,33 @@
+import graph;
+
+//size(16cm,10cm,IgnoreAspect);
+size(13cm,7cm,IgnoreAspect);
+
+defaultpen(1);
+
+file freqs_file=input("freqs.txt.thin");
+file freqs_file_x=input("freqs.txt.thin.x");
+//file dirichlet_file=input("dirichlet_450.000_0.550.txt");
+//file pyp_file=input("pyp_450.000_0.550.txt");
+file dirichlet_file=input("dirichlet_90.000_0.650.txt.thin");
+file dirichlet_file_x=input("dirichlet_90.000_0.650.txt.thin.x");
+file pyp_file=input("pyp_90.000_0.650.txt.thin");
+file pyp_file_x=input("pyp_90.000_0.650.txt.thin.x");
+real[] freqs = freqs_file;
+real[] dirichlet =  dirichlet_file;
+real[] pyp = pyp_file;
+real[] freqs_x = freqs_file_x;
+real[] dirichlet_x =  dirichlet_file_x;
+real[] pyp_x = pyp_file_x;
+
+scale(Log,Log);
+draw(graph(pyp_x, pyp),dashed+heavyred,"Pitman-Yor");
+draw(graph(freqs_x,freqs),black,"English text");
+draw(graph(dirichlet_x,dirichlet),dashdotted+deepblue,"Dirichlet");
+
+xaxis("Rank (according to frequency)",BottomTop,LeftTicks);
+yaxis("Word frequency",LeftRight,RightTicks);
+
+add(legend(),point(NE),-5NE,UnFill);
+//label(shift(5mm*N)*"Word frequencies in English",point(N),E);
+//label(shift(10mm*N)*"Word frequencies in English",point(N),E);
