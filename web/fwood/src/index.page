@@ -13,6 +13,7 @@ Check out [deplump.com](http://www.deplump.com/) a demonstration site for a new 
 
 ## Research Highlights 
 
+-   F. Wood, J. Gasthaus, C. Archambeau, L. James, and Y.W. Teh, [The Sequence Memoizer](http://cacm.acm.org/magazines/2011/2/104391-the-sequence-memoizer/fulltext)   CACM, 2011
 -  N. Bartlett and F. Wood, [Deplump for Streaming Data](Papers/Bartlett-DCC-2011.pdf), DCC, 2011 
 -   D. Pfau, N. Bartlett, F. Wood, [Probabilistic Deterministic Infinite Automata](Papers/Pfau-NIPS-2010.pdf), NIPS 2011.
 -  N. Bartlett, D. Pfau, and F. Wood, [Forgetting counts : Constant Memory inference for a dependent hierarchical Pitman-Yor Process](Papers/Bartlett-ICML-2010.pdf), ICML, 2010 

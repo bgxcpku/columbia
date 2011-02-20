@@ -1,0 +1,303 @@
+% Copyright 2010 by Frank Wood
+
+\documentclass{beamer}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage[numbers]{natbib}
+
+% Setup appearance:
+
+\usetheme{Darmstadt}
+\usefonttheme[onlylarge]{structurebold}
+\setbeamerfont*{frametitle}{size=\normalsize,series=\bfseries}
+\setbeamertemplate{navigation symbols}{}
+
+% Standard packages
+
+\usepackage[english]{babel}
+%\usepackage[latin1]{inputenc}
+%\usepackage{times}
+%\usepackage[T1]{fontenc}
+%\usepackage{nnfootnote}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+%\newcommand{\argmax}{\operatornamewithlimits{argmax}}
+\def\newblock{\hskip .11em plus .33em minus .07em}
+% Setup TikZ
+
+%\usepackage{tikz}
+%\usetikzlibrary{arrows}
+%\tikzstyle{block}=[draw opacity=0.7,line width=1.4cm]
+
+
+% Author, Title, etc.
+
+\title[Fully Unsupervised Modeling of Discrete Observations of Natural Data] 
+{
+  A Step Towards Fully Unsupervised, Life-Long, Incremental Learning
+}
+
+\author[Wood]
+{
+  Frank~Wood%\inst{1}
+}
+
+\institute[Columbia University]
+{
+  %\inst{1}%
+  Columbia University
+}
+
+\date[Job Talk Extras 2010]
+{Job Talk Extras 2010}
+
+%\def\blfootnote{\xdef\@thefnmark{}\@footnotetext}
+
+
+% The main document
+\input{definitions}
+
+\begin{document}
+
+\section{Review}
+\subsection{Dirichlet Process}
+
+\input{dirichlet_process}
+\subsection{Pitman Yor Process}
+\input{pitmanyor_process}
+
+\subsection{Power Laws}
+\input{power_law}
+
+
+\section{Sequence Modeling}
+\subsection{Standard Practice}
+\frame[t] {%slide 10
+ \frametitle{An aside}
+ Take a long sequence
+ \begin{quote}
+ aaaaagagaaaagaaaagactgggaaaagcgcgcgcgc...
+ \end{quote}
+ Pick a order for a Markov model (here 2).  Train the Markov model by counting.
+ \[G_{aa}(x) = \frac{\#\{aax\}}{\#\{aa\}}, G_{aa}(g) = \frac{4}{13}\]
+Problems
+ \begin{itemize}
+\item Short order Markov models can't capture long range dependencies
+\item High order Markov models have many parameters, $O(|\Sigma|^n)$.
+ \begin{itemize}
+ \item Don't know if $G_{aa}(c) = 0$ or just not enough data seen yet.
+ \item $G_{\ubf}(x) = 0$ causes all sorts of inference problems.
+ \item Regularization of some form is imperative.
+ \end{itemize}
+\end{itemize}
+ }
+
+
+\frame[t] {%slide 11
+ \frametitle{Reasonable regularizations}
+ In many real life sequential generative processes it is reasonable to believe that 
+ \[G_{\ubf}(s) \approx G_{\sigma(\ubf)}(s)\]
+   For example
+ \[G_{adl}(y) \approx G_{dl}(y)\]
+ or really just 
+  \[G_{\ubf} \approx G_{\sigma(\ubf)}\]
+ }
+ 
+ \frame[t] {%slide 12
+ \frametitle{Language Modeling}
+ Smoothing and interpolating n-gram models have utilized this intuition for many years \cite{Kneser1995,MacKay1995,Chen1999, Goldwater2006, Teh2006a} \newline
+ 
+ All of these models can be expressed in forms similar to
+ 
+   \[G_{\ubf}(s) \propto \frac{\#\{\ubf s\}}{\#\{\ubf\}} + \lambda G_{\sigma(\ubf)}(s)\]
+
+ Predictive models for compression also utilize predictive distributions of similar form \cite{Willems2009, Cleary1984}
+ }
+ 
+ \section{Sequence Memoizer}
+\subsection{Computational Characteristics}
+ 
+  \frame[t] {%slide 24
+ \frametitle{Finite Depth vs.~Infinite Depth - Computational Complexity}
+ \begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=.75\textwidth]{fig/node_counts.pdf}
+\caption{Number of nodes vs.~order of Markov model}
+\label{fig: node_counts}
+\end{center}
+\end{figure}
+ }
+ 
+ \frame[t] {%slide 25
+ \frametitle{Finite Depth vs.~Infinite Depth - Computational Complexity}
+ \begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=.75\textwidth]{fig/nodes_total_vs_need_sampling.pdf}
+\caption{Number of nodes vs.~number of observations}
+\label{fig: nodes_total_vs_need_sampling}
+\end{center}
+\end{figure}
+ }
+
+   \frame[t] {%slide 26
+ \frametitle{Finite Depth vs.~Infinite Depth - Predictive Power}
+ \begin{figure}[htbp]
+\begin{center}
+\includegraphics[trim = 2.5cm 6cm 2.5cm 6cm, clip, width=6cm]{fig/fix_size_vary_n_cleaned_coloured.pdf}
+\caption{Test perplexity vs.~order of Markov model.}
+\label{fig: fix_size_vary_n_cleaned_coloured}
+\end{center}
+\end{figure}
+ }
+
+  \frame[t] {%slide 27
+ \frametitle{Finite Depth vs.~Infinite Depth - Predictive Power}
+ \begin{figure}[htbp]
+\begin{center}
+\includegraphics[trim = 2.5cm 6cm 2.5cm 6cm, clip, width=6cm]{fig/fix_n_vary_size_ap_cleaned_coloured.pdf}
+\caption{Test perplexity vs.~number of training observations.}
+\label{fig: fix_n_vary_size_ap_cleaned_coloured}
+\end{center}
+\end{figure}
+}
+
+\subsection{Graphical Model}
+    \frame[t] {%slide 20
+ \frametitle{$O(n^2)$ graphical model}
+ \begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=.75\textwidth]{fig/prefix_trie_coloured.pdf}
+\caption{Prefix {\em trie} graphical model}
+\label{fig: prefix_trie}
+\end{center}
+\end{figure}
+ }
+
+
+   \frame[t] {%slide 21
+\frametitle{$O(n)$ graphical model}
+ \begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=.5\textwidth]{fig/prefix_tree_coloured.pdf}
+\caption{Prefix {\em tree} graphical model}
+\label{fig: prefix_tree}
+\end{center}
+\end{figure}
+ }
+
+
+\subsection{Constant Space}
+\frame[t] {
+\frametitle{Constant Space Sequence Memoizer \citep{bartlett2010}}
+\begin{figure}[t]
+\begin{center}
+%\includegraphics[trim = 4cm 8cm 4cm 8cm, clip, width=5cm]{fig/shared_clustering.pdf}
+\includegraphics[width=5cm]{../../papers/2010_icml/bounded_memory_compression/figure2.pdf}
+%\caption{Shared clustering}
+\label{default}
+\end{center}
+\end{figure}
+}
+
+ \section{Dream}
+
+\frame[t] {%slide 7
+ \frametitle{Grand Application}
+ \begin{itemize}
+\item  If one can predict well comes next in a sequence 
+  \[ \argmax_{x_{i+1}} \mathsf{P}(010010010x_{i+1}) \]
+  one can use such models to do optimal control
+  \[V^\pi(s)= R(s) + \gamma \sum_{s'} \mathsf{P}(s'|s,\pi(s)) V^\pi(s').\]
+  where  $s$ and $s'$ are states, $\pi$ is a fixed control policy, $\pi(s)$ is an action, $V^\pi(s)$ is a state-dependent ``value'' function, $\gamma$ is a decay weight,   and $\mathsf{P}(s'|s, a)$ is a model of the environment.
+\end{itemize}
+ }
+
+ \section{Motivation}
+ \frame[t] {%slide 5
+ \frametitle{Of Mouths and Money}
+ The (Marcus) Hutter prize \cite{Hutter2006} \newline
+ 
+\begin{quote}Wikipedia is an extensive snapshot of Human Knowledge. If you can compress the first 100MB of Wikipedia better than your predecessors, your (de)compressor likely has to be smart(er). The intention of this prize is to encourage development of intelligent compressors/programs.
+ \end{quote}
+ \begin{itemize}
+\item 50,000 euro in prize money available
+\item http://prize.hutter1.net/ 
+ \end{itemize}
+ }
+\begin{frame}[t]{Characteristics}
+\begin{block}{Data}
+\begin{itemize}
+\item Sequences (streams) vs. sets
+\item Single ``observation''
+\item Vast amounts of data
+\end{itemize}
+\end{block}
+\begin{block}{Model}
+\begin{itemize}
+\item Minimal assumptions about data generating mechanism
+\begin{itemize}
+\item Power-law
+\item Sequential
+\end{itemize}
+\item Bounded (constant) ``memory''
+\end{itemize}
+\end{block}
+\begin{block}{Estimation and Inference}
+\begin{itemize}
+\item Linear time, incremental estimation
+\item Constant time inference
+\end{itemize}
+\end{block}
+\end{frame}	
+
+
+\section{Theory}
+\input{par_vs_npar_bayes_vs_freq}
+
+\begin{frame}[t]{Key Points}
+\begin{itemize}
+\item Complex models allow complex hypothesis to be tested.
+\item Complex models require regularization.
+\item Bayesian nonparametric models capture best of Bayesian estimation and nonparametric estimation but...
+\item {\em suffer from very high computational cost}
+\end{itemize}
+\end{frame}	
+
+\begin{frame}[t]{Applied Bayesian Nonparametrics}
+\begin{itemize}
+\item Show that Bayesian nonparametric models are worth using (empirically)
+\item Explain how to make inference computationally tractable
+\end{itemize}
+\end{frame}	
+
+\frame[t] {%slide 9.5
+ \frametitle{Big Picture}
+ The sequence memoizer draws on a diverse set of prior art
+ \begin{itemize}
+ \item A structured prior on the collection of all conditional probability distributions $\GG$, $P(\GG)$
+   \begin{itemize}
+   \item Hierarchical Pitman Yor process \cite{Teh2006b, Goldwater2006, Teh2006a}
+   \end{itemize}
+ \item A method for drawing samples from $P(\GG|\xbf)$
+    \begin{itemize}
+   \item Chinese restaurant franchise sampler \cite{Teh2006b}
+   \end{itemize}
+ \item A collection of methods for collapsing the the posterior down to a size that grows linearly in the length of the observation sequence. 
+    \begin{itemize}
+   \item Coagulation and fragmentation operators \cite{Pitman1999, Ho2006}
+   \end{itemize}
+ \item A set of algorithms to identify the remaining graphical model.
+   \begin{itemize}
+   \item Suffix tree construction \cite{Weiner1973,Ukkonen1992}
+   \end{itemize}
+ \end{itemize}
+  }
+  
+
+	\bibliographystyle{plainnat}
+	\begin{frame}[t,allowframebreaks]{Bibliograpy}
+
+\bibliography{../../papers/uber}
+\end{frame}
+
+\end{document}

@@ -1,0 +1,196 @@
+\documentclass{beamer}
+\usepackage{graphicx}
+\usepackage{verbatim}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{setspace}
+% \usepackage{beamerthemesplit} // Activate for custom appearance
+
+
+\input{../definitions.tex}
+
+
+\title{\BNPfull}
+\author{Presenter: Dr. Frank Wood}
+\date{\today}
+
+
+\begin{document}
+
+\frame{\titlepage}
+
+
+\frame[t] {
+ \frametitle{\BNPfull ( \BNP)}
+\begin{block}{Motivation}
+\begin{itemize}
+\item Never know the full data generating mechanism
+\begin{itemize}
+\item Want to make the most general assumptions.
+\item Guard against possible gross model misspecification.
+\end{itemize}
+\end{itemize}
+\end{block}
+\begin{block}{\BNPfull}
+\begin{itemize}
+\item Parameters can be described by functions or other infinite dimensional objects
+\begin{itemize}
+\item Cumulative distribution function (CDF)
+\item Density function.
+\item Nonparametric regression function
+\item Unknown link function in generalized linear model (GLM)
+\end{itemize}
+\end{itemize}
+\end{block}
+}
+
+\frame[t] {
+ \frametitle{\BNP}
+\begin{block}{Challenges}
+\begin{itemize}
+\item Construction of prior distribution involves specifying appropriate probability measure on function spaces.
+\item Knowledge of minute details of such distributions typically not available.
+\end{itemize}
+\end{block}
+
+\begin{block}<2>{Standard Approach}
+\begin{itemize}
+\item Prior typically chosen for computational practicality
+\item Key prior parameters might be chosen subjectively
+\item Important: prior should have large support 
+\item Large support of the prior helps the posterior distribution to have good frequentist properties in large samples.
+\end{itemize}
+\end{block}
+}
+
+\frame[t] {
+ \frametitle{\BNP Posterior consistency}
+\begin{block}{{\em Posterior consistency}}
+\begin{itemize}
+\item Basic frequentist validation of a Bayesian estimation procedure
+\item In limit of infinite data, does the posterior distribution converge to the true underlying parameter?
+\item Lack of consistency is {\em undesirable}.
+\item Rate of convergence can be used to distinguish different estimation procedures 
+\begin{itemize}
+\item How quickly can a ball around the true value shrink while retaining almost all of the posterior probability?
+\end{itemize}
+
+\end{itemize}
+\end{block}
+
+\only<2>{\em Posterior consistency of \BNP models is an area of active research}
+
+}
+
+\frame[t] {
+ \frametitle{\BNP models}
+\begin{block}{Examples}
+\begin{itemize}
+\item Dirichlet process 
+\begin{itemize}
+\item Mixtures of Dirichlet processes \cite{Antoniak1974, MacEachern1998}
+\item Dirichlet process mixture \cite{Escobar1995a}
+\end{itemize}
+\item Gaussian process
+\begin{itemize}
+\item Gaussian processes for machine learning (book) \cite{Rasmussen2006}
+\end{itemize}
+\item Indian Buffet process, Chinese restaurant process, Beta process, Dependent Dirichlet process, Hierarchical Dirichlet Process (HDP), HDP-HMM, HDP-LDA, Sequence Memoizer, etc.
+\end{itemize}
+\end{block}
+}
+
+\frame[t] {
+ \frametitle{\BNP models}
+ \begin{block}{To Start}
+
+\begin{itemize}
+\item Look at role of Dirichlet process
+\item Discuss most important properties
+\item Informally talk about posterior convergence in such models
+\end{itemize}
+\end{block}
+
+}
+
+\frame[t] {
+ \frametitle{The Dirichlet Process}
+ \begin{block}{Motivation}
+Say we'd like to estimate a probability measure (or CDF) on the real line, with i.i.d.~ observations from it where the CDF is completely arbitrary.
+\end{block}
+ \begin{block}<2-3>{Classical approach}
+Build a nonparametric estimate of the CDF directly from the observations.
+\end{block}
+ \begin{block}<3-3>{Bayesian approach}
+Need a prior for the CDF (or for a random probability measure) and methods (algorthims, etc.) to estimate the posterior distribution.
+\end{block}
+
+}
+
+\frame[t] {
+ \frametitle{Closest Parametric Analog}
+ \begin{block}{Multinomial / Dirichlet}
+\begin{itemize}
+\item  Multinomial distribution specifies an arbitrary probability distribution on the sample space of finitely many integers.
+\item Multinomial model can be derived from an arbitrary distribution by grouping the data in finitely man categories.
+\item Formalism
+\begin{itemize}
+\item Let $(\pi_1, \ldots, \pi_k)$ be the probabilities of the categories with frequencies $n_1, \ldots, n_k$.  The multinomial likelihood is proportional to $\pi_1^{n_1}, \ldots, \pi_k^{n_k}$.
+\item The finite-dimensional Dirichlet prior has density proportional to $\pi_1^{c_1-1}, \ldots, \pi_k^{c_k-1}$
+\item The posterior has density proportional to $\pi_1^{n_1+c_1-1}, \ldots, \pi_k^{n_k+c_k-1}$ which is again Dirichlet.
+\end{itemize}
+
+\end{itemize}
+
+ 
+\end{block}
+}
+
+\frame[t] {
+ \frametitle{Definition }
+ The Dirichlet {\em process} is a probability distribution on the space of probability measures which induces finite-dimensional Dirichlet distributions when the data are grouped.
+
+\begin{itemize}
+\item For any measureable partition $\{B_1, \ldots B_k\}$ of $\Real$ the probability vector $(P(B_1),\ldots,P(B_k))$ is a finite-dimensional Dirichlet distribution.
+\item This means that the parameters of the finite-dimensional Dirichlet dist.~must be special.
+\item For instance, the joint distribution of r $(P(B_1),\ldots,P(B_k))$ must agree with the joint distribution $(P(A_1),\ldots,P(A_k))$ when $\{A_1, \ldots A_k\}$ is finer than $\{B_1, \ldots B_k\}$  since for any $i$, $P(B_i)$ would be the sum of some $P(A_j)$
+\end{itemize}
+}
+
+\frame[t] {
+ \frametitle{Definition }
+
+A finite-dimensional Dirichlet distribution property is that summing the probabilities of different partitions gives rise to a new Dirichlet distribution whose parameters corresponding to the summed partitions are added.  Let $\alpha(B)$ be the parameter corresponding to $P(B)$ in the specified Dirichlet joint distribution, it follows that $\alpha(\cdot)$ must be an additive set function.
+\bigskip
+
+Let $\alpha$ be a finite measure on a given Polish space $\mathfrak{X}$.  A random measure $P$ on $\mathfrak{X}$ is called a Dirichlet process if for every finite measureable partition $\{B_1, \ldots, B_k\}$ of $\mathfrak{X}$, the joint distribution of $(P(B_1),\ldots,P(B_k))$ is a $k$-dimensional Dirichlet distribution with parameters $\alpha(B_1),\ldots,\alpha(B_k)$
+\bigskip
+
+We call $\alpha$ the base measure of the Dirichlet process and denote the corresponding Dirichlet process $\mathcal{D}_\alpha$.
+}
+
+\frame[t] {
+ \frametitle{A Little Problem }
+
+Even when $\alpha$ is a measure, it still isn't clear that $P$ is a probability measure, i.e.~that it sums to one.
+\bigskip
+
+Several strategies could be taken towards demonstrating this, we will call them various constructions of the DP. 
+\begin{itemize}
+\item Naive
+\item Countable generator
+\item Normalization
+\end{itemize}
+
+}
+
+ Can we use Kolmogorov's Existence Theorem ? (in short, no)
+
+
+\bibliographystyle{apalike}
+\frame[t] {
+ \frametitle{Bibliography}
+\bibliography{../../../../papers/uber.bib}
+}
+
+\end{document}

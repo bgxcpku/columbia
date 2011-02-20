@@ -1,0 +1,32 @@
+\begin{thebibliography}{}
+
+\bibitem[Bartlett et~al., 2010]{Bartlett2010}
+Bartlett, N., Pfau, D., and Wood, F. (2010).
+\newblock Forgetting counts : Constant memory inference for a dependent
+  hierarchical {P}itman-{Y}or process.
+\newblock In {\em (\em submitted) ICML}.
+
+\bibitem[Gasthaus et~al., 2010]{Gasthaus2010}
+Gasthaus, J., Wood, F., and Teh, Y.~W. (2010).
+\newblock Lossless compression based on the {S}equence {M}emoizer.
+\newblock In {\em Data Compression Conference 2010}, pages 337--345.
+
+\bibitem[Shannon, 1951]{Shannon1951}
+Shannon, C. (1951).
+\newblock Prediction and entropy of printed english.
+\newblock {\em The Bell System Technical Journal}, pages 50--64.
+
+\bibitem[Teh, 2006]{Teh2006a}
+Teh, Y.~W. (2006).
+\newblock A hierarchical {B}ayesian language model based on {P}itman-{Y}or
+  processes.
+\newblock In {\em Proceedings of the Association for Computational
+  Linguistics}, pages 985--992.
+
+\bibitem[Wood et~al., 2009]{Wood2009}
+Wood, F., Archambeau, C., Gasthaus, J., James, L., and Teh, Y.~W. (2009).
+\newblock A stochastic memoizer for sequence data.
+\newblock In {\em Proceedings of the 26th International Conference on Machine
+  Learning}, pages 1129--1136, Montreal, Canada.
+
+\end{thebibliography}

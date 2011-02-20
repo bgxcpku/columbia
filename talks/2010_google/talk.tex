@@ -1,0 +1,586 @@
+% Copyright 2010 by Frank Wood
+
+\documentclass{beamer}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage[numbers]{natbib}
+
+% Setup appearance:
+
+\usetheme{Darmstadt}
+%\usetheme{Copenhagen}
+\usefonttheme[onlylarge]{structurebold}
+\setbeamerfont*{frametitle}{size=\normalsize,series=\bfseries}
+\setbeamertemplate{navigation symbols}{}
+
+% Standard packages
+
+\usepackage[english]{babel}
+%\usepackage[latin1]{inputenc}
+%\usepackage{times}
+%\usepackage[T1]{fontenc}
+%\usepackage{nnfootnote}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+%\newcommand{\argmax}{\operatornamewithlimits{argmax}}
+\def\newblock{\hskip .11em plus .33em minus .07em}
+% Setup TikZ
+
+%\usepackage{tikz}
+%\usetikzlibrary{arrows}
+%\tikzstyle{block}=[draw opacity=0.7,line width=1.4cm]
+
+
+% Author, Title, etc.
+
+\title[Fully Unsupervised Modeling of Discrete Observations of Natural Data] 
+{
+  A Step Towards Fully Unsupervised, Life-Long, Incremental Learning
+}
+
+\author[Wood]
+{
+  Frank~Wood%\inst{1}
+}
+
+\institute[Columbia University]
+{
+  %\inst{1}%
+  Columbia University
+}
+
+\date[Google 2010]
+{Google 2010}
+
+%\def\blfootnote{\xdef\@thefnmark{}\@footnotetext}
+
+
+% The main document
+\input{definitions}
+
+\begin{document}
+
+%\nofootnotemark
+\begin{frame}
+  \titlepage
+\end{frame}
+
+%\begin{frame}{Outline}
+%  \tableofcontents
+% \end{frame}
+
+
+\section{Introduction}
+\subsection{Motivation}	
+\frame[t]{
+\frametitle{Challenge}
+
+\begin{block}{Data Stream}
+\[
+\begin{array}{l}
+01001001011011100010000001110100\\
+01101000011100100110010101100101\\
+00100000011001000110000101111001\\
+01110011001000000111100101101111\\
+01110101011100100010000001101000\\
+01100001011100100110010000100000\\
+01100100011100100110100101110110\\
+01100101001000000111011101101001\\
+01101100011011000010000001100011\\
+01110010011000010111001101101000\ldots
+\end{array}
+\]
+\end{block}
+}
+
+\frame[t]{
+\frametitle{Long Term Goal}
+\begin{block}{Fully unsupervised, life-long, incremental learning}
+Characteristics
+\begin{itemize}
+\item Unsupervised (no labels, etc.)
+\item Linear time estimation
+\item Constant time inference
+\item Constant space memory complexity
+\end{itemize}
+Problems
+\begin{itemize}
+\item ``Observation'' not defined
+\item No definition of observation $\implies$ no knowledge of distributional family
+\item Generative mechanism unknown besides ``natural'' or non-adversarial %correspondingly model ``structure'' too must either be learned from data, arise naturally, or be independently optimized
+\end{itemize}
+\end{block}
+}
+
+\frame[t]{
+\frametitle{Today}
+\begin{block}{One step towards this goal}
+Requirements
+\begin{itemize}
+\item Unsupervised $\checkmark$
+\item Linear time estimation  $\checkmark$
+\item Constant time inference  $\checkmark$
+\item Constant space memory complexity  $\checkmark$
+\end{itemize}
+Problems
+\begin{itemize}
+\item ``Observation'' defined
+\item Weak distributional assumption 
+\item Natural model ``structure''  
+\end{itemize}
+\end{block}
+}
+
+
+
+\frame[t]{
+\frametitle{Today}
+
+\begin{block}{Discrete Sequential Observations}
+\[
+\begin{array}{l}
+01001001 , 01101110 , 00100000 , 01110100,\\
+01101000 , 01110010 , 01100101 , 01100101,\\
+00100000 , 01100100 , 01100001 , 01111001,\\
+01110011 , 00100000 , 01111001 , 01101111,\\
+01110101 , 01110010 , 00100000 , 01101000,\\
+01100001 , 01110010 , 01100100 , 00100000,\\
+01100100 , 01110010 , 01101001 , 01110110,\\
+01100101 , 00100000 , 01110111 , 01101001,\\
+01101100 , 01101100 , 00100000 , 01100011,\\
+01110010 , 01100001 , 01110011 , 01101000\ldots
+\end{array}
+\]
+\end{block}
+}
+
+ \frame[t] {%slide 7
+ \frametitle{Example Applications}
+ \begin{itemize}
+ \item Fill in missing observations (``in-painting'', ``imputation'')
+ \[ \argmax_{x_1, x_2, \ldots, x_k} \mathsf{P}(010010x_1 x_2 x_3 \ldots x_k 010) \]
+% \item Determine typicality (clustering)
+%  \[ \argmax_{k} \mathsf{P}_k(010010010) \]
+ \[\vdots\]
+ \item Predict what comes next in a sequence 
+  \[ \argmax_{x_{i+1}} \mathsf{P}(010010010x_{i+1}) \]
+ \end{itemize}
+ }
+ 
+ \frame[t] {%slide 7
+ \frametitle{Commonality}
+In each case we have a growing sequence of observations
+\[\mathcal{X} = x_1, x_2, \ldots, x_n, \ldots\]
+and an unknown joint distribution $\mathsf{P}$
+\[\mathsf{P}(\mathcal{X} |\GG)\]
+If we knew $\mathsf{P}$ we could probabilistically predict the sequence continuation
+  \[ \argmax_{x_{i+1}} \mathsf{P}(010010010x_{i+1}) \]
+and if we could do prediction we could do the rest.
+
+ }
+ \comment{
+ \frame[t] {%slide 6
+ \frametitle{Example Sequence Data}
+ \begin{itemize}
+\item Computational biology 
+ \begin{itemize}
+\item  Nucleotides i.e.~actgtc\_
+\item Genes
+\item ...
+\end{itemize}
+\item  Natural language processing 
+ \begin{itemize}
+\item Words, i.e.~the united \_
+\item Characters, i.e.~un\_
+\item Parts of speech, i.e.~NNV\_
+\end{itemize}
+\item Compression 
+ \begin{itemize}
+\item  Bits i.e.~0101000011110001\_
+\item  Bytes i.e.~6A7B4ED22100D\_
+\end{itemize}
+\item ...
+\end{itemize}
+
+ }
+}
+
+\subsection{Challenge}
+\begin{frame}[t]{Steps}
+\begin{itemize}
+\item Incrementally estimate $\mathsf{P},$ a {\em joint} distribution over sequences of unbounded length in worst case linear time from a single sequence of observations.
+%\begin{itemize}
+%\item Joint because we want all marginal and conditional distributions
+%\item Single observation because we only see a single data ``stream.''
+%\end{itemize}
+\item Store the model in worst case constant space.
+\item Do predictive inference in worst case constant time.
+\item Demonstrate.
+\end{itemize}
+%\begin{alertblock}{Nature of Problems}
+%Computational
+%\end{alertblock}
+\end{frame}	
+
+\subsection{Approach}
+\begin{frame}[t]{Tools}
+\begin{itemize}
+\item Model : hierarchical Bayesian nonparametrics \cite{Teh2006b}
+\begin{itemize}
+\item Bayesian regularization.
+\item Immediate, closed-form posterior updating.
+\item Distributional form extremely flexible.
+\item Non-parametric; posterior distribution tends towards empirical. 
+\item Hierarchically composable.
+\end{itemize}
+\item Incremental inference : \cite{Doucet2001,Liu2001,MacEachern1999}
+\begin{itemize}
+\item  Sequential Monte Carlo,  \citet{Wood2007,Wood2008,Wood2008b,Gasthaus2010}.
+\end{itemize}
+\item Implementation.
+\begin{itemize}
+\item Efficient model structure identification.
+\begin{itemize}
+\item Suffix / prefix trees  \cite{Ukkonen1995},\citet{Wood2009}
+\end{itemize}
+
+\item Constant memory complexity.
+\begin{itemize}
+\item Coagulation / fragmentation operators \cite{Pitman1999,Ho2006}
+\item Forgetting, \citet{Bartlett2010}
+\end{itemize}
+\end{itemize}
+\end{itemize}
+
+
+\end{frame}	
+
+\begin{frame}
+\begin{figure}
+    \includegraphics[width=.65\columnwidth]{cacm_fig/lm_results}
+    \caption{\tiny In blue is the performance of
+    the sequence memoizer (dashed line) versus $n^{\textrm{th}}$ order Markov models with hierarchical PYP priors (solid line)
+%    $n$-gram model (solid line)
+    as $n$ varies (test data perplexity, lower
+    is better).  In red is the computational
+    complexity of the sequence memoizer (dashed line) versus the Markov models (solid line) in
+    terms of  the number of nodes in the context tree/trie. % (for both the sequence 
+%    memoizer (dashed line) and a smoothing $n$-gram model (solid line).
+    For this four million word New York Times corpus, as $n$ passes 4, the memory complexity of the Markov models grows larger than that of the sequence
+    memoizer, yet, the sequence memoizer yields modeling
+    performance that is better than all Markov models regardless of their order. %the limit of an $n$-gram as $n\rightarrow\infty$.
+    This suggests that for $n\ge 4$ the sequence memoizer is to be preferred: it
+    requires less space to store yet results in a comparable if not better
+    model.} 
+    \label{fig:sm_vs_ngram}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\begin{table}
+\begin{center}
+\begin{tabular}[t]{lcc}
+\hline
+{\small Source } & {\small Perplexity} \\
+\hline
+{\small Bengio et al \cite{Bengio2003} }& 109.0 \\
+%{\small Mnih \& Hinton \cite{Mnih:NIPS08} } & 112.1 \\
+{\small Mnih et al \cite{Mnih2009}} & \phantom{0}83.9\\
+\hline
+{\small 4-gram Interpolated Kneser-Ney \cite{Chen1999,Teh2006} }& 106.1 \\
+{\small 4-gram Modified Kneser-Ney \cite{Chen1999,Teh2006} }& 102.4 \\
+{\small 4-gram Hierarchical PYP \cite{Teh2006} } & 101.9 \\
+{\small Sequence Memoizer} \cite{Wood2009}& \phantom{0}96.9\\
+\hline
+\end{tabular}
+\end{center}
+ \caption{Language modeling performance for a number of models on an Associated Press news corpus (lower perplexity is better).  Interpolated and modified Kneser-Ney are state-of-the-art language models.  Along with hierarchical PYP and the sequence memoizer, these models do not model relationships among words in the vocabulary.  Provided for comparison, the models in Bengio et al and Mnih et al are in a different class of significantly more complex models and include word relationships learned from data.}
+% The sequence memoizer outperforms fixed depth smoothing $n$-gram models but is bettered by a more computationally complex model on this data.  }
+\label{table:ap_perplexities}
+\end{table}
+
+\end{frame}
+
+\section{Review}
+%\begin{frame}[t]{Hierarchical nonparametric Bayes}
+%\begin{itemize}
+%\item Dirichlet process
+%\item Power law distributions
+%\item Pitman Yor process
+%\item Sequential Monte Carlo
+%\end{itemize}
+
+
+%\end{frame}	
+\subsection{Dirichlet Process}
+
+\begin{frame}[t]{Definition}
+\begin{block}{Dirichlet Process (DP), \citet{Ferguson1973}}
+We say
+ \[G \sim \DP(c,G_0)\]
+ if for any partition $A_1, \ldots, A_k$ of the sample space, the vector of random probabilities
+$[G(A_1), \ldots, G(A_k)]$ follows a Dirichlet distribution, i.e.
+\[[G(A_1), \ldots, G(A_k)] \sim \Dir(cG_0(A_1), \ldots, cG_0(A_k))\]
+\end{block}
+\end{frame}	
+
+\begin{frame}[t]{A Simple DP Model}
+Consider
+\begin{eqnarray*}
+G | c, G_0 &\sim& \DP(c,G_0) \\
+x_i | G &\sim& G, \;\; i=1,\ldots,n
+\end{eqnarray*}
+For prediction we would like, for instance,  
+\[P(x_n | x_1,\ldots,x_{n-1}) = \int P(x_n | G)dP(G | x_1, \ldots, x_{n-1})\]
+
+\end{frame}
+
+\begin{frame}[t]{Efficient Posterior Updating}
+\begin{block}{Polya Urn \citep{Blackwell1973}}
+\begin{eqnarray*}
+x_n | x_1,\ldots x_{n-1} &\sim& \frac{1}{n-1+c}\sum_{i=1}^{n-1}\delta_{x_i} + \frac{c}{n-1+c}G_0 \\
+G | x_1, \ldots, x_n &\sim& \DP\left(n+c, \frac{1}{n+c}\sum_{i=1}^n \delta_{x_i} + \frac{c}{n+c}G_0\right)
+\end{eqnarray*}
+%Note: 
+%begin{itemize}
+%\item Neither posterior predictive nor posterior distributions depend on the order of the $x_i$'s ($x_i$'s ``exchangeable'')
+%\item Many $x_i$'s will share the same value, call a shared value $\phi_k$
+%\item ``Observing'' $\phi_k$ once increases probability of observing it again and this is reinforced
+%\end{itemize}
+\end{block}
+\end{frame}	
+
+\begin{frame}[t]{Incremental Estimation}
+\begin{block}{Sequential Monte Carlo}
+The marginal posterior predictive distribution can be fully characterized by storing all elements of 
+\[\frac{1}{n-1+c}\sum_{i=1}^{n-1}\delta_{x_i} + \frac{c}{n-1+c}G_0\]
+Particle filters for posterior estimation in general DP models can be constructed by
+ updating this representation incrementally.
+\bigskip
+
+Note : the entire empirical distribution is stored.
+\end{block}
+\end{frame}
+
+
+\begin{frame}[t]{Uses}
+\begin{block}{Hierarchical Dirichlet Process \cite{Teh2006b}}
+Dirichlet processes can be used as ``glue'' to hierarchically tie together distributions governing related populations in order to ``share statistical strength'' during inference.
+\begin{columns}[t]
+\begin{column}{.5\textwidth}
+\begin{eqnarray*}
+G &\sim& \DP(c,G_0) \\
+G_j &\sim& \DP(c,G) \\
+\x_{ij} &\sim& G_j \\
+%x_{ij} | \theta_{ij} &\sim& F(\theta_{ij}),
+\end{eqnarray*} 
+\centering
+\hspace{.25cm} here $G_j$ is a per-population distribution
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{figure}
+\begin{center}
+\includegraphics[trim = 4cm 8cm 4cm 8cm, clip, width=4.5cm]{fig/shared_clustering.pdf}
+%\caption{Shared clustering}
+\label{default}
+\end{center}
+\end{figure}
+\end{column}
+\end{columns}
+\end{block}
+\end{frame}	
+
+\subsection{Pitman-Yor Process}
+\frame[t] {
+\frametitle{Pitman Yor Process (PYP) : Definition \cite{Pitman1997a}}
+ A Pitman-Yor process $\PY(c,d,H)$ is a distribution over distributions with three parameters:
+\begin{itemize}
+\item A discount $ 0 \le d < 1 $ that controls power-law behavior
+\begin{itemize}
+\item $d=0$ is DP
+\end{itemize}
+\item A concentration $c > -d$ like that of the DP
+\item A base distribution $H$ also like that of the DP
+\end{itemize}
+%A draw $G \sim PY(c,d,H)$ is also atomic
+
+%\[G = \sum_{k=1}^{\infty} \pi_k \delta_{\phi_k}\].  
+}
+
+\frame[t] {
+\frametitle{PYP: Polya Urn Representation}
+As in the DP, the PYP posterior predictive distribution can be expressed with $G$ marginalized out.  
+\begin{eqnarray*}
+p(x_{n+1} | x_{1}, \ldots, x_n) & = & \Ave\left[\frac{m_k - d}{c+n}\delta(\phi_k-\cdot) + \frac{c + Kd}{c + n}H(\cdot)\right]
+\end{eqnarray*}
+
+This again forms the basis for similar SMC and MCMC inference algorithms.
+\bigskip
+
+%Note: As in the case of the DP, due to the discrete nature of distributions $G \sim \PY(c,d,H)$, draws from $G$ tend to take the same value or ``cluster.''  
+}
+
+\frame[t] {
+\frametitle{Hierarchical Pitman-Yor Process \cite{Teh2006a}}
+A hierarchical Pitman-Yor process is the ``obvious'' two-parameter extension of the hierarchical Dirichlet process \cite{Teh2006b,Goldwater2006}.\\
+\bigskip
+
+Example:
+%\begin{columns}[t]
+%\begin{column}{.75\textwidth}
+\begin{eqnarray*}
+	\G_{[]} | \U_{\Sigma}, d_0 &\sim& \PY(d_0, 0, \U_{\Sigma }) \\
+	\G_{\bf{u}} | \G_{\sigma(\bf{u})}, d_{|\bf{u}|} &\sim& \PY(d_{|\bf{u}|}, 0, \G_{\sigma(\bf{u})}) \hspace{.35cm} \forall {\bf u} \in \Sigma^+\\
+	x_n | x_{n-1},  \ldots, x_1 = \bf{u} &\sim& \G_{\bf{u}}
+\end{eqnarray*}
+%\end{column}
+%\begin{column}{.25\textwidth}
+%\includegraphics[trim = 4cm 8cm 4cm 8cm, clip, width=5cm]{../../2010_icml/fig/sm_graphical_model.pdf}
+%\todo{insert graphical model fig}
+%\end{column}
+%\end{columns}
+%\bigskip
+\begin{itemize}
+\item Estimation and inference follow that for the hierarchical Dirichlet process (HDP)
+\item HDP inference follows closely inference in single level models
+\end{itemize}
+
+}
+
+%\input{pitmanyor_process}
+
+%\subsection{Hierarchical Modeling}
+%\subsection{Power law}
+%\input{power_law}
+\section{Sequence Memoizer \hspace{1.5cm}}
+\input{simple_sequence_memoizer}
+\section{Demonstration}
+\subsection{Lossless compression}
+\frame[t] {%slide 2
+ \frametitle{Review}
+\begin{block}{Shannon's source coding theorem}
+$n$ i.i.d. random variables each with entropy $H(\mathcal{X})$ can be compressed into more than $nH(\mathcal{X})$ bits with negligible risk of information loss, as $n$ tends to infinity; but conversely, if they are compressed into fewer than $nH(\mathcal{X})$ bits it is virtually certain that information will be lost. \cite{MacKay2003}
+\end{block}
+Arithmetic and range coding achieve this limit for all practical purposes.
+\bigskip
+
+This means that a lossless compressor built on a sequence predictor will achieve a compression rate equal to the average predictive log-loss, $\ell(\xbf_{1:N}) = -\frac{1}{N}\sum_{i=1}^N \log_2 P(x_i|\xbf_{1:i-1})$
+ }
+ 
+\input{incremental_sequence_memoizer}
+\input{constant_space_sequence_memoizer}
+\section{Discussion}
+\subsection{Inspiration}
+%\frame[t] {%slide 2
+ %\frametitle{Inspiration}
+%Details, details
+
+%We have a way to regularize joint distributions over sequences of observations
+%Method involves hierarchically tying related conditional distributions
+%Different factorizations of the joint should be possible.
+%Other directions.
+ %}
+
+\frame[t] {%slide 2
+ \frametitle{Shannon, again$\ldots$}
+ ``Prediction and entropy of printed English,'' \citep{Shannon1951}
+\begin{quote}
+If $[\ldots]$ language is translated into binary digits $[\ldots]$, the entropy H $[\mbox{of the language}]$ is the average number of binary digits required per letter
+\end{quote} 
+{\begin{center} drppng lttrs dsnt hrt \end{center} }
+\begin{quote} $[\ldots]$it appears that, in ordinary literary English, $[\ldots]$ long range statistical effects (up to 100 letters) reduce the entropy to something of the order of one bit per letter
+\end{quote}
+{\begin{center} d \_ \end{center} }
+{\begin{center} the united \_ \end{center} }
+{\begin{center} baseball is the national pastime of the united \_ \end{center} }
+
+ }
+ \frame[t] {%slide 3
+ \frametitle{Inspiration and Reminder}
+ Conclusion: lower and upper bound on character-based entropy of English of
+$[0.6 < H(English) < 1.3]$ bits per character\footnote{based on a 27 character alphabet, where $log_2(27) \approx 4.75$}\citep{Shannon1951}
+ \bigskip
+ 
+ Reminder: 
+ \begin{figure}[t]
+\begin{center}
+%\includegraphics[trim = 4cm 8cm 4cm 8cm, clip, width=5cm]{fig/shared_clustering.pdf}
+\includegraphics[width=10cm]{../../papers/2010_icml/bounded_memory_compression/results_calgary_corpus.pdf}
+%\caption{Shared clustering}
+\label{default}
+\end{center}
+\end{figure}
+
+ 
+ 
+\comment{ If $\Sigma$ is a set (an alphabet) and $G$ is a discrete probability distribution over $\Sigma$, (i.e. $\sum_{x\in\Sigma} G(X=x) = 1, 0 < G(x) < 1)$ then you can write the entropy of $G$ as
+ 
+ \[H(G) = -\sum_{x\in\Sigma} G(x) \log_2(G(x))\]
+ 
+ Reminder: entropy is the number of bits per symbol an optimal encoder of a sequence of iid symbols drawn from $G$ would require to losslessly represent the sequence on average. 
+ }
+ }
+ \frame[t] {%slide 4
+ \frametitle{Crazy Idea}
+ \begin{center}Compression $\approx$ intelligence\end{center}
+ ``Text Compression as a Test for Artificial Intelligence,''\cite{Mahoney2009} \newline
+ 
+\begin{quote}The Turing test for artificial intelligence is widely accepted, but is subjective, qualitative, non-repeatable, and difficult to implement. An alternative test without these drawbacks is to insert a machine's language model into a predictive encoder and compress a corpus of natural language text. A ratio of 1.3 bits per character or less indicates that the machine has AI.\end{quote}
+ }
+
+ \frame {%slide 4
+ \frametitle{Sampling From a Byte Model Trained On NY Times Corpus (3m)}
+ bottler , the u.s. college , enjoy a joined his what most again street from all theme oddly produce helped magnet , " " specials , including a pollectioner ) , 7-2ndtake-hns )
+the three decades it just happens days to receive branchery , a shadow , " we 've even delight lead to share incoln candidate for the first thing , adaptychicago , " mean tip . phin places like lives in diligenerations , send in the 10 days the airport maytages were on have just happened in 1988 that new york 's spray immediately camps , which print care deal terms , cezanne-manime with largely student can do it is an ec
+ }
+ 
+ \frame {%slide 4
+ \frametitle{Continuing From a Byte Model Trained On NY Times Corpus (50m)}
+{\em the fastest way to make money is$\ldots$}
+ being player . bucketti wish i made it end in the reducers and assemblance smart practices to allow city is something to walk in most of the work of agriculture . i 'd be able to compete with an earlier goals : words the danger of conduct in southern california , has set of juice of the fights lack of audience that the eclasm beverly hills . "
+she companies or running back down that the book , " grass .
+and the coynes , exaggerate between 1972 .
+the pad , a debate on emissions on air political capital crashing that the new obviously program " -- irock price , " coach began refugees , much and\footnote{Log-loss 1.49 bits/byte.  2 million rest.'s, forgetting}
+ }
+  \frame {%slide 4
+ \frametitle{Full Circle}
+``A Step Towards Fully Unsupervised, Life-Long, Incremental Learning''?
+\bigskip
+
+Demonstrated practically useful approach that exhibits
+\begin{itemize}
+\item Constant space representation $\checkmark$
+\item Linear time estimation $\checkmark$
+\item Constant time inference $\checkmark$
+\end{itemize}
+Ways forward?
+\begin{itemize}
+\item Dependent streams
+\item Multi-scale models 
+\item Back-off structure learning 
+\end{itemize}
+ }
+\section{Thanks}
+ \frame[t] {%slide 5
+ \frametitle{Collaborators}
+ \begin{itemize}
+\item Tom Griffiths
+\item Yee Whye Teh
+\item Jan Gasthaus
+\item Nicholas Bartlett
+\item David Pfau
+\item Sharon Goldwater
+ \end{itemize}
+ }	
+	%\section{References}	
+
+	\bibliographystyle{plainnat}
+	\begin{frame}[t,allowframebreaks]{Bibliograpy}
+
+\bibliography{../../papers/uber}
+\end{frame}
+
+\begin{frame}
+Special thanks to Ana Calabrese
+\end{frame}
+\end{document}

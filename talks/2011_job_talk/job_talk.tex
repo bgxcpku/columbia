@@ -141,7 +141,8 @@ Example predictive probabilities over English characters.
 % (0cm,0cm) is the lower left corner, 
 % (5cm,2cm) is the upper right corner. 
 %\pgfrect[stroke]{\pgfpoint{0cm}{0cm}}{\pgfpoint{2cm}{10pt}} 
-% Paint a rectangle (stroke it, do not fill it)% The lower left corner is at (0cm,0cm) 
+% Paint a rectangle (stroke it, do not fill it)
+% The lower left corner is at (0cm,0cm) 
 % The rectangle is 2cm wide and 10pt high. 
 %\pgfcircle[fill]{\pgfpoint{3cm}{1cm}}{10pt} 
 % Paint a filled circle % The center is at (3cm,1cm) % The radius is 10pt
@@ -192,6 +193,40 @@ Repeat
 \end{block}
 }
 
+
+
+%\begin{alertblock}{Nature of Problems}
+%Computational
+%\end{alertblock}
+\end{frame}	
+
+
+
+
+\frame[t] {
+\begin{itemize}
+\item Actors in the world must have predictive models of the world in order to plan act efficiently
+\item Better predictive models yield better plans and more efficient sequences of actions
+\item Biological organisms
+\begin{itemize}
+\item observe sequences of binary vectors
+\item build predictive models of the world
+\item output sequences of binary vectors
+\end{itemize}
+\end{itemize}
+Ultimate goal: learner capable of generalizing well (predictive performance) given sequences of discrete observations from the world.
+}
+
+\subsection{Compression as testbed}
+\begin{frame}[t]{}
+A good model of the world can be used to compress 
+\begin{itemize}
+\item Comparison between probabilistic and deterministic models possible.
+\item Better compression and better modeling intimately related.
+\item Performance measured in {\em bits}, {\em log-loss} (bits per byte), or {\em perplexity} instead of likelihood or evidence.
+\end{itemize}
+
+
 \subsection{Streaming compression requirements}
 \begin{frame}[t]{}
 Predictive model
@@ -206,18 +241,6 @@ Predictive model
 \item Predictive inference must be performed in worst case constant time.
 \end{itemize}
 
-%\begin{alertblock}{Nature of Problems}
-%Computational
-%\end{alertblock}
-\end{frame}	
-
-\subsection{Compression as testbed}
-\begin{frame}[t]{}
-\begin{itemize}
-\item Comparison between probabilistic and deterministic models possible.
-\item Better compression and better modeling intimately related.
-\item Performance measured in {\em bits}, {\em log-loss} (bits per byte), or {\em perplexity} instead of likelihood or evidence.
-\end{itemize}
 
 %\begin{alertblock}{Nature of Problems}
 %Computational
@@ -289,7 +312,7 @@ Desiderata
 \end{itemize}
 Assumptions
 \begin{itemize}
-\item Shortness is good
+\item Shortness is preferred
 \item Recency matters
 \item Power-laws permeate
 %\begin{itemize}
@@ -362,7 +385,7 @@ Can relate $G_\context$ to related distribution $G_\parent$ where, for instance,
 \frac{N(\context s)+ \alpha \G_\parent(s)}{\sum_{s'\in\Sigma} N(\context s') + \alpha}\right]
 \]
 Where now the counts
-\[\{N(\ubf's')\}_{\ubf'\in\Sigma^+, s'\in\Sigma}\], along with $\alpha$, must be averaged over, typically using Monte Carlo methods.
+\[\{N(\ubf's')\}_{\ubf'\in\Sigma^+, s'\in\Sigma}\] along with $\alpha$, must be averaged over, typically using Monte Carlo methods.
 
 \vspace{.5cm}
 Note: stochastic memoizer now can return unobserved $\sigma$'s in the context $\context$ {\em and} the probability of returning any given symbol is affected by the probability of it being returned by other, related contexts.
@@ -799,7 +822,7 @@ the Calgary corpus.
 \label{table:ap_perplexities}
 \end{table}
 \end{block}
-{\small Language models of an Associated Press news corpus (lower perplexity is better).  Interpolated and
+{\small Language models of an antagonistically processed Associated Press news corpus (lower perplexity is better).  Interpolated and
  modified Kneser-Ney are state-of-the-art language models.  Provided for comparison are 
  the results for the models of Bengio et al.\ and Mnih et al.\ which belong to
  a different class of models that learn word representations from data. }
@@ -826,6 +849,129 @@ the Calgary corpus.
 }
 
 \section{Next}
+\subsection{Generalizing from Markov models to PDFA }
+\frame[t]
+{
+\begin{center}
+Automata corresponding to binary $1^{\mathrm{st}}$ order Markov model
+\end{center}
+\begin{figure}
+    \includegraphics[width=.5\columnwidth]{bigram}
+    \label{fig:bigram}
+\end{figure}
+
+\begin{itemize}
+\item {\em Probabilistic deterministic finite automata} capable of {\em recognizing} and {\em generating} arbitrary binary sequences.
+\item A Markov model is an automata with defined, deterministic transition function and corresponding set of states.
+\end{itemize}
+
+}
+
+\frame[t]
+{
+\begin{center}
+Automata with no corresponding finite-order Markov model
+\end{center}
+\begin{figure}
+    \includegraphics[width=.5\columnwidth]{even}
+    \label{fig:even}
+\end{figure}
+\begin{itemize}
+\item {\em Even process} can generate ABBA, AAABBBBABB, BBBBBBBB, but not ABA.
+\item Capable of concentrating mass on strings more efficiently
+\begin{itemize}
+\item States lose meaning (no context)
+\item Transitions and states learned (though deterministic)
+\end{itemize}
+
+\item Learnable using frequentist tools \cite{Carrasco1994,Thollard2000,Shalizi2004}
+\end{itemize}
+}
+
+\subsection{Probabilistic Deterministic Infinite Automata, \citet{Pfau2010}}
+\frame[t]
+{
+ A Probabilistic Deterministic Infinite Automata (PDIA) is a quintuple 
+ \[M = (Q,\Sigma,\delta,\{\vec{\pi}_i\},q_0)\]
+  where
+  \begin{itemize}
+\item $Q$ is a countable set of states
+\item $\Sigma$ is a finite set of symbols
+\item $\delta: Q \times \Sigma \rightarrow Q$ is a deterministic transition function from state/symbol pairs to another state
+\item $\{\vec{\pi}_i : i \in Q\}$ is a set of probability vectors over symbols, one for each state
+\item $q_0$ is the initial state
+\end{itemize}
+}
+
+\frame[t]
+{
+A PDIA prior is
+ \begin{eqnarray*}
+G_0 &\sim& \PY(\gamma,d_0,H) \\
+G_\sigma &\sim& \PY(\alpha, d, G_0) \\
+\delta(q_i,\sigma) &\sim& G_\sigma \\
+\vec{\pi}_i &\sim& \mathrm{Dir}(\beta/|\Sigma|,\ldots,\beta/|\Sigma|)
+\end{eqnarray*}
+yielding
+}
+
+
+
+\subsection{PDIA Performance}
+\frame[t]
+{
+\begin{table}[t]
+    \begin{center}
+    \setlength{\tabcolsep}{1.3mm}
+    \begin{small}
+\begin{tabular}{r|cccccccccc}
+\hline
+& SM  & PDIA  &  HMM \\
+\hline
+AIW & 4.78 & 5.13  &  7.89   \\
+  & 19,358 & 365.6 & 52   \\
+\hline
+\hline
+%AIWL & 4.08 & 4.13 &  7.89 & 9.45 & 5.72 & 4.05 & 3.51 & 3.32 & 3.24 \\
+ %AIWL & 1,231.6 & 1,247 &  52 & 28 & 444 & 3,249 & 12,324 & 31,990 & 177,232 \\
+%\hline
+%\hline
+DNA & 3.56 & 3.72  &  3.76   \\
+ & 314,166 & 64.7  & 19   \\
+\hline
+\end{tabular}
+\end{small}
+\caption{\small Evaluation on Alice in Wonderland (AIW) and mouse DNA.  Top row is perplexity of test set, bottom is number of states in the model (average for PDIA).  PDIA: average over multiple posterior samples.  PDIA-MAP: best posterior sample.  HMM-EM: Hidden Markov Model.  3-MM: 3$^{rd}$ order Markov Model.  SM: sequentially trained sequence memoizer.}
+\end{center}
+\vspace{-8mm}
+\end{table}
+}
+
+\subsection{General picture}
+\frame[t] {
+SM $\rightarrow$ PDIA $\rightarrow$ IHMM $\rightarrow$ IPCFG $\rightarrow$
+\begin{itemize}
+\item Complexity 
+\end{itemize}
+}
+
+\subsection{Troubling findings}
+\frame[t] {
+\begin{itemize}
+\item Complexity 
+\end{itemize}
+
+}
+
+\subsection{Questions that keep me awake at night}
+\frame[t]
+{
+\begin{itemize}
+\item How do we distinguish between the expressivity of 
+\end{itemize}
+
+
+}
 
 
 \section{Demonstration}
@@ -871,5 +1017,28 @@ Power-law scaling of word frequencies in
     number of relatively rare words. \\ {\tiny Figure from \cite{Wood2011}}.
 \end{frame}	
 
+
+
+
+\frame[t]
+{
+
+\begin{table}[htdp]
+\caption{default}
+\begin{center}
+\begin{tabular}{|c|c|c|}
+Language & Model & Bayesian \\
+\hline
+PDFA  & Markov models & SM \\
+PNFA  & HMM & IHMM \\
+CFG & PCFG & IPCFG \\
+RE & & Church \\s
+\end{tabular}
+\end{center}
+\label{default}
+\end{table}%
+
+
+}
 
 \end{document}

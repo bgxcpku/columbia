@@ -1,0 +1,13 @@
+\begin{thebibliography}{1}
+
+\bibitem{bar}
+bar.
+\newblock {\em bar}.
+\newblock {MIT Press}, 1985.
+
+\bibitem{foo}
+foo.
+\newblock {\em foo}.
+\newblock {MIT Press}, 1985.
+
+\end{thebibliography}

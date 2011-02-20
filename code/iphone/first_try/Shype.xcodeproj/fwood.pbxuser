@@ -1,0 +1,121 @@
+// !$*UTF8*$!
+{
+	1D6058900D05DD3D006BFB54 /* Shype */ = {
+		activeExec = 0;
+		executables = (
+			C8EA3CEB111C90AB000FADAB /* Shype */,
+		);
+	};
+	28216C960DB411BC00E5133A /* FirstViewController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {712, 806}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 517}";
+			sepNavWindowFrame = "{{15, 315}, {750, 558}}";
+		};
+	};
+	29B97313FDCFA39411CA2CEA /* Project object */ = {
+		activeBuildConfigurationName = Debug;
+		activeExecutable = C8EA3CEB111C90AB000FADAB /* Shype */;
+		activeTarget = 1D6058900D05DD3D006BFB54 /* Shype */;
+		codeSenseManager = C8EA3D0A111C90B6000FADAB /* Code sense */;
+		executables = (
+			C8EA3CEB111C90AB000FADAB /* Shype */,
+		);
+		perUserDictionary = {
+			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					341,
+					20,
+					48,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 307028646;
+			PBXWorkspaceStateSaveDate = 307028646;
+		};
+		perUserProjectItems = {
+			C8D30DCD124CE2B4008D25A9 /* PBXTextBookmark */ = C8D30DCD124CE2B4008D25A9 /* PBXTextBookmark */;
+			C8D30DD9124CE398008D25A9 /* PBXTextBookmark */ = C8D30DD9124CE398008D25A9 /* PBXTextBookmark */;
+		};
+		sourceControlManager = C8EA3D09111C90B6000FADAB /* Source Control */;
+		userBuildSettings = {
+		};
+	};
+	C8D30DCD124CE2B4008D25A9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 28216C960DB411BC00E5133A /* FirstViewController.m */;
+		name = "FirstViewController.m: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 517;
+		vrLoc = 0;
+	};
+	C8D30DD9124CE398008D25A9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 28216C960DB411BC00E5133A /* FirstViewController.m */;
+		name = "FirstViewController.m: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 517;
+		vrLoc = 0;
+	};
+	C8EA3CEB111C90AB000FADAB /* Shype */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 0;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		dataTipCustomDataFormattersEnabled = 1;
+		dataTipShowTypeColumn = 1;
+		dataTipSortType = 0;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		dylibVariantSuffix = "";
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = Shype;
+		showTypeColumn = 0;
+		sourceDirectories = (
+		);
+	};
+	C8EA3D09111C90B6000FADAB /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+			repositoryNamesForRoots = {
+				"" = "";
+			};
+		};
+	};
+	C8EA3D0A111C90B6000FADAB /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+}

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="website for modeling using the nonparametric Bayesian model known as the stochastic sequence memoizer for dicrete sequence data." />
+    <meta name="keywords" content="bayes, sequence modeling, nonparametric, compression" />
+    <meta name="author" content="Nicholas Bartlett" />
+    <meta name="generator" content="webgen - http://webgen.rubyforge.org" />
+    <link rel="stylesheet" type="text/css" href="../default.css" />
+    <!--[if IE 6]>
+        <link rel="stylesheet" href="../browserfix.css" type="text/css" />
+        <![endif]-->
+    <title>Sequence Memoizer Getting the Source Code</title>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18916263-2']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+  </head>
+
+  <body>
+    <div id="sidebar">
+      <h1>Sequence Memoizer</h1>
+
+      <div id="menu">
+        <ul><li class="webgen-menu-level1"><a href="../index.html">Home</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../jar_file/index.html">Download</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../matlab/index.html">Matlab</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../papers/index.html">Papers</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="../r/index.html">R</a></li><li class="webgen-menu-level1 webgen-menu-submenu webgen-menu-submenu-inhierarchy"><span>Source Code</span></li></ul>
+      </div>
+
+      <h3>Links:</h3>
+      <ul>
+		<li><a href="http://www.stat.columbia.edu/~fwood/">Wood Group</a></li>
+		<li><a href="http://www.gatsby.ucl.ac.uk/~ywteh/">Teh Group</a></li>
+        <li><a href="http://deplump.com/">deplump.com</a></li>
+      </ul>
+      
+<table border=0 cellspacing=0 cellpadding = 10>
+  <tr><td>
+  <b>Subscribe to the Sequence Memoizer Google Group</b>
+  </td></tr>
+  <form action="http://groups.google.com/group/sequence-memoizer/boxsubscribe">
+  <input type=hidden name="hl" value="en">
+  <tr><td style="padding-left: 5px;">
+  Email: <input type=text name=email>
+  <input type=submit name="sub" value="Subscribe">
+  </td></tr>
+</form>
+<tr><td align=right>
+  <a href="http://groups.google.com/group/sequence-memoizer?hl=en">Visit this group</a>
+</td></tr>
+</table>
+      
+      
+    </div>
+    
+    <div id="content">
+      
+<h2 id="read-only-git-repository">Read Only Git Repository</h2>
+
+<p>The source code is available in a public Git repository. To access the repository you will need to have <a href="http://help.github.com/">Git installed</a> on your computer. Once Git has been installed you will need to register a username with Git.  You can do this by calling the following from the terminal (once you add /usr/local/git/bin to your path)</p>
+
+<p><b>git config &ndash;global user.name &ldquo;Your Name&rdquo;<br />
+git config &ndash;global user.email your.email@whatever.com</b></p>
+
+<p>Once you have registered, create a directory where you wish to house the Git repository calling in your terminal </p>
+
+<p><b>mkdir public_sequence_memoizer</b></p>
+
+<p>or some other name you prefer. Then call</p>
+
+<p><b>cd public_sequence_memoizer<br />
+git init<br />
+git remote add origin git://github.com/nbartlett/Sequence-Memoizer.git<br />
+git pull origin master</b></p>
+
+<p>If changes are made by other people you can update your local repository by calling</p>
+
+<p><b>git pull origin master</b></p>
+
+<h2 id="maven">Maven</h2>
+
+<p>Since the code was developed by combining multiple projects, we use Maven to compile the code.  Maven makes managing dependencies especially easy. To compile the source code you will need to have Maven installed on your computer.  If you do not, you can <a href="http://maven.apache.org/download.html">download Maven</a> and follow the installation instructions halfway down the page.</p>
+
+<h2 id="code">Code</h2>
+
+<p>Now that you have the code on your machine and Maven ready to go you need to add the trove jar to the Maven repository.  You can do this by navigating into the Trove project folder inside the public Git repository and issuing the command</p>
+
+<p><b>mvn install:install-file
+-Dfile=trove-3.0.0a3.jar
+-DgroupId=gnu
+-DartifactId=trove
+-Dversion=3.0.0a3
+-Dpackaging=jar
+-DgeneratePom=true</b></p>
+
+<p>all on one line.  Finally, you are ready to actually compile and use the source code.  You can open the projects <b>Public Sequence Memoizer</b> and <b>Public Util</b> through an IDE such as <a href="http://netbeans.org/">Netbeans</a>.  You can also compile the code using the terminal by navigating to the <b>Public Util</b> project root and entering</p>
+
+<p><b> mvn install</b></p>
+
+<p>After which you should move to the  <b>Public Sequence Memoizer</b> and type the same thing.  Compiling the code must be done in sequence because of the dependencies among the projects.  When you compile the code two jars get generated, one with only the source code from the project and one with the source code from the project and all the projects on which it depends.</p>
+
+<h2 id="contribute-to-the-repository">Contribute to the Repository</h2>
+
+<p>If you woud like to make contributions to the public repository you will need the repository administrator to add you to the list of contributors.  Please contact <a href="http://stat.columbia.edu/~bartlett">Nicholas Bartlett</a> and ask to be added.  Once you are added you will need to <a href="http://help.github.com/mac-key-setup/">set up an SSH key pair and added it to your GitHub account</a>.  Then, instead of adding the remote origin specified above you should enter into the terminal window</p>
+
+<p><b>cd public_sequence_memoizer<br />
+git init<br />
+git remote add origin git@github.com:nbartlett/Sequence-Memoizer.git<br />
+git pull origin master</b></p>
+
+<p>If you make changes to source files which you wish to push back to the repository then call </p>
+
+<p><b>git add files_you_changed<br />
+git commit -m &lsquo;a short message about what you changed&rsquo;<br />
+git push</b></p>
+
+<p>If you are a contributor make sure you are not overwriting other peoples hard work by being careful and not forcing any merges.  People accessing the repository expect the code to work so lets make sure that it does!</p>
+
+
+
+      <h3>site info</h3>
+      <p>&copy; 2010 Nick Bartlett | Generated by <a href="http://webgen.rubyforge.org">webgen</a> | Design by <a href="http://andreasviklund.com">Andreas Viklund</a>.</p>
+    </div>
+  </body>
+</html>

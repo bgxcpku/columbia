@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Homepage for the Deplump family of general purpose lossless compressors" />
+    <meta name="keywords" content="deplump, plump, sequence memoizer, lossless compression, probabilistic lossless compression, range coding, ppm, ppmz, gzip, bzip2" />
+    <meta name="author" content="Frank Wood, Nicholas Bartlett  " />
+    <meta name="generator" content="webgen - http://webgen.rubyforge.org" />
+    <link rel="stylesheet" type="text/css" href="default.css" media="screen,projection" />
+    <title>deplump general purpose lossless compression</title>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18916263-1']);
+  _gaq.push(['_setDomainName', 'none']);
+  _gaq.push(['_setAllowLinker', true]);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+  </head>
+
+  <body>
+    <div id="wrap">
+      <div id="header">
+        <h1><a href="index.html">deplump&#0153;</a></h1>
+        <p><strong>lossless data compression</strong></p>
+      </div>
+
+      <div id="avmenu">
+        <h2 class="hide">Site menu:</h2>
+        <ul><li class="webgen-menu-level1"><a href="index.html">Demo</a></li><li class="webgen-menu-level1 webgen-menu-item-selected"><span>Performance</span></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="About/index.html">About</a></li><li class="webgen-menu-level1"><a href="contact.html">Contact</a></li></ul>
+
+      </div>
+
+      <!-- The following div was not in the original template but was inserted to display the breadcrumb trail
+           and language links -->
+      <!-- <div id="contentwide">
+        <p class="textright">Location: <a href="index.html">Demo</a> / <span>Performance</span>&nbsp;|&nbsp;Language: <span class="webgen-langbar-current-lang">en</span></p>
+      </div>-->
+
+      <!--<div id="extras">
+        <h2>Links:</h2>
+        <ul>
+          <li><a href="http://www.stat.columbia.edu/~fwood">Wood</a></li>
+        </ul>
+      </div>-->
+
+      <div id="content">
+        
+<p>Start by checking out <a href="LookupStatistics">deplump performance on the files uploaded to the website</a> relative to other well known compressors.</p>
+
+<p>A summary of these <a href="LookupStatistics">real-time results</a> is that deplump almost always compresses better than other general purpose lossless compressors.  This means that, on average, deplump produces smaller output than gzip, bzip2, and other general purpose lossless compressors.  Users can conservatively expect average improvements over all data types on the order of (with gzip compression performance as baseline)</p>
+
+<table>
+  <col />
+  <col align="center" />
+  <col align="center" />
+  <col align="center" />
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>gzip</th>
+      <th>bzip2</th>
+      <th>deplump</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>improvement</td>
+      <td>0%</td>
+      <td>3%</td>
+      <td>7%</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>These numbers are derived from the data uploaded to the website.  Our own experience suggests that much greater relative improvements are possible for more reasonable data (a large percentage of uploads to the website is already compressed data despite the fact that uploading such data is clearly not a very interesting test to perform).</p>
+
+<p>Deplump performs best in both an absolute and relative sense on uncompressed text-like data (text in any language, source code, etc.).   Being a general purpose lossless compressor, deplump can be applied to any stream however, and will generally reduce the size of the stream by some amount (unless of course, the stream is compressed to its entropic minimum already)</p>
+
+<table>
+  <col />
+  <col align="center" />
+  <col align="center" />
+  <col align="center" />
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>text</th>
+      <th>pdf</th>
+      <th>jpeg</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>bits/byte</td>
+      <td>1.5</td>
+      <td>7</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <td>reduction</td>
+      <td>81%</td>
+      <td>12%</td>
+      <td>12%</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Note that PDF and jpeg are, generally speaking, compressed file formats and deplump does not decompress files before deplumping them.  All general purpose lossless compressors work best on files that are not already compressed.</p>
+
+<p>We strongly encourage you to <a href="index.html">upload</a> your own data and to perform your own comparisons. </p>
+
+
+      </div>
+
+      <div id="footer">
+        <p>Copyright &copy; 2010</p>
+      </div>
+    </div>
+  </body>
+</html>

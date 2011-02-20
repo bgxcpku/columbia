@@ -1,0 +1,35 @@
+import graph;
+
+picture pic1;
+
+size(pic1,10cm,8cm,IgnoreAspect);
+defaultpen(1);
+
+//real trans(real x) {static real log2=log(2); return log(x)/log2;}
+real trans(real x) {return x;}
+
+real[] n={0,1,2,3,4,5,6};
+real[] nyt_hpyp_perplexity={347.0, 218.05, 168.0, 146.1, 136.4, 132.3, 130.9};
+real nyt_igram_perplexity = 129.1;
+real nyt_nodes_in_tree = 5272088;
+//real[] hpyp_nodes_in_tree = {1 , 130062 , 1879452 , 6687271 , 13563764 , 21279099 , 29284173};
+real[] hpyp_nodes_in_tree = {1, 80970 , 981973 , 3143113 , 6016779 , 9144795 , 12355678};
+scale(pic1, true);
+draw(pic1,graph(n,hpyp_nodes_in_tree),red);
+xaxis(pic1,"Context length ($n$)",BottomTop,LeftTicks(DefaultFormat,new real[] {0,1,2,3,4,5,6}));
+yaxis(pic1,"Number of nodes",Right, red, LeftTicks);
+yequals(pic1,nyt_nodes_in_tree,red+dashed);
+xequals(pic1,4,0.5+dashed);
+
+picture q = secondaryY(pic1,new void(picture pic2){
+scale(pic2,true);
+draw(pic2,graph(pic2,n,map(trans,nyt_hpyp_perplexity)),blue);
+yaxis(pic2,"Perplexity",Left,blue,RightTicks);
+yequals(pic2,trans(nyt_igram_perplexity),blue+dashed);
+});
+
+add(pic1,q);
+add(pic1.fit());
+
+
+

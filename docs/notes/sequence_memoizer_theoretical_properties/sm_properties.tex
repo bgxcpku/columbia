@@ -1,0 +1,126 @@
+\documentclass[11pt]{amsart}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{epstopdf}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\newcommand{\ubf}{\mathbf{u}}
+\newcommand{\xbf}{\mathbf{x}}
+\newcommand{\sbf}{\mathbf{s}}
+\newcommand{\py}{\mathcal{PY}}
+\newcommand{\vbf}{\mathbf{v}}
+\newcommand{\Prob}{\mathrm{P}}
+\newcommand{\Psmooth}{\Prob_\text{smooth}}
+\newcommand{\parent}{\pi}
+\newcommand{\suffix}{\sigma}
+\newcommand{\UHPYP}{SM}
+\newcommand{\PLUMP}{PLUMP}
+\newcommand{\Oh}{\mathcal{O}}
+\newcommand{\tree}{\mathcal{T}}
+
+% \newcommand{\cusk}{c_{\ubf s k}}
+% \newcommand{\cus}{c_{\ubf s \cdot}}
+% \newcommand{\cu}{c_{\ubf \cdot \cdot}}
+% \newcommand{\tus}{t_{\ubf s}}
+% \newcommand{\tu}{t_{\ubf \cdot}}
+\newcommand{\cusk}{c_{\ubf s k}}
+\newcommand{\cus}{c_{\ubf s}}
+\newcommand{\cu}{c_{\ubf \cdot}}
+\newcommand{\tus}{t_{\ubf s}}
+\newcommand{\tu}{t_{\ubf \cdot}}
+\newcommand{\cset}{\{\cusk\}_{s\in \Sigma,k \in \{1,\ldots,t_{\ubf s}\}}}
+\newcommand{\tset}{\{\tus\}_{s\in \Sigma}}
+\newcommand{\bydef}{\equiv}
+\newcommand{\state}{\mathcal{S}_{\xbf}}
+\newcommand{\statei}{\mathcal{S}_{\xbf_{1:i}}}
+\newcommand{\emptystring}{\varepsilon}
+\newcommand{\gcount}{\hat{c}}
+\newcommand{\escape}{\mathtt{esc}}
+
+\newcommand{\todo}[1]{\begin{center}\textbf{TODO: } #1 \end{center}}
+\newcommand{\figref}[1]{\figurename~\ref{#1}}
+\newcommand{\predictive}{\Prob(x_i|\xbf_{1:i-1})}
+\newcommand{\ywcomment}[1]{\textbf{#1}}
+\newcommand{\jgcomment}[1]{ { \textcolor{red}{#1} } }
+
+
+
+\title{Some Limiting Properties of the Sequence Memoizer Prior}
+\author{N. Bartlett and F. Wood}
+%\date{}                                           % Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+%\section{}
+%\subsection{}
+The sequence memoizer (SM) is a collection of tools for doing posterior estimation and inference in a hierarchical Pitman Yor process of unbounded depth.   Because, prior to the discovery of the sequence memoizer, inference in such a model was not possible, several questions about the theoretical characteristics of it have remained unanswered.  %The structure of the Pitman Yor process hierarchical prior used in the sequence memoizer is that of a branching tree whose depth is unbounded (the branching factor at each node in the tree is equal to the cardinality of the discrete symbol set that can occur in the sequence).   
+
+Here we consider a simple (but revealing) example: consider using the SM to model binary strings of unbounded length.  As will be described more fully soon, the hierarchical graphical model the SM uses in inference ``terminates'' at leaf nodes that are indexed by infinitely long binary strings.   Herein lies the first possible confusion: the SM prior seems to need to place mass on all strings of unbounded length, of which there are uncountably many (this set is isomorphic to the set of all binary fractions between zero and one).   This, of course, cannot be done, only sets of such strings can be given mass.  To which sets is mass assigned a priori?  Another confusing issue is what happens to the conditional distributions deep in the SM tree.  Do they concentrate in some way?  If so on what and how fast?  
+
+\section{Sequence Memoizer Review (taken from \cite{gasthaus})}
+
+\def\GG{\mathcal{G}} The SM describes the conditional probability of each
+symbol $s$ following each context $\ubf$ using a latent variable $G_\ubf(s)$.
+Collecting the variables into a vector, $G_\ubf=[G_\ubf(s)]_{s\in\Sigma}$ is a
+probability vector (non-negative entries summing to one), and the full
+(infinite) set of latent variables in the model is
+$\GG=\{G_\ubf\}_{\ubf\in\Sigma^*}$.  The joint probability of $\xbf$ and $\GG$
+is simply:
+\begin{align}
+P(\xbf,\GG) = P(\GG)\prod_{i=0}^{|\xbf|-1}G_{\xbf_{1:i}}(\xbf_{i+1})
+\end{align}
+where the rightmost term is the probability of each symbol conditioned on the sequence thus far, and $P(\GG)$ is the prior over the variables.  We will describe the prior next. 
+
+The sequence memoizer (SM) \cite{wood2009sms} is distribution over the infinite set $\GG=\{G_\ubf\}_{\ubf\in\Sigma^*}$ of probability vectors reposed on a hierarchical Bayesian model consisting of PYPs.
+%
+%The sequence memoizer \citep{wood2009sms} is an extension of the general HPYP
+%model described above to context of unbounded length, i.e. $\ubf$ is not
+%restricted to maximum length, leading to a context tree of unbounded depth. 
+%In order to make inference in such a model feasible through marginalization
+%(described in the next paragraph), the parameter space of
+%the PYP has to be restricted to $\alpha=0$. 
+Succinctly, we can describe the SM as follows:
+\begin{subequations}
+        \label{eqn:sm_prior}
+        \begin{align}
+            G_{\varepsilon} \mid d_0,H\quad &\sim \quad\py(d_0,H) \label{eq:m1} &\\
+            G_{\ubf} \mid d_{|\ubf|},G_{\suffix(\ubf)} \quad
+            &\sim \quad \py(d_{|\ubf|},G_{\suffix(\ubf)})  & \forall \ubf \in
+            \Sigma^+ \label{eq:m2}%\\
+%            x_i \mid \xbf_{1:i-1}=\ubf \quad &\sim\quad  G_{[\ubf]} 
+%            &  
+%            i=1,\ldots,T \label{eq:m3}
+        \end{align}
+\end{subequations}
+\noindent where $H$ is a base vector (in the following assumed to be
+uniform) and $d_{|\ubf|}$ are the discount parameters.
+%The SM model is a hierarchical prior placed on the set of distributions
+%$\{G_{[\ubf]}\}_{\ubf \in \Sigma^{*}}$, where $G_{[\ubf]}(v)$  corresponds
+%to the probability of symbol $v \in \Sigma$ following the context $\ubf$.
+The structure of the model is an unbounded-depth tree, with each node indexed by a context $\ubf\in\Sigma^*$, labelled by the probability vector $G_\ubf$, and with parent given by $\sigma(\ubf)$.
+
+\section{Sequence Memoizer Properties}
+
+To examine the two theoretical properties of the sequence memoizer mentioned in the introduction we concentrate on the simpler (but revealing) case of modeling binary sequences.
+
+Let ${\bf u}$ be a binary sequence  (each symbol $u\in\{0,1\}$).  Let $ G_{[\bf u]}$ be a (conditional) probability distribution over $\{0,1\}$. Let $p = G_{[\bf u]}(1)$ in
+this binary case.  The first thing we are interested in is, a priori, what happens to $p$ as 
+$|{\bf u}| \rightarrow \infty$.  This can be studied as a function of $d_{|\ubf|}$.  To start will examine the case of
+$d_a = d_{a-1} \lambda$ and study the
+limiting behavior as a function of $\lambda$.
+
+If we consider the random measure $G_{\bf{u}}$, we know from the coagulation results of Pitman \cite{pitman99} that the (conditional on $d_{|\ubf|}$) prior is  $G_{\bf{u}} \sim PY (d_{|\ubf|},0,{H})$, where recursively $d_a = d_{a-1}\lambda$ for some $0\leq \lambda < 1$.  That means we know that $G_{\bf{u}}$ has discrete support and the prior on the discrete probabilities can be described through the stick breaking representation of the PY process. Recall that the stick breaking representation for the PY process is as follows:
+\begin{align*}
+	\beta_k &\sim \textrm{Beta}(1-d_a, kd_a) \hspace{.5cm} \textrm{for } i = 1 \dots m \\
+	\pi_k &= \beta_k \Pi_{i = 1}^{k-1}(1 - \beta_i)
+\end{align*}
+
+From this set of equations, we can see that the prior expectation of the first stick length, that is $E_{prior}(\pi_1) = \frac{1-d_a}{1}$, with variance $\frac{d_a(1-d_a)}{2}$.  If $d_a$ approaches $0$, this means that the prior places significant mass on heavily skewed distributions.  That is, the prior likely puts more mass on the probability distribution $[.8, .2]$, then it does on $[.4, .6]$.  That being said the draw from the base measure, which we denoted ${H}$ above, is what assigns each of the sticks to a value.  That is, the prior does not a priori specify which direction $G_{\bf{u}}$ will skew, only that it is likely to be skewed.  This kind of prior makes sense as we expect the context to be more and more informative as it becomes longer.  In the limit, if the $d_a$ really do approach $0$, the prior will put mass only on degenerate distributions, as can be seen by the fact that the expectation of the prior stick length converges to $1$ and the variance converges to $0$.  Using a simple application of Chebyshev's inequality we can prove that the length of $\pi_1$ converges to $1$ in probability and thus in distribution.  Recall that Chebyshev's inequality tells us that $P(|x| \geq \alpha) \leq \frac{\int |x|^r dP}{\alpha^r} \hspace{.5cm} \forall r>0 $.  If we center the quantity and consider the special case when $r = 2$ we get the $\mathcal{L}_2$ Chebyshev inequality, namely $P(|x - E(x)|\geq \alpha) \leq \frac{Var(x)}{\alpha^2}$.  Thus, if the variance of a sequence of random quantity goes to zero, then the sequence approaches it's mean in probability and thus distribution.
+
+We can also consider the stochastic memoizer prior specification as a prior over binary stings of infinite length.  That is, the generative process specifies a prior over the binary sequence space.  Here, like in other sequence spaces, the $\sigma$-algebra of measureable sets can be defined as $\sigma(\mathcal{F})$, where $\mathcal{F}$ is the field defined as: $A \in \mathcal{F}$ if and only if $A = \{ x | x_1 = a_1, x_2 = a_2, \dots x_k = a_k \}$ for some finite binary sequence $(a_1, a_2, \dots, a_k)$.  Sets in $\mathcal{F}$ are defined based on a finite prefix shared by all the binary sequences in the set.  Note that this means that each measurable set is then infinite, and in fact, uncountable. The prior puts non-zero weight on all sets in $\mathcal{F}$.  We note that $\mathcal{F}$ is a field, but not a $\sigma$-algebra, and thus to form the $\sigma$-algebra of measurable sets we must take the smallest $\sigma$-algebra containing $\mathcal{F}$. The measure of any individual element of the sequence space is necessarily zero.
+
+\end{document}  

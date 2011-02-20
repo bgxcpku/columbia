@@ -1,0 +1,257 @@
+TShype
+v7
+r0
+t307028659.627439
+cCheck dependencies
+cProcessInfoPlistFile /Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/Shype.app/Info.plist Shype-Info.plist
+cCompileXIB /Users/fwood/Projects/columbia/code/iphone/first_try/MainWindow.xib
+cCompileXIB /Users/fwood/Projects/columbia/code/iphone/first_try/SecondView.xib
+cProcessPCH /var/folders/+K/+KKwo1RRFVC8FZ7ATNtvOE+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Shype_Prefix-dlmmfbvetgrlxacievsohlziizds/Shype_Prefix.pch.gch Shype_Prefix.pch normal i386 objective-c com.apple.compilers.gcc.4_2
+cCompileC build/Shype.build/Debug-iphonesimulator/Shype.build/Objects-normal/i386/main.o /Users/fwood/Projects/columbia/code/iphone/first_try/main.m normal i386 objective-c com.apple.compilers.gcc.4_2
+cCompileC build/Shype.build/Debug-iphonesimulator/Shype.build/Objects-normal/i386/first_tryAppDelegate.o /Users/fwood/Projects/columbia/code/iphone/first_try/Classes/first_tryAppDelegate.m normal i386 objective-c com.apple.compilers.gcc.4_2
+cCompileC build/Shype.build/Debug-iphonesimulator/Shype.build/Objects-normal/i386/FirstViewController.o /Users/fwood/Projects/columbia/code/iphone/first_try/Classes/FirstViewController.m normal i386 objective-c com.apple.compilers.gcc.4_2
+cLd /Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/Shype.app/Shype normal i386
+cGenerateDSYMFile /Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/Shype.app.dSYM /Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/Shype.app/Shype
+cTouch /Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/Shype.app
+
+N/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.1.2.sdk
+c000000004B29C15500000000000000EE
+t1261027669
+s238
+
+N/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.1.2.sdk/System/Library/Frameworks/CoreGraphics.framework/CoreGraphics
+c000000004ABDC853000000000026EE30
+t1253951571
+s2551344
+
+N/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.1.2.sdk/System/Library/Frameworks/Foundation.framework/Foundation
+c000000004ABDC952000000000027E880
+t1253951826
+s2615424
+
+N/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.1.2.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.h
+c000000004ABDC93F0000000000001355
+t1253951807
+s4949
+
+N/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.1.2.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIKit.h
+c000000004ABDEE1D0000000000000788
+t1253961245
+s1928
+
+N/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.1.2.sdk/System/Library/Frameworks/UIKit.framework/UIKit
+c000000004ABDEEE200000000016721E0
+t1253961442
+s23536096
+
+N/Users/fwood/Projects/columbia/code/iphone/first_try/Classes/FirstViewController.h
+c000000004B6C592B00000000000000EB
+t1265391915
+s235
+i<UIKit/UIKit.h>
+
+N/Users/fwood/Projects/columbia/code/iphone/first_try/Classes/FirstViewController.m
+c000000004B6C592B00000000000005B0
+t1265391915
+s1456
+i"FirstViewController.h"
+
+N/Users/fwood/Projects/columbia/code/iphone/first_try/Classes/first_tryAppDelegate.h
+c000000004B6C592B00000000000001DE
+t1265391915
+s478
+i<UIKit/UIKit.h>
+
+N/Users/fwood/Projects/columbia/code/iphone/first_try/Classes/first_tryAppDelegate.m
+c000000004B6C592B00000000000003C1
+t1265391915
+s961
+i"first_tryAppDelegate.h"
+
+N/Users/fwood/Projects/columbia/code/iphone/first_try/MainWindow.xib
+c000000004B6C592B000000000000421D
+t1265391915
+s16925
+
+N/Users/fwood/Projects/columbia/code/iphone/first_try/SecondView.xib
+c000000004B6C592B00000000000022F1
+t1265391915
+s8945
+
+N/Users/fwood/Projects/columbia/code/iphone/first_try/Shype_Prefix.pch
+c000000004B6C592B00000000000000BB
+t1265391915
+s187
+i<Foundation/Foundation.h>
+i<UIKit/UIKit.h>
+
+N/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/Shype.app
+t1285335859
+s238
+
+N/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/Shype.app.dSYM
+t1285335859
+s102
+
+N/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/Shype.app/Info.plist
+t1285335855
+s556
+
+N/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/Shype.app/MainWindow.nib
+t1285335857
+s4047
+
+N/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/Shype.app/PkgInfo
+t1285335855
+s8
+
+N/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/Shype.app/SecondView.nib
+t1285335857
+s2510
+
+N/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/Shype.app/Shype
+t1285335859
+s19488
+
+N/Users/fwood/Projects/columbia/code/iphone/first_try/build/Shype.build/Debug-iphonesimulator/Shype.build/Objects-normal/i386/FirstViewController.o
+t1285335859
+s29948
+
+N/Users/fwood/Projects/columbia/code/iphone/first_try/build/Shype.build/Debug-iphonesimulator/Shype.build/Objects-normal/i386/Shype.LinkFileList
+c000000004C9CAB2F00000000000001AB
+t1285335855
+s427
+
+N/Users/fwood/Projects/columbia/code/iphone/first_try/build/Shype.build/Debug-iphonesimulator/Shype.build/Objects-normal/i386/first_tryAppDelegate.o
+t1285335859
+s40936
+
+N/Users/fwood/Projects/columbia/code/iphone/first_try/build/Shype.build/Debug-iphonesimulator/Shype.build/Objects-normal/i386/main.o
+t1285335859
+s5984
+
+N/Users/fwood/Projects/columbia/code/iphone/first_try/main.m
+c000000004B6C592B0000000000000166
+t1265391915
+s358
+i<UIKit/UIKit.h>
+
+N/var/folders/+K/+KKwo1RRFVC8FZ7ATNtvOE+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Shype_Prefix-dlmmfbvetgrlxacievsohlziizds/Shype_Prefix.pch.gch
+t1285335858
+s13034960
+
+NShype-Info.plist
+c000000004B6C592B000000000000038D
+t1265391915
+s909
+
+CCheck dependencies
+r0
+lSLF07#2@18"Check dependencies307028655#307028655#0(0"0(0#1#0"7947009927035180032#0"0#
+
+CCompileC build/Shype.build/Debug-iphonesimulator/Shype.build/Objects-normal/i386/FirstViewController.o /Users/fwood/Projects/columbia/code/iphone/first_try/Classes/FirstViewController.m normal i386 objective-c com.apple.compilers.gcc.4_2
+s307028659.140992
+e307028659.235076
+r1
+xCompileC
+xbuild/Shype.build/Debug-iphonesimulator/Shype.build/Objects-normal/i386/FirstViewController.o
+x/Users/fwood/Projects/columbia/code/iphone/first_try/Classes/FirstViewController.m
+xnormal
+xi386
+xobjective-c
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@90"Compile /Users/fwood/Projects/columbia/code/iphone/first_try/Classes/FirstViewController.m307028659#307028659#0(0"0(0#0#82"/Users/fwood/Projects/columbia/code/iphone/first_try/Classes/FirstViewController.m4300885448#2011"    cd /Users/fwood/Projects/columbia/code/iphone/first_try    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -D__IPHONE_OS_VERSION_MIN_REQUIRED=30000 -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.1.2.sdk -fvisibility=hidden -mmacosx-version-min=10.5 -gdwarf-2 -iquote /Users/fwood/Projects/columbia/code/iphone/first_try/build/Shype.build/Debug-iphonesimulator/Shype.build/Shype-generated-files.hmap -I/Users/fwood/Projects/columbia/code/iphone/first_try/build/Shype.build/Debug-iphonesimulator/Shype.build/Shype-own-target-headers.hmap -I/Users/fwood/Projects/columbia/code/iphone/first_try/build/Shype.build/Debug-iphonesimulator/Shype.build/Shype-all-target-headers.hmap -iquote /Users/fwood/Projects/columbia/code/iphone/first_try/build/Shype.build/Debug-iphonesimulator/Shype.build/Shype-project-headers.hmap -F/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator -I/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/include -I/Users/fwood/Projects/columbia/code/iphone/first_try/build/Shype.build/Debug-iphonesimulator/Shype.build/DerivedSources/i386 -I/Users/fwood/Projects/columbia/code/iphone/first_try/build/Shype.build/Debug-iphonesimulator/Shype.build/DerivedSources -include /var/folders/+K/+KKwo1RRFVC8FZ7ATNtvOE+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Shype_Prefix-dlmmfbvetgrlxacievsohlziizds/Shype_Prefix.pch -c /Users/fwood/Projects/columbia/code/iphone/first_try/Classes/FirstViewController.m -o /Users/fwood/Projects/columbia/code/iphone/first_try/build/Shype.build/Debug-iphonesimulator/Shype.build/Objects-normal/i386/FirstViewController.o0#
+
+CCompileC build/Shype.build/Debug-iphonesimulator/Shype.build/Objects-normal/i386/first_tryAppDelegate.o /Users/fwood/Projects/columbia/code/iphone/first_try/Classes/first_tryAppDelegate.m normal i386 objective-c com.apple.compilers.gcc.4_2
+s307028659.028572
+e307028659.177563
+r1
+xCompileC
+xbuild/Shype.build/Debug-iphonesimulator/Shype.build/Objects-normal/i386/first_tryAppDelegate.o
+x/Users/fwood/Projects/columbia/code/iphone/first_try/Classes/first_tryAppDelegate.m
+xnormal
+xi386
+xobjective-c
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@91"Compile /Users/fwood/Projects/columbia/code/iphone/first_try/Classes/first_tryAppDelegate.m307028659#307028659#0(0"0(0#0#83"/Users/fwood/Projects/columbia/code/iphone/first_try/Classes/first_tryAppDelegate.m4300885448#2013"    cd /Users/fwood/Projects/columbia/code/iphone/first_try    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -D__IPHONE_OS_VERSION_MIN_REQUIRED=30000 -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.1.2.sdk -fvisibility=hidden -mmacosx-version-min=10.5 -gdwarf-2 -iquote /Users/fwood/Projects/columbia/code/iphone/first_try/build/Shype.build/Debug-iphonesimulator/Shype.build/Shype-generated-files.hmap -I/Users/fwood/Projects/columbia/code/iphone/first_try/build/Shype.build/Debug-iphonesimulator/Shype.build/Shype-own-target-headers.hmap -I/Users/fwood/Projects/columbia/code/iphone/first_try/build/Shype.build/Debug-iphonesimulator/Shype.build/Shype-all-target-headers.hmap -iquote /Users/fwood/Projects/columbia/code/iphone/first_try/build/Shype.build/Debug-iphonesimulator/Shype.build/Shype-project-headers.hmap -F/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator -I/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/include -I/Users/fwood/Projects/columbia/code/iphone/first_try/build/Shype.build/Debug-iphonesimulator/Shype.build/DerivedSources/i386 -I/Users/fwood/Projects/columbia/code/iphone/first_try/build/Shype.build/Debug-iphonesimulator/Shype.build/DerivedSources -include /var/folders/+K/+KKwo1RRFVC8FZ7ATNtvOE+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Shype_Prefix-dlmmfbvetgrlxacievsohlziizds/Shype_Prefix.pch -c /Users/fwood/Projects/columbia/code/iphone/first_try/Classes/first_tryAppDelegate.m -o /Users/fwood/Projects/columbia/code/iphone/first_try/build/Shype.build/Debug-iphonesimulator/Shype.build/Objects-normal/i386/first_tryAppDelegate.o0#
+
+CCompileC build/Shype.build/Debug-iphonesimulator/Shype.build/Objects-normal/i386/main.o /Users/fwood/Projects/columbia/code/iphone/first_try/main.m normal i386 objective-c com.apple.compilers.gcc.4_2
+s307028659.026452
+e307028659.140875
+r1
+xCompileC
+xbuild/Shype.build/Debug-iphonesimulator/Shype.build/Objects-normal/i386/main.o
+x/Users/fwood/Projects/columbia/code/iphone/first_try/main.m
+xnormal
+xi386
+xobjective-c
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@67"Compile /Users/fwood/Projects/columbia/code/iphone/first_try/main.m307028659#307028659#0(0"0(0#0#59"/Users/fwood/Projects/columbia/code/iphone/first_try/main.m4300885448#1973"    cd /Users/fwood/Projects/columbia/code/iphone/first_try    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -D__IPHONE_OS_VERSION_MIN_REQUIRED=30000 -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.1.2.sdk -fvisibility=hidden -mmacosx-version-min=10.5 -gdwarf-2 -iquote /Users/fwood/Projects/columbia/code/iphone/first_try/build/Shype.build/Debug-iphonesimulator/Shype.build/Shype-generated-files.hmap -I/Users/fwood/Projects/columbia/code/iphone/first_try/build/Shype.build/Debug-iphonesimulator/Shype.build/Shype-own-target-headers.hmap -I/Users/fwood/Projects/columbia/code/iphone/first_try/build/Shype.build/Debug-iphonesimulator/Shype.build/Shype-all-target-headers.hmap -iquote /Users/fwood/Projects/columbia/code/iphone/first_try/build/Shype.build/Debug-iphonesimulator/Shype.build/Shype-project-headers.hmap -F/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator -I/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/include -I/Users/fwood/Projects/columbia/code/iphone/first_try/build/Shype.build/Debug-iphonesimulator/Shype.build/DerivedSources/i386 -I/Users/fwood/Projects/columbia/code/iphone/first_try/build/Shype.build/Debug-iphonesimulator/Shype.build/DerivedSources -include /var/folders/+K/+KKwo1RRFVC8FZ7ATNtvOE+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Shype_Prefix-dlmmfbvetgrlxacievsohlziizds/Shype_Prefix.pch -c /Users/fwood/Projects/columbia/code/iphone/first_try/main.m -o /Users/fwood/Projects/columbia/code/iphone/first_try/build/Shype.build/Debug-iphonesimulator/Shype.build/Objects-normal/i386/main.o0#
+
+CCompileXIB /Users/fwood/Projects/columbia/code/iphone/first_try/MainWindow.xib
+s307028655.546477
+e307028658.056597
+r1
+xCompileXIB
+x/Users/fwood/Projects/columbia/code/iphone/first_try/MainWindow.xib
+oCouldn't open shared capabilities memory GSCapabilities (No such file or directory)
+lSLF07#2@25"CompileXIB MainWindow.xib307028655#307028658#0(84"Couldn't open shared capabilities memory GSCapabilities (No such file or directory)0(0#0#67"/Users/fwood/Projects/columbia/code/iphone/first_try/MainWindow.xib4300885448#522"    cd /Users/fwood/Projects/columbia/code/iphone/first_try    setenv IBC_MINIMUM_COMPATIBILITY_VERSION 3.1.2    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/usr/bin/ibtool --errors --warnings --notices --output-format human-readable-text --compile /Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/Shype.app/MainWindow.nib /Users/fwood/Projects/columbia/code/iphone/first_try/MainWindow.xib0#
+
+CCompileXIB /Users/fwood/Projects/columbia/code/iphone/first_try/SecondView.xib
+s307028655.568571
+e307028658.061287
+r1
+xCompileXIB
+x/Users/fwood/Projects/columbia/code/iphone/first_try/SecondView.xib
+oCouldn't open shared capabilities memory GSCapabilities (No such file or directory)
+lSLF07#2@25"CompileXIB SecondView.xib307028655#307028658#0(84"Couldn't open shared capabilities memory GSCapabilities (No such file or directory)0(0#0#67"/Users/fwood/Projects/columbia/code/iphone/first_try/SecondView.xib4300885448#522"    cd /Users/fwood/Projects/columbia/code/iphone/first_try    setenv IBC_MINIMUM_COMPATIBILITY_VERSION 3.1.2    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/usr/bin/ibtool --errors --warnings --notices --output-format human-readable-text --compile /Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/Shype.app/SecondView.nib /Users/fwood/Projects/columbia/code/iphone/first_try/SecondView.xib0#
+
+CGenerateDSYMFile /Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/Shype.app.dSYM /Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/Shype.app/Shype
+s307028659.563223
+e307028659.605524
+r1
+xGenerateDSYMFile
+x/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/Shype.app.dSYM
+x/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/Shype.app/Shype
+lSLF07#2@103"GenerateDSYMFile build/Debug-iphonesimulator/Shype.app.dSYM build/Debug-iphonesimulator/Shype.app/Shype307028659#307028659#0(0"0(0#0#96"/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/Shype.app/Shype4300885448#419"    cd /Users/fwood/Projects/columbia/code/iphone/first_try    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/usr/bin/dsymutil /Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/Shype.app/Shype -o /Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/Shype.app.dSYM0#
+
+CLd /Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/Shype.app/Shype normal i386
+s307028659.235191
+e307028659.562935
+r1
+xLd
+x/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/Shype.app/Shype
+xnormal
+xi386
+lSLF07#2@101"Link /Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/Shype.app/Shype307028659#307028659#0(0"0(0#0#0"4300885448#924"    cd /Users/fwood/Projects/columbia/code/iphone/first_try    setenv MACOSX_DEPLOYMENT_TARGET 10.5    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -arch i386 -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.1.2.sdk -L/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator -F/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator -filelist /Users/fwood/Projects/columbia/code/iphone/first_try/build/Shype.build/Debug-iphonesimulator/Shype.build/Objects-normal/i386/Shype.LinkFileList -mmacosx-version-min=10.5 -framework Foundation -framework UIKit -framework CoreGraphics -o /Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/Shype.app/Shype0#
+
+CProcessInfoPlistFile /Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/Shype.app/Info.plist Shype-Info.plist
+s307028655.469172
+e307028655.546347
+r1
+xProcessInfoPlistFile
+x/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/Shype.app/Info.plist
+xShype-Info.plist
+lSLF07#2@24"Process Shype-Info.plist307028655#307028655#0(0"0(0#0#69"/Users/fwood/Projects/columbia/code/iphone/first_try/Shype-Info.plist29273754063274096#515"    cd /Users/fwood/Projects/columbia/code/iphone/first_try    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    builtin-infoPlistUtility Shype-Info.plist -genpkginfo /Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/Shype.app/PkgInfo -expandbuildsettings -format binary -platform iphonesimulator -o /Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/Shype.app/Info.plist0#
+
+CProcessPCH /var/folders/+K/+KKwo1RRFVC8FZ7ATNtvOE+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Shype_Prefix-dlmmfbvetgrlxacievsohlziizds/Shype_Prefix.pch.gch Shype_Prefix.pch normal i386 objective-c com.apple.compilers.gcc.4_2
+s307028658.061580
+e307028659.026264
+r1
+xProcessPCH
+x/var/folders/+K/+KKwo1RRFVC8FZ7ATNtvOE+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Shype_Prefix-dlmmfbvetgrlxacievsohlziizds/Shype_Prefix.pch.gch
+xShype_Prefix.pch
+xnormal
+xi386
+xobjective-c
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@27"Precompile Shype_Prefix.pch307028658#307028659#0(0"0(0#0#69"/Users/fwood/Projects/columbia/code/iphone/first_try/Shype_Prefix.pch4300885448#1853"    cd /Users/fwood/Projects/columbia/code/iphone/first_try    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c-header -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -D__IPHONE_OS_VERSION_MIN_REQUIRED=30000 -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.1.2.sdk -fvisibility=hidden -mmacosx-version-min=10.5 -gdwarf-2 -iquote /Users/fwood/Projects/columbia/code/iphone/first_try/build/Shype.build/Debug-iphonesimulator/Shype.build/Shype-generated-files.hmap -I/Users/fwood/Projects/columbia/code/iphone/first_try/build/Shype.build/Debug-iphonesimulator/Shype.build/Shype-own-target-headers.hmap -I/Users/fwood/Projects/columbia/code/iphone/first_try/build/Shype.build/Debug-iphonesimulator/Shype.build/Shype-all-target-headers.hmap -iquote /Users/fwood/Projects/columbia/code/iphone/first_try/build/Shype.build/Debug-iphonesimulator/Shype.build/Shype-project-headers.hmap -F/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator -I/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/include -I/Users/fwood/Projects/columbia/code/iphone/first_try/build/Shype.build/Debug-iphonesimulator/Shype.build/DerivedSources/i386 -I/Users/fwood/Projects/columbia/code/iphone/first_try/build/Shype.build/Debug-iphonesimulator/Shype.build/DerivedSources -c /Users/fwood/Projects/columbia/code/iphone/first_try/Shype_Prefix.pch -o /var/folders/+K/+KKwo1RRFVC8FZ7ATNtvOE+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/Shype_Prefix-dlmmfbvetgrlxacievsohlziizds/Shype_Prefix.pch.gch0#
+
+CTouch /Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/Shype.app
+s307028659.605626
+e307028659.626732
+r1
+xTouch
+x/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/Shype.app
+lSLF07#2@96"Touch /Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/Shype.app307028659#307028659#0(0"0(0#0#0"4300885448#304"    cd /Users/fwood/Projects/columbia/code/iphone/first_try    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /usr/bin/touch -c /Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/Shype.app0#
+

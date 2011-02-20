@@ -1,0 +1,13 @@
+---
+title: More to Come
+in_menu: true
+sort_info: 40
+routed_title: More to Come
+---
+
+Deplump performance can usually be improved by pre-training its interal model using data similar to that which will ultimately be compressed.  This site currently only provides the simplest, most fair (to them) comparison to commonly available existing compressors.  In the current demonstration the probabilistic model in deplump is not pre-trained in any way, nor is it adjusted for the content type of the file being compressed.  
+
+Check back in the near future to see a demonstration of deplump when it has been specialized to a particular type data.
+
+In deplump it is possible to trade of computation time for improvements (usually slight) to compression performance.  The compressor is currently configured to be as computationally efficient as possible rather than compressing as much as possible.
+

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Homepage for the Deplump family of general purpose lossless compressors" />
+    <meta name="keywords" content="deplump, plump, sequence memoizer, lossless compression, probabilistic lossless compression, range coding, ppm, ppmz, gzip, bzip2" />
+    <meta name="author" content="Frank Wood, Nicholas Bartlett  " />
+    <meta name="generator" content="webgen - http://webgen.rubyforge.org" />
+    <link rel="stylesheet" type="text/css" href="default.css" media="screen,projection" />
+    <title>deplump general purpose lossless compression</title>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18916263-1']);
+  _gaq.push(['_setDomainName', 'none']);
+  _gaq.push(['_setAllowLinker', true]);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+  </head>
+
+  <body>
+    <div id="wrap">
+      <div id="header">
+        <h1><a href="index.html">deplump&#0153;</a></h1>
+        <p><strong>lossless data compression</strong></p>
+      </div>
+
+      <div id="avmenu">
+        <h2 class="hide">Site menu:</h2>
+        <ul><li class="webgen-menu-level1 webgen-menu-item-selected"><span>Demo</span></li><li class="webgen-menu-level1"><a href="performance.html">Performance</a></li><li class="webgen-menu-level1 webgen-menu-submenu"><a href="About/index.html">About</a></li><li class="webgen-menu-level1"><a href="contact.html">Contact</a></li></ul>
+
+      </div>
+
+      <!-- The following div was not in the original template but was inserted to display the breadcrumb trail
+           and language links -->
+      <!-- <div id="contentwide">
+        <p class="textright">Location: <span>Demo</span> / <span>Demo</span>&nbsp;|&nbsp;Language: <span class="webgen-langbar-current-lang">en</span></p>
+      </div>-->
+
+      <!--<div id="extras">
+        <h2>Links:</h2>
+        <ul>
+          <li><a href="http://www.stat.columbia.edu/~fwood">Wood</a></li>
+        </ul>
+      </div>-->
+
+      <div id="content">
+        <h2 id="welcome-to-the-future-of-streaming-lossless-compression">Welcome to the future of streaming lossless compression.</h2>
+
+<p>Deplump is a general purpose streaming lossless compressor that almost always <a href="performance.html">compresses better</a> than gzip and other common compressors.</p>
+
+<p>See for yourself:  </p>
+<hr />
+<p>To <em>deplump</em> (compress) a file use:</p>
+
+<form action="DeplumpServlet" enctype="multipart/form-data" method="post">
+<input name="datafile" size="40" type="file" />
+<input type="submit" value="Deplump" />
+</form>
+<p><br />
+<em>2MB soft data-size limit, i.e. we will read and deplump only the first 2MB of the data you upload.  Larger uploads will silently be truncated to 2MB.</em></p>
+<p />
+<hr />
+<p>To <em>plump</em> (decompress) a previously deplumped file use:</p>
+<form action="PlumpServlet" enctype="multipart/form-data" method="post">
+<input name="datafile" size="40" type="file" />
+<input type="submit" value="Plump" />
+</form>
+
+<p />
+<hr />
+<p><a href="LookupStatistics">See how deplump did</a>
+ on your upload and others then <a href="mailto:feedback@deplump.com">send us your thoughts</a>.</p>
+
+<h4 id="important-disclaimers">Important Disclaimers</h4>
+<hr />
+<ul>
+  <li><em>Any data you send us using this form will be sent back and forth to our server in the clear and is therefore vulnerable to intercept.  Don&rsquo;t deplump sensitive data.</em></li>
+  <li><em>Absolutely do not discard your original data.  Deplump is alpha code undergoing constant development.  There is a very high chance that tomorrow&rsquo;s version of deplump will be incompatible with today&rsquo;s.  This means you might not ever be able to recover your original data if you were silly enough to discard it after this warning.  That would be miserable for all of us, so treat this as it is; an easy way to try out an awesome new lossless compression technology.</em></li>
+  <li><em>That said, we save neither the file you upload nor its filename.  We do save its size and mimetype.  We also save the ip address from which the upload originated.</em></li>
+</ul>
+
+      </div>
+
+      <div id="footer">
+        <p>Copyright &copy; 2010</p>
+      </div>
+    </div>
+  </body>
+</html>

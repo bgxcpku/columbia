@@ -1,0 +1,41 @@
+---
+title: Performance
+in_menu: true
+sort_info: 7
+routed_title: Performance
+---
+
+Start by checking out <a href="LookupStatistics">deplump performance on the files uploaded to the website</a> relative to other well known compressors.
+
+
+A summary of these <a href="LookupStatistics">real-time results</a> is that deplump almost always compresses better than other general purpose lossless compressors.  This means that, on average, deplump produces smaller output than gzip, bzip2, and other general purpose lossless compressors.  Users can conservatively expect average improvements over all data types on the order of (with gzip compression performance as baseline)
+
+|-----------------+------------+-----------------+----------------|
+|                 |    gzip    |        bzip2         |       deplump         |
+|-----------------|:----------:|:---------------:|:--------------:|
+| improvement      |      0%      |        3%         |        7%        |
+|-----------------+------------+-----------------+----------------|  
+
+These numbers are derived from the data uploaded to the website.  Our own experience suggests that much greater relative improvements are possible for more reasonable data (a large percentage of uploads to the website is already compressed data despite the fact that uploading such data is clearly not a very interesting test to perform).
+
+Deplump performs best in both an absolute and relative sense on uncompressed text-like data (text in any language, source code, etc.).   Being a general purpose lossless compressor, deplump can be applied to any stream however, and will generally reduce the size of the stream by some amount (unless of course, the stream is compressed to its entropic minimum already)
+
+|-----------------+------------+-----------------+----------------|
+|                 |    text    |        pdf         |       jpeg         |
+|-----------------|:----------:|:---------------:|:--------------:|
+| bits/byte       |1.5         |        7         |        7        |
+| reduction       |81%         |        12%         |       12%         |
+|-----------------+------------+-----------------+----------------|
+
+  Note that PDF and jpeg are, generally speaking, compressed file formats and deplump does not decompress files before deplumping them.  All general purpose lossless compressors work best on files that are not already compressed.
+
+
+We strongly encourage you to [upload](/index.html) your own data and to perform your own comparisons. 
+
+
+
+
+
+
+
+

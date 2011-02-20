@@ -1,0 +1,257 @@
+Tfirst_try
+v7
+r0
+t287084726.129183
+cCheck dependencies
+cProcessInfoPlistFile /Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/first_try.app/Info.plist first_try-Info.plist
+cCompileXIB /Users/fwood/Projects/columbia/code/iphone/first_try/MainWindow.xib
+cCompileXIB /Users/fwood/Projects/columbia/code/iphone/first_try/SecondView.xib
+cProcessPCH /var/folders/+K/+KKwo1RRFVC8FZ7ATNtvOE+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/first_try_Prefix-dlmmfbvetgrlxacievsohlziizds/first_try_Prefix.pch.gch first_try_Prefix.pch normal i386 objective-c com.apple.compilers.gcc.4_2
+cCompileC build/first_try.build/Debug-iphonesimulator/first_try.build/Objects-normal/i386/main.o /Users/fwood/Projects/columbia/code/iphone/first_try/main.m normal i386 objective-c com.apple.compilers.gcc.4_2
+cCompileC build/first_try.build/Debug-iphonesimulator/first_try.build/Objects-normal/i386/first_tryAppDelegate.o /Users/fwood/Projects/columbia/code/iphone/first_try/Classes/first_tryAppDelegate.m normal i386 objective-c com.apple.compilers.gcc.4_2
+cCompileC build/first_try.build/Debug-iphonesimulator/first_try.build/Objects-normal/i386/FirstViewController.o /Users/fwood/Projects/columbia/code/iphone/first_try/Classes/FirstViewController.m normal i386 objective-c com.apple.compilers.gcc.4_2
+cLd /Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/first_try.app/first_try normal i386
+cGenerateDSYMFile /Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/first_try.app.dSYM /Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/first_try.app/first_try
+cTouch /Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/first_try.app
+
+N/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.1.2.sdk
+c000000004B29C15500000000000000EE
+t1261027669
+s238
+
+N/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.1.2.sdk/System/Library/Frameworks/CoreGraphics.framework/CoreGraphics
+c000000004ABDC853000000000026EE30
+t1253951571
+s2551344
+
+N/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.1.2.sdk/System/Library/Frameworks/Foundation.framework/Foundation
+c000000004ABDC952000000000027E880
+t1253951826
+s2615424
+
+N/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.1.2.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.h
+c000000004ABDC93F0000000000001355
+t1253951807
+s4949
+
+N/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.1.2.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIKit.h
+c000000004ABDEE1D0000000000000788
+t1253961245
+s1928
+
+N/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.1.2.sdk/System/Library/Frameworks/UIKit.framework/UIKit
+c000000004ABDEEE200000000016721E0
+t1253961442
+s23536096
+
+N/Users/fwood/Projects/columbia/code/iphone/first_try/Classes/FirstViewController.h
+c000000004B6C592B00000000000000EB
+t1265391915
+s235
+i<UIKit/UIKit.h>
+
+N/Users/fwood/Projects/columbia/code/iphone/first_try/Classes/FirstViewController.m
+c000000004B6C592B00000000000005B0
+t1265391915
+s1456
+i"FirstViewController.h"
+
+N/Users/fwood/Projects/columbia/code/iphone/first_try/Classes/first_tryAppDelegate.h
+c000000004B6C592B00000000000001DE
+t1265391915
+s478
+i<UIKit/UIKit.h>
+
+N/Users/fwood/Projects/columbia/code/iphone/first_try/Classes/first_tryAppDelegate.m
+c000000004B6C592B00000000000003C1
+t1265391915
+s961
+i"first_tryAppDelegate.h"
+
+N/Users/fwood/Projects/columbia/code/iphone/first_try/MainWindow.xib
+c000000004B6C592B000000000000421D
+t1265391915
+s16925
+
+N/Users/fwood/Projects/columbia/code/iphone/first_try/SecondView.xib
+c000000004B6C592B00000000000022F1
+t1265391915
+s8945
+
+N/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/first_try.app
+t1265391926
+s238
+
+N/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/first_try.app.dSYM
+t1265391926
+s102
+
+N/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/first_try.app/Info.plist
+t1265391919
+s572
+
+N/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/first_try.app/MainWindow.nib
+t1265391923
+s4047
+
+N/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/first_try.app/PkgInfo
+t1265391919
+s8
+
+N/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/first_try.app/SecondView.nib
+t1265391923
+s2510
+
+N/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/first_try.app/first_try
+t1265391926
+s19512
+
+N/Users/fwood/Projects/columbia/code/iphone/first_try/build/first_try.build/Debug-iphonesimulator/first_try.build/Objects-normal/i386/FirstViewController.o
+t1265391925
+s29948
+
+N/Users/fwood/Projects/columbia/code/iphone/first_try/build/first_try.build/Debug-iphonesimulator/first_try.build/Objects-normal/i386/first_try.LinkFileList
+c000000004B6C592F00000000000001C3
+t1265391919
+s451
+
+N/Users/fwood/Projects/columbia/code/iphone/first_try/build/first_try.build/Debug-iphonesimulator/first_try.build/Objects-normal/i386/first_tryAppDelegate.o
+t1265391925
+s40936
+
+N/Users/fwood/Projects/columbia/code/iphone/first_try/build/first_try.build/Debug-iphonesimulator/first_try.build/Objects-normal/i386/main.o
+t1265391925
+s5984
+
+N/Users/fwood/Projects/columbia/code/iphone/first_try/first_try_Prefix.pch
+c000000004B6C592B00000000000000BB
+t1265391915
+s187
+i<Foundation/Foundation.h>
+i<UIKit/UIKit.h>
+
+N/Users/fwood/Projects/columbia/code/iphone/first_try/main.m
+c000000004B6C592B0000000000000166
+t1265391915
+s358
+i<UIKit/UIKit.h>
+
+N/var/folders/+K/+KKwo1RRFVC8FZ7ATNtvOE+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/first_try_Prefix-dlmmfbvetgrlxacievsohlziizds/first_try_Prefix.pch.gch
+t1265391925
+s13034960
+
+Nfirst_try-Info.plist
+c000000004B6C592B000000000000038D
+t1265391915
+s909
+
+CCheck dependencies
+r0
+lSLF07#2@18"Check dependencies287084719#287084719#0(0"0(0#1#0"7947009927035180032#0"0#
+
+CCompileC build/first_try.build/Debug-iphonesimulator/first_try.build/Objects-normal/i386/FirstViewController.o /Users/fwood/Projects/columbia/code/iphone/first_try/Classes/FirstViewController.m normal i386 objective-c com.apple.compilers.gcc.4_2
+s287084725.695055
+e287084725.743751
+r1
+xCompileC
+xbuild/first_try.build/Debug-iphonesimulator/first_try.build/Objects-normal/i386/FirstViewController.o
+x/Users/fwood/Projects/columbia/code/iphone/first_try/Classes/FirstViewController.m
+xnormal
+xi386
+xobjective-c
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@90"Compile /Users/fwood/Projects/columbia/code/iphone/first_try/Classes/FirstViewController.m287084725#287084725#0(0"0(0#0#82"/Users/fwood/Projects/columbia/code/iphone/first_try/Classes/FirstViewController.m4300885448#2091"    cd /Users/fwood/Projects/columbia/code/iphone/first_try    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -D__IPHONE_OS_VERSION_MIN_REQUIRED=30000 -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.1.2.sdk -fvisibility=hidden -mmacosx-version-min=10.5 -gdwarf-2 -iquote /Users/fwood/Projects/columbia/code/iphone/first_try/build/first_try.build/Debug-iphonesimulator/first_try.build/first_try-generated-files.hmap -I/Users/fwood/Projects/columbia/code/iphone/first_try/build/first_try.build/Debug-iphonesimulator/first_try.build/first_try-own-target-headers.hmap -I/Users/fwood/Projects/columbia/code/iphone/first_try/build/first_try.build/Debug-iphonesimulator/first_try.build/first_try-all-target-headers.hmap -iquote /Users/fwood/Projects/columbia/code/iphone/first_try/build/first_try.build/Debug-iphonesimulator/first_try.build/first_try-project-headers.hmap -F/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator -I/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/include -I/Users/fwood/Projects/columbia/code/iphone/first_try/build/first_try.build/Debug-iphonesimulator/first_try.build/DerivedSources/i386 -I/Users/fwood/Projects/columbia/code/iphone/first_try/build/first_try.build/Debug-iphonesimulator/first_try.build/DerivedSources -include /var/folders/+K/+KKwo1RRFVC8FZ7ATNtvOE+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/first_try_Prefix-dlmmfbvetgrlxacievsohlziizds/first_try_Prefix.pch -c /Users/fwood/Projects/columbia/code/iphone/first_try/Classes/FirstViewController.m -o /Users/fwood/Projects/columbia/code/iphone/first_try/build/first_try.build/Debug-iphonesimulator/first_try.build/Objects-normal/i386/FirstViewController.o0#
+
+CCompileC build/first_try.build/Debug-iphonesimulator/first_try.build/Objects-normal/i386/first_tryAppDelegate.o /Users/fwood/Projects/columbia/code/iphone/first_try/Classes/first_tryAppDelegate.m normal i386 objective-c com.apple.compilers.gcc.4_2
+s287084725.553496
+e287084725.709852
+r1
+xCompileC
+xbuild/first_try.build/Debug-iphonesimulator/first_try.build/Objects-normal/i386/first_tryAppDelegate.o
+x/Users/fwood/Projects/columbia/code/iphone/first_try/Classes/first_tryAppDelegate.m
+xnormal
+xi386
+xobjective-c
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@91"Compile /Users/fwood/Projects/columbia/code/iphone/first_try/Classes/first_tryAppDelegate.m287084725#287084725#0(0"0(0#0#83"/Users/fwood/Projects/columbia/code/iphone/first_try/Classes/first_tryAppDelegate.m4300885448#2093"    cd /Users/fwood/Projects/columbia/code/iphone/first_try    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -D__IPHONE_OS_VERSION_MIN_REQUIRED=30000 -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.1.2.sdk -fvisibility=hidden -mmacosx-version-min=10.5 -gdwarf-2 -iquote /Users/fwood/Projects/columbia/code/iphone/first_try/build/first_try.build/Debug-iphonesimulator/first_try.build/first_try-generated-files.hmap -I/Users/fwood/Projects/columbia/code/iphone/first_try/build/first_try.build/Debug-iphonesimulator/first_try.build/first_try-own-target-headers.hmap -I/Users/fwood/Projects/columbia/code/iphone/first_try/build/first_try.build/Debug-iphonesimulator/first_try.build/first_try-all-target-headers.hmap -iquote /Users/fwood/Projects/columbia/code/iphone/first_try/build/first_try.build/Debug-iphonesimulator/first_try.build/first_try-project-headers.hmap -F/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator -I/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/include -I/Users/fwood/Projects/columbia/code/iphone/first_try/build/first_try.build/Debug-iphonesimulator/first_try.build/DerivedSources/i386 -I/Users/fwood/Projects/columbia/code/iphone/first_try/build/first_try.build/Debug-iphonesimulator/first_try.build/DerivedSources -include /var/folders/+K/+KKwo1RRFVC8FZ7ATNtvOE+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/first_try_Prefix-dlmmfbvetgrlxacievsohlziizds/first_try_Prefix.pch -c /Users/fwood/Projects/columbia/code/iphone/first_try/Classes/first_tryAppDelegate.m -o /Users/fwood/Projects/columbia/code/iphone/first_try/build/first_try.build/Debug-iphonesimulator/first_try.build/Objects-normal/i386/first_tryAppDelegate.o0#
+
+CCompileC build/first_try.build/Debug-iphonesimulator/first_try.build/Objects-normal/i386/main.o /Users/fwood/Projects/columbia/code/iphone/first_try/main.m normal i386 objective-c com.apple.compilers.gcc.4_2
+s287084725.552468
+e287084725.694914
+r1
+xCompileC
+xbuild/first_try.build/Debug-iphonesimulator/first_try.build/Objects-normal/i386/main.o
+x/Users/fwood/Projects/columbia/code/iphone/first_try/main.m
+xnormal
+xi386
+xobjective-c
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@67"Compile /Users/fwood/Projects/columbia/code/iphone/first_try/main.m287084725#287084725#0(0"0(0#0#59"/Users/fwood/Projects/columbia/code/iphone/first_try/main.m4300885448#2053"    cd /Users/fwood/Projects/columbia/code/iphone/first_try    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -D__IPHONE_OS_VERSION_MIN_REQUIRED=30000 -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.1.2.sdk -fvisibility=hidden -mmacosx-version-min=10.5 -gdwarf-2 -iquote /Users/fwood/Projects/columbia/code/iphone/first_try/build/first_try.build/Debug-iphonesimulator/first_try.build/first_try-generated-files.hmap -I/Users/fwood/Projects/columbia/code/iphone/first_try/build/first_try.build/Debug-iphonesimulator/first_try.build/first_try-own-target-headers.hmap -I/Users/fwood/Projects/columbia/code/iphone/first_try/build/first_try.build/Debug-iphonesimulator/first_try.build/first_try-all-target-headers.hmap -iquote /Users/fwood/Projects/columbia/code/iphone/first_try/build/first_try.build/Debug-iphonesimulator/first_try.build/first_try-project-headers.hmap -F/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator -I/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/include -I/Users/fwood/Projects/columbia/code/iphone/first_try/build/first_try.build/Debug-iphonesimulator/first_try.build/DerivedSources/i386 -I/Users/fwood/Projects/columbia/code/iphone/first_try/build/first_try.build/Debug-iphonesimulator/first_try.build/DerivedSources -include /var/folders/+K/+KKwo1RRFVC8FZ7ATNtvOE+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/first_try_Prefix-dlmmfbvetgrlxacievsohlziizds/first_try_Prefix.pch -c /Users/fwood/Projects/columbia/code/iphone/first_try/main.m -o /Users/fwood/Projects/columbia/code/iphone/first_try/build/first_try.build/Debug-iphonesimulator/first_try.build/Objects-normal/i386/main.o0#
+
+CCompileXIB /Users/fwood/Projects/columbia/code/iphone/first_try/MainWindow.xib
+s287084719.848376
+e287084724.072650
+r1
+xCompileXIB
+x/Users/fwood/Projects/columbia/code/iphone/first_try/MainWindow.xib
+oCouldn't open shared capabilities memory GSCapabilities (No such file or directory)
+lSLF07#2@25"CompileXIB MainWindow.xib287084719#287084724#0(84"Couldn't open shared capabilities memory GSCapabilities (No such file or directory)0(0#0#67"/Users/fwood/Projects/columbia/code/iphone/first_try/MainWindow.xib4300885448#526"    cd /Users/fwood/Projects/columbia/code/iphone/first_try    setenv IBC_MINIMUM_COMPATIBILITY_VERSION 3.1.2    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/usr/bin/ibtool --errors --warnings --notices --output-format human-readable-text --compile /Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/first_try.app/MainWindow.nib /Users/fwood/Projects/columbia/code/iphone/first_try/MainWindow.xib0#
+
+CCompileXIB /Users/fwood/Projects/columbia/code/iphone/first_try/SecondView.xib
+s287084719.863904
+e287084724.073341
+r1
+xCompileXIB
+x/Users/fwood/Projects/columbia/code/iphone/first_try/SecondView.xib
+oCouldn't open shared capabilities memory GSCapabilities (No such file or directory)
+lSLF07#2@25"CompileXIB SecondView.xib287084719#287084724#0(84"Couldn't open shared capabilities memory GSCapabilities (No such file or directory)0(0#0#67"/Users/fwood/Projects/columbia/code/iphone/first_try/SecondView.xib4300885448#526"    cd /Users/fwood/Projects/columbia/code/iphone/first_try    setenv IBC_MINIMUM_COMPATIBILITY_VERSION 3.1.2    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/usr/bin/ibtool --errors --warnings --notices --output-format human-readable-text --compile /Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/first_try.app/SecondView.nib /Users/fwood/Projects/columbia/code/iphone/first_try/SecondView.xib0#
+
+CGenerateDSYMFile /Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/first_try.app.dSYM /Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/first_try.app/first_try
+s287084726.085158
+e287084726.126694
+r1
+xGenerateDSYMFile
+x/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/first_try.app.dSYM
+x/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/first_try.app/first_try
+lSLF07#2@115"GenerateDSYMFile build/Debug-iphonesimulator/first_try.app.dSYM build/Debug-iphonesimulator/first_try.app/first_try287084726#287084726#0(0"0(0#0#104"/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/first_try.app/first_try4300885448#431"    cd /Users/fwood/Projects/columbia/code/iphone/first_try    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/usr/bin/dsymutil /Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/first_try.app/first_try -o /Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/first_try.app.dSYM0#
+
+CLd /Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/first_try.app/first_try normal i386
+s287084725.743838
+e287084726.085060
+r1
+xLd
+x/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/first_try.app/first_try
+xnormal
+xi386
+lSLF07#2@109"Link /Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/first_try.app/first_try287084725#287084726#0(0"0(0#0#0"4300885448#944"    cd /Users/fwood/Projects/columbia/code/iphone/first_try    setenv MACOSX_DEPLOYMENT_TARGET 10.5    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -arch i386 -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.1.2.sdk -L/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator -F/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator -filelist /Users/fwood/Projects/columbia/code/iphone/first_try/build/first_try.build/Debug-iphonesimulator/first_try.build/Objects-normal/i386/first_try.LinkFileList -mmacosx-version-min=10.5 -framework Foundation -framework UIKit -framework CoreGraphics -o /Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/first_try.app/first_try0#
+
+CProcessInfoPlistFile /Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/first_try.app/Info.plist first_try-Info.plist
+s287084719.815598
+e287084719.848289
+r1
+xProcessInfoPlistFile
+x/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/first_try.app/Info.plist
+xfirst_try-Info.plist
+lSLF07#2@28"Process first_try-Info.plist287084719#287084719#0(0"0(0#0#73"/Users/fwood/Projects/columbia/code/iphone/first_try/first_try-Info.plist29555310644363376#527"    cd /Users/fwood/Projects/columbia/code/iphone/first_try    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    builtin-infoPlistUtility first_try-Info.plist -genpkginfo /Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/first_try.app/PkgInfo -expandbuildsettings -format binary -platform iphonesimulator -o /Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/first_try.app/Info.plist0#
+
+CProcessPCH /var/folders/+K/+KKwo1RRFVC8FZ7ATNtvOE+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/first_try_Prefix-dlmmfbvetgrlxacievsohlziizds/first_try_Prefix.pch.gch first_try_Prefix.pch normal i386 objective-c com.apple.compilers.gcc.4_2
+s287084724.073448
+e287084725.552362
+r1
+xProcessPCH
+x/var/folders/+K/+KKwo1RRFVC8FZ7ATNtvOE+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/first_try_Prefix-dlmmfbvetgrlxacievsohlziizds/first_try_Prefix.pch.gch
+xfirst_try_Prefix.pch
+xnormal
+xi386
+xobjective-c
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@31"Precompile first_try_Prefix.pch287084724#287084725#0(0"0(0#0#73"/Users/fwood/Projects/columbia/code/iphone/first_try/first_try_Prefix.pch4300885448#1929"    cd /Users/fwood/Projects/columbia/code/iphone/first_try    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c-header -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -D__IPHONE_OS_VERSION_MIN_REQUIRED=30000 -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.1.2.sdk -fvisibility=hidden -mmacosx-version-min=10.5 -gdwarf-2 -iquote /Users/fwood/Projects/columbia/code/iphone/first_try/build/first_try.build/Debug-iphonesimulator/first_try.build/first_try-generated-files.hmap -I/Users/fwood/Projects/columbia/code/iphone/first_try/build/first_try.build/Debug-iphonesimulator/first_try.build/first_try-own-target-headers.hmap -I/Users/fwood/Projects/columbia/code/iphone/first_try/build/first_try.build/Debug-iphonesimulator/first_try.build/first_try-all-target-headers.hmap -iquote /Users/fwood/Projects/columbia/code/iphone/first_try/build/first_try.build/Debug-iphonesimulator/first_try.build/first_try-project-headers.hmap -F/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator -I/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/include -I/Users/fwood/Projects/columbia/code/iphone/first_try/build/first_try.build/Debug-iphonesimulator/first_try.build/DerivedSources/i386 -I/Users/fwood/Projects/columbia/code/iphone/first_try/build/first_try.build/Debug-iphonesimulator/first_try.build/DerivedSources -c /Users/fwood/Projects/columbia/code/iphone/first_try/first_try_Prefix.pch -o /var/folders/+K/+KKwo1RRFVC8FZ7ATNtvOE+++TI/-Caches-/com.apple.Xcode.501/SharedPrecompiledHeaders/first_try_Prefix-dlmmfbvetgrlxacievsohlziizds/first_try_Prefix.pch.gch0#
+
+CTouch /Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/first_try.app
+s287084726.126773
+e287084726.128991
+r1
+xTouch
+x/Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/first_try.app
+lSLF07#2@100"Touch /Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/first_try.app287084726#287084726#0(0"0(0#0#0"4300885448#308"    cd /Users/fwood/Projects/columbia/code/iphone/first_try    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /usr/bin/touch -c /Users/fwood/Projects/columbia/code/iphone/first_try/build/Debug-iphonesimulator/first_try.app0#
+

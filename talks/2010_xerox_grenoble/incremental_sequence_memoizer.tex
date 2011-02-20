@@ -1,0 +1,37 @@
+{\tiny \frame[t]{
+\frametitle{Compression Based on the Incremental Sequence Memoizer}
+\begin{table}[t]
+    \begin{center}
+    \setlength{\tabcolsep}{1.3mm}
+\begin{tabular}{|l|r||c|c|c|c||c|c|c|c||c|c|}
+\hline
+\multicolumn{2}{|c||}{} & \multicolumn{2}{c||}{DEPLUMP} &
+\multicolumn{2}{|c|}{PPM} & CTW\\\hline
+File          &  Size  &    1PF    &    UKN    &   PPM* &    PPMZ  &  CTW  \\\hline 
+\hline
+bib           & 111261 &    1.73   &\alert{1.72}  &   1.91 &    1.74  &  1.83 \\\hline
+book1         & 768771 &\alert{2.17}  &    2.20   &   2.40 &    2.21  &  2.18 \\\hline
+book2         & 610856 &\alert{1.83}  &    1.84   &   2.02 &    1.87  &  1.89 \\\hline
+geo           & 102400 &\alert{4.40}  &    4.40   &   4.83 &    4.64  &  4.53 \\\hline
+news          & 377109 &\alert{2.20}  &    2.20   &   2.42 &    2.24  &  2.35 \\\hline
+obj1          & 21504  &\alert{3.64}  &    3.65   &   4.00 &    3.66  &  3.72 \\\hline
+obj2          & 246814 &    2.21   &\alert{2.19}  &   2.43 &    2.23  &  2.40 \\\hline
+paper1        & 53161  &    2.21   &\alert{2.20}  &   2.37 &    2.22  &  2.29 \\\hline
+paper2        & 82199  &\alert{2.18}  &    2.18   &   2.36 &    2.21  &  2.23 \\\hline
+pic           & 513216 &    0.77   &    0.82   &   0.85 &\alert{0.76} &  0.80 \\\hline
+progc         & 39611  &    2.23   &\alert{2.21}  &   2.40 &    2.25  &  2.33 \\\hline
+progl         & 71646  &    1.44   &\alert{1.43}  &   1.67 &    1.46  &  1.65 \\\hline
+progp         & 49379  &    1.44   &\alert{1.42}  &   1.62 &    1.47  &  1.68 \\\hline
+trans         & 93695  &    1.21   &\alert{1.20}  &   1.45 &    1.23  &  1.44 \\\hline \hline
+\textbf{avg.} &        &\alert{2.12}  &    2.12   &   2.34 &    2.16  &  2.24 \\\hline
+\textbf{w.~avg.} &     &\alert{1.89}  &    1.91   &   2.09 &    1.93  &  1.99 \\\hline
+\end{tabular}
+\end{center}
+\caption{Compression performance in terms of average log-loss (average bits
+per character under optimal entropy encoding) for the Calgary corpus.
+The results for PPM* (PPM with unbounded-length contexts) are copied from 
+\citep{Cleary1997b}. The results for CTW were taken from
+\citep{Willems2009}.}
+\label{table:results}
+\end{table}
+}}
