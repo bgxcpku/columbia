@@ -20,7 +20,8 @@ _Note: in order to play the pencast files you need to download and install [live
 | 08 | [Sum product Algorithm (Belief Propagation)](../Lectures/factor_graphs_and_the_sum_product_algorithm.pdf) 
 | 09 | cont.
 | 10 | cont.
-| 11 | [K-means clustering and Gaussian Mixture Models](../Lectures/mixture_models_and_em_for_gmm.pdf) | 9.1 |
+| 11 | [K-means](../Lectures/mixture_models_and_em_for_gmm.pdf), [Gaussian Distribution](../Lectures/mvn_review.pdf) | 9.1 |
+| 12 | [Gaussian Mixture Models](../Lectures/mixture_models_and_em_for_gmm.pdf) | 9.1 |
 | 12 | [Expectation Maximization for GMM's](../Lectures/mixture_models_and_em_for_gmm.pdf) |9.2|
 | 13 | cont.
 | 14 | [Generalized EM](../Lectures/em_in_general.pdf) <br> |9.4|
