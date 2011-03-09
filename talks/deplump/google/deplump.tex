@@ -116,11 +116,11 @@
 	\begin{block}{Factorization of Probability Distribution}
 		Consider that the probability of a given sequence of symbols can be factored as:
 		\begin{eqnarray*}
-			P([x_0, x_1, \ldots, x_n]) = P(x_0)P(x_1 | x_0) \ldots P(x_n | x_0, x_1, \ldots, x_{n-1})
+			P([x_0, x_1, \ldots, x_n]) = P(x_0 | [])P(x_1 | [x_0]) \ldots P(x_n | [x_0, x_1, \ldots, x_{n-1}])
 		\end{eqnarray*}
 		If we make a $k^{\rm th}$ order Markov assumption, the factorization becomes:
 		\begin{eqnarray*}
-			P([x_0, x_1, \ldots, x_n]) = P(x_0) \Pi_{i = 1}^n P(x_i | x_{max(0, i-k-1)}, \ldots, x_{i-1})
+			P([x_0, x_1, \ldots, x_n]) = P(x_0  | [] ) \Pi_{i = 1}^n P(x_i | [x_{max(0, i-k-1)}, \ldots, x_{i-1}])
 		\end{eqnarray*}
 	\end{block}
 \end{frame}
@@ -128,7 +128,7 @@
 \begin{frame}[t]{Notation}
 	\begin{block}{Notation}
 		\begin{itemize}
-			\item {For convenience, we will denote the conditional distributions as $\G_\bu$, so that $P(X | \vec \bu) =  \G_{\vec \bu}(X)$.  In this case, the full model is written as:
+			\item {For convenience, we will denote the conditional distributions as $\G_{\vec \bu}$, so that $P(X | \vec \bu) =  \G_{\vec \bu}(X)$.  In this case, the full model is written as:
 						\begin{eqnarray*}
 							P([x_0, x_1, \ldots, x_n]) = \G_{[]}(x_0) \Pi_{i = 1}^n \G_{[x_{max(0, i-k-1)}, \ldots, x_{i-1}]}(x_i)  
 						\end{eqnarray*}
@@ -161,7 +161,7 @@
 		\begin{itemize}
 			\item Infinite model``complexity'' enables complex inference.  
 			\item As $n$ grows, posterior concentrates on empirical distribution.
-			\item Bayesian formulation given implicit regularization through the prior.
+			\item Bayesian formulation gives implicit regularization through the prior.
 		\end{itemize}
 	\end{exampleblock}
 
@@ -184,16 +184,43 @@
 
 \begin{frame}[t]{Pitman-Yor Process \cite{Pitman1997}}
 
-	\begin{block}{Model Building Block}
-		\begin{itemize}
-			\item Pitman-Yor process is a distribution over distributions
-			\item Parameters of this distribution are discount $d \in (0.0, 1.0)$, concentration $c  > -d$, and a base distribution
-			\item We write $\G \sim \PY(d,c,\G_0)$ to indicate that the random distribution $\G$ follows a Pitman-Yor process distribution
-			\item The distribution encodes that the mean of $\G$ is $\G_0$ and the inverse variance is governed by $d$ and $c$.
-		\end{itemize}
-	\end{block}
-	
-	\end{frame}
+\begin{block}{$\PY(c,d,H)$}
+
+ A Pitman-Yor process $\PY(d,c,H)$ is a distribution over distributions with three parameters
+
+\begin{itemize}
+	\item A discount $ 0 \le d < 1 $ that controls power-law behavior
+%\begin{itemize}
+%\item $d=0$ is Dirichlet process (DP)
+%\end{itemize}
+	\item A concentration $c > -d$ like that of the DP
+	\item A base distribution $H$ also like that of the DP
+\end{itemize}
+
+\end{block}
+
+\begin{block}{Key properties}
+
+If $G\sim\PY(c,d,H)$ then {\em a priori}
+	\begin{itemize}
+		\item $\mathbb{E}[G(s)] = H(s)$
+		\item $Var[G(s)] = [(1-d) / (1 + c)] H(s)(1-H(s))$
+	\end{itemize}
+\end{block}
+\end{frame}
+
+%\begin{frame}[t]{Pitman-Yor Process \cite{Pitman1997}}
+%
+%	\begin{block}{Model Building Block}
+%		\begin{itemize}
+%			\item Pitman-Yor process is a distribution over distributions
+%			\item Parameters of this distribution are discount $d \in (0.0, 1.0)$, concentration $c  > -d$, and a base distribution
+%			\item We write $\G \sim \PY(d,c,\G_0)$ to indicate that the random distribution $\G$ follows a Pitman-Yor process distribution
+%			\item The distribution encodes that the mean of $\G$ is $\G_0$ and the inverse variance is governed by $d$ and $c$.
+%		\end{itemize}
+%	\end{block}
+%	
+%	\end{frame}
 	
 	\begin{frame}[t]{A Simple PYP Model  \cite{Pitman1997}}
 	
@@ -201,7 +228,7 @@
 	A Bayesian nonparametric first order Markov model can be specified as:
 	\begin{eqnarray*}
 		\G_{[]} | d_0, c_0 &\sim& \PY(d_0, c_0, \mathcal{U}_\Sigma)\\
-		\G_x | d,c, \G_{[]} &\sim& \PY(d,c,\G_{[]}) \ \ \forall x \in \Sigma \\
+		\G_x | d_1,c_1, \G_{[]} &\sim& \PY(d_1,c_1,\G_{[]}) \ \ \forall x \in \Sigma \\
 		\\
 		x_0 | \G_{[]} &\sim& \G_{[]} \\
 		x_i | \G_{x_{i-1}} &\sim& G_{x_{i-1}}, \;\; i=1,\ldots,n
@@ -219,16 +246,31 @@
 	\[
 	\begin{array}{rcll}
 		\G_{[]} | d_0,c_0,\mathcal{U}_\Sigma &\sim& \PY(d_0, c_0, \mathcal{U}_\Sigma)\\
-		\G_{[x]} | d_1, c_1, \G_{[]} &\sim& \PY(d_1, c_1, \G_{[]}) & \forall x \in \Sigma \\
+		\G_{[y]} | d_1, c_1, \G_{[]} &\sim& \PY(d_1, c_1, \G_{[]}) & \forall y \in \Sigma \\
 		\G_{[x,y]} | d_2, c_2, \G_{[y]} &\sim& \PY(d_2, c_2, \G_{[y]} )& \forall x, y \in \Sigma\\
 		\\
 		x_0 | \G_{[]} &\sim& \G_{[]} \\
 		x_1 | \G_{[x_0]} &\sim& \G_{[x_0]} \\
-		x_i | \G_{[x_{i-2}, x_{i-1}]} &\sim& \G_{[x_{i-2}, x_{i-1}]} \ \ i = 2, \ldots, n 
+		x_i | \G_{[x_{i-2}, x_{i-1}]} &\sim& \G_{[x_{i-2}, x_{i-1}]} & i = 2, \ldots, n 
 	\end{array}
 	\]
 	\end{block}
 	
+\end{frame}
+
+\begin{frame}[t]{A Hierarchical Prior}
+	\begin{block}	{$\G_{[x,y]} | d_2, c_2, \G_{[y]} \sim\PY(d_2, c_2, \G_{[y]} ) \forall x, y \in \Sigma $}
+		This means that in the case of language modeling\\
+		\begin{itemize}
+			\item $\G_{[\textrm{United,States}]} \sim \PY(d_2, c_2,\G_{[\textrm{States}]}$)
+		\end{itemize}
+		and in the case of character level modeling 
+		\begin{itemize}
+			\item $\G_{[\textrm{t,i}]} \sim \PY(d_1, c_2, \G_{[\textrm{i}]})$
+		\end{itemize}
+		\vspace{.5cm}
+		The intuition behind this hierarchical prior specification is that the context $[y]$ is a generalization of the context $[x,y]$.
+	\end{block}
 \end{frame}
 
 %\begin{frame}[t]{Contribution}
@@ -269,14 +311,23 @@
 
 \begin{frame}[t]{Hierarchical Pitman-Yor Process Language Model (HPYPLM)\cite{teh2006a}}
 	\begin{block}{Model}
-		\vspace{-.5cm}
+%		\vspace{-.5cm}
 		\begin{eqnarray*}
-			\G_{{\bf u}} | d_{| \bu |}, c_{| \bu |}, \G_{\sigma(\bu)} &\sim& \PY(d_{| \bu |}, c_{| \bu |}, \G_{\sigma(\bu)}) \\
+			\G_{\vec {\bf u}} | d_{| \vec \bu |}, c_{| \vec \bu |}, \G_{\sigma(\vec \bu)} &\sim& \PY(d_{| \vec \bu |}, c_{| \vec \bu |}, \G_{\sigma(\vec \bu)}) \\
 			x_i | \G_{[x_{max({i-k-1,0})}, x_{i-k+1}, \ldots, x_{i-1}]} &\sim& \G_{[x_{max({i-k-1,0})}, x_{i-k+1}, \ldots, x_{i-1}]}\\
+			\\
 			\sigma([x_1, x_2, \ldots, x_m]) &=& [x_2, x_3, \ldots, x_m]\\
 			\G_{\sigma([])} &=& \mathcal{U}_\Sigma
 		\end{eqnarray*}
 	\end{block}
+	
+	\begin{block}{Features}
+		\begin{itemize}
+			\item Specifies a $k$-dependent Markov model.
+			\item $k$ is arbitrary, specifically we can let $k = \infty$.
+		\end{itemize}
+	\end{block}
+	
 \end{frame}
 
 
@@ -302,8 +353,17 @@
 	\begin{block}{Generative Process ($\{ x_i \}_{i = 1}^n$)}
 		\begin{itemize}
 			\item Draw a partition of the first $n$ natural numbers from the two parameter Ewen's Sampling Distribution ($\ES_n(d,c)$) \cite{Ewens1995}.
+				\begin{itemize}
+					\item For example: $(1,5,6,7)(2,8)(3)(4)$
+				\end{itemize}
 			\item Assign a value $\psi_t \sim \G_0$ to part $t$ of the partition.
+				\begin{itemize}
+					\item For example: $\psi_1 = \textrm{a}, \psi_2 = \textrm{c}, \psi_3 = \textrm{t}, \psi_4 = \textrm{u}$
+				\end{itemize}			
 			\item Set $x_i = \psi_t$ if $i$ is in the $t^{\rm th}$ part of the partition.
+				\begin{itemize}
+					\item For example: $ \{ x_i \}_{i = 1}^8 = \{ \textrm{a,c,t,u,a,a,a,c} \}$
+				\end{itemize}
 		\end{itemize}
 	\end{block}	
 \end{frame}
@@ -330,11 +390,12 @@
 \begin{frame}[t]{Chinese Restaurant Process}
 	
 	\begin{block}{CRP Analogy}
-		If instead of clustering integers we consider clustering customers in a giant Chinese restaurant the resulting analogy is the well known Chinese restaurant process.  
+			Consider customers entering a giant Chinese restaurant sequentially
 		\begin{itemize}
-			\item Customers enter the restaurant sequentially and sit at a table with probability proportional to the number of people already seated there minus the discount parameter.  
-			\item Customers are partitioned into parts which are represented as tables.  
-			\item The full generative process for the Pitman-Yor process model can be put into the context of the restaurant process if we assume each table is labeled with a random draw from the base distribution.
+			\item Customer $i$ enters the restaurant
+			\item The probability she joins an occupied table is $\frac{i-1 - (k^{i-1}d)}{i-1+c}$
+			\item If she chooses to join an occupied table, she chooses table $t$ with probability proportional to $n_t^{i-1} - d$
+			\item Otherwise she sits by herself
 		\end{itemize}
 	\end{block}
 	
@@ -345,7 +406,7 @@
 	\begin{block}{Model}
 		\vspace{-.5cm}
 		\begin{eqnarray*}
-			\G_{{\bf u}} | d_{| \bu |}, c_{| \bu |}, \G_{\sigma(\bu)} &\sim& \PY(d_{| \bu |}, c_{| \bu |}, \G_{\sigma(\bu)}) \\
+			\G_{\vec {\bf u}} | d_{| \vec \bu |}, c_{| \vec \bu |}, \G_{\sigma(\vec \bu)} &\sim& \PY(d_{| \vec \bu |}, c_{|\vec  \bu |}, \G_{\sigma(\vec \bu)}) \\
 			x_i | \G_{[x_{max({i-k-1,0})}, x_{i-k+1}, \ldots, x_{i-1}]} &\sim& \G_{[x_{max({i-k-1,0})}, x_{i-k+1}, \ldots, x_{i-1}]}\\
 			\sigma([x_1, x_2, \ldots, x_m]) &=& [x_2, x_3, \ldots, x_m]\\
 			\G_{\sigma([])} &=& \mathcal{U}_\Sigma
@@ -365,8 +426,7 @@
 
 	\begin{block}{Hierarchical CRP}
 		The Chinese restaurant analogy can be hierarchically composed.  In this case it is known as the Chinese restaurant franchise.  Below is a graphical depiction of a draw from the hierarchical CRP.
-	\end{block}
-	
+	\end{block}	
 		\begin{figure}[t]
 		\begin{center}
 			\includegraphics[width = 9cm]{../figs/figure1.pdf}
@@ -375,13 +435,11 @@
 \end{frame}
 
 \begin{frame}[t]{Parameters}
-	\begin{block}{Parameters}
+	\begin{block}{Parameters ($ \{ \G_{\vec \bu} \}_{\vec \bu \in \Sigma^k}$)}
 		\begin{itemize}
-			\item The number of parameters grows exponentially with $k$ (the order of Markov dependence)
-			\item A training sequence of length $n$ is generated by drawing from at most $n$ of these conditional distributions
-			\item Inference can be restricted to only those parameters either drawn upon in the training sequence or acting as a prior on a drawn upon distribution
-			\item In the Chinese Restaurant process the predictive distribution is fully characterized by the partition induced by the seating arrangement
-			\item The seating arrangement in each node of the graphical model comprises the  parameters for this model
+			\item The generative procedure is described by the Chinese franchise process
+			\item Inference can be restricted to the mechanics of the generative procedure
+			\item Nodes not accessed during the generation of the training data are therefore not considered during inference
 		\end{itemize}
 	\end{block}	
 \end{frame}
@@ -398,7 +456,7 @@
 %\end{frame}
 %
 
-\begin{frame}[t]{HPYPLM graphical model ( $\mathcal{O}(n^2)$)}
+\begin{frame}[t]{HPYPLM graphical model}
 	
 	Consider the nodes required for the string ``oacac" where $k$ is large: 
 	\begin{figure}[t]
@@ -408,99 +466,31 @@
 	\end{figure}
 \end{frame}
 
-\begin{frame}[t]{HPYPLM Complexity}
-	\begin{block}{Complexity}
+%\begin{frame}[t]{HPYPLM Complexity}
+%	\begin{block}{Complexity}
+%		\begin{itemize}
+%			\item At a fixed depth, the complexity of inference in the HPYPLM grows linearly.  
+%			\item With an infinite depth, the complexity grows quadratically.
+%			\item But ... as the depth of the model grows, the predictive power grows.
+%		\end{itemize}
+%	\end{block}
+%\end{frame}
+
+
+\begin{frame}[t]{Sequence Memoizer \cite{Wood2009}}
+	\begin{block}{Sequence Memoizer (SM)}
 		\begin{itemize}
-			\item At a fixed depth, the complexity of inference in the HPYPLM grows linearly.  
-			\item With an infinite depth, the complexity grows quadratically.
-			\item But ... as the depth of the model grows, the predictive power grows.
-		\end{itemize}
-	\end{block}
-\end{frame}
-
-\begin{frame}[t]{Marginalization}
-	\begin{block}{Marginalization \cite{Pitman1999}}
-		If $P(\G_1, \G_2)$ is defined by
-		\begin{eqnarray*}
-			P(\G_1) &=&  \PY(d_1, 0, \G_0) \\
-			P(\G_2 | \G_1) &=& \PY(d_2, 0, \G_1)
-		\end{eqnarray*}
-		then marginally 
-		\begin{eqnarray*}
-			P(\G_2) =  \PY(d_1 d_2, 0, \G_0)
-		\end{eqnarray*}
-	\end{block}	
-\end{frame}
-
-\begin{frame}[t]{Sequence Memoizer graphical model ``oacac" ($\mathcal{O}(n)$) \cite{Wood2009}}
-
-	\begin{figure}[t]
-		\begin{center}
-			\includegraphics[height = 6cm]{../figs/prefix_tree_not_coloured.pdf}
-		\end{center}
-	\end{figure}
-	
-\end{frame}
-
-\begin{frame}[t]{Incremental Construction}
-	\begin{block}{Incremental Construction}
-		\begin{itemize}
-			\item Major motivation is modeling streaming data.
-			\item Estimation and data structure construction must be incremental.
-			\item What if we need a marginalized node while processing stream?
-		\end{itemize}
-	\end{block}
-\end{frame}
-
-\begin{frame}[t] {Fragmentation}
-
-	\begin{block}{Fragmentation \cite{Pitman1999, Wood2009}}
-		Given observed data $\{x_i\}_{i = 1}^n$ and the models $\mathcal{M}_1$ 
-		\begin{eqnarray*}
-			P(\G) &=& \PY(d_1 d_2, 0, \G_0)\\
-			\{x_i\}_{i = 1}^n &\sim& \G
-		\end{eqnarray*}
-		%
-		and $\mathcal{M}_2$
-		\begin{eqnarray*}
-			P(\G_1) &=& \PY(d_1, 0, \G_0)\\
-			P(\G_2 | \G_1) &=& \PY(d_2, 0, \G_1)\\
-			\{x_i\}_{i = 1}^n &\sim& \G_2
-		\end{eqnarray*}
-		%
-      	and $g \sim P(\G | \{x_i\}_{i = 1}^n)$ then $\{g_1, g_2\}  = FRAG(g)$ satisfy
-		%
-		\begin{eqnarray*}
-			P(g_1, g_2) &=& P(\G_1, \G_2 |  \{x_i\}_{i = 1}^n)
-		\end{eqnarray*}
-	\end{block}
-
-\end{frame}
-
-\begin{frame}[t]{Incremental Construction of Suffix Tree \cite{Gasthaus2010}}
-	
-	Consider the sequence of symbols ``PATAT"
-	\begin{figure}[t]
-		\begin{center}
-			\includegraphics[height = 6cm]{../figs/PATAT.pdf}
-		\end{center}
-	\end{figure}
-\end{frame}
-
-\begin{frame}[t]{Linear Complexity of Sequence Memoizer}
-	\begin{block}{SM Complexity}
-		\begin{itemize}
-			\item With these improvements, the infinite depth HPYPLM is known as the Sequence Memoizer model \cite{Wood2009}.
-			\item Spacial complexity is linear in the length of the sequence.
-			\item Incremental estimation and construction is quadratic in length of the sequence (though linear in real world data) \cite{Gasthaus2010}.
+			\item With some improvements, the infinite depth HPYPLM is known as the Sequence Memoizer model \cite{Wood2009}
+			\item Spacial complexity is linear in the length of the sequence
+			\item Incremental estimation and construction is quadratic in length of the sequence (though linear in real world data) \cite{Gasthaus2010}
 		\end{itemize}
 	\end{block}
 
         \begin{block}{Improve on Linearity}
           \begin{itemize}
-            \item Linear space is better, but intractable for streaming data.
-            \item Introduce forgetting / dependent model.
-            \item Approximate model predictive power.
+            \item Linear space is better, but intractable for streaming data
+            \item Introduce forgetting / dependent model
+            \item Approximate model predictive power
           \end{itemize}
         \end{block}
 \end{frame}
@@ -514,7 +504,7 @@
 	\end{block}
 	
 	\begin{block}{Application}
-		This consistency property can be exploited in a generative procedure defined using the urn representation to draw samples from a sequence of dependent distributions $\{ \G^t \}_{t = 1}^T$ such that 
+		This consistency property can be exploited in a generative procedure defined using the Chinese restaurant representation to draw samples from a sequence of dependent distributions $\{ \G^t \}_{t = 1}^T$ such that 
 		\[
 		\begin{array}{rcll}
 			\G^t | d,c,\G_0 &\sim& \PY(d,c,\G_0)& t = 1, \ldots, T\\
@@ -544,7 +534,7 @@
 	\end{block}
 \end{frame}
 
-\begin{frame}[t]{Dependent HPYP}
+\begin{frame}[t]{Dependent HPYP (\citet{Bartlett2010})}
 	
 	\begin{block}{HPYP}
 		\begin{itemize}
@@ -573,7 +563,7 @@
 		\end{itemize}
 	\end{block}
 	
-	\begin{block}{Constant Space}
+	\begin{block}{Constant Space (\citet{Bartlett2010})}
 		\begin{itemize}
 			\item A generative procedure which deterministically deletes all customers in a chosen leaf restaurant is well specified.  Since empty restaurants are not represented during inference, such a model can be used to limit the number of instantiated restaurants and allow for constant space representation.
 			\end{itemize}
@@ -633,7 +623,7 @@
 	
 \end{frame}
 
-\begin{frame}[t]{Compressed Representation Approximation}
+\begin{frame}[t]{Compressed Representation Approximation  (\citet{Bartlett2011})}
 	
 	\begin{block}{Compressed Representation Approximation}
 		\begin{itemize}
@@ -646,28 +636,28 @@
 	
 \end{frame}
 
-\begin{frame}[t]{Suffix Tree Approximation}
+\begin{frame}[t]{Suffix Tree Approximation (\citet{Bartlett2011})}
 
 	\begin{block}{Suffix Tree}
 		\begin{itemize}
-			\item The deletion of nodes means that inference is only required in a constant number of nodes.
-                        \item Suffix tree data structures use pointers from nodes to the input sequence as edge labels.
-			\item The underlying suffix tree data structure still requires linear space.
-			\item Approximation of the suffix tree is made using a length $R$ (fixed) reference sequence.
-			\item Only edges with labels in the reference sequence are contained in the approximating suffix tree.
+			\item The deletion of nodes means that inference is only required in a constant number of node
+           \item Suffix tree data structures use pointers into the original sequence to label the edges
+			\item Suffix tree data structures require linear space
+			\item The suffix tree is approximated by labeling edges with pointers to a length $R$ (fixed) reference sequence
+			\item Edges which cannot be labeled are removed from the tree
 		\end{itemize}
 	\end{block}
 	
 \end{frame}
 
-\begin{frame}[t]{Suffix Tree Approximation}
+\begin{frame}[t]{Suffix Tree Approximation  (\citet{Bartlett2011})}
 	
 	\begin{block}{Suffix Tree Approximation}
 			\begin{itemize}
-				\item The reference sequence is equal to a fixed length ($R$) suffix of the input sequence.
-				\item As data is incorporated into the model, edges can be updated to point to recent sections of the reference sequence.
-				\item Edges which reference the input sequence prior to the fixed length suffix are deterministically removed from the graphical model.
-            	\item Contexts which are rare are likely to be removed this way.
+				\item The reference sequence is equal to a fixed length ($R$) suffix of the input sequence
+				\item As data is incorporated into the model, edges are updated to point to later sections of the reference sequence
+				\item Edges which cannot be labeled are removed from the tree
+            	\item Contexts which are rare are likely to be removed this way
 			\end{itemize}
 	\end{block}
 		
@@ -690,44 +680,71 @@
 \begin{frame}[t]{Setup}
 	\begin{block}{Experimental Setup}
 		\begin{itemize}
-			\item Data : Wikipedia text content dump
+			\item Data : Wikipedia .xml content dump
 			\item Task : compression (incremental online prediction)
-			\item Parameters of interest : stream length, node limit $L$, node size $k$, and depth of model $D$
+			\item Parameters of interest : stream length, node limit $L$, node size $K$, and depth of model $D$
 			\item Performance Metric : compression rate (bits per byte)
 		\end{itemize}
 	\end{block}
-	
-	\begin{block}{Max count within node ($k$)}
-		We varied values of $k$ between 128 and 32,768 and found that there was no discernible performance difference.  For the rest of the experiments we felt justified in fixing $k$ to 	8,192.
+\end{frame}
+
+\begin{frame}[t]{Max count with node ($K$)}
+	\begin{block}{Max count within node ($K$)}
+		\begin{itemize}
+			\item Tested values of $K$ in $\{2^7, 2^8, \ldots, 2^{15} \}$
+			\item Performance was same for all values of $K$
+			\item Experiments use $K = 2^{13} = 8,192$
+		\end{itemize}
+%		We varied values of $k$ between 128 and 32,768 and found that there was no discernible performance difference.  For the rest of the experiments we felt justified in fixing $k$ to 	8,192.
 	\end{block}
 \end{frame}
 
 
-\begin{frame}[t]{Varying Depths}
- Average( $\pm$ std.) streaming deplump compression performance as measured in bits in compressed output vs. bytes in uncompressed input. Here the depth limit ($D$) and node limit ($L$) are varied. Results are averaged over 10 trials on sequences of length 100Mb sampled at random with replacement.
-   	\begin{figure}[t]
-		\begin{center}
-			\includegraphics[width = 11cm]{../figs/varying_depths.pdf}
-		\end{center}
-	\end{figure}
-
+%\subsection{``Deplump for Streaming Data'' \citet{Bartlett2010}, Constant space, constant time prediction, linear time estimation SM}
+\begin{frame}[t]{}
+%\begin{block}{}
+%\begin{figure}[htbp]
+%\begin{center}
+%\includegraphics[width=\textwidth]{varying_depths.pdf}
+%\end{center}
+%\end{figure}
+%A dependent HPYP can be defined though a graphical model leaf node deletion scheme.  Inference in the resulting model was shown to approximate the SM well.  \tiny{data: Calgary corpus, rests = total used nodes in 3-10 grams}
+%\end{block}
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=\textwidth]{../figs/varying_stream_length.pdf}
+\end{center}
+\end{figure}
+First streaming SM with computational asymptotics required for streaming compression.  Compressed 26.8Gb Wikipedia corpus to 4Gb (vs. 7.9Gb for gzip and 3.8Gb for PAQ).\newline
+\vspace{3cm}
+{\tiny $L$ is number of nodes in SM, data Wikipedia dump 2010 head, depth 16}
 \end{frame}
 
-\begin{frame}[t]{Varying Stream Lengths}
-	Average ($\pm$ std.) streaming deplump compression performance as measured in bits in compressed output vs.~bytes in uncompressed input.  Here the input stream length and node limit ($L$) are varied.  From this we observe that average deplump streaming compression performance monotonically improves as the input sequence grows in length but asymptotes at a different value per node limit. Also, it can be seen that large node limits may actually hurt compression performance for small input sequences.  Depth is fixed at 16.
-	   	\begin{figure}[t]
-		\begin{center}
-			\includegraphics[width = 11cm]{../figs/varying_stream_length.pdf}
-		\end{center}
-	\end{figure}
+%\begin{frame}[t]{Varying Depths}
+% Average( $\pm$ std.) streaming deplump compression performance as measured in bits in compressed output vs. bytes in uncompressed input. Here the depth limit ($D$) and node limit ($L$) are varied. Results are averaged over 10 trials on sequences of length 100Mb sampled at random with replacement.
+%   	\begin{figure}[t]
+%		\begin{center}
+%			\includegraphics[width = 11cm]{../figs/varying_depths.pdf}
+%		\end{center}
+%	\end{figure}
+%
+%\end{frame}
+%
+%\begin{frame}[t]{Varying Stream Lengths}
+%	Average ($\pm$ std.) streaming deplump compression performance as measured in bits in compressed output vs.~bytes in uncompressed input.  Here the input stream length and node limit ($L$) are varied.  From this we observe that average deplump streaming compression performance monotonically improves as the input sequence grows in length but asymptotes at a different value per node limit. Also, it can be seen that large node limits may actually hurt compression performance for small input sequences.  Depth is fixed at 16.
+%	   	\begin{figure}[t]
+%		\begin{center}
+%			\includegraphics[width = 11cm]{../figs/varying_stream_length.pdf}
+%		\end{center}
+%	\end{figure}
+%
+%\end{frame}
 
-\end{frame}
-
-\begin{frame}[t]{Full Wikipedia Compression}
-	\begin{block}{Full Wikipedia}
-		Considering these results, we chose values for the approximating parameters of $D=32$, $L=10^7$, $k=8,192$ and compressed the full 26.8Gb Wikipedia corpus.  When compressed, the corpus was 7.8Gb gziped, 3.8Gb paq9a'ed, both with default parameters, and 4.0Gb deplumped.
-	\end{block}
-\end{frame}
+%\begin{frame}[t]{Full Wikipedia Compression}
+%	\begin{block}{Full Wikipedia}
+%		Considering these results, we chose values for the approximating parameters of $D=32$, $L=10^7$, $k=8,192$ and compressed the full 26.8Gb Wikipedia corpus.  When compressed, the corpus was 7.8Gb gziped, 3.8Gb paq9a'ed, both with default parameters, and 4.0Gb deplumped.
+%	\end{block}
+%\end{frame}
 
 \section{Discussion}
 %\subsection{}
@@ -744,6 +761,85 @@
 
 \begin{frame}[t,allowframebreaks]{Bibliograpy}
 	\bibliography{../../../papers/uber}
+\end{frame}
+
+\begin{frame}[t]{HPYPLM graphical model}
+	
+	Consider the nodes required for the string ``oacac" where $k$ is large: 
+	\begin{figure}[t]
+		\begin{center}
+			\includegraphics[height = 6cm]{../figs/prefix_trie_not_coloured.pdf}
+		\end{center}
+	\end{figure}
+\end{frame}
+
+\begin{frame}[t]{Marginalization}
+	\begin{block}{Marginalization \cite{Pitman1999}}
+		If $P(\G_1, \G_2)$ is defined by
+		\begin{eqnarray*}
+			P(\G_1) &=&  \PY(d_1, 0, \G_0) \\
+			P(\G_2 | \G_1) &=& \PY(d_2, 0, \G_1)
+		\end{eqnarray*}
+		then marginally 
+		\begin{eqnarray*}
+			P(\G_2) =  \PY(d_1 d_2, 0, \G_0)
+		\end{eqnarray*}
+	\end{block}	
+\end{frame}
+
+\begin{frame}[t]{Sequence Memoizer graphical model ``oacac" ($\mathcal{O}(n)$) \cite{Wood2009}}
+
+	\begin{figure}[t]
+		\begin{center}
+			\includegraphics[height = 6cm]{../figs/prefix_tree_not_coloured.pdf}
+		\end{center}
+	\end{figure}
+	
+\end{frame}
+
+\begin{frame}[t]{Incremental Construction}
+	\begin{block}{Incremental Construction}
+		\begin{itemize}
+			\item Major motivation is modeling streaming data.
+			\item Estimation and data structure construction must be incremental.
+			\item What if we need a marginalized node while processing stream?
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+\begin{frame}[t] {Fragmentation}
+
+	\begin{block}{Fragmentation \cite{Pitman1999, Wood2009}}
+		Given observed data $\{x_i\}_{i = 1}^n$ and the models $\mathcal{M}_1$ 
+		\begin{eqnarray*}
+			P(\G) &=& \PY(d_1 d_2, 0, \G_0)\\
+			\{x_i\}_{i = 1}^n &\sim& \G
+		\end{eqnarray*}
+		%
+		and $\mathcal{M}_2$
+		\begin{eqnarray*}
+			P(\G_1) &=& \PY(d_1, 0, \G_0)\\
+			P(\G_2 | \G_1) &=& \PY(d_2, 0, \G_1)\\
+			\{x_i\}_{i = 1}^n &\sim& \G_2
+		\end{eqnarray*}
+		%
+      	and $g \sim P(\G | \{x_i \}_{i = 1}^n, \mathcal{M}_1)$ then $\{g_1, g_2\}  = FRAG(g)$ satisfy
+		%
+		\begin{eqnarray*}
+			P(g_1, g_2) &=& P(\G_1, \G_2 |  \{x_i\}_{i = 1}^n, \mathcal{M}_2)
+		\end{eqnarray*}
+	\end{block}
+
+\end{frame}
+
+\begin{frame}[t]{Incremental Construction of Suffix Tree \cite{Gasthaus2010}}
+	
+	Consider the sequence of symbols ``PATAT"
+	\begin{figure}[t]
+		\begin{center}
+			\includegraphics[height = 6cm]{../figs/PATAT.pdf}
+		\end{center}
+	\end{figure}
 \end{frame}
 
 
