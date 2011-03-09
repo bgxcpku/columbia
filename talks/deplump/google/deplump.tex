@@ -134,8 +134,8 @@
 						\end{eqnarray*}
 			}
 		 	\item We will use $\Sigma$ to denote the symbol set, i.e. $x_i \in \Sigma \ \forall \ i$.
-			\item We will use $\Sigma^k$ to denote the set strings of symbols in $\Sigma$ with length less than or equal to $k$
-			\item We will use $\Sigma^+$ to denote the set strings of symbols in $\Sigma$ with finite length
+			\item We will use $\Sigma^k$ to denote the set of strings of symbols in $\Sigma$ with length less than or equal to $k$
+			\item We will use $\Sigma^+$ to denote the set of strings of symbols in $\Sigma$ with finite length
 		\end{itemize}
 	\end{block}
 	
@@ -148,9 +148,9 @@
 	
 	\begin{block}{Additional Modeling Considerations}
 		\begin{itemize}
-			\item The set of parameters is large and the data is likely to be sparse $\rightarrow$ need regularization
-			\item The size of the data will be large $\rightarrow$ need efficient computation
-			\item The conditional distributions are complex and potentially over a large symbol set $\rightarrow$ need flexible distributional assumptions
+			\item Parameter set is large and the data are likely to be sparse $\rightarrow$ need regularization
+			\item Data size will be large $\rightarrow$ need efficient computation
+			\item Parameters (conditional distributions) are complex $\rightarrow$ need flexible distributional assumptions
 		\end{itemize}
 	\end{block}
 \end{frame}
@@ -184,7 +184,7 @@
 
 \begin{frame}[t]{Pitman-Yor Process \cite{Pitman1997}}
 
-\begin{block}{$\PY(c,d,H)$}
+\begin{block}{$\PY(d,c,H)$}
 
  A Pitman-Yor process $\PY(d,c,H)$ is a distribution over distributions with three parameters
 
@@ -201,7 +201,7 @@
 
 \begin{block}{Key properties}
 
-If $G\sim\PY(c,d,H)$ then {\em a priori}
+If $G\sim\PY(d,c,H)$ then {\em a priori}
 	\begin{itemize}
 		\item $\mathbb{E}[G(s)] = H(s)$
 		\item $Var[G(s)] = [(1-d) / (1 + c)] H(s)(1-H(s))$
@@ -354,15 +354,15 @@ If $G\sim\PY(c,d,H)$ then {\em a priori}
 		\begin{itemize}
 			\item Draw a partition of the first $n$ natural numbers from the two parameter Ewen's Sampling Distribution ($\ES_n(d,c)$) \cite{Ewens1995}.
 				\begin{itemize}
-					\item For example: $(1,5,6,7)(2,8)(3)(4)$
+					\item {\scriptsize For example: $(1,5,6,7)(2,8)(3)(4)$}
 				\end{itemize}
 			\item Assign a value $\psi_t \sim \G_0$ to part $t$ of the partition.
 				\begin{itemize}
-					\item For example: $\psi_1 = \textrm{a}, \psi_2 = \textrm{c}, \psi_3 = \textrm{t}, \psi_4 = \textrm{u}$
+					\item {\scriptsize For example: $\psi_1 = \textrm{a}, \psi_2 = \textrm{c}, \psi_3 = \textrm{t}, \psi_4 = \textrm{u}$}
 				\end{itemize}			
 			\item Set $x_i = \psi_t$ if $i$ is in the $t^{\rm th}$ part of the partition.
 				\begin{itemize}
-					\item For example: $ \{ x_i \}_{i = 1}^8 = \{ \textrm{a,c,t,u,a,a,a,c} \}$
+					\item {\scriptsize For example: $ \{ x_i \}_{i = 1}^8 = \{ \textrm{a,c,t,u,a,a,a,c} \}$}
 				\end{itemize}
 		\end{itemize}
 	\end{block}	
@@ -390,13 +390,16 @@ If $G\sim\PY(c,d,H)$ then {\em a priori}
 \begin{frame}[t]{Chinese Restaurant Process}
 	
 	\begin{block}{CRP Analogy}
-			Consider customers entering a giant Chinese restaurant sequentially
+			Consider $n$ customers entering a giant Chinese restaurant sequentially
+			\vspace{.25cm}
 		\begin{itemize}
 			\item Customer $i$ enters the restaurant
 			\item The probability she joins an occupied table is $\frac{i-1 - (k^{i-1}d)}{i-1+c}$
 			\item If she chooses to join an occupied table, she chooses table $t$ with probability proportional to $n_t^{i-1} - d$
 			\item Otherwise she sits by herself
 		\end{itemize}
+			\vspace{.25cm}		
+		The final seating arrangement corresponds to a partition drawn from the $\ES_n(d,c)$ distribution.
 	\end{block}
 	
 \end{frame}
@@ -640,7 +643,7 @@ If $G\sim\PY(c,d,H)$ then {\em a priori}
 
 	\begin{block}{Suffix Tree}
 		\begin{itemize}
-			\item The deletion of nodes means that inference is only required in a constant number of node
+%			\item The deletion of nodes means that inference is only required in a constant number of node
            \item Suffix tree data structures use pointers into the original sequence to label the edges
 			\item Suffix tree data structures require linear space
 			\item The suffix tree is approximated by labeling edges with pointers to a length $R$ (fixed) reference sequence
@@ -663,7 +666,7 @@ If $G\sim\PY(c,d,H)$ then {\em a priori}
 		
 \end{frame}
 
-\begin{frame}{Sequential Edge Updates}
+\begin{frame}[t]{Sequential Edge Updates}
 
    	\begin{figure}[t]
 		\begin{center}
