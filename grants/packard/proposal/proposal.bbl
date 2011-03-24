@@ -1,0 +1,60 @@
+\begin{thebibliography}{}
+
+\bibitem[Bartlett et~al., 2010]{Bartlett2010}
+Bartlett, N., Pfau, D., and Wood, F. (2010).
+\newblock Forgetting counts: Constant memory inference for a dependent
+  hierarchical {P}itman-{Y}or process.
+\newblock In {\em Proceedings of the 27th International Conference on Machine
+  Learning (ICML-10)}, pages 63--70.
+
+\bibitem[Bartlett and Wood, 2011]{Bartlett2011}
+Bartlett, N. and Wood, F. (2011).
+\newblock Streaming deplump.
+\newblock In {\em Data Compression Conference 2011}.
+
+\bibitem[Beal et~al., 2002]{Beal2002}
+Beal, M., Ghahramani, Z., and Rasmussen, C. (2002).
+\newblock {The infinite hidden Markov model}.
+\newblock {\em Advances in Neural Information Processing Systems}, 1:577--584.
+
+\bibitem[Bishop, 2006]{Bishop2006}
+Bishop, C. (2006).
+\newblock {\em Pattern Recognition and Machine Learning}.
+\newblock Springer, New York, NY.
+
+\bibitem[Gasthaus et~al., 2010]{Gasthaus2010}
+Gasthaus, J., Wood, F., and Teh, Y.~W. (2010).
+\newblock Lossless compression based on the {S}equence {M}emoizer.
+\newblock In {\em Data Compression Conference 2010}, pages 337--345.
+
+\bibitem[Hopcroft et~al., 1979]{Hopcroft1979}
+Hopcroft, J., Motwani, R., and Ullman, J. (1979).
+\newblock {\em Introduction to automata theory, languages, and computation}.
+\newblock Addison-wesley Reading, MA.
+
+\bibitem[Johnson et~al., 2007]{Johnson2007}
+Johnson, M., Griffiths, T., and Goldwater, S. (2007).
+\newblock {Adaptor grammars: A framework for specifying compositional
+  nonparametric Bayesian models}.
+\newblock In {\em Advances in {N}eural {I}nformation {P}rocessing {S}ystems},
+  volume~19, page 641.
+
+\bibitem[Pfau et~al., 2010]{Pfau2010}
+Pfau, D., Bartlett, N., and Wood, F. (2010).
+\newblock Probabilistic deterministic infinite automata.
+\newblock In Lafferty, J., Williams, C. K.~I., Shawe-Taylor, J., Zemel, R., and
+  Culotta, A., editors, {\em Advances in Neural Information Processing Systems
+  23}, pages 1930--1938. MIT Press.
+
+\bibitem[Russell and Norvig, 2002]{Russell2002}
+Russell, S.~J. and Norvig, P. (2002).
+\newblock {\em Artificial intelligence: A modern approach}.
+\newblock Prentice Hall, Englewood Cliffs, NJ, 2nd edition.
+
+\bibitem[Wood et~al., 2009]{Wood2009}
+Wood, F., Archambeau, C., Gasthaus, J., James, L., and Teh, Y.~W. (2009).
+\newblock A stochastic memoizer for sequence data.
+\newblock In {\em Proceedings of the 26th International Conference on Machine
+  Learning}, pages 1129--1136, Montreal, Canada.
+
+\end{thebibliography}

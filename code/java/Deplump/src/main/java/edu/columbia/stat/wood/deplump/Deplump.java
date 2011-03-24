@@ -12,6 +12,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 /**
  * @author nicholasbartlett
@@ -38,9 +39,21 @@ public class Deplump {
                     while ((l = bis.read(buffer)) > -1) {
                         dps.write(buffer, 0, l);
                     }
+
                 } finally {
                     bis.close();
                     dps.close();
+                }
+                if (parseReturn.saveModel) {
+                    ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(parseReturn.modelSaveFile)));
+                    try {
+                        oos.writeObject(dps.getModel());
+                        oos.flush();
+                        oos.close();
+                    } catch (IOException ioe) {
+                        System.err.println("Error writing model file -- probably corrupt -- try again");
+                        throw ioe;
+                    }
                 }
             }
         } else {

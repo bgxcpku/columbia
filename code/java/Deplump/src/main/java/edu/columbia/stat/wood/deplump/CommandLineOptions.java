@@ -26,17 +26,19 @@ public class CommandLineOptions {
         options.addOption("file", true, "Fully specified path(s) to file or files to deplump");
         options.getOption("file").setArgs(Integer.MAX_VALUE);
 
-        options.addOption("depth", true, "Maximum depth of the model");
+        options.addOption("d","depth", true, "Maximum depth of the model");
 
         options.addOption("lr", "limitRestaurants", true, "Maximum number of nodes the Sequence Memoizer model is allowed to instantiate");
 
         options.addOption("lsl", "limitSeqeunceLength", true, "Maximum length (in bytes) of the sequence kept by the Sequence Memoizer for the "
                 + "underlying tree structure to reference");
 
-        options.addOption("i", "insert", true, "Indicates that the model should incorporate the elements of this "
-                + "new sequence into the model");
+        options.addOption("i", "insert", true, "Should the model should be updated during compression?");
 
-        options.addOption("url", "urlSerializedModel", true, "Provides the URL of a serialized model with which to pre-seed the model");
+        options.addOption("url", "urlSerializedModel", true, "URL of a saved predictive model");
+
+        options.addOption("saveModelFileName", "fileNameToSerializeLearnedModelTo", true, "File to which to save predictive model");
+
 
         return options;
     }
@@ -96,6 +98,12 @@ public class CommandLineOptions {
             }
         }
 
+        String saveFileName = cl.getOptionValue("saveModelFileName");
+        if (saveFileName != null) {
+            parseReturn.saveModel = true;
+            parseReturn.modelSaveFile = new File(saveFileName);
+        }
+
         return parseReturn;
     }
 
@@ -105,6 +113,8 @@ public class CommandLineOptions {
         public int depth = -1;
         public boolean insert = true;
         public URL url = null;
+        public boolean saveModel = false;
+        public File modelSaveFile = null;
         public File[] files = null;
     }
 }

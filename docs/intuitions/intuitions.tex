@@ -1,0 +1,34 @@
+\documentclass[11pt]{amsart}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{epstopdf}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\title{Brief Article}
+\author{The Author}
+%\date{}                                           % Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+%\section{}
+%\subsection{}
+
+{\bf Observations and Musings}
+
+\begin{itemize}
+\item Given a fixed size model, doing posterior inference with fewer observations usually mixes faster.
+\item Constancy is a strong feature of the world
+\item Percepts degrade slowly in the presence of occlusion (can view a scene through a occluding filter (or hear through a bandpass fliter))
+\item Slowness and continuity is a feature of the world
+\item The hardware is, largely speaking, fixed.
+\item The world is approximately Markov at all scales
+\item The world is largely deterministic.
+\end{itemize}
+
+
+
+\end{document}  

@@ -5,13 +5,15 @@
 
 package edu.columbia.stat.wood.sequencememoizer;
 
+import java.io.Serializable;
+
 /**
  * Interface for a Byte Predictive model.  This is the interface for models used
  * in compression with an arithmetic or range encoder.
  * @author nicholasbartlett
  */
 
-public abstract class BytePredictiveModel {
+public abstract class BytePredictiveModel implements Serializable {
 
     /**
      * After calling one of the continue sequence methods low will be updated

@@ -23,7 +23,7 @@
     <dependencies>
          <dependency>
             <groupId>edu.columbia.stat.wood</groupId>
-            <artifactId>sequencememoizer</artifactId>
+            <artifactId>developmentsequencememoizer</artifactId>
             <version>1.0</version>
              <type>jar</type>
          </dependency>

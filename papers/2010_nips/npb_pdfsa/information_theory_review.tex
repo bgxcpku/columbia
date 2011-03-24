@@ -1,0 +1,188 @@
+\documentclass[16pt]{beamer}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage[numbers]{natbib}
+\usepackage{pgf,pgfarrows,pgfnodes}
+% \usepackage{beamerthemesplit} // Activate for custom appearance
+
+\title{Information Theory Review}
+\author{Frank Wood}
+\date{\today}
+
+
+
+\usetheme{Darmstadt}
+%\usetheme{Copenhagen}
+%\usefonttheme[onlylarge]{structurebold}
+%\setbeamerfont*{frametitle}{size=\normalsize,series=\bfseries}
+%\setbeamertemplate{navigation symbols}{}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+%\newcommand{\argmax}{\operatornamewithlimits{argmax}}
+\def\newblock{\hskip .11em plus .33em minus .07em}
+% Setup TikZ
+
+\input{definitions}
+
+
+\title[Sequence Memoizer] 
+{
+	Stochastic memoization, Bayesian nonparametrics, and the goal of developing general-purpose predictive models
+}
+
+\author[http://www.stat.columbia.edu/$\sim$fwood]
+{
+  Frank~Wood \\ 
+ \qquad \\
+  {\small joint work with \\ \qquad \\ Nicholas Bartlett, David Pfau, Jan Gasthaus, C\'{e}dric Archambeau, Lancelot James, Yee Whye Teh, and more...}
+}
+
+\institute[Columbia University]
+{
+  %\inst{1}%
+  Columbia University
+}
+
+\section{Compression}
+\subsection{Information theory review}
+\frame[t]{
+\begin{block}{Shannon's Entropy \cite{Shannon1948,MacKay2003}}
+With $X$ a R.V. taking values $x_i \in \Sigma$ with probability $P(X=x_i)$, the entropy of the ``ensemble'' $\mathcal{X} =\{X,\Sigma,P\}$ is
+\[H(\mathcal{X}) = \sum_i P(X=x_i) \log_2\left(\frac{1}{P(X=x_i)}\right)\]
+\begin{itemize}
+\item Units of ``bits''
+\item Maximized when $P(X = x_i) = \frac{1}{|\Sigma|}$
+\item Lower bound on average number of bits required to losslessly transmit message consisting of symbols $x_i \sim P$ over a noiseless channel.
+\end{itemize}
+
+\end{block}
+}
+
+\frame[t]{
+\begin{block}{Symbol code \cite{Shannon1948,MacKay2003}}
+A binary code C is a mapping
+\[C : \Sigma \rightarrow \{0,1\}^+\]
+with expected code length
+\[ L(C,\mathcal{X}) = \sum_{x_i\in\Sigma} P(X = x_i)\ell(x_i)\] 
+where $\ell(x_i)$ is length of the binary string assigned to $x_i$.
+\end{block}
+
+}
+
+\frame[t]{
+\begin{block}{Source coding theorem: bound on prefix  code lengths }
+For an ensemble $\mathcal{X}$ there exists a prefix (uniquely identifiable)\footnote{``A code $C$ is uniquely decodeable if, under the extended code $C^+$, no two distinct strings have the same encoding, i.e.''\cite{MacKay2003} \[\forall \x,\y \in \Sigma^+, \x \neq \y \implies C^+(\x) \neq C^+(\y)\] where \[C^+(\x) = C(x_1)C(x_2)\ldots\]\vspace{-.25cm}} code $C$ with expected length satisfying
+\[ H(\mathcal{X}) \leq L(C,\mathcal{X}) \leq  H(\mathcal{X}) +1 \]
+\vspace{.5cm}
+\end{block}
+}
+
+\subsection{A Huffman (''optimal'') code for unigram English character probabilities}
+\frame[t]{
+\begin{figure}[t]
+    \begin{center}
+        \includegraphics[width=.6\columnwidth]{huffman}
+    \end{center}
+    \label{fig:huffman}
+\end{figure}
+Huffman codes are constructed by ``bottom-up'' agglomerative merging of lowest probability symbols. \\ {\tiny Figure from \cite{MacKay2003}}.
+}
+
+\subsection{Doing better than Huffman coding}
+\frame[t]{
+\begin{block}{Drawbacks of Huffman codes}
+Only optimal if source is i.i.d. and single symbol transmitted
+\begin{itemize}
+\item $H(\mathcal{X}) \leq L(C,\mathcal{X}) \leq  H(\mathcal{X}) +1$ bound is {\em per-symbol}
+\item $H(\mathcal{X}_2|\mathcal{X}_1) \leq H(\mathcal{X}_2)$, information always reduces entropy.
+\item Entire source must be processed to estimate the optimal codebook 
+\item Codebook must be transmitted before data -- often highly redundant
+\end{itemize}
+\end{block}
+\begin{block}{Fixes}
+\begin{itemize}
+\item Code {\em blocks} or ``words'' $\x = [x_1,x_2,\ldots,x_N] \in \Sigma^N$ of the input (trade-off -- requires more complex model)
+\item Incrementally build codebook (inefficient, bottom-up)
+\item Use {\em arithmetic coding} instead. \end{itemize}
+\end{block}
+}
+
+\subsection{Compressing `$\mbox{bbba}\square$' using arithmetic coding}
+\frame[t]{
+Arithmetic coding can be seen as using fractions of bits to encode a symbol.
+\begin{figure}[t]
+    \begin{center}
+        \includegraphics[width=.8\columnwidth]{predictive_probs}\footnote{From \cite{MacKay2003}}
+    \end{center}
+    \label{fig:predictive_probs}
+\end{figure}
+Example predictive probabilities over English characters.
+}
+\frame[t]{
+
+%\begin{pgfpicture}{0cm}{0cm}{5cm}{5cm} 
+% (0cm,0cm) is the lower left corner, 
+% (5cm,2cm) is the upper right corner. 
+%\pgfrect[stroke]{\pgfpoint{0cm}{0cm}}{\pgfpoint{2cm}{10pt}} 
+% Paint a rectangle (stroke it, do not fill it)
+% The lower left corner is at (0cm,0cm) 
+% The rectangle is 2cm wide and 10pt high. 
+%\pgfcircle[fill]{\pgfpoint{3cm}{1cm}}{10pt} 
+% Paint a filled circle % The center is at (3cm,1cm) % The radius is 10pt
+% \end{pgfpicture}
+
+\begin{figure}[t]
+    \begin{center}
+        \includegraphics[width=.8\columnwidth]{arithmetic_coding}
+        %\pgfsetcolor{fill}{white}
+        \pgfrect[fill]{\pgfpoint{-1cm}{5.5cm}}{\pgfpoint{2cm}{2cm}} 
+    \end{center}
+    \label{fig: arithmetic_coding}
+\end{figure}
+Schematic of arithmetic coding {\tiny Figure from \cite{MacKay2003}}.
+
+
+}
+
+\frame[t]{
+\begin{block}{Average code length for arithmetic coding \cite{sayood2000}}
+If we redefine $X$ to be a R.V. taking values $\x_i \in \Sigma^+$ with probability $P(X=\x_i)$, and consider the ensemble $\mathcal{X} =\{X,\Sigma^+,P\}$ an arithmetic code $C$ has expected length $L(C,\mathcal{X})$ satisfying
+\[ H(\mathcal{X}) \leq L(C,\mathcal{X}) \leq  H(\mathcal{X}) +2 \]
+\vspace{.5cm}
+\end{block}
+}
+
+\subsection{Recipe}
+\frame[t]{
+\begin{block}{Streaming compressor, encoder}
+Repeat
+\begin{itemize}
+\item Compute cumulative predictive distribution $F(x_i|x_{1:(i-1)})$
+\item Send CDF boundary for $x_i$ to arithmetic encoder
+\item Update model to include $x_i$ in {\em context} $x_{1:(i-1)}$
+\end{itemize}
+\end{block}
+
+
+\begin{block}{Streaming compressor, decoder}
+Repeat
+\begin{itemize}
+\item Compute cumulative predictive distribution $F(x_i|x_{1:(i-1)})$
+\item Process bits until CDF interval distinct
+\item Conclude $x_i$ sent from encoder
+\item Update model to include $x_i$ in {\em context} $x_{1:(i-1)}$
+\end{itemize}
+
+\end{block}
+}
+
+
+
+%\begin{alertblock}{Nature of Problems}
+%Computational
+%\end{alertblock}
+\end{frame}	
+
+\end{document}
+

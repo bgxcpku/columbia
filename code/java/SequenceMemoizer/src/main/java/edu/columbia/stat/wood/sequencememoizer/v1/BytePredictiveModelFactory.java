@@ -22,8 +22,8 @@ public class BytePredictiveModelFactory extends edu.columbia.stat.wood.sequencem
      * {@inheritDoc}
      */
     @Override
-    public BytePredictiveModel get(int depth, long maxNumberRestaurants, long maxSequenceLength, URL url) {
-        if (url == null) {
+    public BytePredictiveModel get(int depth, long maxNumberRestaurants, long maxSequenceLength) {
+       
             if(depth <= -1){
                 depth = 32;
             }
@@ -36,31 +36,29 @@ public class BytePredictiveModelFactory extends edu.columbia.stat.wood.sequencem
             ByteSequenceMemoizerParameters smp = new ByteSequenceMemoizerParameters(depth, maxNumberRestaurants, maxSequenceLength);
             smp.maxCustomersInRestaurant = 8192;
             return new ByteSequenceMemoizer(smp);
-        } else {
+
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public BytePredictiveModel get(URL url) {
             try {
                 ObjectInputStream ois = null;
-                ByteSequenceMemoizer sm = null;
+                BytePredictiveModel sm = null;
                 ois = new ObjectInputStream(new BufferedInputStream(url.openStream()));
-                sm = (ByteSequenceMemoizer) ois.readObject();
-                sm.newSequence();
-
-                if(depth > -1){
-                    sm.setDepth(depth);
-                }
-                if(maxNumberRestaurants > 0){
-                    sm.setMaxNumberRestaurants(maxNumberRestaurants);
-                }
-                if(maxSequenceLength > 1024){
-                    sm.setMaxSequenceLength(maxSequenceLength);
-                }
-
+                sm = (BytePredictiveModel) ois.readObject();
+                if(sm instanceof ByteSequenceMemoizer)
+                    ((ByteSequenceMemoizer)sm).newSequence();
                 return sm;
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(BytePredictiveModelFactory.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
                 Logger.getLogger(BytePredictiveModelFactory.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
+        
         return null;
     }
 }

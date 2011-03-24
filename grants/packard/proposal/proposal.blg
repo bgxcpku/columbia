@@ -1,0 +1,45 @@
+This is BibTeX, Version 0.99c (Web2C 7.5.7)
+The top-level auxiliary file: proposal.aux
+The style file: apalike.bst
+Database file #1: ../../../papers/uber.bib.bib
+You've used 10 entries,
+            1935 wiz_defined-function locations,
+            580 strings with 6187 characters,
+and the built_in function-call counts, 4583 in all, are:
+= -- 449
+> -- 186
+< -- 9
++ -- 63
+- -- 61
+* -- 347
+:= -- 748
+add.period$ -- 31
+call.type$ -- 10
+change.case$ -- 76
+chr.to.int$ -- 10
+cite$ -- 10
+duplicate$ -- 209
+empty$ -- 335
+format.name$ -- 75
+if$ -- 955
+int.to.chr$ -- 1
+int.to.str$ -- 0
+missing$ -- 13
+newline$ -- 53
+num.names$ -- 32
+pop$ -- 102
+preamble$ -- 1
+purify$ -- 78
+quote$ -- 0
+skip$ -- 154
+stack$ -- 0
+substring$ -- 289
+swap$ -- 56
+text.length$ -- 6
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 54
+warning$ -- 0
+while$ -- 36
+width$ -- 0
+write$ -- 134

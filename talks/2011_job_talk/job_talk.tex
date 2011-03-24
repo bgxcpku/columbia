@@ -5,7 +5,7 @@
 \usepackage{pgf,pgfarrows,pgfnodes}
 % \usepackage{beamerthemesplit} // Activate for custom appearance
 
-\title{Stochastic memoization, Bayesian nonparametrics, and the goal of developing general-purpose predictive models}
+\title{Bayesian nonparametric discrete sequence models and the goal of developing general-purpose predictive models}
 \author{Frank Wood \\\qquad \\ joint work with Nicholas Bartlett, David Pfau, Jan Gasthaus, C\'{e}dric Archambeau, Lancelot James, Yee Whye Teh, and more...}
 \date{\today}
 
@@ -28,7 +28,7 @@
 
 \title[Sequence Memoizer] 
 {
-	Stochastic memoization, Bayesian nonparametrics, and the goal of developing general-purpose predictive models
+	Bayesian nonparametric discrete sequence modeling and the goal of general-purpose predictive models
 }
 
 \author[http://www.stat.columbia.edu/$\sim$fwood]
@@ -58,155 +58,15 @@
 
 
 \begin{document}
-
 \frame{\titlepage}
-\section{Compression}
-\subsection{Information theory review}
-\frame[t]{
-\begin{block}{Shannon's Entropy \cite{Shannon1948,MacKay2003}}
-With $X$ a R.V. taking values $x_i \in \Sigma$ with probability $P(X=x_i)$, the entropy of the ``ensemble'' $\mathcal{X} =\{X,\Sigma,P\}$ is
-\[H(\mathcal{X}) = \sum_i P(X=x_i) \log_2\left(\frac{1}{P(X=x_i)}\right)\]
-\begin{itemize}
-\item Units of ``bits''
-\item Maximized when $P(X = x_i) = \frac{1}{|\Sigma|}$
-\item Lower bound on average number of bits required to losslessly transmit message consisting of symbols $x_i \sim P$ over a noiseless channel.
-\end{itemize}
-
-\end{block}
-}
-
-\frame[t]{
-\begin{block}{Symbol code \cite{Shannon1948,MacKay2003}}
-A binary code C is a mapping
-\[C : \Sigma \rightarrow \{0,1\}^+\]
-with expected code length
-\[ L(C,\mathcal{X}) = \sum_{x_i\in\Sigma} P(X = x_i)\ell(x_i)\] 
-where $\ell(x_i)$ is length of the binary string assigned to $x_i$.
-\end{block}
-
-}
-
-\frame[t]{
-\begin{block}{Source coding theorem: bound on prefix  code lengths }
-For an ensemble $\mathcal{X}$ there exists a prefix (uniquely identifiable)\footnote{``A code $C$ is uniquely decodeable if, under the extended code $C^+$, no two distinct strings have the same encoding, i.e.''\cite{MacKay2003} \[\forall \x,\y \in \Sigma^+, \x \neq \y \implies C^+(\x) \neq C^+(\y)\] where \[C^+(\x) = C(x_1)C(x_2)\ldots\]\vspace{-.25cm}} code $C$ with expected length satisfying
-\[ H(\mathcal{X}) \leq L(C,\mathcal{X}) \leq  H(\mathcal{X}) +1 \]
-\vspace{.5cm}
-\end{block}
-}
-
-\subsection{A Huffman (''optimal'') code for unigram English character probabilities}
-\frame[t]{
-\begin{figure}[t]
-    \begin{center}
-        \includegraphics[width=.6\columnwidth]{huffman}
-    \end{center}
-    \label{fig:huffman}
-\end{figure}
-Huffman codes are constructed by ``bottom-up'' agglomerative merging of lowest probability symbols. \\ {\tiny Figure from \cite{MacKay2003}}.
-}
-
-\subsection{Doing better than Huffman coding}
-\frame[t]{
-\begin{block}{Drawbacks of Huffman codes}
-Only optimal if source is i.i.d. and single symbol transmitted
-\begin{itemize}
-\item $H(\mathcal{X}) \leq L(C,\mathcal{X}) \leq  H(\mathcal{X}) +1$ bound is {\em per-symbol}
-\item $H(\mathcal{X}_2|\mathcal{X}_1) \leq H(\mathcal{X}_2)$, information always reduces entropy.
-\item Entire source must be processed to estimate the optimal codebook 
-\item Codebook must be transmitted before data -- often highly redundant
-\end{itemize}
-\end{block}
-\begin{block}{Fixes}
-\begin{itemize}
-\item Code {\em blocks} or ``words'' $\x = [x_1,x_2,\ldots,x_N] \in \Sigma^N$ of the input (trade-off -- requires more complex model)
-\item Incrementally build codebook (inefficient, bottom-up)
-\item Use {\em arithmetic coding} instead. \end{itemize}
-\end{block}
-}
-
-\subsection{Compressing `$\mbox{bbba}\square$' using arithmetic coding}
-\frame[t]{
-Arithmetic coding can be seen as using fractions of bits to encode a symbol.
-\begin{figure}[t]
-    \begin{center}
-        \includegraphics[width=.8\columnwidth]{predictive_probs}\footnote{From \cite{MacKay2003}}
-    \end{center}
-    \label{fig:predictive_probs}
-\end{figure}
-Example predictive probabilities over English characters.
-}
-\frame[t]{
-
-%\begin{pgfpicture}{0cm}{0cm}{5cm}{5cm} 
-% (0cm,0cm) is the lower left corner, 
-% (5cm,2cm) is the upper right corner. 
-%\pgfrect[stroke]{\pgfpoint{0cm}{0cm}}{\pgfpoint{2cm}{10pt}} 
-% Paint a rectangle (stroke it, do not fill it)
-% The lower left corner is at (0cm,0cm) 
-% The rectangle is 2cm wide and 10pt high. 
-%\pgfcircle[fill]{\pgfpoint{3cm}{1cm}}{10pt} 
-% Paint a filled circle % The center is at (3cm,1cm) % The radius is 10pt
-% \end{pgfpicture}
-
-\begin{figure}[t]
-    \begin{center}
-        \includegraphics[width=.8\columnwidth]{arithmetic_coding}
-        %\pgfsetcolor{fill}{white}
-        \pgfrect[fill]{\pgfpoint{-1cm}{5.5cm}}{\pgfpoint{2cm}{2cm}} 
-    \end{center}
-    \label{fig: arithmetic_coding}
-\end{figure}
-Schematic of arithmetic coding {\tiny Figure from \cite{MacKay2003}}.
 
 
-}
-
-\frame[t]{
-\begin{block}{Average code length for arithmetic coding \cite{sayood2000}}
-If we redefine $X$ to be a R.V. taking values $\x_i \in \Sigma^+$ with probability $P(X=\x_i)$, and consider the ensemble $\mathcal{X} =\{X,\Sigma^+,P\}$ an arithmetic code $C$ has expected length $L(C,\mathcal{X})$ satisfying
-\[ H(\mathcal{X}) \leq L(C,\mathcal{X}) \leq  H(\mathcal{X}) +2 \]
-\vspace{.5cm}
-\end{block}
-}
-
-\subsection{Recipe}
-\frame[t]{
-\begin{block}{Streaming compressor, encoder}
-Repeat
-\begin{itemize}
-\item Compute cumulative predictive distribution $F(x_i|x_{1:(i-1)})$
-\item Send CDF boundary for $x_i$ to arithmetic encoder
-\item Update model to include $x_i$ in {\em context} $x_{1:(i-1)}$
-\end{itemize}
-\end{block}
-
-
-\begin{block}{Streaming compressor, decoder}
-Repeat
-\begin{itemize}
-\item Compute cumulative predictive distribution $F(x_i|x_{1:(i-1)})$
-\item Process bits until CDF interval distinct
-\item Conclude $x_i$ sent from encoder
-\item Update model to include $x_i$ in {\em context} $x_{1:(i-1)}$
-\end{itemize}
-
-\end{block}
-}
-
-
-
-%\begin{alertblock}{Nature of Problems}
-%Computational
-%\end{alertblock}
-\end{frame}	
-
-
-
-
+\section{Setup}
+\subsection{Goal }
 \frame[t] {
 \begin{itemize}
-\item Actors in the world must have predictive models of the world in order to plan act efficiently
-\item Better predictive models yield better plans and more efficient sequences of actions
+\item Actors in the world must have predictive models of the world in order to act efficiently
+\item Better predictive models yield better plans and more rewarding sequences of actions
 \item Biological organisms
 \begin{itemize}
 \item observe sequences of binary vectors
@@ -214,31 +74,32 @@ Repeat
 \item output sequences of binary vectors
 \end{itemize}
 \end{itemize}
-Ultimate goal: learner capable of generalizing well (predictive performance) given sequences of discrete observations from the world.
+Ultimate goal: learner capable of generalizing well (predictive performance) given a sequence of discrete observations from the world.
 }
 
-\subsection{Compression as testbed}
+\subsection{Compression }
 \begin{frame}[t]{}
-A good model of the world can be used to compress 
+Any predictive model can be used to compress observation sequences
 \begin{itemize}
-\item Comparison between probabilistic and deterministic models possible.
-\item Better compression and better modeling intimately related.
-\item Performance measured in {\em bits}, {\em log-loss} (bits per byte), or {\em perplexity} instead of likelihood or evidence.
+\item Shannon established a direct connection between compression and probabilistic modeling \cite{Shannon1948}.
+\item Compression performance measured in {\em bits}, {\em log-loss} (bits per byte), or {\em perplexity} instead of likelihood or evidence.
+\item Units allow comparison between human, deterministic algorithms, and probabilistic models.
 \end{itemize}
+\end{frame}	
 
 
-\subsection{Streaming compression requirements}
+\subsection{Predictive modeling for planning and streaming compression have the same computational requirements}
 \begin{frame}[t]{}
-Predictive model
+Computational requirements for predictive model
 \begin{itemize}
-\item Incremental estimator for all conditional distributions given a single observation sequence of unbounded length
-\item Estimator must have worst case linear time complexity.
+\item Incremental model estimation given a single observation sequence of growing (unbounded) length
+\item Estimator must have worst case linear time complexity
 %\begin{itemize}
 %\item Joint because we want all marginal and conditional distributions
 %\item Single observation because we only see a single data ``stream.''
 %\end{itemize}
-\item The model must be representable in worst case constant space.
-\item Predictive inference must be performed in worst case constant time.
+\item The model must be representable in worst case constant space
+\item Predictive inference must be performed in worst case constant time
 \end{itemize}
 
 
@@ -247,7 +108,7 @@ Predictive model
 %\end{alertblock}
 \end{frame}	
 
-\section{Intuition}
+%\section{Intuition}
 %\section[Outline]{}
 %\frame[t]{\tableofcontents}
 \subsection{Sequence of discrete observations from an arbitrary stochastic process}
@@ -277,7 +138,7 @@ Predictive model
 \]
 \end{block}
 
-\begin{block}{Abitrary-ary sequence (language modeling future work)}
+\begin{block}{Abitrary-ary sequence (language modeling, future work)}
 \[
 \begin{array}{l}
 0101 , 0110111000100000 , 00100,\\
@@ -298,97 +159,98 @@ Predictive model
 
 
 
-\subsection{General-purpose predictive model desiderata and assumptions}
-\begin{frame}[t]{}
-Desiderata
-\begin{itemize}
-\item Incrementally estimate a large set of (or all) conditional distributions in worst case time linear in the length of an unbounded sequence of observations.
+%\subsection{General-purpose predictive modeling assumptions and requirements}
+%\begin{frame}[t]{}
+%Requirements
 %\begin{itemize}
-%\item Joint because we want all marginal and conditional distributions
-%\item Single observation because we only see a single data ``stream.''
+%\item Incrementally estimate a large set of (or all) conditional distributions ($G$) in worst case time linear in the length of an unbounded sequence of observations.
+%\item Represent the model in worst case constant space.
+%\item Do predictive inference in worst case constant time.
 %\end{itemize}
-\item Represent the model in worst case constant space.
-\item Do predictive inference in worst case constant time.
-\end{itemize}
-Assumptions
-\begin{itemize}
-\item Shortness is preferred
-\item Recency matters
-\item Power-laws permeate
+%Nature's assumptions
 %\begin{itemize}
-\end{itemize}
-%\begin{alertblock}{Nature of Problems}
-%Computational
-%\end{alertblock}
-\end{frame}	
+%\item Shortness is preferred
+%\item Recency matters
+%\item Power-laws permeate
+%\end{itemize}
+%\end{frame}	
 
-\subsection{Notation, fixed Markov model}
+\subsection{One way to do this: i.i.d. conditional distributions; introduction to notation}
 \begin{frame}[t]{}
-Let $\Sigma$ be a set of symbols, let $\x = x_1, x_2, ..., x_T$ be an observed sequence with $x_t \in \Sigma$.  Also let $s,s' \in \Sigma$ and $\context \in \Sigma^+$.  Then
+Let $\Sigma$ be a set of symbols, let $\x = x_1, x_2, ..., x_T$ be an observed sequence, $x_t,s,s'  \in \Sigma$, and $\context \in \W = \{\w_1, \w_2, \ldots \w_K\}$ with $\w_k \in \Sigma^+$. 
 \begin{align*}
 G_\context(s)=\frac{N(\context s)}{\sum_{s'\in\Sigma}N(\context s')}\label{eqn:mll}
 \end{align*}
-is the maximum likelihood estimator for the conditional distribution ${\hat P}(X=s|\context) \equiv G_\context(s)$.
+is the maximum likelihood estimator for the conditional distribution ${P}(X=s|\context) \equiv G_\context(s)$.
 \vspace{.5cm}
 
-Estimating a finite set of conditional distributions corresponding to a finite set of ``contexts'' or ``states'' $\context$ generally yields a {\em bad} model.
+Estimating a finite set of conditional distributions corresponding to a finite set of ``contexts'' $\context$ generally yields a poor model.  Why?
 
-\vspace{.5cm}
-Why bad?  Long $\context$.  Maximum likelihood overconfident.
+\begin{itemize}
+\item Long $\context$'s often have few counts
+\item   Maximum likelihood overconfident.
+\item   Finite set of contexts might miss important contexts.
+\end{itemize}
 
-\vspace{.5cm}
-Note: first stochastic memoization rule.  Only those $s$'s seen before returned.
+%\vspace{.5cm}
+%Note: first stochastic memoization rule.  Only those $s$'s seen before returned.
 
 \end{frame}	
 
-\subsection{An aside: stochastic memoization}
-\begin{frame}[t]{}
-A stochastic memoizer \cite{Goodman2008} is a non-deterministic function cache 
-\begin{align*}
-SM(\context) = \left\{\begin{array}{ccc}
-\sigma_1  & \mbox{w.p.}  &  G_\context(\sigma_1) \\
-\sigma_2  & \mbox{w.p.}  &  G_\context(\sigma_2)  \\
-  &  \vdots &   
-\end{array}\right.
-\end{align*}
-with $\sigma_i \in \Sigma$.
-\vspace{.5cm}
 
-Posterior inference in many Bayesian nonparametric models can be described in terms of stochastic memoization. 
+
+
+
+\begin{frame}[t]{}
+What are the``states'' of this model?
+\begin{itemize}
+\item States are explicit and observable, one per context $\u$.
+\item Predictions are made per state.
+\item ``Transitions'' from state to state given an emission are deterministic 
+\[\delta(\u,s) =  \argmax_k u_{n-k}u_{n}s \in \W \]
+\end{itemize}
+No "sharing" of statistical strength between states; poor generalization.
 \end{frame}
 
-\subsection{Bayesian approach}
+\subsection{Can do better: Bayesian regularization}
 \begin{frame}[t]{}
-Can treat $G$'s as random and integrate them out like
+Can treat $G$'s as random and integrate them out
 \begin{align*}
-P(x_{T+1}=s|\data) = \int P(x_{T+1}=s|G)P(G|\data)dG = {\EE[G(s)] } ,
+P(x_{T+1}=s|\x= \u) = \int P(x_{t+1}=s|G_\context)P(G_\context|\data)dG = {\EE[G_\context(s)] } ,
 \end{align*}
 yielding, for instance,
 \begin{align*}
 \EE[G_\context(s)]=\frac{N(\context s) + \frac{\alpha}{|\Sigma|}}{\sum_{s'\in\Sigma}N(\context s') + \alpha}
 \end{align*}
-in the case of independent Dirichlet priors, i.e.~$G_\context \sim \Dir(\frac{\alpha}{|\Sigma|})$
+in the case of independent Dirichlet priors, i.e.
+\vspace{-.5cm}
+\begin{center}
+\begin{eqnarray*}
+G_\context &\sim& \Dir(\frac{\alpha}{|\Sigma|}) \\
+x_t | x_{t-k},\ldots,x_{t-1} = \context &\sim& G_\context
+\end{eqnarray*}
+\end{center}
+Same ``states,'' prior makes each estimate more conservative.
 
-\vspace{.5cm}
-The prior makes the estimate more conservative.  Can do better by sharing statistical strength.
-
-\vspace{.5cm}
-Note: new stochastic memoization rule.  Unobserved $\sigma$'s can be returned.  Good values of $\alpha$ can improve predictive performance.
+%\vspace{.5cm}
+%Note: new stochastic memoization rule.  Unobserved $\sigma$'s can be returned.  Good values of $\alpha$ can improve predictive performance.
 
 \end{frame}
 
-\subsection{Hierarchical Bayesian approach (i.e.~Hierchical Dirichlet Process (HDP) \cite{Teh2006b})}
+\subsection{Share statistical strength between related world states: hierarchical Bayes (i.e.~Hierchical Dirichlet Process (HDP) \cite{Teh2006b})}
   \frame[t] {%slide 9
-Can relate $G_\context$ to related distribution $G_\parent$ where, for instance, $\sigma(x_1x_2x_3\ldots x_n) = x_2x_3\ldots x_n$ could be the suffix operator
+Can relate $G_\context$ to a related distribution $G_\parent$ (more than one possible) where, for instance, $\sigma(x_1x_2x_3\ldots x_t) = x_2x_3\ldots x_t$ could be the suffix operator
 \[\EE[\G_\context(s)]
 = \EE\left[
 \frac{N(\context s)+ \alpha \G_\parent(s)}{\sum_{s'\in\Sigma} N(\context s') + \alpha}\right]
 \]
-Where now the counts
-\[\{N(\ubf's')\}_{\ubf'\in\Sigma^+, s'\in\Sigma}\] along with $\alpha$, must be averaged over, typically using Monte Carlo methods.
+Where now the counts (latent variables)
+\[\{N(\ubf's')\}_{\ubf'\in\Sigma^+, s'\in\Sigma}\] along with $\alpha$, must be marginalized, typically by Monte Carlo methods.
 
 \vspace{.5cm}
-Note: stochastic memoizer now can return unobserved $\sigma$'s in the context $\context$ {\em and} the probability of returning any given symbol is affected by the probability of it being returned by other, related contexts.
+%Note: stochastic memoizer now can return unobserved $\sigma$'s in the context $\context$ {\em and} the probability of returning any given symbol is affected by the probability of it being returned by other, related contexts.
+%\vspace{.25cm}\newline
+More states ($\u \in \Sigma^+$) but potentially better predictive distribution estimates.
 }
 
 
@@ -411,15 +273,19 @@ Note: stochastic memoizer now can return unobserved $\sigma$'s in the context $\
 
 
 
-\section{Models}
+\section{Sequence Memoizer}
 
 
 
 \subsection{Sequence Memoizer}
-
 \frame[t] {
+Is it possible to simultaneously estimate predictive distributions for all ``states'' in such a model?
+\vspace{.5cm}
 \begin{block}{Sequence memoizer (SM), \citet{Wood2011}}
 The SM is a compactly-representable, unbounded-depth, hierarchical, Bayesian-nonparametric prior over discrete sequence distributions for which incremental Bayesian updating and predictive inference is efficient.
+\end{block}
+\begin{block}{Graphical Pitman-Yor process (GPYP), \citet{Wood2008a}}
+The GPYP is tool for graphical model structure learning.  Using it, which generalizations are important for each predictive state in the model can be learned.
 \end{block}
 }
 
@@ -428,28 +294,30 @@ The SM is a compactly-representable, unbounded-depth, hierarchical, Bayesian-non
  Let $\GG = \{\G_{\context}\}, \forall \context \in \Sigma^+$ be {\em all} conditional distributions over a countable alphabet $\Sigma$ and $\xbf = x_1, x_2, \ldots, x_i, \ldots \in \Sigma^+$ be a sequence of discrete observations. The joint distribution of $\xbf$ and $\GG$ is
 \begin{eqnarray*}
 P(\xbf,\GG) &=& P(\GG)P(\xbf|\GG) \nonumber \\
-P(\xbf,\GG) &=& P(\GG)\prod_{i=0}^{|\xbf|-1}G_{\xbf_{1:i}}(\xbf_{i+1})
+P(\xbf,\GG) &=& P(\GG)\prod_{t=0}^{|\xbf|-1}G_{\xbf_{1:t}}(x_{t+1})
 \end{eqnarray*}
-Expanding $P(\xbf|\GG)$ makes this clearer,
+Expanding $P(\xbf|\GG)$ makes shows
 \begin{align}
 P(\xbf|\GG) = G_{\varepsilon}(x_{1})G_{x_1}(x_{2})G_{\xbf_{1:2}}(x_{3})\cdots G_{\xbf_{1:(|\xbf|-1)}}(x_{|\xbf|})  \nonumber 
 \end{align}
-Note that this is the joint\footnote{$P(x_1,\ldots,x_i|\theta) = P(x_1|\theta) P(x_2 | x_1, \theta) P(x_3 | x_1,x_2, \theta) \cdots P(x_i | \xbf_{1:(i-1)}, \theta)$} distribution of $\xbf$. The prior $P(\GG)$ directly regularizes the joint distribution itself.
+that this is the joint\footnote{$P(x_1,\ldots,x_T|\theta) = P(x_1|\theta) P(x_2 | x_1, \theta) P(x_3 | x_1,x_2, \theta) \cdots P(x_T | \xbf_{1:(T-1)}, \theta)$} distribution of $\xbf$. The prior $P(\GG)$ directly regularizes the joint distribution itself.  
+
+
  }
 
 
 
- \subsection{Inference sketch}
+ \subsection{Sketch of sequence memoizer inference}
   \frame[t] {%slide 9
 Bayesian inference
 \begin{itemize}
 \item Prediction
- \[P(x_{i+1}=s | \xbf_{1:i}) = \int P(x_{i+1}=s | \GG) dP(\GG | \xbf_{1:i}) = \EE[\G_\context(s)] \]
+ \[P(x_{T+1}=s | \xbf) = \int P(x_{T+1}=s | \GG) dP(\GG | \xbf) = \EE[\G_\context(s)] \]
+ where $\context = \xbf_{1:t}$.
 \item Posterior updating (sketch)
-\[P(\GG|\data_{1:i}) \propto P(x_i | \GG) P(\GG | \data_{1:(i-1)})\]
+\[P(\GG|\data) \propto P(x_T | \GG) P(\GG | x_{1:(T-1)})\]
 
 \end{itemize}
-where $\context = \xbf_{1:i}$.
 }
 
 
@@ -493,24 +361,23 @@ If $G\sim\PY(c,d,H)$ then {\em a priori}
 
 }
 
-\subsection{Binary sequence memoizer notation}
+\subsection{Binary sequence memoizer}
   \frame[t] {%slide 27
-  Example
+  Notation
 % \frametitle{Sequence Memoizer, \citet{Wood2009}}
 \begin{eqnarray*}
-\Sigma &=& \{0,1\}\\
-\U_{\Sigma } &=& [.5, .5] \\
-\\
 	\G_{\varepsilon} | \U_{\Sigma}, d_0 &\sim& \PY(d_0, 0, \U_{\Sigma }) \\
 		\G_{\bf{u}} | \G_{\sigma(\bf{u})}, d_{|\bf{u}|} &\sim& \PY(d_{|\bf{u}|}, 0, \G_{\sigma(\bf{u})}) \hspace{.35cm} \forall {\bf u} \in \Sigma^+\\
-	x_n | x_1,  \ldots, x_{n-1} = \bf{u} &\sim& \G_{\bf{u}}
+	x_t | x_1,  \ldots, x_{t-1} = \bf{u} &\sim& \G_{\bf{u}}
 \end{eqnarray*}
-Here $\sigma(x_1x_2x_3\ldots x_n) = x_2x_3\ldots x_n$ is the suffix operator.
+Here $\sigma(x_1x_2x_3\ldots x_t) = x_2x_3\ldots x_t$ is the suffix operator, $\Sigma = \{0,1\}$, and $\U_{\Sigma } = [.5, .5] $.
 \bigskip
 
+Nature's assumptions
 \begin{itemize}
-\item Recency effects are encoded by coupling related conditional distributions (``back-off'')
-\item Power-law effects are encoded by the choice of hierarchical modeling glue: the Pitman-Yor process (PY).
+\item Shortness assumption encoded by implicit geometric sequence length distribution
+\item Recency assumption encoded by form of coupling related conditional distributions (``back-off'')
+\item Power-law effects encoded by the choice of hierarchical modeling glue: the Pitman-Yor process (PY).
 \end{itemize}
 
 
@@ -529,7 +396,7 @@ Here $\sigma(x_1x_2x_3\ldots x_n) = x_2x_3\ldots x_n$ is the suffix operator.
 %}
 
 
-\subsection{Linear space sequence memoizer, \citet{Wood2009}}
+\subsection{How to compute in such a model? Linear space sequence memoizer, \citet{Wood2009}}
 \begin{frame}[t] \frametitle{}
 PY properties used to achieve linear space sequence memoizer.
 \begin{columns}[c] \column{.5\textwidth} 
@@ -541,7 +408,7 @@ If \[G_2| G_1\sim\py(d_1,0,G_1)\] and \[G_3| G_2\sim\py(d_2,0,G_2)\] then
 \column{.5\textwidth} 
 \begin{block}{Fragmentation \cite{Pitman1999, Ho2006,Wood2009}}
 Suppose
- \[G_3| G_1\sim\py(d_1d_2,0,G_2)\]
+ \[G_3| G_1\sim\py(d_1d_2,0,G_1)\]
  then $G_3$
  can be ``fragmented'' so 
  \[G_2 | G_1 \sim \py(d_1,0,G_1)\]
@@ -642,104 +509,15 @@ Suppose
 \]
 is an expectation over a set of random counts (latent variables)
 \[\{N(\ubf's'),M(\ubf's')\}_{\ubf'\in\cctx, s'\in\Sigma}\]
-which have properties 
+which are subject to the constraints 
 \begin{itemize}
-\item  $N(\data_{1:i}x_{i+1}) \geq 1 \; \forall \; i$, observations
+\item  $N(\data_{1:t}x_{t+1}) \geq 1 \; \forall \; t$, observations
 \item $M(\ubf's') \leq N(\ubf's')$, ``discounting''
 \end{itemize}
 \vspace{.5cm}
-The random count/latent variables are averaged over using Monte Carlo methods.
+For prediction these variables are marginalized using Monte Carlo methods.
 }
 
-
-\begin{frame}[t]{}
-Posterior inference in the sequence memoizer is hierarchical stochastic memoization of sequence continuations. 
-\begin{align*}
-SM(\context) = \left\{\begin{array}{ccc}
-\sigma_1  & \mbox{w.p.}  &  \EE[G_\context(\sigma_1)] \\
-\sigma_2  & \mbox{w.p.}  &  \EE[G_\context(\sigma_2)]  \\
-  &  \vdots &   
-\end{array}\right.
-\end{align*}
-with $\sigma_i \in \Sigma$.
-\vspace{.5cm}
-\end{frame}
-
-\section{Literature}
-\subsection{Incremental Estimation}
-\begin{frame}[t]{}
-First incremental estimation \citet{Gasthaus2010}.  1-PF and Kneser-Ney variant approximately equal.
-First scalability to 100's MB's (Wikipedia 1.66 bits/byte, 100MB -> 20.8MB, outperformed by PAQ)
-4.35 bits per Chinese character (better than best reported result of 5.44 bits \cite{Wu2007}).
-\end{frame}
-
-\subsection{Constant space approximate inference}
-\begin{frame}[t]{}
-\begin{block}{``Forgetting counts'' \citet{Bartlett2010}}
-\begin{figure}[htbp]
-\begin{center}
-\includegraphics[width=\textwidth]{results_calgary_corpus.pdf}
-\end{center}
-\end{figure}
-A dependent HPYP can be defined though a graphical model leaf node deletion scheme.  Inference in the resulting model was shown to approximate the SM well.  \tiny{data: Calgary corpus, rests = total used nodes in 3-10 grams}
-\end{block}
-\begin{block}{``Improvements to the sequence memoizer'' \citet{Gasthaus2011}}
-Only $O(2|\Sigma|)$ numbers need be stored for each node in the SM graphical model.
-\end{block}
-
-\end{frame}
-
-\subsection{``Deplump for Streaming Data'' \citet{Bartlett2010}, Constant space, constant time prediction, linear time estimation SM}
-\begin{frame}[t]{}
-%\begin{block}{}
-%\begin{figure}[htbp]
-%\begin{center}
-%\includegraphics[width=\textwidth]{varying_depths.pdf}
-%\end{center}
-%\end{figure}
-%A dependent HPYP can be defined though a graphical model leaf node deletion scheme.  Inference in the resulting model was shown to approximate the SM well.  \tiny{data: Calgary corpus, rests = total used nodes in 3-10 grams}
-%\end{block}
-\begin{figure}[htbp]
-\begin{center}
-\includegraphics[width=\textwidth]{varying_stream_length.pdf}
-\end{center}
-\end{figure}
-First streaming SM with computational asymptotics required for streaming compression.  Compressed 26.8Gb Wikipedia corpus to 4Gb (vs. 7.9Gb for gzip and 3.8Gb for PAQ).\newline
-\vspace{3cm}
-{\tiny $L$ is number of nodes in SM, data Wikipedia dump 2010 head, depth 16}
-\end{frame}
-
-
-%\subsection{Roadmap of sequence memoizer literature}
-%\begin{frame}[t]{}
-%Linear space sequence memoizer (SM)
-%\begin{itemize}
-%\item ``A Stochastic Memoizer for Sequence Data'' \cite{Wood2009}
-%\item ``The Sequence Memoizer'' \cite{Wood2011}
-%\end{itemize}
-%SM inference
-%\begin{itemize}
-%\item ``A Bayesian Interpretation of Interpolated Kneser-Ney'' \citet{Teh2006}
-%\item ``Hierarchical Dirichlet processes'' \cite{Teh2006b}
-%\item ``A Hierarchical {B}ayesian Language Model based on {P}itman-{Y}or Processes'' \cite{Teh2006a}
-%\item ``Gibbs Sampling Methods for Stick-Breaking Prior'' 
-
-
-
-%\cite{Ishwaran2001a}
-%\end{itemize}
-%Constant space SM
-%\begin{itemize}
-%\item ``'Forgetting Counts : ... '' \cite{Bartlett2010}
-%\item ``Improvements to the Sequence Memoizer'' \cite{Gasthaus2011}
-%\end{itemize}
-%Incremental inference
-%\begin{itemize}
-%\item ``Lossless compression based on the {S}equence {M}emoizer'' \cite{Gasthaus2010}
-%\item ``Streaming Deplump'' \cite{Bartlett2011}
-%\end{itemize}
-
-%\end{frame}
 
 
 
@@ -785,7 +563,7 @@ Compression performance\footnote{The results for unbounded-length context PPM is
 \cite{Cleary1997b}. The results for CTW is from \cite{Willems2009}.   The
 bzip2 and gzip results come from running the corresponding standard unix
 command line tools with no extra arguments.} in terms of weighted average log-loss
-\[\ell(\xbf_{1:N}) = -\frac{1}{N}\sum_{i=1}^N \log_2 \EE[G(x_i|\xbf_{1:i-1})]\]
+\[\ell(\xbf_{1:N}) = -\frac{1}{T}\sum_{t=1}^T \log_2 \EE[G(x_t|\xbf_{1:t-1})]\]
 (average bits per byte under optimal entropy encoding, lower is better) for
 the Calgary corpus.
 
@@ -848,12 +626,112 @@ the Calgary corpus.
   %  model.
 }
 
-\section{Next}
+
+
+\section{Improvements}
+\subsection{Incremental Estimation}
+\begin{frame}[t]{}
+Incremental estimation (particle filter), \citet{Gasthaus2010}.  
+\begin{itemize}
+\item First scalable implementation 100's MB's (Wikipedia 1.66 bits/byte, 100MB $\rightarrow$ 20.8MB, outperformed by PAQ)
+\item 4.35 bits per Chinese character (better than best reported result of 5.44 bits \cite{Wu2007}).
+\end{itemize}
+
+\vspace{2cm}
+
+Still $\Omega(N)$ storage complexity.
+
+%1-PF and Kneser-Ney variant approximately equal.
+
+\end{frame}
+
+\subsection{Constant space approximate inference}
+\begin{frame}[t]{}
+\begin{block}{``Forgetting counts,'' \citet{Bartlett2010}}
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=\textwidth]{results_calgary_corpus.pdf}
+\end{center}
+\end{figure}
+A dependent HPYP can be defined though a graphical model leaf node deletion scheme.  Inference in the resulting model was shown to approximate the SM well.  \tiny{data: Calgary corpus, rests = total used nodes in 3-10 grams}
+\end{block}
+\begin{block}{``Improvements to the sequence memoizer,'' \cite{Gasthaus2011}}
+Only $O(2|\Sigma|)$ numbers need be stored for each node in the SM graphical model.
+\end{block}
+
+\end{frame}
+
+\subsection{``Deplump for Streaming Data'' \citet{Bartlett2010}, Constant space, constant time prediction, linear time estimation SM}
+\begin{frame}[t]{}
+%\begin{block}{}
+%\begin{figure}[htbp]
+%\begin{center}
+%\includegraphics[width=\textwidth]{varying_depths.pdf}
+%\end{center}
+%\end{figure}
+%A dependent HPYP can be defined though a graphical model leaf node deletion scheme.  Inference in the resulting model was shown to approximate the SM well.  \tiny{data: Calgary corpus, rests = total used nodes in 3-10 grams}
+%\end{block}
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=\textwidth]{varying_stream_length.pdf}
+\end{center}
+\end{figure}
+First streaming SM with computational asymptotics required for streaming compression.  Compressed 26.8Gb Wikipedia corpus to 4Gb (vs. 7.9Gb for gzip and 3.8Gb for PAQ).\newline
+\vspace{3cm}
+{\tiny $L$ is number of nodes in SM, data Wikipedia dump 2010 head, depth 16}
+\end{frame}
+
+
+%\subsection{Roadmap of sequence memoizer literature}
+%\begin{frame}[t]{}
+%Linear space sequence memoizer (SM)
+%\begin{itemize}
+%\item ``A Stochastic Memoizer for Sequence Data'' \cite{Wood2009}
+%\item ``The Sequence Memoizer'' \cite{Wood2011}
+%\end{itemize}
+%SM inference
+%\begin{itemize}
+%\item ``A Bayesian Interpretation of Interpolated Kneser-Ney'' \citet{Teh2006}
+%\item ``Hierarchical Dirichlet processes'' \cite{Teh2006b}
+%\item ``A Hierarchical {B}ayesian Language Model based on {P}itman-{Y}or Processes'' \cite{Teh2006a}
+%\item ``Gibbs Sampling Methods for Stick-Breaking Prior'' 
+
+
+
+%\cite{Ishwaran2001a}
+%\end{itemize}
+%Constant space SM
+%\begin{itemize}
+%\item ``'Forgetting Counts : ... '' \cite{Bartlett2010}
+%\item ``Improvements to the Sequence Memoizer'' \cite{Gasthaus2011}
+%\end{itemize}
+%Incremental inference
+%\begin{itemize}
+%\item ``Lossless compression based on the {S}equence {M}emoizer'' \cite{Gasthaus2010}
+%\item ``Streaming Deplump'' \cite{Bartlett2011}
+%\end{itemize}
+
+%\end{frame}
+
+\section{Beyond}
+\subsection{A path to better models of the ``world''}
+\frame[t]
+{
+\begin{itemize}
+\item Introduce more degrees of freedom into the model (?)
+%\item Develop nonparametric variants of models with greater expressivity in the automata theory (recognizability) / formal grammar sense (generative)
+%\item Decouple states of the world from conditional emission distributions
+\item Try to {\em learn} a small set of frequently reused states and share strength between them.
+\item Requires mapping more than one context to each state.
+\end{itemize}
+}
+
+
 \subsection{Generalizing from Markov models to PDFA }
 \frame[t]
 {
 \begin{center}
-Automata corresponding to binary $1^{\mathrm{st}}$ order Markov model
+Automata corresponding to binary $1^{\mathrm{st}}$-order Markov model
 \end{center}
 \begin{figure}
     \includegraphics[width=.5\columnwidth]{bigram}
@@ -878,12 +756,7 @@ Automata with no corresponding finite-order Markov model
 \end{figure}
 \begin{itemize}
 \item {\em Even process} can generate ABBA, AAABBBBABB, BBBBBBBB, but not ABA.
-\item Capable of concentrating mass on strings more efficiently
-\begin{itemize}
-\item States lose meaning (no context)
-\item Transitions and states learned (though deterministic)
-\end{itemize}
-
+\item Many contexts correspond to the the same state.
 \item Learnable using frequentist tools \cite{Carrasco1994,Thollard2000,Shalizi2004}
 \end{itemize}
 }
@@ -891,7 +764,7 @@ Automata with no corresponding finite-order Markov model
 \subsection{Probabilistic Deterministic Infinite Automata, \citet{Pfau2010}}
 \frame[t]
 {
- A Probabilistic Deterministic Infinite Automata (PDIA) is a quintuple 
+ A Probabilistic Deterministic Infinite Automata (PDIA) is a Bayesian nonparametric limit of a PDFA with an unbounded number of states.  Formally a PDIA is a quintuple 
  \[M = (Q,\Sigma,\delta,\{\vec{\pi}_i\},q_0)\]
   where
   \begin{itemize}
@@ -905,17 +778,30 @@ Automata with no corresponding finite-order Markov model
 
 \frame[t]
 {
-A PDIA prior is
+One possible PDIA prior
  \begin{eqnarray*}
 G_0 &\sim& \PY(\gamma,d_0,H) \\
 G_\sigma &\sim& \PY(\alpha, d, G_0) \\
 \delta(q_i,\sigma) &\sim& G_\sigma \\
 \vec{\pi}_i &\sim& \mathrm{Dir}(\beta/|\Sigma|,\ldots,\beta/|\Sigma|)
 \end{eqnarray*}
-yielding
+given a sequence $\bx$ a posterior over
+ \[\mathcal{H} = \{\delta,\{\vec{\pi}_i\}\}\]
+ can be learned from data and used for prediction
+ \[P(x_T |\data) = \int P(x_T | \mathcal{H} ) P(\mathcal{H}  | \data) dP(\mathcal{H})\]
 }
 
-
+\frame[t]
+{
+Key points
+\begin{itemize}
+\item World states are {\em learned} from data. 
+\item  Prior biases towards a state re-use.
+\item State-to-state transitions learned from data.
+\item States not identifiable by context.
+%\item Because of deterministic transitions, forward prediction is still extremely fast.
+\end{itemize}
+}
 
 \subsection{PDIA Performance}
 \frame[t]
@@ -941,24 +827,30 @@ DNA & 3.56 & 3.72  &  3.76   \\
 \hline
 \end{tabular}
 \end{small}
-\caption{\small Evaluation on Alice in Wonderland (AIW) and mouse DNA.  Top row is perplexity of test set, bottom is number of states in the model (average for PDIA).  PDIA: average over multiple posterior samples.  PDIA-MAP: best posterior sample.  HMM-EM: Hidden Markov Model.  3-MM: 3$^{rd}$ order Markov Model.  SM: sequentially trained sequence memoizer.}
 \end{center}
-\vspace{-8mm}
+%\vspace{-8mm}
 \end{table}
+{\small Evaluation on Alice in Wonderland (AIW) and mouse DNA.  Top row is perplexity of test set, bottom is number of states in the model (average for PDIA).  PDIA: average over multiple posterior samples. HMM: Hidden Markov Model.  SM: sequentially trained sequence memoizer.}\newline
+
+\vspace{.5cm}
+HMM arises when $\delta$ not deterministic.
 }
 
-\subsection{General picture}
+
+
+\subsection{Some of the many things I don't understand}
 \frame[t] {
-SM $\rightarrow$ PDIA $\rightarrow$ IHMM $\rightarrow$ IPCFG $\rightarrow$
+For a fixed length, real-world observation sequences, we've found that the empirical predictive performance of {\em Bayesian} models that bias towards more compact representations of the world (fewer states) is often {\em worse} than models that carefully estimate emission distributions for more states.  
 \begin{itemize}
-\item Complexity 
+\item Is Bayesian inference in broken?
+\begin{itemize}
+\item Does posterior ``search'' need to be improved?
+\item Do ``smoother'', easier to traverse priors need to be defined? 
 \end{itemize}
-}
-
-\subsection{Troubling findings}
-\frame[t] {
-\begin{itemize}
-\item Complexity 
+\item Is the bias too strong?
+\item Do we simply need more data?  
+\item Are we selecting the wrong states?
+\item Is predictive performance the wrong measure?
 \end{itemize}
 
 }
@@ -967,14 +859,35 @@ SM $\rightarrow$ PDIA $\rightarrow$ IHMM $\rightarrow$ IPCFG $\rightarrow$
 \frame[t]
 {
 \begin{itemize}
-\item How do we distinguish between the expressivity of 
+\item Nonparametric estimators fundamentally have the wrong storage asymptotics.    
+\begin{itemize}
+\item Should we abandon them?
+\item Is the class of parametric estimators derived nonparametric estimators for ``compacted'' nonparametric models interesting?
+\item Is there a provable advantage to or optimal strategy for forgetting in counting models?
 \end{itemize}
+\item How do we distinguish between the expressivity of models of infinite complexity?  
+\item How do we learn $\sigma$, or, more generally, how to we compute in a model with countable back-offs?
+\item What happens when the input vocabulary gets very big and the typical input vector is high-dimensional?
+%All models can generate (place mass on) all strings, so is this a rate of convergence problem?  What about unknown stochastic processes?
+\end{itemize}
+}
 
+\subsection{Take Home}
+\frame[t]{
+\begin{itemize}
+\item Sequence Memoizer and PDIA are fundamentally new Bayesian nonparametric models
+\begin{itemize}
+\item Both are ``inefficient'' models of the world but {\em perform} very well as predictors.
+\end{itemize}
+\item SM is a computationally tractable $\infty$-order drop-in replacement for $n^{\mathrm{th}}$-order Markov models
+\item Deplump is a good, general purpose compressor, built on the constant space/time sequence memoizer.
+\item SM  ($\approx$ 1.4 bits/character) approaches {\em human} ($\approx$ 1 bits/character) predictive performance for written English.
+\item Bayesian nonparametric discrete sequence models, show promise as the foundation for general purpose predictors.
+\end{itemize}
 
 }
 
-
-\section{Demonstration}
+\section{Demo}
 \subsection{Compressor based on the sequence memoizer}
 \frame[t]
 {
@@ -1017,28 +930,46 @@ Power-law scaling of word frequencies in
     number of relatively rare words. \\ {\tiny Figure from \cite{Wood2011}}.
 \end{frame}	
 
+\frame[t]{
+Many nonparametric Bayesian models have been designed.\newline
 
-
-
-\frame[t]
-{
-
-\begin{table}[htdp]
-\caption{default}
+Automata
+\[  \mbox{Finite} \subset \mbox{Non-deterministic pushdown} \subset \mbox{Turing machine} \]
+Corresponding Bayesian nonparametric models\\
 \begin{center}
-\begin{tabular}{|c|c|c|}
-Language & Model & Bayesian \\
-\hline
-PDFA  & Markov models & SM \\
-PNFA  & HMM & IHMM \\
-CFG & PCFG & IPCFG \\
-RE & & Church \\s
-\end{tabular}
+\small
+SM \cite{Wood2009} $\sqsubset$ PDIA \cite{Pfau2010} $\sqsubset$ IHMM \cite{Beal2002}  $\subset$ IPCFG \cite{Johnson2007,Liang2007} $\subset$ Church \cite{Goodman2008} $\sqsubset$ \cite{Liang2010} 
 \end{center}
-\label{default}
-\end{table}%
-
-
+Making them work well and understanding their characteristics is an open problem. 
 }
+
+%\subsection{An aside: stochastic memoization}
+\begin{frame}[t]{}
+A stochastic memoizer \cite{Goodman2008} is a non-deterministic function cache 
+\begin{align*}
+SM(\context) = \left\{\begin{array}{ccc}
+\sigma_1  & \mbox{w.p.}  &  G_\context(\sigma_1) \\
+\sigma_2  & \mbox{w.p.}  &  G_\context(\sigma_2)  \\
+  &  \vdots &   
+\end{array}\right.
+\end{align*}
+with $\sigma_i \in \Sigma$.
+\vspace{.5cm}
+
+Posterior inference in many Bayesian nonparametric models can be described in terms of stochastic memoization. 
+\end{frame}
+
+\begin{frame}[t]{}
+Posterior inference in the sequence memoizer is hierarchical stochastic memoization of sequence continuations. 
+\begin{align*}
+SM(\context) = \left\{\begin{array}{ccc}
+\sigma_1  & \mbox{w.p.}  &  \EE[G_\context(\sigma_1)] \\
+\sigma_2  & \mbox{w.p.}  &  \EE[G_\context(\sigma_2)]  \\
+  &  \vdots &   
+\end{array}\right.
+\end{align*}
+with $\sigma_i \in \Sigma$.
+\vspace{.5cm}
+\end{frame}
 
 \end{document}

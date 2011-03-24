@@ -19,9 +19,15 @@ public abstract class BytePredictiveModelFactory {
      * @param depth depth of model
      * @param maxNumberRestaurants max number of restaurants allowable in model
      * @param maxSequenceLength max length of underlying sequence allowable in model
-     * @param url url of a serialized pre-trained model
      * @return a BytePredictiveModel
      */
-    public abstract BytePredictiveModel get(int depth, long maxNumberRestaurants, long maxSequenceLength, URL url);
+    public abstract BytePredictiveModel get(int depth, long maxNumberRestaurants, long maxSequenceLength);
+    
+    /**
+     * Gets a BytePredictiveModel with the specified parameters.
+     * @param url URL of serialized byte predictive model file
+     * @return a BytePredictiveModel
+     */
+    public abstract BytePredictiveModel get(URL url);
     
 }

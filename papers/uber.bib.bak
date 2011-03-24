@@ -676,6 +676,16 @@
   pages = {296-315}
 }
 
+@ARTICLE{Beal2002,
+  author = {Beal, M.J. and Ghahramani, Z. and Rasmussen, C.E.},
+  title = {{The infinite hidden Markov model}},
+  journal = {Advances in Neural Information Processing Systems},
+  year = {2002},
+  volume = {1},
+  pages = {577--584},
+  issn = {1049-5258}
+}
+
 @BOOK{Bear2001,
   title = {Neuroscience; exploring the brain},
   publisher = {Lippincott Williams \& Wilkins},
@@ -5595,6 +5605,13 @@
   address = {New York, NY}
 }
 
+@INPROCEEDINGS{Liang2010,
+  author = {P. Liang and M. I. Jordan and D. Klein},
+  title = {Learning Programs: A Hierarchical {B}ayesian Approach},
+  booktitle = {International Conference on Machine Learning (ICML)},
+  year = {2010}
+}
+
 @INPROCEEDINGS{Liang2007,
   author = {Liang, P. and Petrov, S. and Jordan, M. and Klein, D.},
   title = {{The infinite PCFG using hierarchical Dirichlet processes}},
@@ -7004,6 +7021,16 @@
   year = {1967},
   volume = {68},
   pages = {29-46}
+}
+
+@INCOLLECTION{Pfau2010,
+  author = {David Pfau and Nicholas Bartlett and Frank Wood},
+  title = {Probabilistic Deterministic Infinite Automata},
+  booktitle = {Advances in Neural Information Processing Systems 23},
+  year = {2010},
+  editor = {J. Lafferty and C. K. I. Williams and J. Shawe-Taylor and R.S. Zemel
+	and A. Culotta},
+  pages = {1930--1938}
 }
 
 @BOOK{Piaget1930,
@@ -10231,6 +10258,11 @@
 @ARTICLE{,
   owner = {fwood},
   timestamp = {2010.11.06}
+}
+
+@ARTICLE{,
+  owner = {fwood},
+  timestamp = {2011.02.20}
 }
 
 @ARTICLE{,

@@ -1,0 +1,9 @@
+Monte-Carlo Tree Search consists of four steps, repeated as long as there
+is time left. (1) The tree is traversed from the root node to a leaf node (L),
+using a selection strategy. (2) An expansion strategy is called to store one
+(or more) children of L in the tree. (3) A simulation strategy plays moves
+in self-play until the end of the game is reached. (4) The result R of this
+“simulated” game is +1 in case of a win for Black (the ﬁrst player in Go),
+and −1 in case of a win for White. R is backpropagated in the tree according
+to a backpropagation strategy. This mechanism is outlined in Figure 1.1.
+The four steps of MCTS are explained in more details below

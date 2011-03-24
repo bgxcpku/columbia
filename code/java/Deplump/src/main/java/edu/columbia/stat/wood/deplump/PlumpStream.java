@@ -31,7 +31,12 @@ public class PlumpStream extends InputStream {
         dec = (Decoder) cl.loadClass("edu.columbia.stat.wood.deplump.v" + version + ".Decoder" ).newInstance();
         BytePredictiveModelFactory factory = (BytePredictiveModelFactory) cl.loadClass("edu.columbia.stat.wood.sequencememoizer.v" + version + ".BytePredictiveModelFactory").newInstance();
 
-        dec.set(factory.get(depth, maxNumberRestaurants, maxSequenceLength, serializedModel), is, insert);
+        if(serializedModel==null) {
+            dec.set(factory.get(depth, maxNumberRestaurants, maxSequenceLength), is, insert);
+        } else
+        {
+            dec.set(factory.get(serializedModel), is, insert);
+        }
         this.is = is;
     }
 
@@ -44,7 +49,7 @@ public class PlumpStream extends InputStream {
         dec = (Decoder) cl.loadClass("edu.columbia.stat.wood.deplump.v" + version + ".Decoder" ).newInstance();
         BytePredictiveModelFactory factory = (BytePredictiveModelFactory) cl.loadClass("edu.columbia.stat.wood.sequencememoizer.v" + version + ".BytePredictiveModelFactory").newInstance();
 
-        dec.set(factory.get(-1, -1, -1, null), is, true);
+        dec.set(factory.get(-1, -1, -1), is, true);
         this.is = is;
     }
 
