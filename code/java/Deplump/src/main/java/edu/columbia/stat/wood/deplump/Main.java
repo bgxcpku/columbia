@@ -39,17 +39,15 @@ public class Main {
             byte[] buffer = new byte[1024 * 1024];
             int l;
             long count = 0;
+            int chunkSize = 10000000;
             while((l = bis.read(buffer)) > -1){
                 ds.write(buffer, 0, l);
                 count += l;
-
-                int chunkSize = 10000000;
-                if(count / chunkSize > i){
-                    System.out.println("count = " + count + ", time = " + (System.nanoTime() - startTime));
+                if(count / chunkSize >= i){
+                    System.out.println(count + "|" + (System.nanoTime() - startTime));
                     i = (int) (count / chunkSize);
                     i++;
-                }
-                
+                }   
             }
             ds.close();
             bis.close();
