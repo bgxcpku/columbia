@@ -1,4 +1,8 @@
-%Main file for variational gaussian mixture modeling
+%Main file for variational gaussian mixture modeling.  This main file is
+%set up to use the assigments from the k means algorithm to initialize the
+%variational bayes estimation.  Plotting is done so we can see how the
+%algorithm progresses.
+
 clear
 clf
 
@@ -11,7 +15,6 @@ figure(1)
 plot_d_dimensional_mixture_data(meas,group)
 
 global m_0 b_0 a_0 W_0 nu_0
-
 
 [N D]  = size(meas);
 K = 10;
@@ -31,7 +34,6 @@ W_0 = 10 * eye(4) / nu_0;
 lb = [];
 lower_bound = -Inf;
 do = 1;
-
 while do
     [alpha,m,W,nu,beta] = get_other_parameters(r, meas);
     r = get_r(alpha,m,W,nu,beta,meas);

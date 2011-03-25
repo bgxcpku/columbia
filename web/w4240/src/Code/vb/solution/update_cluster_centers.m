@@ -1,27 +1,31 @@
 function [new_centers assignments] = update_cluster_centers(cluster_centers,data)
-%cluster centers are column vectors
+% This function takes a data set, and a set of cluster centers and returns
+% both the updated set of cluster centers and a center assignment variable 
+% for each data point.  The data set is assumed to be arranged such that
+% each row is one data d dimensional data point.  In the documentation we
+% wil use k to denote the number of clusters for the k-means analysis.
+%
+% @param cluster_centers : k x d matrix of cluster centers
+% @param data            : n x d matrix of data
+%
+% @return new_centers    : k x d matrix of updated cluster centers
+% @return assignments    : n x 1 matrix of cluster assignments in 1:k
+%
 
 [n d] = size(data);
-k = size(cluster_centers,2);
+k = size(cluster_centers,1);
+dist = pdist2(data, cluster_centers);
 
-dist = zeros(n,k);
+[~, assignments] = min(dist,[],2);
+
+new_centers = zeros(k,d);
 for i = 1 : k
-    dd = data - repmat(cluster_centers(:,i)',n,1);
-    dd = dd.^2;
-    dist(:,i) = sqrt(sum(dd,2));
-end
-
-[m l] = min(dist,[],2);
-
-new_centers = zeros(d,k);
-for i = 1  : k
-    if sum(l==i) > 0
-        new_centers(:,i) = mean(data(l == i,:));
+    if sum(assignments==i) > 0
+        new_centers(i,:) = mean(data(assignments == i,:));
     else
-        new_centers(:,i) = data(ceil(unifrnd(0,n)),:)';
+        new_centers(i,:) = data(ceil(unifrnd(0,n)),:);
     end    
 end
 
-assignments = l;
 figure(2)
 plot_d_dimensional_mixture_data(data,assignments)

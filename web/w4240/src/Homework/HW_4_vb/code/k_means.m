@@ -1,8 +1,8 @@
 function assignments = k_means(k,data)
-% The number of iterations is not a parameter here because it is not the
-% focus of the assignment so just hard code it to something, maybe 10
+% This function returns one of k assignment variables for each data point
+% in a given data matrix using the k means algorithm.
 %
-%@param k       : the number of clusters
-%@param data    : n x d data matrix
+% @param k    : scalar value indicating the number of groups
+% @param data : n x d matrix of data
 %
-%@return        : n x 1 matrix of assignments in 1 : k
+% @return assignments : n x 1 matrix of cluster assignments in 1:k
