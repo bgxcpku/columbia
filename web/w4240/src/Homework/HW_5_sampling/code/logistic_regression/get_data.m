@@ -1,5 +1,8 @@
-
 function [X Y headers] = get_data()
+%cleans and returns the data from the study.  X is the design matrix, Y is
+%the binary outcome and headers is a cell array containing the column
+%headers.
+
 
 fid = fopen('arthritis_treatment');
 X = [];

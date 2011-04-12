@@ -4,7 +4,7 @@
 %parameters used in the gamma prior on the precision of the covariates
 %while mu is the mean.  The data is read in through get_data and the
 %headers variable can be used to access the column labels.  The Y column
-%vector is a binary vector indicating improvemnt over the course the course
+%vector is a binary vector indicating improvemnt over the course
 %of the study. The model is fit using MCMC sampling.  To answer the 
 %questions for the HW you need to summarize the posterior appropriately.
 
