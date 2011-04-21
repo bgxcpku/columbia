@@ -1,0 +1,71 @@
+\documentclass{article} % For LaTeX2e
+\usepackage{nips11submit_e,times}
+%\documentstyle[nips10submit_09,times,art10]{article} % For LaTeX 2.09
+
+\title{Multi-Scale Language Modeling with InDel Likelihood}
+
+\author{
+Nicholas Bartlett and Frank Wood\\
+Department of Statistics\\
+Columbia University\\
+New York, NY 10027 \\
+\texttt{\{bartlett, fwood\}@stat.columbia.edu}
+%\And
+%Frank  Wood\\
+%Columbia University\\
+%Address \\
+%\texttt{email} \\
+%\AND
+%Coauthor \\
+%Affiliation \\
+%Address \\
+%\texttt{email} \\
+%\And
+%Coauthor \\
+%Affiliation \\
+%Address \\
+%\texttt{email} \\
+%\And
+%Coauthor \\
+%Affiliation \\
+%Address \\
+%\texttt{email} \\
+%(if needed)\\
+}
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to \LaTeX{} to determine where to break
+% the lines. Using \AND forces a linebreak at that point. So, if \LaTeX{}
+% puts 3 of 4 authors names on the first line, and the last on the second
+% line, try using \AND instead of \And before the third author name.
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+
+%\nipsfinalcopy % Uncomment for camera-ready version
+
+\begin{document}
+
+\maketitle
+
+\newcommand{\G}{\mathcal{G}}
+\newcommand{\PY}{\mathcal{P}\mathcal{Y}}
+\newcommand{\ES}{\mathcal{E}\mathcal{S}}
+\newcommand{\likelihood}{\mathcal{L}}
+\newcommand{\HPY}{\mathcal{H}\PY}
+
+
+\input{abstract}
+\input{introduction}
+\input{methodology}
+\input{experiments}
+\input{discussion}
+
+\begin{small}
+\bibliographystyle{plainnat}
+\bibliography{../../uber} 
+\end{small}
+
+\end{document}
