@@ -2,7 +2,7 @@
 in_menu: true
 sort_info: 11
 ---
-## Talks
+### Talks
 
 * 2009
 	- Sequence Memoizer [PPT](sequence_memoizer.ppt "PPT")  <a href="sequence_memoizer.pdf">PDF</a> <a href="http://videolectures.net/icml09_wood_sms/">Video Lecture</a>

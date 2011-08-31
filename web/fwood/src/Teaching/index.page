@@ -3,30 +3,34 @@ in_menu: true
 sort_info: 21
 ---
 
-## Current Courses
+### Current Courses
 
-[W4240-W6240 Data Mining] Data mining is the process of searching for and using patterns in data.  Given large amounts of data, _automated_ statistical analysis tools are needed.  This course is a project-based, computationally intensive course that will cover both computational methods for gathering and processing large amounts of data (briefly, prior programming experience required) and the theory and practice of developing and adapting machine learning and statistical models and techniques to datasets of interest to you.  The 4000 level course is a masters level course.  The 6000 level course is for PhD students and will entail extra work throughout the semester.
+[W4315 Fall 2011] Theory and practice of regression analysis, Simple and multiple regression, including testing, estimation, and confidence procedures, modeling, regression diagnostics and plots, polynomial regression, colinearity and confounding, model selection, geometry of least squares. Extensive use of the computer to analyse data. 
+<!-- [W4240-W6240 Data Mining] Data mining is the process of searching for and using patterns in data.  Given large amounts of data, _automated_ statistical analysis tools are needed.  This course is a project-based, computationally intensive course that will cover both computational methods for gathering and processing large amounts of data (briefly, prior programming experience required) and the theory and practice of developing and adapting machine learning and statistical models and techniques to datasets of interest to you.  The 4000 level course is a masters level course.  The 6000 level course is for PhD students and will entail extra work throughout the semester. -->
 
-## Courses Taught
+### Courses Taught
 
 - Data Mining 
+	*	[W4240-W6240 Data Mining]	
 	*	[W4240 Fall 2010]	
 - Linear Regression Models 
 	*	Fall/Spring 2009
 	*	[W4315 Fall 2010]
+	* 	[W4315 Fall 2011]
 
 <!--Theory and practice of regression analysis, Simple and multiple regression, including testing, estimation, and confidence procedures, modeling, regression diagnostics and plots, polynomial regression, colinearity and confounding, model selection, geometry of least squares. Extensive use of the computer to analyse data. -->
 
-[W4315 Fall 2010]: http://www.stat.columbia.edu/~fwood/w4315/index.html
+[W4315 Fall 2010]: http://www.stat.columbia.edu/~fwood/w4315_fall2010/index.html
+[W4315 Fall 2011]: http://www.stat.columbia.edu/~fwood/w4315/index.html
 [W4240 Fall 2010]: ./W4240_Fall2010/index.html
 [W4240-W6240 Data Mining]: http://www.stat.columbia.edu/~fwood/w4240/index.html
 
 --- name:sidebar
 <strong>Term:</strong>
-Spring 2011 <br>
+Fall 2011 <br>
 <strong>Course:</strong>
-W4240 <br></br>
+W4315 <br></br>
 <strong>Day/Time:</strong>
-Tues and Thur 6:10pm to 7:25pm <br></br>
+Tues and Thur 9:10am to 10:25am <br></br>
 <strong>Location:</strong> 
-Pupin 412
+Pupin 329

@@ -5,28 +5,33 @@ routed_title: Home
 sort_info: 0
 ---
 
-## Cool Stuff
+Dr. Wood is a statistical machine learning researcher.  His current research focus is on Bayesian nonparametric modeling. 
 
-Check out [sequencememoizer.com](http://www.sequencememoizer.com/) to download sequence memoizer source code, see example Matlab and R usage scripts, etc.
 
-Check out [deplump.com](http://www.deplump.com/) a demonstration site for a new general purpose lossless compressor my group has been involved in developing.
+### New
 
-## Research Highlights 
+- [Hierarchically Supervised Latent Dirichlet Allocation](Papers/Perotte-2012-NIPS.pdf)
+	- A. Perotte, N. Bartlett, N. Elhadad, F. Wood, [NIPS](http://books.nips.cc/), 2012. [.bib](Papers/Perotte-2012-NIPS.bib) 
 
--   F. Wood, J. Gasthaus, C. Archambeau, L. James, and Y.W. Teh, [The Sequence Memoizer](http://cacm.acm.org/magazines/2011/2/104391-the-sequence-memoizer/fulltext)   CACM, 2011
--  N. Bartlett and F. Wood, [Deplump for Streaming Data](Papers/Bartlett-DCC-2011.pdf), DCC, 2011 
--   D. Pfau, N. Bartlett, F. Wood, [Probabilistic Deterministic Infinite Automata](Papers/Pfau-NIPS-2010.pdf), NIPS 2011.
--  N. Bartlett, D. Pfau, and F. Wood, [Forgetting counts : Constant Memory inference for a dependent hierarchical Pitman-Yor Process](Papers/Bartlett-ICML-2010.pdf), ICML, 2010 
--   F. Wood, C. Archambeau, J. Gasthaus, L. James, and Y.W. Teh, [A Stochastic Memoizer for Sequence Data](Papers/Wood-ICML-2009.pdf)   ICML, 2009., <a href="Talks/sequence_memoizer.pdf">Talk</a>, <a href="http://videolectures.net/icml09_wood_sms/">Video Lecture</a>
--   F. Wood and Y.W. Teh [A hierarchical nonparametric Bayesian approach to statistical language model domain adaptation](Papers/Wood-AISTATS-2009.pdf), AISTATS 2009.  <em>Best Paper Award</em>
+In an attempt to share with people what the scientific paper writing process is like, [J. Huggins](http://www.columbia.edu/~jhh2143/) made a [&quot;visualization&quot;](Papers/sLDA-evo.pdf) of the many versions this paper went through.  Each page is one commit.  Although the movement of the figures is the most salient feature of the visualization, taking the time to watch the text, model, and layout change is informative about the process of collaborative writing and the level of effort that goes into producing a top-flight conference paper. 
 
-##Philosophy 
 
-My research effort is directed towards contributing models and algorithms to the field of statistical machine learning. My current research focus is on the development and application of nonparametric Bayesian methods to problems in discrete sequence modeling and compression. 
 
-I believe that the conceptual symbiosis between neuroscience and computer science (particularly in machine learning) is still in its infancy. As a computer scientist I believe that the computational superiority exhibited by even the most simple biological organisms is a strong argument for doing research at the intersection of these two fields. 
+### Highlights 
 
-My style is to build machine learning algorithms that improve on the state of the art by drawing from scientific findings at all levels of scientific investigation (physics to psychology). I am particularly interested in pursuing the connections between specific features of Bayesian machine learning algorithms and the biological mechanisms they very much resemble. 
+- [The Sequence Memoizer](http://cacm.acm.org/magazines/2011/2/104391-the-sequence-memoizer/fulltext) 
+	- F. Wood, J. Gasthaus, C. Archambeau, L. James, Y.W. Teh,   [CACM](http://cacm.acm.org/), 2011. [.bib](Papers/Wood-2011-CACM.bib), [Talk](Talks/sequence_memoizer.pdf), [Video Lecture](http://videolectures.net/icml09_wood_sms/), [Code](http://www.sequencememoizer.com/)
+- [Probabilistic Deterministic Infinite Automata](Papers/Pfau-NIPS-2010.pdf) 
+	-  D. Pfau, N. Bartlett, F. Wood, [NIPS](http://books.nips.cc/nips23.html) 2011. [.bib](Papers/Pfau-2011-NIPS.bib), [spotlight video](http://videolectures.net/nips2010_pfau_pdi/)
+-  [Forgetting counts : Constant Memory inference for a dependent hierarchical Pitman-Yor Process](Papers/Bartlett-ICML-2010.pdf) 
+	- N. Bartlett, D. Pfau, and F. Wood, [ICML](http://www.icml2010.org/program_withpapers.html), 2010. [.bib](Papers/Bartlett-2010-ICML.bib)
+-   [A hierarchical nonparametric Bayesian approach to statistical language model domain adaptation](Papers/Wood-AISTATS-2009.pdf) 
+	- F. Wood and Y.W. Teh, [AISTATS](http://www.ics.uci.edu/~aistats/), 2009.  [.bib](Papers/Wood-2009-AISTATS.bib),  <em>Best Paper Award</em>
+
+### Philosophy 
+
+
+Dr. Wood builds machine learning algorithms that improve on the state of the art by drawing from scientific findings at all levels of scientific investigation (physics to psychology).  He is particularly interested in pursuing the connections between specific features of Bayesian machine learning algorithms and the biological mechanisms they very much resemble. 
 --- name:sidebar
 <strong>Email: </strong> 
 fwood@stat.columbia.edu<br>

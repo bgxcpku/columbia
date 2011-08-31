@@ -18,5 +18,5 @@
 #     http://webgen.rubyforge.org/documentation/reference_configuration.html
 patterns:
   Copy:
-    add: [**/*.pdf, **/*.dat, **/*.avi, **/*.m, **/*.tar.gz, **/*.zip, **/*.txt, **/*.ppt, **/*.jar, **/*.vm, **/*.jnlp, **/*.gif]
+    add: [**/*.pdf, **/*.bib, **/*.dat, **/*.avi, **/*.m, **/*.tar.gz, **/*.zip, **/*.txt, **/*.ppt, **/*.jar, **/*.vm, **/*.jnlp, **/*.gif]
      

@@ -22,8 +22,8 @@ background-color:inherit;
 a:hover{color:#2a5a8a; text-decoration:none; background-color:inherit;}
 a img{border:none;}
 
-p{padding:0 0 1.6em 0;}
-p form{margin-top:0; margin-bottom:20px;}
+p{padding:.1em 0 .6em 0;}
+p form{margin-top:0; margin-bottom:5px;}
 
 img.left,img.center,img.right{padding:4px; border:1px solid #a0a0a0;}
 img.left{float:left; margin:0 12px 5px 0;}
@@ -120,7 +120,7 @@ padding:20px 0 0 20px;
 
 #content h2{
 display:block;
-margin:0 0 16px 0;
+margin:0 0 10px 0;
 font-size:1.7em;
 font-weight:normal;
 letter-spacing:-1px;
@@ -129,9 +129,9 @@ background-color:inherit;
 }
 
 #content h2 a{font-weight:normal;}
-#content h3{margin:0 0 5px 0; font-size:1.4em; letter-spacing:-1px;}
+#content h3{margin:10px 0px 5px 0; font-size:1.4em; color:#505050; }
 #content a:hover,#subcontent a:hover{text-decoration:underline;}
-#content ul,#content ol{margin:0 5px 16px 35px;}
+#content ul,#content ol{margin:0 5px 5px 35px;}
 #content dl{margin:0 5px 10px 25px;}
 #content dt{font-weight:bold; margin-bottom:5px;}
 #content dd{margin:0 0 10px 15px;}
