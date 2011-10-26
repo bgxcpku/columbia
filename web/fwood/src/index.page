@@ -5,7 +5,8 @@ routed_title: Home
 sort_info: 0
 ---
 
-Dr. Wood is a statistical machine learning researcher.  His current research focus is on Bayesian nonparametric modeling. 
+Dr. Wood ([c.v.](cv.pdf)) is a statistical machine learning researcher.  
+<!--His current research focus is on Bayesian nonparametric modeling. -->
 
 
 ### New
@@ -13,13 +14,13 @@ Dr. Wood is a statistical machine learning researcher.  His current research foc
 - [Hierarchically Supervised Latent Dirichlet Allocation](Papers/Perotte-2012-NIPS.pdf)
 	- A. Perotte, N. Bartlett, N. Elhadad, F. Wood, [NIPS](http://books.nips.cc/), 2012. [.bib](Papers/Perotte-2012-NIPS.bib) 
 
-In an attempt to share with people what the scientific paper writing process is like, [J. Huggins](http://www.columbia.edu/~jhh2143/) made a [&quot;visualization&quot;](Papers/sLDA-evo.pdf) of the many versions this paper went through.  Each page is one commit.  Although the movement of the figures is the most salient feature of the visualization, taking the time to watch the text, model, and layout change is informative about the process of collaborative writing and the level of effort that goes into producing a top-flight conference paper. 
+In an attempt to share what the scientific paper writing process is like, [J. Huggins](http://www.columbia.edu/~jhh2143/) made a [&quot;visualization&quot;](Papers/sLDA-evo.pdf) of the many pre-submission versions of this paper.  Each page in the visualizaiton is one commit.  Although the movement of the figures is the most salient feature of the visualization, taking the time to watch the text, model, and layout change is informative about the process of collaborative writing and the level of effort that goes into producing a top-flight conference paper. 
 
 
 
 ### Highlights 
 
-- [The Sequence Memoizer](http://cacm.acm.org/magazines/2011/2/104391-the-sequence-memoizer/fulltext) 
+- [The Sequence Memoizer](http://www.deepdyve.com/lp/association-for-computing-machinery/the-sequence-memoizer-O0uprcmqxa) 
 	- F. Wood, J. Gasthaus, C. Archambeau, L. James, Y.W. Teh,   [CACM](http://cacm.acm.org/), 2011. [.bib](Papers/Wood-2011-CACM.bib), [Talk](Talks/sequence_memoizer.pdf), [Video Lecture](http://videolectures.net/icml09_wood_sms/), [Code](http://www.sequencememoizer.com/)
 - [Probabilistic Deterministic Infinite Automata](Papers/Pfau-NIPS-2010.pdf) 
 	-  D. Pfau, N. Bartlett, F. Wood, [NIPS](http://books.nips.cc/nips23.html) 2011. [.bib](Papers/Pfau-2011-NIPS.bib), [spotlight video](http://videolectures.net/nips2010_pfau_pdi/)

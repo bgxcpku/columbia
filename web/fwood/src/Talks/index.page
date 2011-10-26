@@ -4,6 +4,8 @@ sort_info: 11
 ---
 ### Talks
 
+_Warning_ severely out of date.
+
 * 2009
 	- Sequence Memoizer [PPT](sequence_memoizer.ppt "PPT")  <a href="sequence_memoizer.pdf">PDF</a> <a href="http://videolectures.net/icml09_wood_sms/">Video Lecture</a>
 	- Doubly hierarchical Pitman Yor process (language model domain adaptation) <a href="dhpylm.ppt">PPT</a>  <a href="dhyplm.pdf">PDF</a> 
