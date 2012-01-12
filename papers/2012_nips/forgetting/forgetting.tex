@@ -1,0 +1,129 @@
+\documentclass{article} % For LaTeX2e
+\usepackage{nips10submit_e,times}
+%\documentstyle[nips10submit_09,times,art10]{article} % For LaTeX 2.09
+\usepackage[square,numbers]{natbib}
+\usepackage{amsmath, epsfig}
+\usepackage{amsfonts}
+\usepackage{subfigure}
+\usepackage{graphicx}
+\usepackage{amsfonts}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{easybmat}
+\usepackage{footmisc}
+
+
+
+\newcommand{\estimator}{\mbox{T}}
+\newcommand{\X}{{\bf X}}
+
+%\newcommand{\Var}{\mathrm{E}}
+\newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
+\newcommand{\argmax}{\operatornamewithlimits{argmax}}
+\newcommand{\drawn}{\operatornamewithlimits{\sim}}
+
+%\DeclareMathOperator*{\Ave}{E}
+\DeclareMathOperator*{\VarSym}{\mathbb{V}}
+\DeclareMathOperator*{\EstVarSym}{{s}^2}
+\newcommand{\EstVar}[1]{\ensuremath{\EstVarSym\{#1\}}}
+\newcommand{\EstStd}[1]{\ensuremath{s\{#1\}}}
+\newcommand{\Var}[1]{\ensuremath{\VarSym[#1]}}
+\newcommand{\Std}[1]{\ensuremath{\sigma\{#1\}}}
+\newcommand{\E}[1]{\ensuremath{\mathbb{E}[#1]}}
+
+\title{Forgetting Estimation}
+
+
+\author{
+Frank Wood\\%\thanks{} \\
+Department of Statistics\\
+Columbia University\\
+New York, NY 10027\\
+\texttt{fwood@stat.columbia.edu}% \\
+%\And
+%Coauthor \\
+%Affiliation \\
+%Address \\
+%\texttt{email} \\
+}
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to \LaTeX{} to determine where to break
+% the lines. Using \AND forces a linebreak at that point. So, if \LaTeX{}
+% puts 3 of 4 authors names on the first line, and the last on the second
+% line, try using \AND instead of \And before the third author name.
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+
+\nipsfinalcopy % Uncomment for camera-ready version
+
+\begin{document}
+
+
+\maketitle
+
+\begin{abstract}
+
+\end{abstract}
+
+\section{Introduction}
+
+Analysis of fixed datasets has been and remains the focus of a large fraction of the work in statistics and machine learning.  With datasets that don't grow in size over time, one tends to focus on estimation and inference (for example).
+
+ where either how fast your estimator converges or how well you approximate some posterior distribution of interest is the modus of comparison.
+
+Statistical estimation theory says a great deal about what would happen to the estimates of various parameters
+
+It would be nice if estimation of the parameters of probabilistic models from data would get computationally easier if you had more data.  Statistics has focused on the theory of estimation, and has often overlooked the obvious problem that in most cases, in the limit of infinite or growing data, the computation required for estimation grows unboundedly.  
+
+\section{Notation and Formalism}
+
+%Given a probability space $(\Omega, \mathcal{F}, \bf P)$ be a measure space with, as usual, sample space $\Omega$, sigma-field $\mathcal{F}$, and probability measure $\bf P$. 
+Let $X(t)$ be a measurable random variable indexed by $t \in T$ where $T$ is an index set, taken throughout this paper to be discrete time.   A stochastic process ${\bf X} = \{X(t), t \in T\}$ is the collection of such random variables.  A sample path is a realization of such a set of random variables.  Stochastic processes can be characterized in many ways
+
+\subsection{Nonparametric Estimation}
+
+Asymptotics (convergence to empirical)
+
+Computational characteristics (storage complexity)
+\section{Idea}
+
+\subsection{Pedagogical Example}
+
+Let's start with a trivial example.  Let $\X = \{X_{(1)}, \ldots, X_{(T)}\}$ be a discrete time stochastic process with $X_{(t)} \drawn_{iid} \mathcal{U}(a,b)$ where $\mathcal{U}(a,b)$ is the uniform distribution over the integers between and including $a$ and $b$.  For the sake of argument, let us consider estimating $\E{X_{(t)}}$ non-parametrically.  Traditional desiderata of estimators for $\mathbb{E}[X_{(t)}]$ include convergence to the true underlying mean, here $\frac{a+b}{2}$, as more samples are included.  Let $K$ be the number of samples of $X(t)$ included in the nonparametric estimator and let $1 \leq k \leq K$ index those samples.  We can write the obvious nonparametric histogram estimator  $\estimator(\{X^{(k)}_{(t_k)}\}_{k=1}^K) = \frac{1}{K} \sum_{k=1}^{K} X^{(k)}_{(t_k)}$ where $t_k$ is the ``time'' associated with sample $k$.  For now, $t_k=k$ can be used, but shortly we will need this extra notational freedom.  The estimator $\estimator$ will clearly, in the  $K \rightarrow \infty$ limit, converge to $\E{X_{(t)}} = \frac{a+b}{2}$.  As usual, the variance of this estimator $\Var{\estimator} = \E{\estimator^2} - (\E{\estimator})^2 = \frac{1}{K}\Var{X_{(t)}}$ is a function of the variance of the underlying random variable and also of $K$, the number of retained samples.   As $K$ increases the estimator of the mean concentrates on the true mean at a rate of $\frac{1}{K}$.
+
+Convergence and convergence rates of estimators as $K\rightarrow\infty$ is the subject of a massive literature in statistics, a literature I suggest with all due respect is somewhat misguided.  The problem with this theory is that it cannot be practiced because, for non-parametric estimators such as this simple example, as $K\rightarrow\infty$, the storage required to represent the estimator grows without bound.  Note that even maintaining counts in each histogram bin requires a logarithmic number of bits to represent each count, so, at a minimum, the estimator storage requirement grows logarithmically in even this extremely simple example.  Logarithmic growth is very very slow and as such in this example, for all practical purposes such a estimator is practical to implement on modern computers -- logarithmic counts are not impractical to store, but still, in the limit, they are cannot be stored in finite space.  More saliently, other, more complicated estimators for other more complicated stochastic processes need also be considered.  In those cases often the storage asymptotics of the nonparametric estimator grows linearly and super-linearly in the number of observations yielding a model representation that is unwieldy and impractical in almost all settings.
+
+What we would like is a nonparametric distribution estimator whose storage complexity is constant that still performs well.  Obviously this requires that not all data is remembered, thus we will describe nonparametric estimators that retain only a constant subset of the data.  We will call the resulting class the class of ``forgetting estimators.''  We will show that for certain types of stochastic processes, some members of this class outperform others.  
+
+Continuing our example let us consider a mean estimator of the same form as before $\estimator(\{X^{(k)}_{(t_k)}\}_{k=1}^K) = \frac{1}{K} \sum_{k=1}^{K} X^{(k)}_{(t_k)}$ but consider the differences that arrive from defining $t_k$ differently.  Call $\estimator_{\text{first}}$ the estimator for which $t_1 = 1, t_2 =2, \ldots t_K = K$, $\estimator_{\text{last}}$ the estimator for which $t_1 = T-K, t_2 =T-K+1, \ldots, t_K = T-1$, and $\estimator_{\text{forget}}$ the estimator for which $t_k$ is a randomly sampled (without replacement) data index between and including $1$ and $T$ (the specifics of the sampling procedure for selecting these indexes will be discussed later).  The storage complexity of all of these estimators is constant, $O(K)$.   Their performance, however, will be different depending on the nature of the underlying stochastic process that generates the sequence of observations.  A theoretical analysis of the variance of each of these estimators can be undertaken.  That is what we do next.
+
+Note that $K$ is now 
+
+
+
+
+
+\subsection{Style}
+
+\subsubsection*{Acknowledgments}
+
+Use unnumbered third level headings for the acknowledgments. All
+acknowledgments go at the end of the paper. Do not include 
+acknowledgments in the anonymized submission, only in the 
+final paper. 
+
+\subsubsection*{References}
+
+
+
+\begin{small}
+\bibliographystyle{plainnat}
+\bibliography{../../uber} 
+%\input{modrefs}
+\end{small}
+
+\end{document}

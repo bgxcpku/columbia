@@ -1,4 +1,4 @@
-stochastic_process_type = 'iid';
+stochastic_process_type = 'sticky_1st_order_markov';
 % choices are iid, fixed_1st_order_markov, sticky_1st_order_markov
 show_samples = false;
 

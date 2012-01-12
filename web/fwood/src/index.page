@@ -8,13 +8,20 @@ sort_info: 0
 Dr. Wood ([c.v.](cv.pdf)) is a statistical machine learning researcher.  
 <!--His current research focus is on Bayesian nonparametric modeling. -->
 
+### Schedule
+
+|---
+|:-:|-:|
+| 1/4/2012 |&nbsp;| ETH
+| 1/19/2012 |&nbsp;| UIC
+| 2/13-14/2012 |&nbsp;| Oxford
 
 ### New
 
 - [Hierarchically Supervised Latent Dirichlet Allocation](Papers/Perotte-2012-NIPS.pdf)
 	- A. Perotte, N. Bartlett, N. Elhadad, F. Wood, [NIPS](http://books.nips.cc/), 2012. [.bib](Papers/Perotte-2012-NIPS.bib) 
 
-In an attempt to share what the scientific paper writing process is like, [J. Huggins](http://www.columbia.edu/~jhh2143/) made a [&quot;visualization&quot;](Papers/sLDA-evo.pdf) of the many pre-submission versions of this paper.  Each page in the visualizaiton is one commit.  Although the movement of the figures is the most salient feature of the visualization, taking the time to watch the text, model, and layout change is informative about the process of collaborative writing and the level of effort that goes into producing a top-flight conference paper. 
+In an attempt to share what the scientific paper writing process is like, [J. Huggins](http://www.columbia.edu/~jhh2143/) made a [&quot;visualization&quot;](Papers/sLDA-evo.pdf) of the many pre-submission versions of this paper.  Each page in the visualization is one commit.  Although the movement of the figures is the most salient feature of the visualization, taking the time to watch the text, model, and layout change is informative about the process of collaborative writing and the level of effort that goes into producing a top-flight conference paper. 
 
 
 

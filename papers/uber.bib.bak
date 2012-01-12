@@ -915,6 +915,17 @@
   number = {1}
 }
 
+@ARTICLE{Blei2006b,
+  author = {Blei, D. and Lafferty, J.},
+  title = {{Correlated topic models}},
+  journal = {Advances in {N}eural {I}nformation {P}rocessing {S}ystems},
+  year = {2006},
+  volume = {18},
+  pages = {147},
+  issn = {1049-5258},
+  publisher = {Citeseer}
+}
+
 @INCOLLECTION{Blei2004a,
   author = {D. M. Blei and T. L. Griffiths and M. I. Jordan and J. B. Tenenbaum},
   title = {Hierarchical topic models and the nested {C}hinese restaurant process},
@@ -2266,6 +2277,16 @@
   organization = {Citeseer}
 }
 
+@CONFERENCE{doshivelez2009,
+  author = {Doshi-Velez, F. and Ghahramani, Z.},
+  title = {{Correlated non-parametric latent feature models}},
+  booktitle = {Proceedings of the Twenty-Fifth Conference on Uncertainty in Artificial
+	Intelligence},
+  year = {2009},
+  pages = {143--150},
+  organization = {AUAI Press}
+}
+
 @BOOK{Doucet2001,
   title = {Sequential Monte Carlo Methods in Practice},
   publisher = {Springer},
@@ -3359,6 +3380,19 @@
   pages = {565-610}
 }
 
+@ARTICLE{Goldwater2009,
+  author = {Goldwater, S. and Griffiths, T.L. and Johnson, M.},
+  title = {{A Bayesian framework for word segmentation: Exploring the effects
+	of context}},
+  journal = {Cognition},
+  year = {2009},
+  volume = {112},
+  pages = {21--54},
+  number = {1},
+  issn = {0010-0277},
+  publisher = {Elsevier}
+}
+
 @INPROCEEDINGS{Goldwater2006,
   author = {S. Goldwater and T. L. Griffiths and M. Johnson},
   title = {Interpolating between types and tokens by estimating power law generators.},
@@ -4157,6 +4191,28 @@
   pages = {382-417}
 }
 
+@ARTICLE{hoff2002,
+  author = {Hoff, P.D. and Raftery, A.E. and Handcock, M.S.},
+  title = {{Latent space approaches to social network analysis}},
+  journal = {Journal of the American Statistical Association},
+  year = {2002},
+  volume = {97},
+  pages = {1090--1098},
+  number = {460},
+  issn = {0162-1459},
+  publisher = {ASA}
+}
+
+@CONFERENCE{Hoffman2009,
+  author = {Hoffman, M.D. and Blei, D.M. and Cook, P.R.},
+  title = {{Finding latent sources in recorded music with a shift-invariant
+	HDP}},
+  booktitle = {International Conference on Digital Audio Effects (DAFx)},
+  year = {2009},
+  pages = {1--7},
+  organization = {Citeseer}
+}
+
 @INPROCEEDINGS{Hofmann1999,
   author = {T. Hofmann},
   title = {Probablistic latent semantic indexing},
@@ -4851,6 +4907,17 @@
   year = {2000},
   volume = {47},
   pages = {1406--1411}
+}
+
+@ARTICLE{kim2007,
+  author = {Kim, S. and Smyth, P.},
+  title = {{Hierarchical Dirichlet processes with random effects}},
+  journal = {Advances in Neural Information Processing Systems},
+  year = {2007},
+  volume = {19},
+  pages = {697},
+  issn = {1049-5258},
+  publisher = {Citeseer}
 }
 
 @INPROCEEDINGS{Kim2006,
@@ -6280,6 +6347,18 @@
   timestamp = {2010.01.31}
 }
 
+@INPROCEEDINGS{Mochihashi2009,
+  author = {Mochihashi, D. and Yamada, T. and Ueda, N.},
+  title = {{Bayesian unsupervised word segmentation with nested Pitman-Yor language
+	modeling}},
+  booktitle = {Proceedings of the Joint Conference of the 47th Annual Meeting of
+	the ACL and the 4th International Joint Conference on Natural Language
+	Processing of the AFNLP: Volume 1-Volume 1},
+  year = {2009},
+  pages = {100--108},
+  organization = {Association for Computational Linguistics}
+}
+
 @ARTICLE{Moffat1990,
   author = {Moffat, A.},
   title = {Implementing the {PPM} data compression scheme},
@@ -7027,6 +7106,7 @@
   author = {David Pfau and Nicholas Bartlett and Frank Wood},
   title = {Probabilistic Deterministic Infinite Automata},
   booktitle = {Advances in Neural Information Processing Systems 23},
+  publisher = {MIT Press},
   year = {2010},
   editor = {J. Lafferty and C. K. I. Williams and J. Shawe-Taylor and R.S. Zemel
 	and A. Culotta},
@@ -7386,6 +7466,14 @@
   pages = {359}
 }
 
+@INPROCEEDINGS{Rai2009,
+  author = {Rai, P. and Daum{\'e} III, H.},
+  title = {{The infinite hierarchical factor regression model}},
+  booktitle = {Advances in {N}eural {I}nformation {P}rocessing {S}ystems 21},
+  year = {2009},
+  pages = {1321--3128}
+}
+
 @INPROCEEDINGS{Ramscar2000,
   author = {M. J. A. Ramscar and D. G. Yarlett},
   title = {A high-dimensional model of retrieval in analogy and similarity-based
@@ -7394,6 +7482,13 @@
   year = {2000},
   address = {Hillsdale, NJ},
   publisher = {Erlbaum}
+}
+
+@INPROCEEDINGS{rao2009,
+  author = {V. Rao and Y. W. Teh},
+  title = {Spatial Normalized Gamma Processes},
+  booktitle = {Advances in Neural Information Processing Systems},
+  year = {2009}
 }
 
 @INCOLLECTION{Rasmussen2000,
@@ -10243,6 +10338,11 @@
   year = {1993},
   editor = {E. Sosa and M. Tooley},
   address = {Oxford}
+}
+
+@ARTICLE{,
+  owner = {fwood},
+  timestamp = {2011.05.10}
 }
 
 @INPROCEEDINGS{,

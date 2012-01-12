@@ -4,7 +4,10 @@ title: Index
 routed_title: Papers
 sort_info: 1
 ---
-###Refereed Conference Proceedings
+###Conference
+* [Low rank continuous-space graphical models](Smith-AISTATS-2012.pdf)
+	* C. Smith, F. Wood, L. Paninski, [AISTATS](http://www.aistats.org/), 2012 [.bib](Smith-2012-AISTATS.bib)
+		* A new class of models for which exact inference is tractable.
 * [Hierarchically Supervised Latent Dirichlet Allocation](Perotte-2012-NIPS.pdf)	
 	* A. Perotte, N. Bartlett, N. Elhadad, F. Wood, [NIPS](http://books.nips.cc/), 2012. [.bib](Perotte-2012-NIPS.bib)
 		* Model for automatic categorization and labeling of product catalogs, web pages, and medical records.
@@ -47,9 +50,11 @@ sort_info: 1
 * [Automatic spike sorting for neural decoding](Wood-EMBS-2004.pdf)
 	* F. Wood, M. Fellows, J. P. Donoghue, and M. J. Black.], EMBS, 2004. [.bib](Wood-2004-EMBS.bib)
 
-### Journal Publications
+### Journal
+* [Inference in Hiddern Markov Models with Explicit State Duration Distributions](Dewar-IEEE-2012.pdf)
+	* M. Dewar, C. Wiggins, and F. Wood, (To Appear) In IEEE Signal Processing Letters, 2012 [.bib](Dewar-2012-IEEE.bib)
 * [The Sequence Memoizer](http://www.deepdyve.com/lp/association-for-computing-machinery/the-sequence-memoizer-O0uprcmqxa)
-	* F. Wood, J. Gasthaus, C. Archambeau, L. James, and Y.W. Teh, In Proceedings of the Communications of the ACM. [.bib](Wood-2011-CACM.bib)
+	* F. Wood, J. Gasthaus, C. Archambeau, L. James, and Y.W. Teh, In Proceedings of the Communications of the ACM, 2011 [.bib](Wood-2011-CACM.bib)
 * [A Nonparametric Bayesian Alternative to Spike Sorting](Wood-JNM-Preprint-2008.pdf)
 	* F. Wood, and M. J. Black,  Journal of Neuroscience Methods, 173:1-12, 2008. [.bib](Wood-2008-JNM.bib)
 * [Discovering natural kinds of robot sensory experiences in unstructured environments](GrollmanJenkinsWood_JFR2006_preprint.pdf)
@@ -72,14 +77,16 @@ sort_info: 1
 	* F. Wood, In AISTATS 2011  [.bib](Wood-2011-AISTATS.bib)
 
 ### Workshop Publications
+* [Modeling Streaming Data In the Absence of Sufficiency](Wood-NIPSNPBAYES-2011.pdf)
+	* F. Wood, In NIPS Nonparametric Bayes Workshop, 2011. [.bib](Wood-2011-NIPSNPBAYES.bib)
 * [A Hierarchical, Hierarchical Pitman Yor Process Language Model](Wood-ICMLNPBAYES-2008.pdf)
-	* F. Wood and Y.W. The, In ICML/UAI Nonparametric Bayes Workshop, 2008. [.bib](Wood-2008-ICMLNPBAYES.bib)
+	* F. Wood and Y.W. Teh, In ICML/UAI Nonparametric Bayes Workshop, 2008. [.bib](Wood-2008-ICMLNPBAYES.bib)
 * [Discovering natural kinds of robot sensory experiences in unstructured environments]()
 	* D. H. Grollman, O. C. Jenkins, and F. Wood. In NIPS Workshop on Machine Learning Based Robotics in Unstructured Environments, 2005. [.bib](Grollman-2005-NIPS.bib)
 
-### Posters
+<!-- ### Posters
 * [Characterizing neural dependencies with Poisson copula models](/Posters/BerkesPillowWood2008_Cosyne.pdf)
-	* P. Berkes, J. Pillow, F. Wood, Cosyne, 2008. 
+	* P. Berkes, J. Pillow, F. Wood, Cosyne, 2008. -->
 
 --- name:sidebar
 <strong>Email: </strong>

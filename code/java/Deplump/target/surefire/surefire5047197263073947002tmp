@@ -1,0 +1,6 @@
+#surefire
+#Mon Mar 28 15:24:49 EDT 2011
+user.dir=/Users/fwood/Projects/columbia/code/java/Deplump
+netbeans.execution=true
+localRepository=/Users/fwood/.m2/repository
+basedir=/Users/fwood/Projects/columbia/code/java/Deplump

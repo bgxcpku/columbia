@@ -1,0 +1,74 @@
+\documentclass[11pt]{amsart}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage[square,numbers]{natbib}
+\usepackage{amsmath, epsfig}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{subfigure}
+\usepackage{graphicx}
+\usepackage{amsfonts}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{easybmat}
+\usepackage{footmisc}
+\usepackage{lscape}
+\usepackage{subfigure}
+\usepackage{epstopdf}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\title{Supervised Latent Dirichlet Allocation}
+\author{Frank Wood and Adler Perotte (?)}
+%\date{}                                           % Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+
+\section{Outline}
+\subsection{MCMC}
+\subsection{Auxiliary Variables}
+\subsection{Probit Regression}
+\input{probit}
+\subsection{LDA}
+\subsection{sLDA}
+\subsection{hsLDA}
+\subsection{Experiments}
+
+
+\section{Background}
+There are many 
+
+%\subsection{}
+\section{Introduction}
+\label{sec:introduction}
+\input{introduction}
+
+\section{Model}
+\label{sec:model}
+\input{model}
+
+\section{Inference}
+\label{sec:inference}
+\input{inference}
+section{Related Work}
+
+\label{sec:related_work} 
+\input{related_work}
+
+\section{Experiments}
+
+\label{sec:experiments}
+\input{experiments}
+\section{Discussion}
+\label{sec:discussion}
+\input{discussion}
+
+ \bibliographystyle{plainnat} \bibliographystyle{plainnat}
+\bibliographystyle{plainnat}
+\bibliography{refs}
+
+\end{document}  

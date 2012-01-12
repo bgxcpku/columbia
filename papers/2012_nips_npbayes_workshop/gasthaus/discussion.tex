@@ -1,0 +1,80 @@
+We presented a new compression algorithm based on the predictive probabilities of a hierarchical Bayesian nonparametric model called the sequence memoizer (SM).  We showed that the resulting compressor, DEPLUMP, compresses a variety of signals as well or better than PPM*, PPMZ and CTW.  The reasons for this include both the fact that DEPLUMP uses unbounded context lengths and the fact that DEPLUMP employs an underlying probabilitistic model, SM, that explicitly encodes power law assumptions. SM enables DEPLUMP to use the information available in the unbounded length contexts effectively, whereas for PPM* the extension to unbounded depth did not yield consistent improvement \citep{bunton1997smi}. 
+
+%Because of DEPLUMP's connection to probabilistic modelling it is now
+%relatively straightforward to develop many new and potentially improved
+%compression algorithms.  First, we note that pre-training of the predictive
+%model can be desireable to do, particularly as compression of the first part
+%of any file suffers as a result of the initially inaccurate model.  Doing this
+%kind of pre-training is known to help PPM compression (at the cost of having
+%to transmit either the pre-trained model parameters or the files which were
+%used for pre-training in addition to the file itself).  There are
+%straightforward ways of doing this in DEPLUMP and these should work reasonably
+%well, however, because the underlying model is related to inference in HPYP's,
+%the domain adaptation work of \cite{WooTeh2009} could be used to introduce a
+%improved way of pre-training and sharing models. 
+
+% We have also found that doing more intensive inference when
+% computing the next symbol predictive distribution (i.e.~using more particles
+% or running a Gibbs sampler for some number of sweeps) does improve DEPLUMP
+% compression to a small extent.  Our experiments were not extensive in this
+% respect, but we can safely claim that it is possible to improve on DEPLUMP
+% compression simply by doing more computation in the same model.  There is
+% obviously a limit to the amount of improvement that can be gained in this way,
+% however, the fact that we can improve compression by simply doing more
+% computation is an extremely attractive characteristic for a compressor.
+
+% Additionally, both PPM and PLUMP assume (implicitly in the case of PPM,
+% explicitly in the case of PLUMP) that the underlying  symbol generation
+% distribution is stationary.  Extensions to nonparametric Bayesian models that
+% account for nonstationarity such as those described in the dependent Dirichlet
+% process literature \cite{caron2007gpu, maceachern2000ddp} can also be applied
+% here (although work remains to be done).  Intuitively, doing this will allow
+% the compressor's prediction model to adapt to the statistics local to a
+% particular region of a file.  This can be very important for long and diverse
+% corpora.  In addition to stationarity concerns, bounding the memory used by
+% the compression algorithm is often a significant practical concern.
+% Techniques from the sparse Gaussian process literature \cite{csatoo02,
+% quinonerocandela2005uvs} can also be borrowed to limit the storage requirement
+% to one of constant space.  
+
+%Because of the establishment of  can immediately commence on extending PLUMP
+%(or PPM) in these new ways because the sequence model and nonparametric
+%Bayesian inference heavy lifting has already been done by the statistics and
+%machine learning communities.
+
+While we show that DEPLUMP surpasses the compression performance of PPM's best
+variants,  it should should be noted that PPM has
+also recently been surpassed by the
+context-mixing PAQ family of compressors \citep{mahoney:awc} and PAQ
+compression performance currently exceeds (in general) that of DEPLUMP as well.
+Context-mixing is a term used by the PAQ community; we would suggest that the
+phrase predictive model mixing more accurately describes what context-mixing
+compressors do.  This means, roughly, that PPM can be (and seems already to be---the literature is somewhat obtuse on this point) embedded into PAQ as one
+of the models that are mixed together.  Correspondingly, improvements to PPM
+compression should translate into improvements to PAQ compression, albeit
+perhaps more modestly since PAQ relies upon other predictive models as well.  In general, PAQ utilizes a diverse set of models, each of which uses a
+different definition of context and generalization relationships between
+contexts. 
+Integrating such ideas into the nonparametric Bayesian framework presented
+here remains an exciting opportunity for future
+research. 
+
+The use of a predictive model for compression has a long tradition, with PPM,
+CTW and PAQ being stellar examples.  The use of latent variables to capture
+regularities in the data for compression purposes, as applied in this paper,
+has been explore in the past \citep{hinton1994amd}, but has seen less
+applications due to the computational demand of approximating often intractable
+posterior distributions.   Fortunately, in this paper we were able to derive
+efficient and effective approximate inference algorithms leading to
+state-of-the-art compression results.
+
+We conclude this paper with an interesting thought concerning hierarchical PYP
+models like the SM.  These models were originally intended for modeling
+sequences of words coming from a large (even infinite) vocabulary
+\citep{Teh:ACL06}.  In this paper we have used basically the same model under
+very different circumstances: the symbol set is small (256
+instead of $\gg 10000$), but typical repeated context lengths are much longer
+($10$-$15$ instead of $3$-$5$).  It is surprising that the same model can
+handle both extremes well and points to a sense that it is a natural model for
+discrete sequential data.  It also bodes well for our current work applying
+DEPLUMP to large alphabet texts, e.g.\ of Chinese and Japanese.

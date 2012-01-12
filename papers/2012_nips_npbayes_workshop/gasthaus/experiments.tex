@@ -1,0 +1,122 @@
+\label{sec:experiments}
+\newcommand{\resultstable}{
+\begin{table*}[t]
+    \begin{center}
+    \setlength{\tabcolsep}{1.3mm}
+\begin{tabular}{|l|r||c|c|c|c||c|c|c|c||c|c|}
+\hline
+\multicolumn{2}{|c||}{} & \multicolumn{2}{c||}{DEPLUMP} &
+\multicolumn{2}{|c|}{PPM} & CTW\\\hline
+File          &  Size  &    1PF    &    UKN    &   PPM* &    PPMZ  &  CTW  \\\hline 
+\hline
+bib           & 111261 &    1.73   &\bf{1.72}  &   1.91 &    1.74  &  1.83 \\\hline
+book1         & 768771 &\bf{2.17}  &    2.20   &   2.40 &    2.21  &  2.18 \\\hline
+book2         & 610856 &\bf{1.83}  &    1.84   &   2.02 &    1.87  &  1.89 \\\hline
+geo           & 102400 &\bf{4.40}  &    4.40   &   4.83 &    4.64  &  4.53 \\\hline
+news          & 377109 &\bf{2.20}  &    2.20   &   2.42 &    2.24  &  2.35 \\\hline
+obj1          & 21504  &\bf{3.64}  &    3.65   &   4.00 &    3.66  &  3.72 \\\hline
+obj2          & 246814 &    2.21   &\bf{2.19}  &   2.43 &    2.23  &  2.40 \\\hline
+paper1        & 53161  &    2.21   &\bf{2.20}  &   2.37 &    2.22  &  2.29 \\\hline
+paper2        & 82199  &\bf{2.18}  &    2.18   &   2.36 &    2.21  &  2.23 \\\hline
+pic           & 513216 &    0.77   &    0.82   &   0.85 &\bf{0.76} &  0.80 \\\hline
+progc         & 39611  &    2.23   &\bf{2.21}  &   2.40 &    2.25  &  2.33 \\\hline
+progl         & 71646  &    1.44   &\bf{1.43}  &   1.67 &    1.46  &  1.65 \\\hline
+progp         & 49379  &    1.44   &\bf{1.42}  &   1.62 &    1.47  &  1.68 \\\hline
+trans         & 93695  &    1.21   &\bf{1.20}  &   1.45 &    1.23  &  1.44 \\\hline \hline
+\textbf{avg.} &        &\bf{2.12}  &    2.12   &   2.34 &    2.16  &  2.24 \\\hline
+\textbf{w.~avg.} &     &\bf{1.89}  &    1.91   &   2.09 &    1.93  &  1.99 \\\hline
+\end{tabular}
+\end{center}
+\caption{Compression performance in terms of average log-loss (average bits
+per character under optimal entropy encoding) for the Calgary corpus.
+Boldface type indicates best performance.  Ties are resolved in favour of
+lowest computational complexity.  
+The results for PPM* (PPM with unbounded-length contexts) are copied from 
+\citep{cleary95unboundedlength} and are actual compression rates, while the
+results for PPMZ are average log-losses obtained using a modified version of 
+PPMZ 9.1 under Linux \citep{ppmzforlinux} (which differ slightly from the
+published compression rates). The results for CTW were taken from
+\citep{ctwresults}.}
+\label{table:results}
+\end{table*}
+}
+
+
+In order to evaluate DEPLUMP in terms of compression performance on various types of
+input sequences we use it to make incremental next symbol predictions on the
+Calgary corpus -- a well known compression benchmark corpus consisting of 14 files of
+different types and varying lengths. The measure used for comparing the
+different algorithms is the \emph{average log-loss} 
+$\ell(\xbf_{1:N}) = -\frac{1}{N}\sum_{i=1}^N \log_2 p(x_i|\xbf_{1:i-1})$
+which corresponds to the average number of bits per symbol required to encode
+the sequence using an optimal code. As entropy coding can achieve this limit
+up to a small additive constant, it is virtually equivalent to the average
+number of bits per symbol required by the compressed file. For all our experiments we treat the input files as sequences of bytes, i.e.\ with a 256 alphabet size.%
+\footnote{
+In all experiments the per-level discount parameters were initialized to the
+values \mbox{$d_{0:10} = (0.05,
+0.7, 0.8, 0.82, 0.84, 0.88, 0.91, 0.92, 0.93, 0.94, 0.95)$} and
+$d_{\infty}=0.95$ (chosen empirically). 
+They were then optimized by gradient ascent in the predictive probability,
+interleaved with the count updates. Additionally, in order to overcome
+problems with the model becoming overconfident after long runs of the same
+symbol, predictions were made using a mixture model, where the predictions from
+the leaf node in the tree are mixed with predictions from the root (with a
+weight of $10^{-2}$ for the root). An alternative solution to the problem
+would be to pre-process the input using run-length encoding.  
+}
+
+The results are shown in Table \ref{table:results}. 
+For comparison, we also
+show the results of two PPM variants and one CTW variant in the final three columns. 
+PPM* was the first PPM variant to use unbounded-length context, 
+and the results for PPM-Z are (to our knowledge) among
+the best published results for a PPM variant on the Calgary corpus. 
+
+\resultstable
+
+There are several observations that can be made here: first, the compression results 
+for UKN, and  1PF are comparable, with no consistent advantage for
+any single approach on all files. While 1PF has a slight advantage over UKN on the
+larger text files \texttt{book1} and \texttt{book2}, this advantage is mostly
+lost on other file types.  This means that the most computationally efficient approach
+(1PF) can be chosen without having to suffer a trade-off in terms compression performance.
+
+In addition to these experiments, we performed experiments with several
+variants of the basic algorithm: with and without context mixing, with and
+without gradient updates to the discounts, and with a model variant where the discount
+parameters are independent (i.e. not shared) for each context. We also tested
+the algorithm with more than one particle, in which case the predictions were
+averaged over particles. Two main observations could be made from these
+experiments: 1) context mixing is essential if files contain long runs (such as
+\texttt{pic}), and 2) neither using independent discount parameters nor using
+more particles improves performance consistently. Using 100 particles yields
+$\approx 0.02$ bps improvement on the large text files (\texttt{book}, and
+\texttt{paper}), but no improvement on the other files.
+
+In addition to the experiments on the Calgary corpus, compression performance
+was also evaluated on two other benchmark corpora: the Canterbury corpus
+\citep{canterbury} and the 100 MB excerpt of an XML text dump of the English
+version of Wikipedia used in the Large Text Compression Benchmark
+\citep{largetext} and the Hutter Prize compression challange \citep{hutter}. 
+On the Canterbury corpus, the results were consistently better then the best
+reported results, with the exception of two binary files. 
+
+On the Wikipedia excerpt, the UKN algorithm (without context mixing) 
+achieved a log-loss of 1.66 bits/symbol
+amounting to a compressed file size of 20.80 MB. While this is significantly
+worse than 16.23 MB achieved by the currently best PAQ-based compressors (but
+on par with non-PAQ approaches), it demonstrates that the described approach 
+can scale to sequences of this length.%
+% \footnote{
+% Our current implementation requires about 8GB of memory to build the prefix
+% tree for this file which contains about 150 million nodes.} 
+
+Finally, we explored the performance of the algorithm when using a larger alphabet.
+In particular, we used an alphabet of 16-bit characters to compress Big-5
+encoded Chinese text. On a representative text file, the Chinese Union version
+the the bible, we achieved a log-loss of 4.35 bits per Chinese character,
+which is significantly better than the results reported by \citet{ppmchinese}
+(5.44 bits).
+
+% vim: tw=78

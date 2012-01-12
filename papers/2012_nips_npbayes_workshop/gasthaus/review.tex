@@ -1,0 +1,172 @@
+The sequential inference approach in PLUMP is closely related to the  \emph{prediction by
+partial matching} (PPM) family of compression algorithms
+\citep{cleary1984dca,moffat1990ipd,howard1993dae,cleary95unboundedlength}.
+Both are based on sequentially estimating a distribution over the next symbol,
+$\Prob(x_i|\xbf_{1:i-1})$ from the input seen so far and then using entropy
+coding (usually arithmetic) for encoding and decoding using this distribution.
+The predictive distribution $\Prob(x_i|\xbf_{1:i-1})$ in PPM is estimated by
+blending estimates of the distributions over next symbols in contexts $\ubf$
+which are suffixes of $\xbf_{1:i-1}$ of variable length. 
+The way these distributions are blended by smoothing the counts from
+related contexts of varying length resembles \eqref{eq:predictive} and the 
+particle filter update algorithm. In particular, one variant, PPM-D, corresponds to a particular variant of
+non-interpolated Kneser-Ney smoothing with a discount of $\frac{1}{2}$. 
+Further, the  variant that uses unbounded context lengths (PPM*) also uses a suffix tree data structure that, while
+quite different from the prefix tree used in the sequence memoizer, possesses
+similar properties, including the $\Oh(N)$ space complexity and $\Oh(N^2)$
+time complexity for prediction.
+
+\subsection{Relation to CTW}
+\begin{itemize}
+    \item Infinite CTW (in the extensions paper) uses the same kind of
+        compressed prefix tree (pretty sure)
+    \item Each node estimates the block-joint probability using the 
+        evidence of a beta-bernoulli model with params (0.5,0.5) of all 
+        symbols following the context of the node
+    \item The weighted probabilities are given by $P^s_w(a,b) = 0.5
+        P_e^s(a,b) + 0.5 P_w^{0s}(a,b) P_w^{1s}(a,b)$.
+    \item Peforms ``double mixture'' over parameters and possible models in
+        the source class (tree sources)
+    \item The weighted probability in each node is given by a weighting of 
+    probabilities of all possible sources below the node. Coding thus is done
+    using the probability computed at the root (ie. including all sources).
+    \item Weighting over sources given by code length for source, e.g. more
+        complex sources get less weight
+\end{itemize}
+
+
+% While numerous variants of the PPM scheme exists, we limit the discussion 
+% here to the better-known variants PPM-A \citep{cleary1984dca}, PPM-C \citep{moffat1990ipd},
+% PPM-D \citep{howard1993dae} and PPM* \citep{Cleary95unboundedlength}, 
+% of which the final two are most similar to \PLUMP: PPM-D uses a similar form
+% of absolute discounting and PPM* allows for unbounded-length contexts. 
+
+% The PPM model is essentially a $k$-th order Markov model whose parameters 
+% are estimated using a form of backoff smoothing. For each context with length
+% $|\ubf| \leq k$ PPM estimates the distribution $\Prob(s|\ubf)$. 
+% The parameters of these conditional distributions are estimated from the
+% counts $c(\sbf)$ for all substrings $\sbf \in \Sigma^{k+1}$ that have been
+% observed in the input seen so far. The PPM variants mainly differ in the way the
+% counts are smoothed to produce the probability estimate in each context. The
+% process of smoothing of the counts in PPM is typically expressed (and
+% implemented) in terms of \emph{escape probabilities}.  For this, a special
+% \emph{escape symbol} \texttt{esc} is included in the alphabet, and the
+% distribution for each context assigns some probability to \texttt{esc}. 
+% To compute the probability of the next symbol $s$ 
+% given a context $\ubf$ (which we assume is always of length
+% $|\ubf| = k$), PPM uses the following scheme: 
+% \begin{equation}
+%     \Prob(s|\ubf) = 
+%     \begin{cases}
+%         \hat{\Prob}(s|\ubf) & \text{if}~s \in \Sigma_{\ubf}\\
+%         \hat{\Prob}(\mathtt{esc}|\ubf) \hat{\Prob}(s|\sigma(\ubf)) & \text{otherwise}
+%     \end{cases}
+%     \label{eq:ppmPredict}
+% \end{equation}
+% The probabilities $\hat{\Prob}(s|\ubf)$ and $\hat{\Prob}(\mathtt{esc}|\ubf)$
+% are estimated according to the following scheme
+% \begin{equation}
+%     \hat{\Prob}(s|\ubf) \propto \gcount(s|\ubf)
+%     \quad \quad \quad \quad
+%     \hat{\Prob}(\mathtt{esc}|\ubf) \propto \gcount(\mathtt{esc}|\ubf)
+%     \label{eq:ppmEstimate}
+% \end{equation}
+% where the normalization is with respect to all symbols in $\Sigma_{\ubf} \cup
+% \{\escape\}$ which have not occurred in higher-order contexts. Because the
+% symbols observed in higher-order contexts are excluded from the normalization
+% this amounts to \emph{backoff} rather than \emph{interpolation} in the
+% sense in which these terms are used in the language modelling community (see e.g.
+% \citep{Chen:CSL99}). The definitions for
+% $\gcount(\cdot|\cdot)$ are what distinguishes the various PPM variants. The 
+% original PPM-A uses $\gcount(s|\ubf) = c(\ubf s)$ and $\gcount(\escape|\ubf) = 1$,
+% whereas the very successful PPM-C variant uses
+% $\gcount(s|\ubf) = c(\ubf s)$ and $\gcount(\escape|\ubf) = |\Sigma_{\ubf}|$.%
+% \footnote{The same form of smoothing is known as Witten-Bell smoothing in the
+% context of language-modelling.}
+% 
+% \todo{This is actually wrong!}
+% PPM-D and its predecessor PPM-B are slightly different in that they use a form of absolute
+% discounting and set $\gcount(s|\ubf) = c(\ubf s) - \frac{1}{2}$ and $\gcount(\escape|\ubf) =
+% |\Sigma_{\ubf}|$.
+% 
+% PPM* uses the PPM-C scheme of probability estimation but like \PLUMP\ allows $k$ to be
+% infinite, i.e. it estimates $\Prob(s|\ubf)$ for all context $\ubf$ that have
+% been observed in the input. PPM* uses a suffix tree data structure that, while
+% quite different from the prefix tree used in the sequence memoizer, possesses
+% similar properties, including the $\Oh(N)$ space complexity and $\Oh(N^2)$
+% time complexity for prediction.
+
+% As noted in \citep{Chen:CSL99} and \citep{kneser1995ibo}, most existing
+% smoothing algorithms can be written in the form 
+% \begin{equation}
+% \Psmooth(s|\ubf) = 
+% \begin{cases}
+%     \alpha(s|\ubf) & \text{if}~c(\ubf s) > 0\\
+%     \gamma(\ubf) \Psmooth(s|\suffix(\ubf)) & \text{if}~ c(\ubf s)
+%     = 0
+% \end{cases}
+% \label{eq:backoff}
+% \end{equation}
+% where $\alpha(s|\textbf{u})$ is the unsmoothed probability of $s$ in context
+% $\ubf$ (e.g. simply $c(\ubf s)/c(\ubf)$), normalized over $s \in
+% \Sigma_{\ubf}$ and $\gamma(\ubf)$ ensures normalization of $\Psmooth(s|\ubf)$.  
+% Models of this form are referred to as \emph{backoff} models.
+% An equivalent formulation, which is more common in the compression literature
+% is in terms of \emph{escape probabilities}: For each context $\ubf$,
+% $\alpha(s|\ubf)$ is modelled as a distribution over $s\in \Sigma_{\ubf} \cup
+% \{\mathtt{esc}\}$ where \texttt{esc} denotes a special \emph{escape symbol}. 
+% The smoothed probability for a symbol $s$ in a context
+% $\ubf$ can then be written as:
+% \begin{equation}
+% \Psmooth(s|\ubf) = 
+% \begin{cases}
+%     \alpha(s|\ubf) & \text{if}~c(\ubf s) > 0\\
+%     \alpha(\mathtt{esc}|\ubf) \Psmooth(s|\suffix(\ubf)) & \text{if}~ c(\ubf s)
+%     = 0
+% \end{cases}
+% \label{eq:escape}
+% \end{equation}
+% An alternative to the backoff approach is linear interpolation, where the
+% smoothed probability $\Psmooth(s|\ubf)$ is a convex combination of the
+% unsmoothed probabilties in all contexts that are suffixes of $\ubf$: 
+% \begin{equation}
+%     \Psmooth(s|\ubf) = \lambda_{\ubf} \beta(s|\ubf) +
+%     \lambda_{\suffix(\ubf)} \beta(s|\suffix(\ubf)) +  
+%     \lambda_{\suffix(\suffix(\ubf))} \beta(s|\suffix(\suffix(\ubf))) +
+%     \ldots
+%     + \lambda_\epsilon \beta(s|\epsilon)
+% \end{equation}
+% It can easily be seen that any such \emph{interpolated
+% model} can be reformulated as a backoff model by choosing 
+% $\gamma(\ubf) = e_{\ubf}$ and
+% $\alpha(s|\ubf) = (1-e_{\ubf})\beta(s|\ubf) + e_{\ubf}
+% \Psmooth(s|\suffix(\ubf))$
+% where $e_{\ubf}$ and $\lambda_{\ubf}$ are related by $\lambda_{\ubf} = (1-e_{\ubf})\prod_{\ubf' \in
+% \sigma(\ubf)}e_{\ubf'}$. 
+% TODO: The product above is not correct / not explained
+
+
+% PPM-A and PPM-D can be expressed terms of \eqref{eq:escape} by choosing
+% $\alpha(s|\suffix(\ubf)) = c(\ubf s)/(C(\ubf)+\delta)$ and
+% $\alpha(\mathtt{esc}|\ubf) = \delta/(C(\ubf) + \delta)$ where $\delta$ is chosen
+% to be 1 for PPM-A and $\delta=|\Sigma_s|$ for PPM-C.
+% PPM-B and PPM-D can be seen as special forms of Kneser-Ney (KN)
+% smoothing \citep{kneser1995ibo}. In the general form of KN smoothing
+% (expressed in terms of \eqref{eq:backoff}, we have $\alpha(s|\ubf) =
+% \max(c(\ubf s) - d,0)/C(\ubf)$ and $\gamma(\ubf) = \ldots $
+
+% \begin{table}
+%     \begin{center}
+% \begin{tabular}{|c|c|c|}
+%     \hline
+%     Variant & $\alpha(s|\ubf)$ & $\alpha(\texttt{esc}|\ubf)$ \\ \hline \hline
+%     A & $\frac{c(\ubf s)}{C(\ubf)+1}$ & $\frac{1}{C(\ubf) + 1}$\\
+%     C & 
+% \end{tabular}
+% \end{center}
+% \caption{Backoff interpretation of PPM variants. $C(\ubf) = \sum_{s' \in
+% \Sigma_s}c(\ubf s')$}
+% \end{table}
+
+
+% vim: tw=78

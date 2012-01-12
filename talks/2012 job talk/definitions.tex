@@ -1,0 +1,232 @@
+% !TEX root = talk.tex
+
+\newcommand{\comment}[1]{}
+%\newcommand{\comment}[1]{{\marginpar{\tiny {#1} }}}
+\def\todo#1{TODO(#1)}
+
+\def\bigO{{\mathcal O}}
+\def\balpha{\mbox{\boldmath $\alpha$}}
+\def\bbeta{\mbox{\boldmath $\beta$}}
+\def\beeta{\mbox{\boldmath $\eta$}}
+\def\blambda{\mbox{\boldmath $\lambda$}}
+\def\bmu{\mbox{\boldmath $\mu$}}
+\def\bphi{\mbox{\boldmath $\phi$}}
+\def\bpsi{\mbox{\boldmath $\psi$}}
+\def\bsigma{\mbox{\boldmath $\sigma$}}
+\def\btau{\mbox{\boldmath $\tau$}}
+\def\btheta{\mbox{\boldmath $\theta$}}
+\def\dbphi{\dot{\mbox{\boldmath $\phi$}}}
+\def\dbtau{\dot{\mbox{\boldmath $\tau$}}}
+\def\dbtheta{\dot{\mbox{\boldmath $\theta$}}}
+
+%\newcommand{\nofootnotemark}{\let\@makefnmark\relax}
+\newcommand{\bX}{\mathbf{X}}
+\newcommand{\bY}{\mathbf{Y}}
+\newcommand{\bW}{\mathbf{W}}
+\newcommand{\bZ}{\mathbf{Z}}
+\newcommand{\bH}{\mathbf{H}}
+\newcommand{\bQ}{\mathbf{Q}}
+\newcommand{\bA}{\mathbf{A}}
+\newcommand{\bI}{\mathbf{I}}
+\newcommand{\by}{\mathbf{y}}
+\newcommand{\bz}{\mathbf{z}}
+\newcommand{\bx}{\mathbf{x}}
+
+\newcommand{\ith}{i^\mathrm{th}}
+\def\A{{\bf A}}
+\def\B{{\bf B}}
+\def\C{{\bf C}}
+\def\D{{\bf D}}
+\def\F{{\bf F}}
+\def\L{{\bf L}}
+\def\M{{\bf M}}
+\def\W{{\bf W}}
+\def\I{{\bf I}}
+\def\J{{\bf J}}
+\def\R{{\bf R}}
+\def\U{{\bf U}}
+\def\V{{\bf V}}
+\def\b{{\bf b}}
+\def\c{{\bf c}}
+\def\d{{\bf d}}
+\def\r{{\bf r}}
+\def\s{{\bf s}}
+\def\t{{\bf t}}
+\def\u{{\bf u}}
+\def\v{{\bf v}}
+\def\f{{\bf f}}
+\def\x{{\bf x}}
+\def\y{{\bf y}}
+\def\w{{\bf w}}
+\def\vo{{\bf o}}
+\def\p{{\bf p}}
+\def\O{{\bf 0}}
+%\def\a{{\bf a}}
+
+
+\def\vbpsi{\vec{\mbox{\boldmath $\psi$}}} 
+\def\vpsi{\vec{\psi}} 
+\def\vbphi{\vec{\mbox{\boldmath $\phi$}}} 
+\def\vphi{\vec{\phi}} 
+\def\vbtau{\vec{\mbox{\boldmath $\tau$}}} 
+\def\vbtheta{\vec{\mbox{\boldmath $\theta$}}} 
+\def\vD{\vec{D}}
+\def\vf{\vec{\bf f}}
+\def\vF{\vec{\bf F}}
+\def\vI{\vec{\bf I}}
+\def\vR{\vec{\bf R}}
+\def\vv{\vec{v}}
+\def\vV{\vec{\bf V}}
+
+\def\pon{p_{\mathrm{on}}}
+\def\poff{p_{\mathrm{off}}}
+
+\def\tr{^{\text{T}}}
+
+%%% Vector notation for sections 3 and 4
+%%% Vector notation for sections 3 and 4
+\def\mvec{\vec{m}}
+\def\fvec{\vec{f}}
+\def\appfvec{\vec{f}_k}
+\def\avec{\vec{a}}
+\def\bvec{\vec{b}}
+\def\evec{\vec{e}}
+\def\uvec{\vec{u}}
+\def\xvec{\vec{x}}
+\def\wvec{\vec{w}}
+\def\gradvec{\vec{\nabla}}
+
+\def\aM{\mbox{\bf a}_M}
+\def\aS{\mbox{\bf a}_S}
+\def\aO{\mbox{\bf a}_O}
+\def\aL{\mbox{\bf a}_L}
+\def\aP{\mbox{\bf a}_P}
+\def\ai{\mbox{\bf a}_i}
+\def\aj{\mbox{\bf a}_j}
+\def\an{\mbox{\bf a}_n}
+\def\a1{\mbox{\bf a}_1}
+\def\a2{\mbox{\bf a}_2}
+\def\a3{\mbox{\bf a}_3}
+\def\a4{\mbox{\bf a}_4}
+
+%\def\x{\mbox{\bf x\/}}
+%\def\X{\mbox{\bf X}}
+%\def\A{\mbox{\bf A}}
+%\def\P{\mbox{\bf P}}
+%\def\C{\mbox{\bf C}}
+%\def\c{\mbox{\bf c}}
+%\def\b{\mbox{\bf b}}
+%\def\o{\mbox{\bf o}}
+%\def\h{\mbox{\bf h}}
+%\def\f{\mbox{\bf f}}
+%\def\x{\mbox{\bf x}}
+%\def\sx{\mbox{\scriptsize\bf x}}
+%\def\z{\mbox{\bf z}}
+%\def\l{\mbox{\bf l}}
+%\def\m{\mbox{\bf m}}
+%\def\bi{\mbox{\bf i}}
+%\def\u{\mbox{\bf u}}
+%\def\v{\mbox{\bf v}}
+\def\a{\mbox{\bf a}}
+%\def\p{\mbox{\bf p}}
+%\def\r{\mbox{\bf r}}
+%\def\d{\mbox{\bf d}}
+%\def\Q{\mbox{\bf Q}}
+%\def\s{\mbox{\bf s}}
+%\def\st{\mbox{\scriptsize\bf t}}
+%\def\ss{\mbox{\scriptsize\bf s}}
+%\def\t{\mbox{\bf t}}
+%\def\cR{{\cal R}}
+%\def\calD{{\cal D}}
+%\def\calS{{\cal S}}
+%\def\g{\mbox{\bf g}}
+%\def\e{\mbox{\bf e}}
+%\def\flow{\{\mbox{\bf u}\}}
+%\def\appearChange{iconic change}
+
+\def\sigmae{\sigma}
+\def\sigmam{\sigma}
+
+\newcommand{\eg}{e.\thinspace{}g.,\@\xspace}
+\newcommand{\egn}{e.\thinspace{}g.\@\xspace}
+\newcommand{\cf}{cf.\@\xspace}
+\newcommand{\ie}{i.\thinspace{}e.,\@\xspace}
+\newcommand{\ien}{i.\thinspace{}e.\@\xspace}
+\newcommand{\iid}{i.\thinspace{}i.\thinspace{}d.\@\xspace}
+
+
+%\newcommand{\comment}[1]{}
+\newcommand{\ponedec}{\mathcal{P}^\downarrow_1}
+\newcommand{\pone}{\mathcal{P}_1}
+\newcommand{\rank}[1]{\mathrm{RANK}\left[#1\right]}
+\newcommand{\E}[1]{\mathrm{E}\left[#1\right]}
+%\newcommand{\PY}{\mathcal{PY}}
+%\newcommand{\DP}{\mathcal{DP}}
+%\newcommand{\iid}{iid.}
+\newcommand{\drawiid}{\stackrel{\text{iid}}{\sim}}
+\newcommand{\vect}[1]{\mathbf{#1}}
+\newcommand{\indicator}[1]{\text{I}\left[ #1 \right]}
+\newcommand{\pdcoag}{PD(d_1,0)-\text{COAG}}
+%\newcommand{\todo}{\textbf{*TODO*}}
+\newcommand{\igram}{\text{$\infty$-gram}}
+\newcommand{\Prob}{\text{P}}
+
+\def\mm{sequence memoizer }
+\def\MM{SM }
+
+\def\pibf{{\boldsymbol{\pi}}}
+\def\kapbf{\boldsymbol{\kappa}}
+\def\taubf{\boldsymbol{\tau}}
+\def\thebf{\boldsymbol{\theta}}
+\def\rhobf{\boldsymbol{\rho}}
+\def\phibf{\boldsymbol{\phi}}
+\def\pbf{\mathbf{p}}
+\def\qbf{\mathbf{q}}
+\def\sbf{\mathbf{s}}
+\def\tbf{\mathbf{t}}
+\def\ybf{\mathbf{y}}
+\def\ubf{\mathbf{u}}
+\def\Ave{\mathbb{E}}
+
+\def\wbf{\mathbf{w}}
+\def\xbf{\mathbf{x}}
+\def\rbf{\mathbf{r}}
+\def\tbf{\mathbf{t}}
+\def\kbf{\mathbf{k}}
+\def\Xbf{\mathbf{X}}
+\def\0bf{\mathbf{0}}
+\def\Ibf{\mathbf{I}}
+\def\phibf{\mathbf{\phi}}
+\def\Phibf{\mathbf{\Phi}}
+\def\disteq{{\stackrel{D}{=}}}
+\def\EE{{\mathbb{E}}}
+\def\GG{\mathcal{G}}
+\def\G{G}
+\def\U{U}
+
+\def\phiv{\varphi}
+\def\phivbf{\boldsymbol{\varphi}}
+
+\def\Ocal{\mathcal{O}}
+\DeclareMathOperator*{\Var}{Var}
+
+\DeclareMathOperator*{\Bet}{Beta}
+\DeclareMathOperator{\coag}{COAG}
+\DeclareMathOperator{\frag}{FRAG}
+\DeclareMathOperator*{\rnk}{RANK}
+\DeclareMathOperator*{\gem}{GEM}
+\DeclareMathOperator*{\pd}{PD}
+\DeclareMathOperator*{\py}{PY}
+\DeclareMathOperator*{\DP}{DP}
+\DeclareMathOperator*{\PY}{PY}
+\DeclareMathOperator*{\gd}{GDir}
+\DeclareMathOperator*{\Dir}{Dir}
+\DeclareMathOperator*{\CRP}{CRP}
+\DeclareMathOperator*{\argmax}{argmax}
+
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "paper"
+%%% End: 

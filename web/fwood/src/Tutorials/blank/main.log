@@ -1,0 +1,490 @@
+This is pdfTeXk, Version 3.1415926-1.40.9 (Web2C 7.5.7) (format=pdflatex 2008.12.28)  27 OCT 2011 15:44
+entering extended mode
+\write18 enabled.
+ %&-line parsing enabled.
+**main.tex
+(./main.tex
+LaTeX2e <2005/12/01>
+Babel <v3.8l> and hyphenation patterns for english, usenglishmax, dumylang, noh
+yphenation, german-x-2008-06-18, ngerman-x-2008-06-18, ancientgreek, ibycus, ar
+abic, basque, bulgarian, catalan, pinyin, coptic, croatian, czech, danish, dutc
+h, esperanto, estonian, farsi, finnish, french, galician, german, ngerman, mono
+greek, greek, hungarian, icelandic, indonesian, interlingua, irish, italian, la
+tin, lithuanian, mongolian, mongolian2a, bokmal, nynorsk, polish, portuguese, r
+omanian, russian, sanskrit, serbian, slovak, slovenian, spanish, swedish, turki
+sh, ukenglish, ukrainian, uppersorbian, welsh, loaded.
+(/usr/local/texlive/2008/texmf-dist/tex/latex/amscls/amsart.cls
+Document Class: amsart 2004/08/06 v2.20
+\linespacing=\dimen102
+\normalparindent=\dimen103
+\normaltopskip=\skip41
+(/usr/local/texlive/2008/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2000/07/18 v2.13 AMS math features
+\@mathmargin=\skip42
+
+For additional information on amsmath, use the `?' option.
+(/usr/local/texlive/2008/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2000/06/29 v2.01
+
+(/usr/local/texlive/2008/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0
+\@emptytoks=\toks14
+\ex@=\dimen104
+))
+(/usr/local/texlive/2008/texmf-dist/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d
+\pmbraise@=\dimen105
+)
+(/usr/local/texlive/2008/texmf-dist/tex/latex/amsmath/amsopn.sty
+Package: amsopn 1999/12/14 v2.01 operator names
+)
+\inf@bad=\count79
+LaTeX Info: Redefining \frac on input line 211.
+\uproot@=\count80
+\leftroot@=\count81
+LaTeX Info: Redefining \overline on input line 307.
+\classnum@=\count82
+\DOTSCASE@=\count83
+LaTeX Info: Redefining \ldots on input line 379.
+LaTeX Info: Redefining \dots on input line 382.
+LaTeX Info: Redefining \cdots on input line 467.
+\Mathstrutbox@=\box26
+\strutbox@=\box27
+\big@size=\dimen106
+LaTeX Font Info:    Redeclaring font encoding OML on input line 567.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 568.
+\macc@depth=\count84
+\c@MaxMatrixCols=\count85
+\dotsspace@=\muskip10
+\c@parentequation=\count86
+\dspbrk@lvl=\count87
+\tag@help=\toks15
+\row@=\count88
+\column@=\count89
+\maxfields@=\count90
+\andhelp@=\toks16
+\eqnshift@=\dimen107
+\alignsep@=\dimen108
+\tagshift@=\dimen109
+\tagwidth@=\dimen110
+\totwidth@=\dimen111
+\lineht@=\dimen112
+\@envbody=\toks17
+\multlinegap=\skip43
+\multlinetaggap=\skip44
+\mathdisplay@stack=\toks18
+LaTeX Info: Redefining \[ on input line 2666.
+LaTeX Info: Redefining \] on input line 2667.
+)
+LaTeX Font Info:    Try loading font information for U+msa on input line 407.
+
+(/usr/local/texlive/2008/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2002/01/19 v2.2g AMS font definitions
+)
+(/usr/local/texlive/2008/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2001/10/25 v2.2f
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 132.
+)
+\copyins=\insert233
+\abstractbox=\box28
+\listisep=\skip45
+\c@part=\count91
+\c@section=\count92
+\c@subsection=\count93
+\c@subsubsection=\count94
+\c@paragraph=\count95
+\c@subparagraph=\count96
+\c@figure=\count97
+\c@table=\count98
+\abovecaptionskip=\skip46
+\belowcaptionskip=\skip47
+\captionindent=\dimen113
+\thm@style=\toks19
+\thm@bodyfont=\toks20
+\thm@headfont=\toks21
+\thm@notefont=\toks22
+\thm@headpunct=\toks23
+\thm@preskip=\skip48
+\thm@postskip=\skip49
+\thm@headsep=\skip50
+\dth@everypar=\toks24
+)
+(/usr/local/texlive/2008/texmf-dist/tex/latex/geometry/geometry.sty
+Package: geometry 2008/12/21 v4.2 Page Geometry
+
+(/usr/local/texlive/2008/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks25
+)
+(/usr/local/texlive/2008/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+Package: ifpdf 2007/12/12 v1.6 Provides the ifpdf switch (HO)
+Package ifpdf Info: pdfTeX in pdf mode detected.
+)
+(/usr/local/texlive/2008/texmf-dist/tex/generic/oberdiek/ifvtex.sty
+Package: ifvtex 2008/11/04 v1.4 Switches for detecting VTeX and its modes (HO)
+Package ifvtex Info: VTeX not detected.
+)
+\Gm@cnth=\count99
+\Gm@cntv=\count100
+\c@Gm@tempcnt=\count101
+\Gm@bindingoffset=\dimen114
+\Gm@wd@mp=\dimen115
+\Gm@odd@mp=\dimen116
+\Gm@even@mp=\dimen117
+\Gm@dimlist=\toks26
+
+(/usr/local/texlive/2008/texmf-dist/tex/xelatex/xetexconfig/geometry.cfg))
+(/usr/local/texlive/2008/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2008/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2006/02/20 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2008/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/usr/local/texlive/2008/texmf/tex/latex/config/graphics.cfg
+File: graphics.cfg 2007/01/18 v1.5 graphics configuration of teTeX/TeXLive
+)
+Package graphics Info: Driver file: pdftex.def on input line 90.
+
+(/usr/local/texlive/2008/texmf-dist/tex/latex/pdftex-def/pdftex.def
+File: pdftex.def 2008/09/08 v0.04l Graphics/color for pdfTeX
+\Gread@gobject=\count102
+))
+\Gin@req@height=\dimen118
+\Gin@req@width=\dimen119
+)
+(/usr/local/texlive/2008/texmf-dist/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2002/01/22 v2.2d
+)
+(/usr/local/texlive/2008/texmf-dist/tex/latex/oberdiek/epstopdf.sty
+Package: epstopdf 2008/05/06 v1.7 Conversion with epstopdf on the fly (HO)
+
+(/usr/local/texlive/2008/texmf-dist/tex/generic/oberdiek/infwarerr.sty
+Package: infwarerr 2007/09/09 v1.2 Providing info/warning/message (HO)
+)
+(/usr/local/texlive/2008/texmf-dist/tex/latex/oberdiek/grfext.sty
+Package: grfext 2007/09/30 v1.0 Managing graphics extensions (HO)
+)
+(/usr/local/texlive/2008/texmf-dist/tex/latex/oberdiek/kvoptions.sty
+Package: kvoptions 2007/10/18 v3.0 Keyval support for LaTeX options (HO)
+)
+(/usr/local/texlive/2008/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
+Package: pdftexcmds 2007/12/12 v0.3 LuaTeX support for pdfTeX utility functions
+ (HO)
+Package pdftexcmds Info: LuaTeX not detected on input line 139.
+)
+Package grfext Info: Graphics extension search list:
+(grfext)             [.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPE
+G,.JBIG2,.JB2,.eps]
+(grfext)             \AppendGraphicsExtensions on input line 323.
+)
+(/usr/local/texlive/2008/texmf-dist/tex/latex/natbib/natbib.sty
+Package: natbib 2009/02/02 8.3 (PWD, AO)
+\bibhang=\skip51
+\bibsep=\skip52
+LaTeX Info: Redefining \cite on input line 694.
+\c@NAT@ctr=\count103
+)
+(/usr/local/texlive/2008/texmf-dist/tex/latex/graphics/epsfig.sty
+Package: epsfig 1999/02/16 v1.7a (e)psfig emulation (SPQR)
+\epsfxsize=\dimen120
+\epsfysize=\dimen121
+)
+(/usr/local/texlive/2008/texmf-dist/tex/latex/subfigure/subfigure.sty
+Package: subfigure 2002/03/15 v2.1.5 subfigure package
+\subfigtopskip=\skip53
+\subfigcapskip=\skip54
+\subfigcaptopadj=\dimen122
+\subfigbottomskip=\skip55
+\subfigcapmargin=\dimen123
+\subfiglabelskip=\skip56
+\c@subfigure=\count104
+\c@lofdepth=\count105
+\c@subtable=\count106
+\c@lotdepth=\count107
+
+****************************************
+* Local config file subfigure.cfg used *
+****************************************
+(/usr/local/texlive/2008/texmf-dist/tex/latex/subfigure/subfigure.cfg)
+\subfig@top=\skip57
+\subfig@bottom=\skip58
+)
+(/usr/local/texlive/2008/texmf-dist/tex/latex/algorithms/algorithm.sty
+Package: algorithm 
+
+Document Style `algorithm' - floating environment
+(/usr/local/texlive/2008/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count108
+\float@exts=\toks27
+\float@box=\box29
+\@float@everytoks=\toks28
+\@floatcapt=\box30
+)
+(/usr/local/texlive/2008/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
+)
+\@float@every@algorithm=\toks29
+\c@algorithm=\count109
+)
+(/usr/local/texlive/2008/texmf-dist/tex/latex/algorithms/algorithmic.sty
+Package: algorithmic 2006/06/02
+
+Document Style `algorithmic' - environment
+(/usr/local/texlive/2008/texmf-dist/tex/latex/tools/calc.sty
+Package: calc 2005/08/06 v4.2 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count110
+\calc@Bcount=\count111
+\calc@Adimen=\dimen124
+\calc@Bdimen=\dimen125
+\calc@Askip=\skip59
+\calc@Bskip=\skip60
+LaTeX Info: Redefining \setlength on input line 75.
+LaTeX Info: Redefining \addtolength on input line 76.
+\calc@Ccount=\count112
+\calc@Cskip=\skip61
+)
+\c@ALC@line=\count113
+\c@ALC@rem=\count114
+\c@ALC@depth=\count115
+\ALC@tlm=\skip62
+\algorithmicindent=\skip63
+)
+(/usr/local/texlive/2008/texmf-dist/tex/latex/easy/easybmat.sty
+Document Style `easybmat' v1.0 <2001/06/13>.
+(/usr/local/texlive/2008/texmf-dist/tex/latex/easy/easy.sty
+Document Style `easy' v1.1 <2001/05/31>.
+Package: easy 2001/05/31 v1.1
+\@easy@level=\count116
+\@easy@ncol=\count117
+\@easy@nrow=\count118
+\@easy@cnt=\count119
+\@easy@boxviii=\box31
+\@easy@minxviii=\dimen126
+\@easy@minyviii=\dimen127
+\@easy@maxxviii=\dimen128
+\@easy@maxyviii=\dimen129
+\@easy@boxvii=\box32
+\@easy@minxvii=\dimen130
+\@easy@minyvii=\dimen131
+\@easy@maxxvii=\dimen132
+\@easy@maxyvii=\dimen133
+\@easy@boxvi=\box33
+\@easy@minxvi=\dimen134
+\@easy@minyvi=\dimen135
+\@easy@maxxvi=\dimen136
+\@easy@maxyvi=\dimen137
+\@easy@boxv=\box34
+\@easy@minxv=\dimen138
+\@easy@minyv=\dimen139
+\@easy@maxxv=\dimen140
+\@easy@maxyv=\dimen141
+\@easy@boxiv=\box35
+\@easy@minxiv=\dimen142
+\@easy@minyiv=\dimen143
+\@easy@maxxiv=\dimen144
+\@easy@maxyiv=\dimen145
+\@easy@boxiii=\box36
+\@easy@minxiii=\dimen146
+\@easy@minyiii=\dimen147
+\@easy@maxxiii=\dimen148
+\@easy@maxyiii=\dimen149
+\@easy@boxii=\box37
+\@easy@minxii=\dimen150
+\@easy@minyii=\dimen151
+\@easy@maxxii=\dimen152
+\@easy@maxyii=\dimen153
+\@easy@boxi=\box38
+\@easy@minxi=\dimen154
+\@easy@minyi=\dimen155
+\@easy@maxxi=\dimen156
+\@easy@maxyi=\dimen157
+\@easy@hsizexxx=\dimen158
+\@easy@vsizexxx=\dimen159
+\@easy@hsizexxix=\dimen160
+\@easy@vsizexxix=\dimen161
+\@easy@hsizexxviii=\dimen162
+\@easy@vsizexxviii=\dimen163
+\@easy@hsizexxvii=\dimen164
+\@easy@vsizexxvii=\dimen165
+\@easy@hsizexxvi=\dimen166
+\@easy@vsizexxvi=\dimen167
+\@easy@hsizexxv=\dimen168
+\@easy@vsizexxv=\dimen169
+\@easy@hsizexxiv=\dimen170
+\@easy@vsizexxiv=\dimen171
+\@easy@hsizexxiii=\dimen172
+\@easy@vsizexxiii=\dimen173
+\@easy@hsizexxii=\dimen174
+\@easy@vsizexxii=\dimen175
+\@easy@hsizexxi=\dimen176
+\@easy@vsizexxi=\dimen177
+\@easy@hsizexx=\dimen178
+\@easy@vsizexx=\dimen179
+\@easy@hsizexix=\dimen180
+\@easy@vsizexix=\dimen181
+\@easy@hsizexviii=\dimen182
+\@easy@vsizexviii=\dimen183
+\@easy@hsizexvii=\dimen184
+\@easy@vsizexvii=\dimen185
+\@easy@hsizexvi=\dimen186
+\@easy@vsizexvi=\dimen187
+\@easy@hsizexv=\dimen188
+\@easy@vsizexv=\dimen189
+\@easy@hsizexiv=\dimen190
+\@easy@vsizexiv=\dimen191
+\@easy@hsizexiii=\dimen192
+\@easy@vsizexiii=\dimen193
+\@easy@hsizexii=\dimen194
+\@easy@vsizexii=\dimen195
+\@easy@hsizexi=\dimen196
+\@easy@vsizexi=\dimen197
+\@easy@hsizex=\dimen198
+\@easy@vsizex=\dimen199
+\@easy@hsizeix=\dimen200
+\@easy@vsizeix=\dimen201
+\@easy@hsizeviii=\dimen202
+\@easy@vsizeviii=\dimen203
+\@easy@hsizevii=\dimen204
+\@easy@vsizevii=\dimen205
+\@easy@hsizevi=\dimen206
+\@easy@vsizevi=\dimen207
+\@easy@hsizev=\dimen208
+\@easy@vsizev=\dimen209
+\@easy@hsizeiv=\dimen210
+\@easy@vsizeiv=\dimen211
+\@easy@hsizeiii=\dimen212
+\@easy@vsizeiii=\dimen213
+\@easy@hsizeii=\dimen214
+\@easy@vsizeii=\dimen215
+\@easy@hsizei=\dimen216
+\@easy@vsizei=\dimen217
+\@easy@dash@len=\dimen218
+\@easy@dash@sep=\dimen219
+)
+Package: easybmat 2001/05/31 v1.1
+\@bmat@size@rule=\dimen220
+\@bmat@size@dash=\dimen221
+) (/usr/local/texlive/2008/texmf-dist/tex/latex/footmisc/footmisc.sty
+Package: footmisc 2007/06/12 v5.4a a miscellany of footnote facilities
+\FN@temptoken=\toks30
+\footnotemargin=\dimen222
+
+
+LaTeX Warning: Command \@footnotetext  has changed.
+               Check if current package is valid.
+
+\c@pp@next@reset=\count120
+Package footmisc Info: Declaring symbol style bringhurst on input line 910.
+Package footmisc Info: Declaring symbol style chicago on input line 918.
+Package footmisc Info: Declaring symbol style wiley on input line 927.
+Package footmisc Info: Declaring symbol style lamport-robust on input line 938.
+
+Package footmisc Info: Declaring symbol style lamport* on input line 958.
+Package footmisc Info: Declaring symbol style lamport*-robust on input line 979
+.
+) (/usr/local/texlive/2008/texmf-dist/tex/latex/graphics/lscape.sty
+Package: lscape 2000/10/22 v3.01 Landscape Pages (DPC)
+)
+(./main.aux)
+\openout1 = `main.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Try loading font information for U+msa on input line 27.
+ (/usr/local/texlive/2008/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2002/01/19 v2.2g AMS font definitions
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 27.
+
+(/usr/local/texlive/2008/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2002/01/19 v2.2g AMS font definitions
+)
+*geometry auto-detecting driver*
+*geometry detected driver: pdftex*
+-------------------- Geometry parameters
+paper: letterpaper
+landscape: --
+twocolumn: --
+twoside: true
+asymmetric: --
+h-parts: 73.71613pt, 0.7\paperwidth , 110.57425pt (default)
+v-parts: 95.39737pt, 0.7\paperheight , 143.09605pt (default)
+hmarginratio: 2:3
+vmarginratio: 2:3
+lines: --
+heightrounded: --
+bindingoffset: 0.0pt
+truedimen: --
+includehead: --
+includefoot: --
+includemp: --
+driver: pdftex
+-------------------- Page layout dimensions and switches
+\paperwidth  614.295pt
+\paperheight 794.96999pt
+\textwidth  430.00462pt
+\textheight 556.47656pt
+\oddsidemargin  1.44614pt
+\evensidemargin 38.30426pt
+\topmargin  1.12738pt
+\headheight 8.0pt
+\headsep    14.0pt
+\footskip   12.0pt
+\marginparwidth 90.0pt
+\marginparsep   11.0pt
+\columnsep  10.0pt
+\skip\footins  7.0pt plus 11.0pt
+\hoffset 0.0pt
+\voffset 0.0pt
+\mag 1000
+\@twosidetrue \@mparswitchtrue 
+(1in=72.27pt, 1cm=28.45pt)
+-----------------------
+(/usr/local/texlive/2008/texmf-dist/tex/context/base/supp-pdf.tex
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count121
+\scratchdimen=\dimen223
+\scratchbox=\box39
+\nofMPsegments=\count122
+\nofMParguments=\count123
+\everyMPshowfont=\toks31
+\MPscratchCnt=\count124
+\MPscratchDim=\dimen224
+\MPnumerator=\count125
+\everyMPtoPDFconversion=\toks32
+) [1{/usr/local/texlive/2008/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+(./main.aux) ) 
+Here is how much of TeX's memory you used:
+ 3950 strings out of 493876
+ 50833 string characters out of 1150567
+ 106336 words of memory out of 3000000
+ 7006 multiletter control sequences out of 10000+50000
+ 8303 words of font info for 32 fonts, out of 3000000 for 5000
+ 875 hyphenation exceptions out of 8191
+ 34i,4n,28p,341b,192s stack positions out of 5000i,500n,10000p,200000b,50000s
+</usr/local/texlive/2008/texmf-dist/fonts/type1/bluesky/cm/cmbx10
+.pfb></usr/local/texlive/2008/texmf-dist/fonts/type1/bluesky/cm/cmr8.pfb></usr/
+local/texlive/2008/texmf-dist/fonts/type1/bluesky/cm/cmr9.pfb>
+Output written on main.pdf (1 page, 9561 bytes).
+PDF statistics:
+ 18 PDF objects out of 1000 (max. 8388607)
+ 0 named destinations out of 1000 (max. 131072)
+ 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+

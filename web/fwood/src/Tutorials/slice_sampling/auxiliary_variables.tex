@@ -1,0 +1,3 @@
+Assume the objective is to obtain samples of $x$.  Sometimes it is easier to introduce an auxiliary variable $u$ and to Gibbs sample from the joint $P(x,u)$, i.e. alternately sample from $P(x|u; \lambda)$ and $P(u|x)$ then discard the $u$ values than it is to directly sample from $p(x|\lambda)$. \newline
+
+Notable examples of when this trick is useful are when $p(x|\lambda)$ does not have a known parametric form but adding $u$ results in a parametric form {\em and} when $x$ has countable support and sampling it requires enumerating all values.  In this case $u$ can be used to control the complexity of inference.

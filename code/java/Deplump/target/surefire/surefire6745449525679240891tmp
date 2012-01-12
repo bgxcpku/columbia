@@ -1,0 +1,33 @@
+#surefire
+#Mon Mar 28 15:24:49 EDT 2011
+testClassesDirectory=/Users/fwood/Projects/columbia/code/java/Deplump/target/test-classes
+classPathUrl.4=/Users/fwood/.m2/repository/edu/columbia/stat/wood/pub/sequencememoizer/1.1/sequencememoizer-1.1.jar
+classPathUrl.3=/Users/fwood/.m2/repository/edu/columbia/stat/wood/util/1.0/util-1.0.jar
+classPathUrl.2=/Users/fwood/.m2/repository/edu/columbia/stat/wood/developmentsequencememoizer/1.0/developmentsequencememoizer-1.0.jar
+useManifestOnlyJar=true
+classPathUrl.1=/Users/fwood/Projects/columbia/code/java/Deplump/target/classes
+reportsDirectory=/Users/fwood/Projects/columbia/code/java/Deplump/target/surefire-reports
+classPathUrl.0=/Users/fwood/Projects/columbia/code/java/Deplump/target/test-classes
+dirscanner.0=directoryScannerOptions
+providerConfiguration=org.apache.maven.surefire.junit4.JUnit4Provider
+testSuiteDefinitionTestSourceDirectory=/Users/fwood/Projects/columbia/code/java/Deplump/src/test/java
+surefireClassPathUrl.1=/Users/fwood/.m2/repository/org/apache/maven/surefire/surefire-api/2.7.1/surefire-api-2.7.1.jar
+surefireClassPathUrl.0=/Users/fwood/.m2/repository/org/apache/maven/surefire/surefire-junit4/2.7.1/surefire-junit4-2.7.1.jar
+report.2=org.apache.maven.surefire.report.XMLReporter
+useSystemClassLoader=true
+report.1=org.apache.maven.surefire.report.BriefFileReporter
+report.0=org.apache.maven.surefire.report.ForkingConsoleReporter
+excludes0=**/*$*
+isTrimStackTrace=true
+dirscanner.0.params=/Users/fwood/Projects/columbia/code/java/Deplump/target/test-classes|[**/Test*.java, **/*Test.java, **/*TestCase.java]|[**/*$*]
+includes2=**/*TestCase.java
+enableAssertions=true
+includes1=**/*Test.java
+failIfNoTests=false
+includes0=**/Test*.java
+dirscanner.0.types=java.io.File|java.util.ArrayList|java.util.ArrayList
+classPathUrl.8=/Users/fwood/.m2/repository/junit/junit/4.4/junit-4.4.jar
+classPathUrl.7=/Users/fwood/.m2/repository/commons-cli/commons-cli/1.2/commons-cli-1.2.jar
+childDelegation=false
+classPathUrl.6=/Users/fwood/.m2/repository/gnu/trove/3.0.0a3/trove-3.0.0a3.jar
+classPathUrl.5=/Users/fwood/.m2/repository/trove/trove/3.0.0a3/trove-3.0.0a3.jar

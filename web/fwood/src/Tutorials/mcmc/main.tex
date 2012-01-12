@@ -1,0 +1,43 @@
+\documentclass[11pt]{amsart}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{epstopdf}
+\usepackage[square,numbers]{natbib}
+\usepackage{amsmath, epsfig}
+\usepackage{amsfonts}
+\usepackage{subfigure}
+\usepackage{graphicx}
+\usepackage{amsfonts}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{easybmat}
+\usepackage{footmisc}
+\usepackage{lscape}
+\usepackage{subfigure}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\title{Markov Chain Monte Carlo}
+\author{Frank Wood}
+%\date{}                                           % Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+%\section{}
+%\subsection{}
+
+Markov Chain Monte Carlo (MCMC) refers to a collection of techniques used to draw samples from distributions of interest by simulating Markov chains who equilibrium distribution is, by design,  precisely the distribution of interest. 
+
+First, why do we want samples from distributions?  It will often be written something like, we can approximated  expectations of functions with respect to distributions
+
+\[ \mathbb{E}_P[f(x)] = \int f(x) P(x) dx \approx \frac{1}{L} \sum_{\ell=1}^L f(x^{(\ell)})\]
+
+via a set of samples drawn from $P(x)$, i.e.~$\{x^{(\ell)}\}_{\ell=1}^L, \; x^{(\ell)} \sim P$.  We will not go into the technical justification and rates of convergence of this approximation here (for those see \cite{neal,liu,etc}), instead we will simply point out the reasonableness of this approximation by illustrating a couple example choices of $f$ and interpretations there-of.  
+
+First, consider $f(x) = x$.  In this case $\mathbb{E}_P[f(x)] = \mathbb{E}_P[x]$ is the definition of the mean of $x$ under $P$.  One might wonder, if not already familiar with MCMC and Bayesian methods, why exactly calculating the mean of $x$ under $P$ is interesting given that in most textbook statistics and inference settings
+
+
+\end{document}  

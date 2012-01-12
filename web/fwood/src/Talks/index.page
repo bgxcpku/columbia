@@ -4,7 +4,11 @@ sort_info: 11
 ---
 ### Talks
 
-_Warning_ severely out of date.
+_Warning_ severely incomplete (and out of date).
+
+* 2011
+	- Explicit duration HMM inference (Penn) [pdf](edhmm_inference.pdf)
+	- HMMs: from the beginning to the state of the art (NL ML meetup) [pdf](hmm_fly_through.pdf)
 
 * 2009
 	- Sequence Memoizer [PPT](sequence_memoizer.ppt "PPT")  <a href="sequence_memoizer.pdf">PDF</a> <a href="http://videolectures.net/icml09_wood_sms/">Video Lecture</a>

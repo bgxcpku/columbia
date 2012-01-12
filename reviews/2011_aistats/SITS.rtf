@@ -1,0 +1,37 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1038\cocoasubrtf360
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww9000\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural\pardirnatural
+
+\f0\fs24 \cf0 Review of SITS: A Hierarchical Nonparametric Model for Topic Control and Segmentation in Multiparty Conversations\
+\
+Summary: \
+\
+This paper is about a topic model in which conversations are broken into non-overlapping turns in which a single speaker generates all of the words in a turn.  Words are generating by drawing from multinomial "topics."  SITS differs from a typical topic model in one key way: every turn may or may not be associated with a new distribution over topics.  Speakers take turns in conversation.  For every turn a speaker takes, there is an associated binary random variable that indicates whether or not the speaker changes the distribution over topics used to assign words.   The primary demonstrated inference objective is to infer a per-speaker propensity for changing topic distribution.\
+\
+Review Summary:\
+\
+Clean, correct, and expertly written.  Would make a reasonable addition to the AISTATS literature, but would be, in my opinion, a better fit at an NLP, social science, or political science conference.  ML new content: small.  Application: not terribly compelling in that it doesn't suggest that the model is good for anything than what it's advertised to be good for.\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural\pardirnatural
+\cf0 Clarity:\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural\pardirnatural
+\cf0 \
+The paper is extremely elegantly written and a joy to read.  In my opinion neither the parametric model nor, especially, the new culinary metaphor are necessary or add anything to the paper.  The latter was too confusing for me to bother really understanding and contributed to a lack of clarity in the remainder of the paper.  Both could be omitted and would, in my opinion, improve the overall quality of the paper.  I also strongly suggest moving some of the derivation of the sampling distributions up into the main text.  The reference to the Wallach minimal path work should be fleshed out and explained as it is not sufficiently clear what's going on there from the text.  As well, how reassignment of word counts from a turn that is assigned to an entire new sub-tree in the graphical model works is extremely unclear but could be made much more clear easily.  The other sections are as clearer than one might expect from a highly technical paper.\
+\
+Importance:\
+\
+Here is where the paper suffers in my opinion.  I admit that I have, to some extent, topic-model fatigue.  Notwithstanding that, I think that ML researchers have an obligation to study and understand models in general and, also, when writing for the ML community (not the NLP or political science community as this paper seems to do) to demonstrate that the model in question either has applicability beyond a single application domain or has a single extremely compelling application.  I personally don't find the application in this paper compelling at all, at least not for the ML community.\
+\
+Correctness:\
+\
+Section 2.1 places far too much onus on the reader to be able to assert whether or not the sampling algorithm is correct.  In this sense, the paper is incomplete without moving a great deal of the appendix material into section 2.1. In particular the derivation from 15 to 17, while basic, is very informative.  Without performing a full re-derivation of the results, considering the materials in the appendix, the maths seem right.\
+\
+Experiments:\
+\
+Comprehensive in the one domain, conversational topic segmentation (reminds me of another beef: I think the title of the paper oversells in a big way).  What I take away from this is that debate performers change topics about 25% of the time and gas-bags on TV about 65% of the time.  Note that neither of these take-homes are really appropriate to the AISTATS community as I see it.\
+\
+\
+\
+}

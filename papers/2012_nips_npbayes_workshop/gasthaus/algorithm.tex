@@ -1,0 +1,245 @@
+\newcommand{\Particle}{\state^{(j)}}
+%\newcommand{\Particle}{\state}
+\newcommand{\SuffixUntil}{\text{\textsc{SuffixUntil}}}
+\newcommand{\Context}{\text{\textsc{Context}}}
+\newcommand{\Child}{\text{\textsc{Child}}}
+\newcommand{\Null}{\text{\textsc{Null}}}
+\newcommand{\True}{\text{\textsc{True}}}
+\newcommand{\Predict}{\text{\textsc{PredictAndInsert}}}
+\newcommand{\Probability}{\text{\textsc{DishProbability}}}
+\newcommand{\AddCustomer}{\text{\textsc{SampleCounts}}}
+\newcommand{\InsertContext}{\text{\textsc{InsertContextAndReturnPath}}}
+\newcommand{\UpdateCounts}{\text{\textsc{UpdateCounts}}}
+\newcommand{\PredictEncodeDecode}{\text{\textsc{PLUMP/DEPLUMP}}}
+\newcommand{\UpdateDiscounts}{\text{\textsc{UpdateDiscounts}}}
+\newcommand{\UpdateCountsPF}{\UpdateCounts_{\text{1PF}}}
+\newcommand{\UpdateCountsUKN}{\UpdateCounts_{\text{UKN}}}
+\newcommand{\PathProbability}{\text{\textsc{PathProbability}}}
+\newcommand{\UpdatePath}{\text{\textsc{UpdatePath}}}
+\newcommand{\Path}{\ensuremath{(\ubf_0,\ldots,\ubf_P)}}
+\newcommand{\Tree}{\ensuremath{\mathcal{T}}}
+\newcommand{\Pathx}{\ensuremath{\Path_{\xbf_{1:i}}}}
+\newcommand{\statep}{\ensuremath{\mathcal{S}_{\xbf_{1:i-1}}}}
+\newcommand{\AlgorithmBox}{
+\begin{algorithm}
+    \caption{PLUMP/DEPLUMP}\label{alg}
+%\begin{algorithmic}[1]
+%    \STATE \textbf{function} $\Predict[x_{},\xbf_{1:i},\sigma,p, \pi]$
+%    \STATE $\lambda = |\Context[s]|$
+%    \STATE	$\ell = \SuffixUntil\left[x_{1:i-1},\Context[s]\right]$ 
+%    \IF {$\ell = \lambda$}
+%    \STATE $c = \Child[s,x_{i-1-\lambda}$]
+%    \STATE $\theta = \Probability[s,\pi,d]$
+%    \IF {$c \neq \Null$}
+%    \STATE $(\alpha, \theta) = \Predict[c,x_{1:i},\lambda,s, \theta]$
+%    \IF {$\alpha = \True$}
+%    \STATE $\alpha = \AddCustomer[s,x_i,\pi]$
+%    \ENDIF
+%    \STATE \textbf{return} $(\alpha, \theta)$ 
+%    \ELSE
+%    \STATE $\Child[s,$
+%    \ENDIF
+%    \ELSE
+%    \STATE
+%    \ENDIF
+%\end{algorithmic}
+\begin{algorithmic}[1]
+    \Procedure{$\PredictEncodeDecode$}{$\xbf$}
+    \State Initialize context tree $\Tree_\varepsilon$ and counts $\mathcal{S}_\varepsilon$
+    \For{$i = 0,\ldots, |\xbf|-1$}
+    \State $\Tree_{\xbf_{1:i+1}}, \Path \gets \InsertContext(\Tree_{\xbf_{1:i}}, \xbf_{1:i})$
+%    \For{$s \in \Sigma$}
+    \State $(p_{-1}, \ldots, p_P) \gets \PathProbability(\statei,
+    \Path)$
+%    \EndFor
+    \State Use probabilities $p_P$ to encode/decode
+    $\xbf_{i+1}$
+    \State $\mathcal{S}_{\xbf_{1:i+1}} \gets \UpdatePath \left(\statei, \Path, \left(p_{-1}, \ldots,
+    p_P \right),\xbf_{i+1} \right)$
+    \EndFor
+    \EndProcedure
+
+    \Function{\InsertContext}{$\Tree_{\xbf_{1:i}}, \xbf_{1:i}$}
+    \State Traverse tree to find the node $\xbf_{j:k}$ that shares the longest suffix with $\xbf_{1:i}$. 
+    \If{$\xbf_{j:k}$ is suffix of $\xbf_{1:i+1}$}
+    \State Insert $\xbf_{1:i}$ into the tree as a child of $\xbf_{j:k}$
+    \Else
+    \State Let $\xbf_{l:k}$ be the longest suffix of both $\xbf_{1:i}$ and
+    $\xbf_{j:k}$. 
+    \State Insert $\xbf_{l:k}$ into the tree in the position of
+    $\xbf_{j:k}$
+    \State Make $\xbf_{j:k}$ and $\xbf_{1:i+1}$ children of $\xbf_{j:k}$
+    \EndIf
+    \State \Return updated tree $\Tree_{\xbf_{1:i+1}}$ and traversed path $\Path$ from root to $\xbf_{1:i}$
+    \EndFunction
+    
+    \Function{\PathProbability}{$\statei, \Path, s$}
+    %\State \Comment{Compute the probability of symbol $s$ at each node in the path}    $\Path$ given state $\state$. 
+    \State $p_{-1} \gets H$
+    \For{$j = 0,\ldots, P$}
+    \For{$s \in \Sigma$}
+    \State $p_j(s) \gets$ evaluate equation \eqref{eq:predictive} with
+    $\ubf = \ubf_j$ and $\Prob(s|\parent(\ubf),\statei) = p_{j-1}(s)$
+    \EndFor
+    \EndFor
+    \State \Return $(p_{-1}, p_0, \ldots, p_P)$
+    \EndFunction
+    \Function{\UpdatePath}{$\statei, \Path, (p_{-1}, \ldots, p_P) , s=\xbf_{i+1}$}
+    \For{$j=P,\ldots, -1$} \Comment{Update counts for each context $\ubf_j$ on the path, bottom up}
+    \State $c_{\ubf_j s} \gets c_{\ubf_j s} + 1$
+    \State \textbf{if} $t_{\ubf_j s} = 0$ \textbf{then} $t_{\ubf_j s} = 1$
+    \If{use probabilistic updates}
+    \State Increment $t_{\ubf_j s}$ with probability
+    $\frac{d_{\ubf_j}t_{\ubf_j \cdot} p_{j-1}(s)}{c_{\ubf_j s} - d_{\ubf_j}
+    t_{\ubf_j s} +
+    d_{\ubf_j}t_{\ubf_j \cdot} p_{j-1}(s) }$
+    \EndIf
+    \State \textbf{if} $t_{\ubf_j s}$ unchanged \textbf{then} \textbf{break}
+    \EndFor
+    \State \Return updated state $\mathcal{S}_{\xbf_{1:i+1}}$
+    \EndFunction
+%    \Function{\UpdateCounts$_{\text{1PF}}$}{$\state, \ubf, p, s$}
+%    \State with probability $\propto
+%    \begin{cases}
+%        \text{max}(0,c_{\ubf s} - d_{\ubf} t_{\ubf s}) & \text{increment}~c_{\ubf s}\\
+%        d_{\ubf}t_{\ubf\cdot} p &
+%        \text{increment}~c_{\ubf s} \text{ and } t_{\ubf s}
+%    \end{cases}$
+%    \State \Return \textsc{True} if $t_{\ubf s}$ was incremented,
+%    \textsc{False} otherwise 
+%    \EndFunction
+%    \Function{\UpdateCounts$_{\text{UKN}}$}{$\state, \ubf, p, s$}
+%    \State $c_{\ubf s} \gets c_{\ubf s} + 1$
+%    \If{$t_{\ubf s} = 0$} $t_{\ubf s} \gets 1$, \Return \textsc{True} 
+%    \Else ~ \Return \textsc{False}
+%    \EndIf
+%    \EndFunction
+%     \Function{\UpdateDiscounts}{$\state, \Path, s$}
+%     \EndFunction
+\end{algorithmic}
+\label{alg:update}
+\end{algorithm}
+}
+\newcommand{\treefigure}{
+\begin{figure*}[t]
+\begin{center}
+    \includegraphics[width=\textwidth]{fig/tree}
+\end{center}
+\caption{Illustration of the tree construction algorithm for the input string
+\texttt{abba}. Each step shows the state of the tree after inserting the
+current context and updating the counts for the observed symbol.  Shown below
+the context at each node are the counts $c_{\ubf \mathtt{a}}$ (left) and
+$c_{\ubf \mathtt{b}}$ (right) as produced by the algorithms.}
+%
+%Panel (1) shows the tree before the insertion of the context $\mathtt{a}$. Because the insertion point for $\mathtt{a}$ (the node which has the longest common suffix with $\mathtt{a}$) is the root node, and the empty context $\emptystring$ at the root is a suffix of $\mathtt{a}$, the $\mathtt{a}$-node is inserted directly as a child of the root as shown in panel (2). The same is true for the context $\mathtt{ab}$ in (3).  When inserting $\mathtt{abb}$ to obtain (4) from (3) the algorithm traverses the tree down to the insertion point $\mathtt{ab}$ by following the child pointer $\mathtt{b}$. As $\mathtt{ab}$ is not a suffix of $\mathtt{abb}$, the $\mathtt{ab}$-node is split into $\mathtt{b}$ and $\mathtt{ab}$. The nodes $\mathtt{ab}$ and $\mathtt{abb}$ are then inserted as children of $\mathtt{b}$ with the appropropriate child pointers $\mathtt{a}$ and $\mathtt{b}$ respectively.
+%}
+\label{fig:tree}
+\end{figure*}
+}
+\label{algorithm}
+\treefigure
+\AlgorithmBox
+In this section we will give a complete description of the algorithm (Algorithm \ref{alg}) for
+computing the predictive probability for the next symbol given the sequence of
+symbols observed (or decoded) so far and for updating the model after
+observing the next symbol.
+%
+Let us first define the notation that is used throughout the
+paper.  Let $\Sigma$ denote the set of symbols (alphabet) over which strings
+are defined.  We will denote strings by bold letters  $\ubf, \xbf \in
+\Sigma^\star$, where the input sequence is always denoted by $\xbf$. The length of a
+string $\ubf$ is denoted by $|\ubf|$, and the empty string (of length 0) by
+$\varepsilon$. 
+Further, let $\suffix(\ubf)$ denote the longest proper suffix of $\ubf$ (i.e.
+$\ubf$ with the first symbol removed).
+
+Similar to CTW and PPM, our algorithm maintains information about the already
+observed input sequence $\xbf_{1:i}$ in the form of a context tree, where
+each node corresponds to some context (i.e. a substring) in $\xbf_{1:i}$ and
+is associated with a set of adjustable parameters. 
+Having processed the input up to position $i$, the algorithm proceeds as
+follows in order to predict (and subsequently encode) the next symbol $\xbf_{i+1}$:
+1) the context tree structure is updated to include the context $\xbf_{1:i}$;
+2) the predictive probabilities $\Prob(s|\xbf_{1:i})$ are computed for
+all $s \in \Sigma$, and arithmetic coding used to encode $\xbf_{i+1}$; 
+3) the parameters of the tree are updated to account for the new observation $\xbf_{i+1}$. 
+The function $\PredictEncodeDecode$ in Algorithm \ref{alg} performs all of these
+steps (PLUMP stands for Power Law Unbounded Markov Prediction; DEPLUMP is the compressor for obvious reasons).
+
+The context tree is essentially a (compressed) suffix tree of the reversed string $\xbf_{i:-1:1}$, and can straightforwardly be constructed 
+sequentially as shown in \figref{fig:tree}. The necessary update is given in
+the function $\InsertContext$.
+% To insert the context $\xbf_{1:i}$ into the tree the algorithm
+% proceeds in two stages. First, the tree is traversed by following child links 
+% from the root to find the \emph{insertion point} for the context $\xbf_{1:i}$. 
+% This is the node in the tree that shares the longest suffix with the context,  say $\xbf_{j:k}$. 
+% Second, depending on whether $\xbf_{j:k}$ is a suffix of $\xbf_{1:i}$,  either the
+% $\xbf_{1:i}$ node is inserted directly as a child of
+% $\xbf_{j:k}$ (if it is a suffix), or the $\xbf_{j:k}$ node is split into $\xbf_{l:k}$ and $\xbf_{j:k}$ such that
+% $\xbf_{l:k}$ is the longest suffix of both $\xbf_{j:k}$ and $\xbf_{1:i}$ which
+% in turn become children of $\xbf_{l:k}$.  
+% We denote all the nodes in the context tree for $\xbf_{1:i}$ by
+% $\Pi_{\xbf_{1:i}}$, and the contexts along path in the tree from the root to the newly
+% inserted node $\xbf_{1:i}$ by $\Pathx = (\ubf_0, \ldots, \ubf_P)$, where
+% $\ubf_0 = \varepsilon$ and $\ubf_{P} = \xbf_{1:i}$. 
+% $\Pathx(0)=\varepsilon,\Pathx(1)\ldots\Pathx(P)\in\Pi_{\xbf_{1:i}}$.
+
+%  \ywcomment{I think it is possible to not use this $\psi$ notation, might simplify the exposition.  also easiest to treat the $d_{|u|}$ case only rather than the full generality (can mention this in inference section).  Also, don't mention multiple particles here, mention it later in inference section.  The idea is that this section gives a crisp description of the simpler version of algorithm, so that algorithmic people can understand. all the additional complications come later.}
+% % 
+% \jgcomment{Ok, I removed $\psi$, but we need the $d_{\ubf}$ because these are
+% the discounts in the compressed tree (which are products of the $d_{|\ubf|}$.)}
+
+For each context $\ubf$ in the context tree, the algorithm maintains two sets of counts, 
+$\{c_{\ubf s}\}_{s \in \Sigma}$ and $\{t_{\ubf s}\}_{s \in \Sigma}$,
+as well as a scalar parameter $d_{\ubf}$. These counts are initialized to
+$0$ for all contexts and symbols $s$.
+Given these sets of counts for all contexts $\ubf \in \Pi_{\xbf_{1:i}}$
+(which we will in the following jointly refer to as the
+\emph{state} of the model
+$\statei$), the predictive probability for a symbol
+$s$ following context $\ubf$ is given by
+\begin{equation}
+    \Prob(s|\ubf,\statei) = 
+    \begin{cases}
+    \frac{\cus - d_{\ubf} \tus}{\cu} + \frac{d_{\ubf}\tu
+    }{\cu}\Prob(s|\parent(\ubf),\statei) & \text{if $\cu\neq 0$;} \\
+    \Prob(s|\parent(\ubf),\statei) & \text{otherwise,}
+    \end{cases}
+    \label{eq:predictive}
+\end{equation}
+where $\cu = \sum_{s\in \Sigma} \cus$, $\tu =\sum_{s\in \Sigma} \tus$, and $\parent(\ubf)$ is the parent of $\ubf$ in the context tree.
+
+Given a path $\Path$, the function 
+\PathProbability\ computes the probability of each 
+symbol $s$ in all contexts along the path. While for prediction we are just
+interested in the predictive probability vector $p_P$ for the full context
+$\xbf_{1:i}$ at the end of the path, the other probabilities are needed as input for the parameter update function \UpdatePath, which updates the counts in $\statei$ 
+for all nodes along $\Path$ in light of the observation $\xbf_{i+1}$. 
+This function can either make deterministic or probabilistic updates. The
+motivation behind both types of updates will be described in section
+\ref{sec:inference}. 
+%
+Intuitively, the updates can be understood in the following way: Every time a
+new observation is added to the model counts are incremented for some (random)
+distance up the tree.  This sharing of counts is the way observations in
+related contexts reinforce each other.  
+
+The discount parameters $d_{\ubf}$ are not independent for each context, but
+rather are functions of underlying parameters $d_{|\ubf|}$ that depend on the
+length of the context---this relationship will be made clear in Section
+\ref{sec:inference}. The underlying parameters can either be fixed a
+priori or can be initialized to some value and subsequently be updated
+alongside the counts, e.g. by taking small steps along the gradient 
+of \eqref{eq:predictive} with respect to $d_{|\ubf|}$ after observing $\xbf_{i+1}$.  
+
+The computational complexity of the described method is $\Oh(N^2)$ where $N$
+is the length of the input sequence. For each each input symbol we have to
+perform constant-time computations along the path from the root to the
+context. For the $i$-th symbol, this path is of length $i$ in the worst case,
+leading to an overall quadratic complexity. For typical text inputs however,
+the paths are much shorter, leading a computational complexity that does not
+grow much faster than linearly with $N$. The space complexity is linear in the
+length of the input sequence: Each new observation adds at most two new nodes
+to the tree, and nodes require constant space. Hash tables can be used to
+store the context tree structure compactly.
+% vim: tw=78

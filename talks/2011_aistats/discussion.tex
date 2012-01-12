@@ -1,0 +1,104 @@
+\documentclass{beamer}
+\usepackage{natbib}
+
+% \usepackage{beamerthemesplit} // Activate for custom appearance
+
+\title{{\small Discussion of} \\ \qquad\\``The Discrete Infinite Logistic Normal (DILN) Distribution for Mixed-Membership Modeling''}
+\author{Frank Wood \\ \qquad \\ Columbia University \\ fwood@stat.columbia.edu}
+\date{\today}
+
+\begin{document}
+
+\frame{\titlepage}
+
+%\section[Outline]{}
+%\frame{\tableofcontents}
+
+%\section{Introduction}
+%\subsection{Overview of the Beamer Class}
+\frame[t]
+{
+  \frametitle{Context}
+
+  \begin{itemize}
+  \item<1-> Mixed-membership models (e.g.~``topic models'') are inarguably popular
+  \item<2-> Key to mixed-membership model popularity : simplicity (e.g.~LDA \citep{Blei2003})
+  \begin{itemize}
+\item <3-> Easy to describe
+\item <4-> Accessible intuition
+\item <5-> Visibly fascinating output
+\end{itemize}
+ \item<6-> Promising for browsing and search applications.
+ %\item<7->      
+  \end{itemize}
+}
+
+\frame[t]
+{
+  \frametitle{Problem}
+Simplicity a virtue---also a vice.
+  \begin{itemize}
+  \item<1-> Mixed-membership models posit latent features (topics, objects, etc.)
+  \item<2-> Latent feature occurrence  is correlated in the real world (i.e.~objects appearing in visual scenes \citep{doshivelez2009}).
+  \item<3-> Most mixed-membership models have un-correlated features
+  \item<4-> Correlated feature models in development \citep{blei2006,doshivelez2009,rai2009}
+  \end{itemize}
+}
+
+
+\frame[t]
+{
+  \frametitle{DILN: Key Idea}
+
+  \begin{itemize}
+  \item<1-> Associate every feature with a latent vector
+  \item<2-> Use ``distance'' in a latent space to encode feature co-occurrence 
+  \begin{itemize}
+\item<2-> ``Close'' features tend to occur together more often
+\end{itemize}
+  \item<3-> Gaussian process \citep{Rasmussen2006} prior on feature space ensures that close ``locations'' have similar prevalences (smoothness).
+  \item<4-> Expert practitioners: HDP-LDA \citep{Teh2006b} + Gamma process representation + GP latent space prior + variational inference = 
+  \begin{itemize}
+    \item<5-> Mathematically elegant mixed-membership model with correlated features.
+      \end{itemize}
+
+  \end{itemize}
+}
+
+
+\frame[t]
+{
+  \frametitle{Questions}
+
+  \begin{itemize}
+  \item<1->  What kind topic prevalence correlations can be captured by DILN?
+  \[Cov\left[Z_i^{(m)},Z_j^{(m)} | \cdot \right] = \beta^2 p_ip_j e^{\frac{1}{2}(k_{ii} + k_{jj})}(e^{k_{ij}}-1)\]
+   \item<2-> How scalable is the model?  (particularly with respect to the number of topics in the VB truncation)
+  \item<3->  How are the latent topic locations represented?
+  \item<4-> Why VB?  How would sampling work in this model?  Incremental inference?
+  \item<5-> 
+  \end{itemize}
+}
+
+\frame[t]
+{
+  \frametitle{Big Picture}
+
+  \begin{itemize}
+  \item<1-> What about interpretability?
+  \begin{itemize}
+ \item<2->  Distance only?  Why not further hierarchy?
+  \end{itemize}
+  \item<3-> How much data? (data vs.~model complexity)
+ % \item<3-> 
+  \end{itemize}
+}
+
+\subsection{Bibliography}
+\bibliographystyle{plainnat}
+\begin{frame}[t,allowframebreaks]{}
+\bibliography{../../papers/uber}
+\end{frame}
+
+
+\end{document}

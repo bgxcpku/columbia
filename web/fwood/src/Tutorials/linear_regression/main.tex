@@ -1,0 +1,59 @@
+\documentclass[11pt]{amsart}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{epstopdf}
+\usepackage[square,numbers]{natbib}
+\usepackage{amsmath, epsfig}
+\usepackage{amsfonts}
+\usepackage{subfigure}
+\usepackage{graphicx}
+\usepackage{amsfonts}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{easybmat}
+\usepackage{footmisc}
+\usepackage{lscape}
+\usepackage{subfigure}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\newcommand{\vy}{\ensuremath{\mathbf{y}}}
+\newcommand{\vbeta}{\ensuremath{\boldsymbol{\beta}}}
+\newcommand{\vb}{\ensuremath{\mathbf{b}}}
+\newcommand{\mPhi}{\ensuremath{\boldsymbol{\Phi}}}
+\newcommand{\vepsilon}{\ensuremath{\boldsymbol{\epsilon}}}
+\newcommand{\tth}{\ensuremath{^{\mathrm{th}}}}
+
+\title{Everything you Need to Know About Linear Regression But Were Afraid to Ask}
+\author{Frank Wood}
+%\date{}                                           % Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+%\section{}
+%\subsection{}
+
+Linear regression is Gaussian conditional density estimation the mean of the output distribution conditionally dependent on the input value.  The basic mathematical setup looks like
+
+\begin{equation}
+\vy = \mPhi \vbeta + \vepsilon
+\end{equation}
+
+where $\vy' = [y_1, \ldots, y_N]$, $\vbeta' = [\beta_1, \ldots, \beta_P]$, $\vepsilon' = [\epsilon_1, \ldots, \epsilon_N]$,  
+
+\[\mPhi = \left[
+\begin{array}{ccc}
+ \phi_1(x_1) & \cdots  &  \phi_P(x_1)  \\
+ \vdots & \vdots  &  \vdots \\
+\phi_1(x_N)  & \cdots  &   \phi_P(x_N)
+\end{array}
+\right]\]
+
+and $\phi_p(x_n)$ is the $p\tth$ ``feature'' of input $x_n$.  The matrix form of simple linear regression is recovered by setting $\phi_1(\cdot) = \cdot$ and $\phi_2(\cdot) = 1$. 
+
+
+
+\end{document}  

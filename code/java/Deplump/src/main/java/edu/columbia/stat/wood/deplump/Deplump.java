@@ -19,7 +19,7 @@ import java.io.ObjectOutputStream;
  */
 public class Deplump {
 
-    public static void main(String[] args) throws FileNotFoundException, IOException {
+    public static void main(String[] args) throws Exception {
         ParseReturn parseReturn = CommandLineOptions.parse(args);
 
         BufferedInputStream bis = null;
@@ -28,6 +28,10 @@ public class Deplump {
         if (parseReturn.files != null) {
             for (File f : parseReturn.files) {
                 try {
+                    if(!f.exists()) {
+                        System.err.println("Input file "+f+" does not exist.  Terminating early");
+                        throw new FileNotFoundException();
+                    }
                     bis = new BufferedInputStream(new FileInputStream(f));
                     File outFile = new File(f.getAbsolutePath() + ".dpl");
                     dps = new DeplumpStream(new BufferedOutputStream(new FileOutputStream(outFile)), parseReturn.depth, parseReturn.maxNumberRestaurants, parseReturn.maxSequenceLength, parseReturn.insert, parseReturn.url);
@@ -40,9 +44,11 @@ public class Deplump {
                         dps.write(buffer, 0, l);
                     }
 
-                } finally {
+                } catch (Exception e) {
+                    e.printStackTrace();
                     bis.close();
                     dps.close();
+                    throw e;
                 }
                 if (parseReturn.saveModel) {
                     ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(parseReturn.modelSaveFile)));
@@ -68,13 +74,15 @@ public class Deplump {
                 while ((l = bis.read(buffer)) > -1) {
                     dps.write(buffer, 0, l);
                 }
-            } finally {
+            } catch (Exception e) {
+
                 if (bis != null) {
                     bis.close();
                 }
                 if (dps != null) {
                     dps.close();
                 }
+                throw e;
             }
         }
     }

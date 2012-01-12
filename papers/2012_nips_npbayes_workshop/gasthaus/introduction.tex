@@ -1,0 +1,184 @@
+% We consider the general task of online prediction for discrete time, discrete space 
+% time series data. In particular, given a sequence of discrete observations
+% $x_1, x_2, \ldots$ with $x_t \in \Sigma$, 
+% we want to estimate the distribution
+% $\hat{\Prob}_t(x_t|x_1,\ldots,x_{t-1})$ over next symbols given all previous
+% observations at each time $t$. We assume that there are some true underlying
+% distributions $\Prob_{\ubf}(x_t|x_1,\ldots,x_{t-1} = \ubf)$ so 
+% that $x_t|x_{1:t-1}=\ubf \sim \Prob_{\ubf}$.
+% However, we neither want to assume a parametric form for $P_t$, nor do we want
+% to make Markov assumptions about the dependence of $P_t$ on observations up to
+% time $t$. However, without any further assumptions, solving this task is
+% hopeless, as the $P_t$ could be changing arbitrarily with $t$, giving us no
+% chance to estimate it from only the observations up to time $t-1$. 
+
+% TODO: mention the relation to PPM* and the extended CTW
+
+We consider compression of sequences using a predictive model
+that incrementally estimates a distribution over what symbol comes next
+from the preceding sequence of symbols.  
+As our predictive model we use the sequence memoizer (SM) \citep{wood2009sms},
+a nonparametric Bayesian model for sequences of unbounded complexity. This
+model is combined with an entropy coder, for instance the arithmetic coder of 
+\citet{witten1987acd}, to yield a method for compressing sequence data.
+The main contribution of this paper is to develop an efficient
+approximate incremental inference algorithm for the SM that renders it
+suitable for use as a compressor's predictive model.  
+
+
+% We demonstrate that this
+% new approach to inference in the SM works just as well as more complex and
+% costly approaches to inference, and better than several PPM variants.
+% We call the resulting online SM construction
+% algorithm and incremental inference procedure PLUMP.%
+% \footnote{PLUMP is the acronym formed by the title of this paper. We
+% risk minor confusion by calling the compressor DEPLUMP and the decompressor
+% PLUMP for somewhat obvious reasons.  Both are used interchangeably throughout
+% the paper when referring to the incremental inference procedure and model
+% construction algorithm.}
+
+At the algorithmic level, the proposed method is somewhat similar to the unbounded context length variants of the well known PPM and CTW algorithms 
+%\citep{cleary1984dca} and CTW algorithms \citep{ctwbasic}, especially their unbounded context length variants
+\citep{cleary95unboundedlength,ctwextensions}. At a conceptual level, however,
+our approach is quite different: We take a Bayesian approach, treating the distributions over next symbols as latent variables on which we place a
+hierarchical nonparametric prior, and predicting the next symbol by
+averaging over the posterior distribution (conditioned on the sequence observed thus far). The prediction problem thus essentially becomes an incremental inference problem, where the posterior distribution is incrementally updated after observing each symbol.
+
+
+
+% \todo{More on PPM \& CTW, also on prob. modelling and its relation to
+% ompression.  yw wrote something up in discussion.}
+% To overcome this problem we are going to employ a hierarchical nonparametric
+% Bayesian approach, which by treating the $P_t$ as hidden random distributions
+% allows us to express our prior assumptions about the form of each $P_t$ and
+% the dependence among the $P_t$ for different $t$. In this setup, solving the
+% prediction problem amounts to inferring the posterior distribution of the
+% hidden random distribution $P_t$ and then using $\hat{P}_t = \text{E}[P_t]$. 
+% 
+% In this work we assume a Pitman-Yor process prior for each of the hidden
+% random distributions, and arrange these priors in a hierarchy, so that
+% $\text{E}[G_{\ubf}(x)] = G_{\sigma(\ubf)}(x)$. Models of this form have
+% previously been considered for language modelling by \citet{Teh:ACL06} (making
+% a $k$-th order Markov assumption), and have recently been extended to avoid
+% such an assumption by \citet{wood2009sms}.
+
+
+% An alternative, which we are not going to pursue
+% here, is a \emph{batch} approach, which
+% computes the posterior $p(\theta|\xbf)$ given the whole sequence, then coding
+% for $\theta$ and $\xbf$ using the bits-back technique \citep{hinton1994amd}.
+% However this is impractical both for long sequences and for situations in
+% which only a single sequence is to be compressed.
+
+%In the compression setting, model construction, model estimation, and predictive
+%inference must all happen simultaneously in a single pass through the data.  
+% We start by describing the model, followed by a description of our new 
+% algorithm for incrementally constructing the model in one forward pass through the data and an explanation of incremental SM
+% estimation. We finish the section by completing the compression algorithm
+% specification.
+We first present our algorithm in Section 2.
+The model, its implied prior assumptions, and the derivation of the algorithm as an approximate inference scheme in the model will be discussed in Sections 3 and 4. 
+In Section 5 we present state-of-the-art text compression performances on the Calgary corpus.
+
+% discuss prior assumptions on sequence, especially mention power-law
+% discuss example application szenarios
+
+
+
+
+% A further, perhaps equally important contribution is the  establishment of a
+% mathematical connection between the predictive model used in the prediction by
+% partial matching (PPM) family (\cite{cleary1984dca}) of non-context-mixing
+% lossless compressors and the SM incremental inference procedure used in the
+% DEPLUMP compressor.  The reason why we make the compression utility of our new
+% model and algorithm explicit is to highlight this connection.  PPM and its
+% large number of variants are generally understood to be the best
+% non-context-mixing, general compressors in the world, but insights into why
+% PPM performs as well as it does and why one version does better than another
+% are lacking.   Because of the connection we establish between the sequence
+% model internal to PPM and approximate inference in a probabilistic model,
+% researchers will now have the mathematical tools to not only understand PPM's
+% success in a different way but also to develop different insights into the
+% differences between PPM and its variants.  We also suggest that a possible
+% future consequence of having made this connection might be the development of
+% new, more efficient PPM-like lossless compressors.  
+
+% The compression performance DEPLUMP achieves is a secondary contribution,
+% albeit one of practical interest.  Through comparison on well known
+% compression benchmarks, we find that DEPLUMP outperforms state of the art
+% variants of prediction by partial matching (PPM) on average, and shows
+% particular improvement when compressing data that is known to exhibit power
+% law properties (text in particular).  
+
+% \comment{ We
+% consider adaptive, model-based, byte-level compressors specifically.  The
+% general characteristics of such compressors are that they take a sequence of
+% bytes as input, incrementally learn a next-byte predictive model, and then
+% incrementally pass along both the next byte and its probability under the
+% prediction model to an arithmetic encoder \citep{witten1987acd}.  The
+% arithmetic encoder handles the actual compression; the adaptive model simply
+% provides the predictive distribution.  It is known that if the predictive
+% model is ``right'' in the sense that it assigns the same probabilities to
+% predict the subsequent symbol as the generative model used to generate the
+% symbols in the first place, then arithmetic coding attains the optimal
+% expected code length (i.e. achieves optimal compression) \cite{witten1987acd}.
+% What this means is that the relative quality of different compressors can be
+% measured independently of compression ratio by simply measuring how well each
+% predictive model performs.
+% 
+% This paper provides a new theoretical foundation for a family of related
+% compressors that all share a common ancestor, prediction by partial matching
+% (PPM) \cite{cleary1984dca}.  Despite the fact that PPM variants are
+% generally considered to be the best adaptive, model-based compressors in the
+% world \cite{ppm_best_in_world_reference}; both PPM and its variants are
+% conceptually simple.   Roughly, they all work in the following way: however far
+% the compressor has progressed, to produce a predictive distribution over values
+% the next byte might take, they look back through the part of the file that has
+% already been compressed and find all bytes that have the same value as the
+% current byte and for each they collect statistics about what value the next
+% byte takes.  They then do the same for for two, three, four, and more bytes of
+% context.  The collected statistics are then used to construct the distribution
+% over the value the next byte will take (via backing-off, interpolating,
+% averaging, etc).
+% 
+% This kind of smoothing Markov model probability estimation might seem very
+% familiar to readers who know something about smoothing language models.  Even
+% lacking familiarity with this literature it will become clear that there is 
+% a trade-off between prediction in long (deep) contexts and short (shallow)
+% contexts.  In deep contexts the predictive distribution (as estimated above) is
+% likely to have very high specificity and low entropy (e.g.~practically all
+% probability mass assigned to a single value) leading to potentially excellent
+% compression.  Unfortunately by virtue of the fact that long contexts will occur
+% relatively few times in the sequence, the counting estimate of the predictive
+% distribution might also be highly biased, leading to very poor compression.  In
+% shallow contexts, bias is less of a problem, but lack of specificity means that
+% compression performance will suffer.  Much of the work in the PPM literature is
+% about either picking an ideal depth to use for prediction, or combining
+% predictive distributions from different depths.  All attempt to exploit the
+% longest possible contexts while minimizing the potentially downside arising
+% from skewed distributions.
+% 
+% We use the sequence memoizer (SM) \cite{wood2009sms} to directly address this
+% issue. The SM has only been used for word level sequence prediction and has
+% never been demonstrated as a compressor.  In order to use the SM for
+% compression we develop a new sequential ``inference'' algorithm for it.  We
+% show that the resulting algorithm for (de)compression (DEPLUMP) is closely
+% related to PPM and its variants, the key difference being that our new
+% algorithm can be understood as approximate inference in a fully probabilistic
+% model.  This insight not only results in subtle algorithmic differences between
+% DEPLUMP and PPM
+% that result in real compression performance improvements, but also
+% opens up many new avenues to explore in seeking improvements to lossless
+% compression.
+%}
+
+% We start in Section 2 by describing the  sequence prediction model internal to
+% PLUMP as well as the novel algorithm we use to incrementally construct it.
+% Section 2 also contains an explanation of the incremental inference procedure
+% we use in the model.  Section 3 evaluates DEPLUMP in terms of compression
+% performance on the Calgary corpus, a standard compression test corpus
+% consisting of multiple files of various types.  In section 4 we discuss
+% related work and outline the connection between \PLUMP\ and PPM.  In section
+% 5 we conclude with a discussion of various extensions of the proposed method.
+
+% vim: tw=78

@@ -4,13 +4,14 @@ in_menu: true
 sort_info: 100
 ---
 
-### Lossless Compression and Predictive Text
+### Social gaming 
 
-[<img src="http://www.jtstrm.com/images/logo_jetstream.png" alt="JetStream">](http://www.jtstrm.com) 
- 
-is built on [demplump](http://www.deplump.com/) general purpose lossless compression technology.  The [sequence prediction model](http://www.sequencememoizer.com/) behind this was the subject of research from my group and others.  
+[<img src="http://betacular.com/wp-content/uploads/logo-black-with-shadow.png" alt="BetChamp" title="BetChamp" width="270" height="63" style="padding:20px;">](http://betchamp.com/)
 
-### Social Gaming and Software for the Gambling Industry
+[BetChamp](http://betchamp.com/) is a social pool-betting game. One chooses a season of sport, entertainment, or politics, puts together a group, then competes to see who's best at predicting what's going to happen.  [BetChamp](http://betchamp.com/) has been [mentioned](http://www.washingtonpost.com/local/dc-politics/with-weekly-nfl-picks-george-allen-tries-to-beat-the-odds/2011/11/23/gIQAsAlHwN_story.html) in the Washington Post.
+
+
+### Software for the Sports Gambling Industry
 
 [<img src="http://betacular.com/wp-content/uploads/logo_betacular.png" style="padding:20px;" alt="Betacular">](http://www.betacular.com/) 
 
@@ -18,11 +19,16 @@ builds software and solutions for the gaming industry.  Of particular note
 
 - [Android mobile sports betting applications](http://betacular.com/betfair-app/) (non-US only) 
 - [Odds estimation tools for bookmakers](http://betacular.com/odds-estimation/) 
-- [Social betting games](http://www.fan-slam.com/) *beta*
 
 &nbsp;
 &nbsp;
 &nbsp;
+
+### Lossless Compression and Predictive Text
+
+[<img src="http://www.jtstrm.com/images/logo_jetstream.png" alt="JetStream">](http://www.jtstrm.com) 
+ 
+is built on [demplump](http://www.deplump.com/) general purpose lossless compression technology.  The [sequence prediction model](http://www.sequencememoizer.com/) behind this was the subject of research from my group and others.  
 
 <!-- ### Computational Tools for the Sports Gambling Industry
 

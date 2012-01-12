@@ -1,0 +1,11 @@
+\beamer@endinputifotherversion {3.07pt}
+\select@language {english}
+\beamer@sectionintoc {1}{Introduction}{2}{0}{1}
+\beamer@subsectionintoc {1}{1}{Motivation}{2}{0}{1}
+\beamer@sectionintoc {2}{Gaussian Mixture Model}{8}{0}{2}
+\beamer@subsectionintoc {2}{1}{Finite Model}{8}{0}{2}
+\beamer@subsectionintoc {2}{2}{Infinite Model}{10}{0}{2}
+\beamer@sectionintoc {3}{Infinite GMM}{10}{0}{3}
+\beamer@subsectionintoc {3}{1}{Conjugacy}{14}{0}{3}
+\beamer@subsectionintoc {3}{2}{Taking the Infinite Limit}{15}{0}{3}
+\beamer@sectionintoc {4}{Results}{18}{0}{4}

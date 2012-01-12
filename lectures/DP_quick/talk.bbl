@@ -1,0 +1,58 @@
+\begin{thebibliography}{8}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Blei and Jordan(2005)]{Blei2005}
+D.~Blei and M.~Jordan.
+\newblock Variational inference for {D}irichlet process mixtures.
+\newblock \emph{Journal of {B}ayesian Analysis}, 1\penalty0 (1):\penalty0
+  121--144, 2005.
+
+\bibitem[Fearnhead(2004)]{Fearnhead2004}
+P.~Fearnhead.
+\newblock Particle filters for mixture models with an unknown number of
+  components.
+\newblock \emph{Journal of Statistics and Computing}, 14:\penalty0 11--21,
+  2004.
+
+\bibitem[Jain and Neal(2004)]{Jain2004}
+S.~Jain and R.~M. Neal.
+\newblock A split-merge {M}arkov chain {M}onte {C}arlo procedure for the
+  {D}irichlet process mixture model.
+\newblock \emph{Journal of Computational and Graphical Statistics}, 13\penalty0
+  (1):\penalty0 158--182, March 2004.
+
+\bibitem[Lewicki(1994)]{Lewicki1994}
+M.~S. Lewicki.
+\newblock {B}ayesian modeling and classification of neural signals.
+\newblock \emph{Neural Computation}, 6:\penalty0 1005--1030, 1994.
+
+\bibitem[MacEachern and Muller(1998)]{Maceachern1998}
+S.~MacEachern and P.~Muller.
+\newblock Estimating mixture of {D}irichlet process models.
+\newblock \emph{Journal of Computational and Graphical Statistics}, 7:\penalty0
+  223--238, 1998.
+
+\bibitem[MacEachern et~al.(1999)MacEachern, Clyde, and Liu]{Maceachern1999}
+S.~N. MacEachern, M.~Clyde, and J.~Liu.
+\newblock Sequential importance sampling for nonparametric {B}ayes models: the
+  next generation.
+\newblock \emph{The Canadian Journal of Statistics}, 27:\penalty0 251--267,
+  1999.
+
+\bibitem[Neal(2000)]{Neal2000}
+R.~M. Neal.
+\newblock Markov chain sampling methods for {D}irichlet process mixture models.
+\newblock \emph{Journal of Computational and Graphical Statistics}, 9:\penalty0
+  249--265, 2000.
+
+\bibitem[Rasmussen(2000)]{Rasmussen2000}
+C.~Rasmussen.
+\newblock The infinite {G}aussian mixture model.
+\newblock In \emph{Advances in {N}eural {I}nformation {P}rocessing {S}ystems
+  12}, pages 554--560. MIT Press, Cambridge, MA, 2000.
+
+\end{thebibliography}
