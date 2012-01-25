@@ -1,0 +1,7 @@
+function check_e_m(data,pi,mu,sigma)
+
+g = e_step_gaussian_mixture(data,pi,mu,sigma);
+g2 = e_step(data,pi,mu,sigma);
+
+g_diff = (g - g2).^2;
+disp(['g_diff sum = ' num2str(sum(g_diff(:))

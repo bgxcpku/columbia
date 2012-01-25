@@ -1,0 +1,28 @@
+function check_e_m(X, Y)
+alpha = .5;
+beta = .5;
+
+[m s] = e_step_linear_regression(X, Y, alpha, beta);
+
+[m2 s2] = e_step(X,Y,alpha,beta);
+
+disp(['m diff = ' num2str(sum((m - m2).^2))])
+
+s_diff = (s - s2).^2;
+
+disp
+
+if sum(s_diff(:)) > 0.01
+    disp('broken s in e_step');
+end
+
+[a b] = m_step_linear_regression(X,Y,m,s);
+[a2 b2] = m_step(X,Y,m,s);
+
+if (a - a2)^2 > 0.01
+    disp('broken m_step alpha')
+end
+
+if (b - b2)^2 > 0.01
+    disp('broken m_step beta')
+end
