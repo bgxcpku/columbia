@@ -1,0 +1,89 @@
+---
+in_menu: false
+title: Forcmt
+routed_title: Forcmt
+sort_info: 1
+---
+###Conference
+* [Low rank continuous-space graphical models](Smith-AISTATS-2012.pdf)
+	* C. Smith, F. Wood, L. Paninski, [AISTATS](http://www.aistats.org/), 2012 [.bib](Smith-2012-AISTATS.bib)
+		* A new class of models for which exact inference is tractable.
+* [Hierarchically Supervised Latent Dirichlet Allocation](Perotte-2012-NIPS.pdf)	
+	* A. Perotte, N. Bartlett, N. Elhadad, F. Wood, [NIPS](http://books.nips.cc/), 2012. [.bib](Perotte-2012-NIPS.bib)
+		* Model for automatic categorization and labeling of product catalogs, web pages, and medical records.
+* [Deplump for Streaming Data](Bartlett-DCC-2011.pdf)
+	* N. Bartlett and F. Wood, [DCC](http://pages.cs.brandeis.edu/~dcc/), 2011. [.bib](Bartlett-2011-DCC.bib)
+		* Approximate constant time and space inference for the sequence memoizer.  [Performance](http://www.deplump.com/LookupStatistics), [Demo](http://www.deplump.com/)
+* [Probabilistic Deterministic Infinite Automata](Pfau-NIPS-2010.pdf)
+	* D. Pfau, N. Bartlett, and F. Wood, [NIPS](http://books.nips.cc/nips23.html), 2011. [.bib](Pfau-2011-NIPS.bib)
+		* Discrete sequence model with properties that lie between those of infinite n-gram and HMM models, [spotlight video](http://videolectures.net/nips2010_pfau_pdi/)
+* [Forgetting counts : Constant Memory inference for a Dependent hierarchical Pitman-Yor Process](Bartlett-ICML-2010.pdf)
+	* N. Bartlett, D. Pfau, and F. Wood, [ICML](http://www.icml2010.org/program_withpapers.html), 2010.  [.bib](Bartlett-2010-ICML.bib)
+		* Generalized Polya urn style dependent hierarchical Pitman-Yor process.
+* [Lossless compression based on the Sequence Memoizer](Gasthaus-DCC-2010.pdf)
+	* J. Gasthaus, F. Wood, and Y.W. Teh, [DCC](http://pages.cs.brandeis.edu/~dcc/), 2010.  [.bib](Gasthaus-2010-DCC.bib)
+		* Offline sequence memoizer-based lossless compressor.
+* [A Stochastic Memoizer for Sequence Data](Wood-ICML-2009.pdf)
+	* F. Wood, C. Archambeau, J. Gasthaus, L. James, and Y.W. Teh, [ICML](http://www.machinelearning.org/archive/icml2009/), 2009.  [.bib](Wood-2009-ICML.bib)
+		* n-gram / Markov model in the limit of n going to infinity.  The original [sequence memoizer](http://www.sequencememoizer.com/) reference.  [Talk](Talks/sequence_memoizer.pdf), [Video Lecture](http://videolectures.net/icml09_wood_sms/), [Code](http://www.sequencememoizer.com/)
+* [A hierarchical nonparametric Bayesian approach to statistical language model domain adaptation](Wood-AISTATS-2009.pdf)
+	* F. Wood and Y.W. Teh, [AISTATS](http://www.ics.uci.edu/~aistats/), 2009. [.bib](Wood-2009-AISTATS.bib)
+		* Graphical Pitman-Yor process,  <em>Best Paper Award</em>  
+* [Dependent Dirichlet process spike sorting](Gasthaus-NIPS-2009.pdf)
+	* J. Gasthaus, F. Wood, D. Gorur, and Y.W. Teh. NIPS, 2009. [.bib](Gasthaus-2008-NIPS.bib)
+* [Characterizing neural dependencies with Poisson copula models](Berkes-NIPS-2009.pdf)
+	* P. Berkes, J.W. Pillow, and F. Wood.  NIPS, 2009. [.bib](Berkes-2008-NIPS.bib)
+* [Particle filtering for non-parametric Bayesian matrix factorization](Wood-NIPS-2006.pdf)
+	* F. Wood and T. L. Griffiths. NIPS, 2006. [.bib](Wood-2006-NIPS.bib) 
+		* [Code](/Code/ibp.tar.gz)
+* [A non-parametric Bayesian approach to spike sorting](Wood-EMBS-2006.pdf)
+	* F. Wood, S. Goldwater, and M. J. Black, EMBS, 2006. [.bib](Wood-2006-EMBS.bib)
+		* [Code](/Code/dpm_spike_sorter_0_1.tar.gz)
+* [A non-parametric Bayesian method for inferring hidden causes](Wood-UAI-2006.pdf)
+	* F. Wood, T. L. Griffiths, and Z. Ghahramani, UAI, 2006. [.bib](Wood-2006-UAI.bib)
+
+
+### Journal
+* [Inference in Hiddern Markov Models with Explicit State Duration Distributions](Dewar-IEEE-2012.pdf)
+	* M. Dewar, C. Wiggins, and F. Wood, (To Appear) In IEEE Signal Processing Letters, 2012 [.bib](Dewar-2012-IEEE.bib)
+* [The Sequence Memoizer](http://www.deepdyve.com/lp/association-for-computing-machinery/the-sequence-memoizer-O0uprcmqxa)
+	* F. Wood, J. Gasthaus, C. Archambeau, L. James, and Y.W. Teh, In Proceedings of the Communications of the ACM, 2011 [.bib](Wood-2011-CACM.bib)
+* [A Nonparametric Bayesian Alternative to Spike Sorting](Wood-JNM-Preprint-2008.pdf)
+	* F. Wood, and M. J. Black,  Journal of Neuroscience Methods, 173:1-12, 2008. [.bib](Wood-2008-JNM.bib)
+* [Discovering natural kinds of robot sensory experiences in unstructured environments](GrollmanJenkinsWood_JFR2006_preprint.pdf)
+	* D. H. Grollman, O. C. Jenkins, and F. Wood. <span class="papertitle">.</span>  Journal of Field Robotics, 23(11-12):1077-1089, 2006. [.bib](Grollman-2006-JFR.bib)
+
+
+### Technical Reports
+* [Incremental Nonparametric Bayesian Regression](Wood-INBR-2008.pdf)
+	* F. Wood, D. H. Grollman, K, A. Heller, O. C. Jenkins, and M. J. Black. Brown University Dept. Computer Science Technical Report CS-08-07, 2008. [.bib](Wood-2008-TECHREPORT.bib)
+
+### Invited Papers
+* [Discussion of "The Discrete Infinite Logistic Normal Distribution for Mixed-Membership Modeling](Wood-AISTATS-2011-response.pdf)
+	* F. Wood, In AISTATS 2011  [.bib](Wood-2011-AISTATS.bib)
+
+### Workshop Publications
+* [Modeling Streaming Data In the Absence of Sufficiency](Wood-NIPSNPBAYES-2011.pdf)
+	* F. Wood, In NIPS Nonparametric Bayes Workshop, 2011. [.bib](Wood-2011-NIPSNPBAYES.bib)
+* [A Hierarchical, Hierarchical Pitman Yor Process Language Model](Wood-ICMLNPBAYES-2008.pdf)
+	* F. Wood and Y.W. Teh, In ICML/UAI Nonparametric Bayes Workshop, 2008. [.bib](Wood-2008-ICMLNPBAYES.bib)
+* [Discovering natural kinds of robot sensory experiences in unstructured environments]()
+	* D. H. Grollman, O. C. Jenkins, and F. Wood. In NIPS Workshop on Machine Learning Based Robotics in Unstructured Environments, 2005. [.bib](Grollman-2005-NIPS.bib)
+
+<!-- ### Posters
+* [Characterizing neural dependencies with Poisson copula models](/Posters/BerkesPillowWood2008_Cosyne.pdf)
+	* P. Berkes, J. Pillow, F. Wood, Cosyne, 2008. -->
+
+--- name:sidebar
+<strong>Email: </strong>
+fwood@stat.columbia.edu<br>
+<strong>Office:</strong><br>
+Room 1017<br> School of Social Work<br>
+<strong>Address:</strong> <br>
+1255 Amsterdam Avenue <br>
+New York, NY 10027<br>
+<strong>Phone:</strong>
+212.851.2150<br>
+<strong>Skype:</strong> <quote>frank_wood</quote>
+
+

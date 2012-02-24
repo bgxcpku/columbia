@@ -1,0 +1,154 @@
+\input{tikz_header.tex}
+\setpapersize{custom}{17cm}{6cm}
+\setmarginsrb{0cm}{0.5cm}{0cm}{0cm}{0cm}{0cm}{0cm}{0cm}
+\usetikzlibrary{shapes.arrows}
+\usetikzlibrary{calc}
+\usepackage{times}
+\begin{document}
+\small
+\newcommand{\restaurant}[2]{#1 $\mid$ #2}
+\newcommand{\state}[3]{ $\mathtt{#1}$ \nodepart{second} \restaurant{#2}{#3}}
+\tikzstyle{astate}=[rectangle,draw=black,fill=white,thick,minimum width=0.6cm,height=0.6cm]
+\tikzstyle{circ}=[rectangle split,rectangle split parts=2,rectangle split part align=center,draw=black,fill=white,thick,minimum width=0.8cm,minimum height=5cm]
+\begin{tikzpicture}[thick]
+    \node[circ] (bot1) at (0,2) {\state{\varepsilon}{1}{0}};
+    \node[circ] (n1) at (3,0.5) {\state{a}{0}{1}};
+    \node[circ] (bot2) at (4,2) {\state{\varepsilon}{1}{1}};
+    \node[circ] (bot3) at (8,2) {\state{\varepsilon}{1}{2}};
+    \node[circ] (bot4) at (12,2) {\state{\varepsilon}{2}{2}};
+    \node[circ] (n2) at (7,0.5) {\state{a}{0}{1}};
+    \node[circ] (n3) at (9,0.5) {\state{ab}{0}{1}};
+    \node[circ] (n4) at (11,0.5) {\state{a}{0}{1}};
+    \node[circ] (n5) at (13,0.5) {\state{b}{1}{1}};
+    \node[circ] (n6) at (12.3,-1) {\state{ab}{0}{1}};
+    \node[circ] (n7) at (13.7,-1) {\state{abb}{1}{0}};
+   
+    %\node[rectangle,dashed,draw=black,fill=lightgray,minimum width=2cm,minimum height=1.3cm] (inset1) at (0,0) {};
+    %\node[circ,fill=lightgray] (inset) at (4,-1.3) {$\mathbf{u}$ \nodepart{second} $c_{\mathbf{u} \mathtt{a} \cdot} \mid c_{\mathbf{u} \mathtt{b} \cdot}$};
+    \node[circ,fill=lightgray] (inset1) at (5,-1) {~\nodepart{second}~~~$|$~~ ~};
+    \node[circ,fill=lightgray] (inset2) at (3.5,-1.7) {~\nodepart{second}~~~$|$~~ ~};
+    \draw (inset1) -- node[above,sloped]{$\mathtt{s}$} (inset2);
+
+    \node (cus1) at (6,-2.2) {$c_{\pi(\mathbf{u}) \mathtt{a}}$};
+    \node (cus2) at (6,-1.9) {$c_{\pi(\mathbf{u}) \mathtt{b}}$};
+    \path[->] (cus1) edge[bend left] ($(inset1.south west) + (0.2,0.3)$);
+    \path[->] (cus2) edge[bend left] ($(inset1.south east) - (0.2,-0.3)$);
+    
+    \node (cus3) at (2.5,-2.2) {$c_{\mathbf{u} \mathtt{a}}$};
+    \node (cus4) at (4.5,-2.2) {$c_{\mathbf{u} \mathtt{b}}$};
+    \path[->] (cus3) edge[bend left] ($(inset2.south west) + (0.2,0.3)$);
+    \path[->] (cus4) edge[bend left] ($(inset2.south east) - (0.2,-0.3)$);
+    
+    \node (cl) at (2.4,-0.8) {child link};
+    \path[->] (cl.east) edge[bend left] (4.1,-1.0);
+
+    \node (context1) at (2.4,-1.4) {$\mathbf{u}$};
+    \node (context2) at (6.2,-0.7) {$\pi(\mathbf{u})$};
+    \path[->] (context2) edge (inset1.mid);
+    \path[->] (context1) edge (inset2.mid);
+    
+    \node[anchor=west] (l1) at (-1.8,2.7) {(1)};
+    \node[anchor=west] (l1) at (2.1,2.7) {(2)};
+    \node[anchor=west] (l1) at (6.1,2.7) {(3)};
+    \node[anchor=west] (l1) at (10.1,2.7) {(4)};
+
+    \node[anchor=north west] (arr1) at (-1.8,2.5) {\footnotesize $\mathtt{:a}$};
+    \node[anchor=north west] (arr2) at (2.1,2.5) {\footnotesize$\mathtt{a:b}$};
+    \node[anchor=north west] (arr3) at (6.1,2.5) {\footnotesize$\mathtt{ab:b}$};
+    \node[anchor=north west] (arr4) at (10.1,2.5) {\footnotesize$\mathtt{abb:a}$};
+
+   % \node[circ] (bot5) at (16,2) {$\bot$};
+   % \node[circ] (n8) at (15,1) {1};
+   % \node[circ] (n9) at (17,1) {2};
+   % \node[circ] (n10) at (16.5,0) {2};
+   % \node[circ] (n11) at (17.5,0) {4};
+   % \node[circ] (n12) at (15,0) {5};
+   % \draw (bot5) -- (n8);
+   % \draw (bot5) -- (n9);
+   % \draw (n9) -- (n10);
+   % \draw (n9) -- (n11);
+   % \draw (n8) -- (n12);
+
+
+   % \node[astate] (a1) at (3,-2) {a}; 
+   % \node[astate] (b1) at (3.6,-2) {b}; 
+   % \node[astate] (b2) at (4.2,-2) {b}; 
+   % \node[astate] (a2) at (4.8,-2) {a}; 
+   \draw (bot2) -- node[above,sloped]{$\mathtt{a}$} (n1);
+   \draw (bot3) -- node[above,sloped]{$\mathtt{a}$} (n2);
+   \draw (bot3) -- node[above,sloped]{$\mathtt{b}$}(n3);
+   \draw (bot4) -- node[above,sloped]{$\mathtt{a}$}(n4);
+   \draw (bot4) -- node[above,sloped]{$\mathtt{b}$}(n5);
+   \draw (n5) -- node[above,sloped]{$\mathtt{a}$}(n6);
+   \draw (n5) -- node[above,sloped]{$\mathtt{b}$}(n7);
+    \path [draw,dashed] (2,-0.2) -- (2,3);
+    \path [draw,dashed] (6,-0.2) -- (6,3);
+    \path [draw,dashed] (10,-2.3) -- (10,3);
+    \path [draw,dashed] (-2,-0.4) -- (10,-0.4);
+
+    %\node[single arrow,draw,single arrow head extend=0.1cm,minimum height=2cm,fill=white] (arr1) at (0,0.6) {\footnotesize $\mathtt{:a}$};
+    %\node[single arrow,single arrow head extend=0.1cm,draw,minimum height=2cm,fill=white] (arr2) at (4,-2) {\footnotesize$\mathtt{a:b}$};
+    %\node[single arrow,single arrow head extend=0.1cm,draw,minimum height=2cm,fill=white] (arr3) at (8,-2) {\footnotesize$\mathtt{ab:b}$};
+    %\node[single arrow,single arrow head extend=0.1cm,draw,minimum height=2cm,fill=white] (arr4) at (12,-2) {\footnotesize$\mathtt{abb:a}$};
+
+    %\path [draw,dashed] (14,-1) -- (14,3);
+  %  \node[text width=4cm, text justified,anchor=north west] (b1) at (-2,-1) {
+  %  \begin{tabular}{|c|c|c|c|c|}
+  %      \hline
+  %      \textbf{Node} & \textbf{s} & \textbf{e} & \texttt{a} & \texttt{b}\\
+  %      \hline \hline
+  %      $\bot$ & 0 & 0 & 1 & 0\\
+  %      \hline
+  %  \end{tabular}
+  %  };
+  %  \node[text width=4cm, text justified,anchor=north west] (b2) at (2,-1) {
+  %  \begin{tabular}{|c|c|c|c|c|}
+  %      \hline
+  %      \textbf{Node} & \textbf{s} & \textbf{e} & \texttt{a} & \texttt{b}\\
+  %      \hline \hline
+  %      $\bot$ & 0 & 0 & 1 & 1\\
+  %      \hline
+  %      $1$ & 0 & 1 & 0 & 1\\
+  %      \hline
+  %  \end{tabular}
+  %  };
+  %  \node[text width=4cm, text justified,anchor=north west] (b3) at (6,-1) {
+  %  \begin{tabular}{|c|c|c|c|c|}
+  %      \hline
+  %      \textbf{Node} & \textbf{s} & \textbf{e} & \texttt{a} & \texttt{b}\\
+  %      \hline \hline
+  %      $\bot$ & 0 & 0 & 1 & 1\\
+  %      \hline
+  %      $1$ & 0 & 1 & 1 & 0\\
+  %      \hline
+  %      $2$ & 0 & 2 & 0 & 1\\
+  %      \hline
+  %  \end{tabular}
+  %  };
+  %  \node[text width=4cm, text justified,anchor=north west] (b4) at (10,-1) {
+  %  \begin{tabular}{|c|c|c|c|c|}
+  %      \hline
+  %      \textbf{Node} & \textbf{s} & \textbf{e} & \texttt{a} & \texttt{b}\\
+  %      \hline \hline
+  %      $\bot$ & 0 & 0 & 1 & 1\\
+  %      \hline
+  %      $1$ & 0 & 1 & 1 & 0\\
+  %      \hline
+  %      $2$ & 0 & 2 & 0 & 1\\
+  %      \hline
+  %      $3$ & 1 & 2 & 1 & 1\\
+  %      \hline
+  %      $4$ & 0 & 3 & 1 & 0\\
+  %      \hline
+  %  \end{tabular}
+  %  };
+   %  \draw[->,red,dashed] (n1) -- (a1.north east);
+   %  \draw[->,red,dashed] (n2) -- (a1.north east);
+   %  \draw[->,red,dashed] (n3) -- (b1.north east);
+   %  \draw[->,red,dashed] (n6) -- (b1.north east);
+   %  \draw[->,red,dashed] (n4) -- (a1.north east);
+   %  \draw[->,blue,dotted] (n5) -- (b1.north west);
+   %  \draw[->,red,dashed] (n5) -- (b1.north east);
+   %  \draw[->,red,dashed] (n7) -- (b2.north east);
+\end{tikzpicture}
+\end{document}

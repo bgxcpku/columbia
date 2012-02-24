@@ -18,7 +18,7 @@ real[] hpyp_nodes_in_tree = {1, 80970 , 981973 , 3143113 , 6016779 , 9144795 , 1
 scale(pic1, true);
 draw(pic1,graph(n,hpyp_nodes_in_tree),heavyred);
 yaxis(pic1,"Number of nodes",Right, heavyred, LeftTicks);
-xaxis(pic1,"Context length ($n$)",BottomTop,LeftTicks(DefaultFormat,new real[] {0,1,2,3,4,5,6}));
+xaxis(pic1,"Markov Order ($n$)",BottomTop,LeftTicks(DefaultFormat,new real[] {0,1,2,3,4,5,6}));
 yequals(pic1,nyt_nodes_in_tree,heavyred+dashed);
 xequals(pic1,4,dotted);
 

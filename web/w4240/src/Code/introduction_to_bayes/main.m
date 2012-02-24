@@ -78,7 +78,7 @@ for n =1:num_flips
      ylabel('P(\Theta)')
      
      % compute posterior intervals
-     lower_lim = betainv(.05,posterior_params(1),posterior_params(2));
+    lower_lim = betainv(.05,posterior_params(1),posterior_params(2));
     upper_lim = betainv(.95,posterior_params(1),posterior_params(2));
     
     % draw intervals on plots

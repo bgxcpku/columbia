@@ -12,16 +12,31 @@ Dr. Wood ([c.v.](cv.pdf)) is a statistical machine learning researcher.
 
 |---
 |:-:|-:|
-| 1/4/2012 |&nbsp;| ETH
-| 1/19/2012 |&nbsp;| UIC
 | 2/13-14/2012 |&nbsp;| Oxford
+| 1/19/2012 |&nbsp;| UIC
+| 1/4/2012 |&nbsp;| ETH
+
 
 ### New
 
-- [Hierarchically Supervised Latent Dirichlet Allocation](Papers/Perotte-2012-NIPS.pdf)
+- [Low rank continuous-space graphical models](Papers/Smith-AISTATS-2012.pdf)
+	* C. Smith, F. Wood, L. Paninski, [AISTATS](http://www.aistats.org/), 2012 [.bib](Papers/Smith-2012-AISTATS.bib)
+		
+- [Inference in Hidden Markov Models with Explicit State Duration Distributions](Papers/Dewar-IEEE-2012.pdf)
+	* M. Dewar, C. Wiggins, and F. Wood, IEEE Signal Processing Letters, 2012 [.bib](Papers/Dewar-2012-IEEE.bib)
+
+<!--- - [Hierarchically Supervised Latent Dirichlet Allocation](Papers/Perotte-2012-NIPS.pdf)
 	- A. Perotte, N. Bartlett, N. Elhadad, F. Wood, [NIPS](http://books.nips.cc/), 2012. [.bib](Papers/Perotte-2012-NIPS.bib) 
 
 In an attempt to share what the scientific paper writing process is like, [J. Huggins](http://www.columbia.edu/~jhh2143/) made a [&quot;visualization&quot;](Papers/sLDA-evo.pdf) of the many pre-submission versions of this paper.  Each page in the visualization is one commit.  Although the movement of the figures is the most salient feature of the visualization, taking the time to watch the text, model, and layout change is informative about the process of collaborative writing and the level of effort that goes into producing a top-flight conference paper. 
+-->
+
+### Cool
+
+-  [W. Neiswanger](http://www.columbia.edu/~wdn2101/) made this multiple object target tracking <a href="http://www.youtube.com/watch?v=2c8Bty0gSEI">video</a> for a paper we're about to submit.
+
+<!--<iframe width="560" height="315" src="http://www.youtube.com/embed/2c8Bty0gSEI" frameborder="0" allowfullscreen></iframe> -->
+- [J. Huggins](http://www.columbia.edu/~jhh2143/) made a simple [&quot;visualization&quot;](Papers/sLDA-evo.pdf) of the writing of a recent NIPS paper entitled [Hierarchically Supervised Latent Dirichlet Allocation](Papers/Perotte-2012-NIPS.pdf).
 
 
 
